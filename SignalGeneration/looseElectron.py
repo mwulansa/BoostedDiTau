@@ -1,0 +1,103 @@
+import math
+from ROOT import TMath
+
+def dEtaInSeed(ele):
+    if ele.superCluster().isNonnull() and ele.superCluster().seed().isNonnull():
+        return ele.deltaEtaSuperClusterTrackAtVtx()-ele.superCluster().eta()+ele.superCluster().seed().eta()
+    else:
+        return sys.float_info.max
+
+def GsfEleEInverseMinusPInverse(ele):
+    ecal_energy_inverse = 1.0/ele.ecalEnergy()
+    eSCoverP = ele.eSuperClusterOverP()
+    return abs(1.0 - eSCoverP)*ecal_energy_inverse
+
+def GsfEleMissingHitsCut(ele):
+    mHits = ele.gsfTrack().hitPattern().numberOfHits(1)
+    return mHits
+
+def dZ(ele,vert):
+    p1=ele.trackPositionAtVtx()
+    p2=vert.position()
+    return abs(p1.z()-p2.z())
+
+def dXY(ele,vert):
+    p1=ele.trackPositionAtVtx()
+    p2=vert.position()
+    return math.sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()))
+
+
+def GsfEleConversionVetoCut(ele, bs, convs):
+    #if bs.isValid() and convs.isValid():
+    if not bs==None or not convs==None:
+        return not hasMatchedConversion(ele,convs,bs.position())
+    else:
+        print "Couldn't find a necessary collection, returning true!"
+        return True
+    #try:
+    #    flag=!hasMatchedConversion(ele,convs,bs.position())
+    #except:
+    #    print "Couldn't find a necessary collection, returning true!"
+    #    flag=True
+    #finally:
+    #    return flag
+
+def hasMatchedConversion(ele,convs,bsp):
+    for conv in convs:
+        if not matchesConversion(ele, conv): continue
+        if not isGoodConversion(conv, bsp): continue
+        return True
+    return False
+        
+
+def matchesConversion(ele, conv):
+    allowCkfMatch=True
+    for track in conv.tracks():
+        if ele.gsfTrack().isNonnull() and ele.gsfTrack().id()==track.id() and ele.gsfTrack().key() == track.key():
+            return True
+        elif allowCkfMatch and ele.closestCtfTrackRef().isNonnull() and ele.closestCtfTrackRef().id()==track.id() and ele.closestCtfTrackRef().key() == track.key():
+            return True
+    return False
+
+def isGoodConversion(conv, bsp):
+    probMin=1e-6
+    lxyMin=2.0
+    nHitsBeforeVtxMax=1
+    vtx=conv.conversionVertex()
+    if vtx==None: return False
+    if TMath.Prob(vtx.chi2(), int(vtx.ndof()))<probMin: return False
+
+    mom=conv.refittedPairMomentum()
+    dbsx = vtx.x() - bsp.x()
+    dbsy = vtx.y() - bsp.y()
+    lxy = (mom.x()*dbsx + mom.y()*dbsy)/mom.rho()
+
+    if lxy<lxyMin: return False
+
+    for i in range(conv.nHitsBeforeVtx()):
+        if i>nHitsBeforeVtxMax: return False
+        
+    return True
+
+def GsfEleEffAreaPFIsoCut(ele, rho):
+    Etamin = [0.0000,1.000,1.4790,2.000,2.2000,2.3000,2.4000]
+    Etamax = [1.0000,1.4790,2.0000,2.2000,2.3000,2.4000,5.000]
+    EAs = [0.1703,0.1715,0.1213,0.1230,0.1635,0.1937,0.2393]
+
+    for i in range(len(EAs)):
+        if abs(ele.eta())>Etamin[i] and abs(ele.eta())<Etamax[i]:
+            effA=EAs[i]
+
+    pfIso=ele.pfIsolationVariables()
+
+    chad = pfIso.sumChargedHadronPt
+    nhad = pfIso.sumNeutralHadronEt
+    pho = pfIso.sumPhotonEt
+
+    #print ele.eta()
+    #print effA
+    iso = chad + max(0.0, nhad + pho-effA*rho)
+        
+    iso /= ele.pt()
+
+    return

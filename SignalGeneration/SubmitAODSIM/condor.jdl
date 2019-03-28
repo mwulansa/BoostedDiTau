@@ -1,0 +1,12 @@
+universe = vanilla
+request_memory = 8400
+Executable = run_condor.csh
+Should_Transfer_Files = YES
+WhenToTransferOutput = ON_EXIT
+Transfer_Input_Files = run_condor.csh
+Output = ./condorOut/condor_$ENV(JOBNUMBER).stdout
+Error = ./condorOut/condor_$ENV(JOBNUMBER).stderr
+Log = ./condorOut/condor_$ENV(JOBNUMBER).log
+Arguments = $ENV(CFG)
+getenv = True
+Queue 1
