@@ -16,31 +16,12 @@ def GsfEleMissingHitsCut(ele):
     mHits = ele.gsfTrack().hitPattern().numberOfHits(1)
     return mHits
 
-def dZ(ele,vert):
-    p1=ele.trackPositionAtVtx()
-    p2=vert.position()
-    return abs(p1.z()-p2.z())
-
-def dXY(ele,vert):
-    p1=ele.trackPositionAtVtx()
-    p2=vert.position()
-    return math.sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()))
-
-
 def GsfEleConversionVetoCut(ele, bs, convs):
-    #if bs.isValid() and convs.isValid():
     if not bs==None or not convs==None:
         return not hasMatchedConversion(ele,convs,bs.position())
     else:
         print "Couldn't find a necessary collection, returning true!"
         return True
-    #try:
-    #    flag=!hasMatchedConversion(ele,convs,bs.position())
-    #except:
-    #    print "Couldn't find a necessary collection, returning true!"
-    #    flag=True
-    #finally:
-    #    return flag
 
 def hasMatchedConversion(ele,convs,bsp):
     for conv in convs:
@@ -48,18 +29,19 @@ def hasMatchedConversion(ele,convs,bsp):
         if not isGoodConversion(conv, bsp): continue
         return True
     return False
-        
 
 def matchesConversion(ele, conv):
     allowCkfMatch=True
     for track in conv.tracks():
-        if ele.gsfTrack().isNonnull() and ele.gsfTrack().id()==track.id() and ele.gsfTrack().key() == track.key():
+        print ele.gsfTrack().id().id(), track.id().id(), ele.closestCtfTrackRef().id().id()
+        if ele.gsfTrack().isNonnull() and ele.gsfTrack().id().id()==track.id().id() and ele.gsfTrack().key() == track.key():
             return True
-        elif allowCkfMatch and ele.closestCtfTrackRef().isNonnull() and ele.closestCtfTrackRef().id()==track.id() and ele.closestCtfTrackRef().key() == track.key():
+        elif allowCkfMatch and ele.closestCtfTrackRef().isNonnull() and ele.closestCtfTrackRef().id().id()==track.id().id() and ele.closestCtfTrackRef().key() == track.key():
             return True
     return False
 
 def isGoodConversion(conv, bsp):
+    #print mom, vtx.chi2()
     probMin=1e-6
     lxyMin=2.0
     nHitsBeforeVtxMax=1
