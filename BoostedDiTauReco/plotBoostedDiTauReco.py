@@ -84,6 +84,8 @@ hMuTau_tauPt_muCleaned_genMatched = ROOT.TH1F ("hMuTau_MuCleaned_TauPt_genMatche
 hETau_ePt_eCleaned_genMatched = ROOT.TH1F ("hETau_ECleaned_EPt_genMatched", "Electron Pt;P_{t,e};N_{events}", 50, 0, 500)
 hMuTau_muPt_muCleaned_genMatched = ROOT.TH1F ("hMuTau_MuCleaned_MuPt_genMatched", "Muon Pt;P_{t,#mu};N_{events}", 50, 0, 500)
 
+hNEvent = ROOT.TH1F ("hNEvent","Number of Events;;N{event}",1,0,2)
+
 # loop over events
 for job in jobs:
     print prefix+"ALP_m"+mass+"_w1_htjmin400_RunIISummer16DR80Premix_miniAODSIM_"+str(int(job))+".root"
@@ -95,6 +97,8 @@ for job in jobs:
     
     for event in events:
         ntot+=1
+
+        hNEvent.Fill(1)
 
         #if ntot>4: continue
 
@@ -367,3 +371,4 @@ hMuTau_dR_muCleaned_genMatched.Write()
 hMuTau_tauPt_muCleaned_genMatched.Write()
 hMuTau_muPt_muCleaned_genMatched.Write()
 
+hNEvent.Write()
