@@ -48,7 +48,7 @@ prefix="root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCP/OutputMiniAODSIM/"
 
 for mass in masses:
 
-    out=ROOT.TFile("h_plotBoostedDiLepReco_m"+str(int(mass))+"_v2.root",'recreate')
+    out=ROOT.TFile("h_plotBoostedDiLepReco_m"+str(int(mass))+"_v2_v2.root",'recreate')
 
     hMu1Pt=ROOT.TH1F ("hMu1Pt", "muon pt;P_{t};N_{events}", 50, 0, 500)
     hMu1PtIsoMuTrig= ROOT.TH1F ("hMu1PtIsoMuTrig", "muon pt;P_{t};N_{events}", 50, 0, 500)
@@ -98,14 +98,17 @@ for mass in masses:
     hEMu_dR = ROOT.TH1F ("hEMu_dR", "e - #mu delta R;#delta R;N_{events}", 20, 0, 1)
 
     hMuMu_dR_genMatched = ROOT.TH1F ("hMuMu_dR_genMatched", "#mu - #mu delta R;#delta R;N_{events}", 20, 0, 1)
-    hEMu_dR_genMatched = ROOT.TH1F ("hEMu_dR_genMatched", "e - #mu delta R;#delta R;N_{events}", 20, 0, 1)   
-    
+    hEMu_dR_genMatched = ROOT.TH1F ("hEMu_dR_genMatched", "e - #mu delta R;#delta R;N_{events}", 20, 0, 1)
+
+    hNEvent = ROOT.TH1F ("hNEvent","Number of Events;;N_{events}", 1, 0, 2)
 
     for job in jobs:
         print prefix+"ALP_m"+str(int(mass))+"_w1_htjmin400_RunIISummer16DR80Premix_miniAODSIM_"+str(int(job))+".root"
         events=Events(prefix+"ALP_m"+str(int(mass))+"_w1_htjmin400_RunIISummer16DR80Premix_miniAODSIM_"+str(int(job))+".root")
 
         for event in events:
+
+            hNEvent.Fill(1)
     
             event.getByLabel(labelVertex, handleVertex)
             vertex=handleVertex.product()
@@ -360,6 +363,8 @@ for mass in masses:
 
     hMuMu_dR_genMatched.Write()
     hEMu_dR_genMatched.Write()
+
+    hNEvent.Write()
 
     out.Close()
     
