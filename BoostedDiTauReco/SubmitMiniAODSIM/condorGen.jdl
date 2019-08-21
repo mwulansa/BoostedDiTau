@@ -7,6 +7,6 @@ Transfer_Input_Files = run_condor.csh
 Output = ./condorOut/condor_$(Cluster)_$ENV(SAMPLE)_$ENV(MASS)_$(Process).stdout
 Error = ./condorOut/condor_$(Cluster)_$ENV(SAMPLE)_$ENV(MASS)_$(Process).stderr
 Log = ./condorOut/condor_$(Cluster)_$ENV(SAMPLE)_$ENV(MASS)_$(Process).log
-Arguments = plotBoostedDiLepReco.py ./filelists/$ENV(SAMPLE)/$ENV(MASS)/$ENV(SAMPLE)_$ENV(MASS)_$(Process).txt $ENV(OutputPrefix) $ENV(SAMPLE)_$ENV(MASS)_$(Process).root
+Arguments = plotGenDYJets.py ./filelists/$ENV(SAMPLE)/$ENV(MASS)/$ENV(SAMPLE)_$ENV(MASS)_$(Process).txt $ENV(OutputPrefix) $ENV(SAMPLE)_$ENV(MASS)_$(Process).root
 getenv = True
 Queue $ENV(NQueue)
