@@ -1,26 +1,41 @@
 #!/bin/tcsh
 
+setenv ISGEN 0
+setenv MAKETARBALL 0
+
+#setenv SAMPLE TCP
+#setenv SAMPLE ST
+#setenv SAMPLE DYJetsToLL
+#setenv SAMPLE DYJetsToLLNLO
+setenv SAMPLE TTJets
+#setenv SAMPLE Diboson
+
+#setenv OutputPrefix ./
+setenv OutputPrefix root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/TCPAnalysis/Plots/
+
 setenv CMSSW_BASE /uscms_data/d3/jingyu/TCP/boostedDiTauReco/CMSSW_8_0_30
 
-cd $CMSSW_BASE/src
+if ($MAKETARBALL == 1) then 
+    cd $CMSSW_BASE/src
 
-tar -zcvf ../../CMSSW.tgz ../../CMSSW_8_0_30/ --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.log" --exclude="*stderr" --exclude="*stdout"
+    tar -zcvf ../../CMSSW.tgz ../../CMSSW_8_0_30/ --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.log" --exclude="*stderr" --exclude="*stdout"
 
-eosrm /eos/uscms/store/user/zhangj/events/ALP/CMSSW.tgz
+    eosrm /eos/uscms/store/user/zhangj/TCPAnalysis/CMSSW.tgz
 
-xrdcp ../../CMSSW.tgz root://cmseos.fnal.gov//store/user/zhangj/events/ALP/CMSSW.tgz
+    xrdcp ../../CMSSW.tgz root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/TCPAnalysis/CMSSW.tgz
 
-cd $CMSSW_BASE/src/BoostedDiTau/BoostedDiTauReco/SubmitMiniAODSIM
+    cd $CMSSW_BASE/src/BoostedDiTau/BoostedDiTauReco/SubmitMiniAODSIM
+endif
 
-set cfgDir="./configs/"
-foreach MASS (10 30 50)
-#foreach MASS (10)
-    foreach JOB (`seq 1 100`)
-    #foreach JOB (2 68 92 93 94 95 96 97 98 99 100)
-    #foreach JOB (31)
-	setenv CFG ${cfgDir}ALP_m${MASS}_w1_htjmin400_RunIISummer16DR80Premix_miniAODSIM_${JOB}.py
-	setenv JOBNUMBER m${MASS}_j${JOB}
-	echo $CFG
+foreach Mass (`ls filelists/$SAMPLE`)
+#foreach Mass (WW)
+    setenv MASS $Mass
+    setenv NQueue `ls filelists/$SAMPLE/$MASS | wc -l`
+    echo $NQueue
+    echo ./filelists/$SAMPLE/$MASS/${SAMPLE}_${MASS}_Process.txt $OutputPrefix
+    if ($ISGEN == 1) then
+	condor_submit condorGen.jdl
+    else
 	condor_submit condor.jdl
-    end
+    endif
 end
