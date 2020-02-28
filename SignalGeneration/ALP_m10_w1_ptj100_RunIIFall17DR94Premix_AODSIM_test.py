@@ -1,36 +1,4 @@
-import os, sys, random
-import numpy as np
 
-lines=open('preMixFileList.txt', 'r')
-
-pufilelist=[]
-for line in lines:
-    pufilelist+=[line]
-
-#pufile='file:root://xrootd.unl.edu/'+pufilelist[random.randint(0,len(pufilelist))]
-
-#print pufile
-
-configDir="./configs/"
-
-outputPrefix="root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer17DR94Premix/"
-
-#masses=[30, 50]
-masses=[10]
-
-jobs=np.linspace(100,1,100)
-#jobs=[2,68,92,93,94,95,96,97,98,99,100]
-#jobs=[41, 49]
-
-for mass in masses:
-    for job in jobs:
-        filename="ALP_m"+str(mass)+"_w1_htjmin400_RunIISummer17DR94Premix_AODSIM_"+str(int(job))+".py"
-        print filename
-        ipufile=random.randint(0,len(pufilelist))
-        pufile='file:root://xrootd.unl.edu/'+pufilelist[ipufile].replace("\n","")
-        print pufile
-        cfg=open(configDir+filename,"w")
-        cfg.writelines("""
 import FWCore.ParameterSet.Config as cms
 import os
 
@@ -63,15 +31,17 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('CommonTools.ParticleFlow.EITopPAG_cff')
 
+
+nevents=1000
+
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(nevents)
 )
 
 # Input source
 process.source = cms.Source("EmptySource")
 
 process.options = cms.untracked.PSet(
-
 )
 
 # Production Info
@@ -94,16 +64,27 @@ process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(15728640),
-    fileName = cms.untracked.string('file:"""+outputPrefix+filename.replace(".py",".root")+"""'),
+    fileName = cms.untracked.string('file:ALP_m10_w1_ptj100_RunIIFall17DR94Premix_AODSIM_test.root'),
     outputCommands = process.AODSIMEventContent.outputCommands
 )
+
+## process.PREMIXRAWoutput = cms.OutputModule("PoolOutputModule",
+##     dataset = cms.untracked.PSet(
+##         dataTier = cms.untracked.string('GEN-SIM-RAW'),
+##         filterName = cms.untracked.string('')
+##     ),
+##     fileName = cms.untracked.string('file:ALP_m10_w1_ptj100_RunIIFall17DR94Premix_GENSIMRAW_test.root'),
+##     outputCommands = process.PREMIXRAWEventContent.outputCommands,
+##     splitLevel = cms.untracked.int32(0)
+## )
+
 
 # Additional output definition
 
 # Other statements
 process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 process.mix.digitizers = cms.PSet(process.theDigitizersMixPreMix)
-process.mixData.input.fileNames = cms.untracked.vstring(['"""+pufile+"""'])
+process.mixData.input.fileNames = cms.untracked.vstring(['file:root://xrootd.unl.edu//store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/GEN-SIM-DIGI-RAW/MCv2_correctPU_94X_mc2017_realistic_v9-v1/80022/105DACB1-1D0F-E811-BBD3-0025905A60B0.root'])
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v10', '')
 
@@ -135,9 +116,8 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
 
 
 process.externalLHEProducer = cms.EDProducer("ExternalLHEProducer",
-                                             #args = cms.vstring('file:root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/TCP_m_"""+str(mass)+"""_w_1_htjmin_400_slc6_amd64_gcc630_CMSSW_9_3_8_tarball.tar.xz'),
-                                             args = cms.vstring(os.getcwd()+'/TCP_m_"""+str(mass)+"""_w_1_htjmin_400_slc6_amd64_gcc630_CMSSW_9_3_8_tarball.tar.xz'),
-    nEvents = cms.untracked.uint32(1000),
+                                             args = cms.vstring('/uscms_data/d3/jingyu/TCP/Generator/genproductions/bin/MadGraph5_aMCatNLO/TCP_m_10_w_1_ptj_100_slc6_amd64_gcc630_CMSSW_9_3_8_tarball.tar.xz'),
+    nEvents = cms.untracked.uint32(nevents),
     numberOfParameters = cms.uint32(1),
     outputFile = cms.string('cmsgrid_final.lhe'),
     scriptName = cms.FileInPath('GeneratorInterface/LHEInterface/data/run_generic_tarball_cvmfs.sh')
@@ -158,16 +138,18 @@ process.genfiltersummary_step = cms.EndPath(process.genFilterSummary)
 process.eventinterpretaion_step = cms.Path(process.EIsequence)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.AODSIMoutput_step = cms.EndPath(process.AODSIMoutput)
+#process.PREMIXRAWoutput_step = cms.EndPath(process.PREMIXRAWoutput)
 
 # Schedule definition
 process.schedule = cms.Schedule(process.lhe_step,process.generation_step,process.genfiltersummary_step,process.simulation_step,process.digitisation_step,process.datamixing_step,process.L1simulation_step,process.digi2raw_step)
 process.schedule.extend(process.HLTSchedule)
+#process.schedule.extend([process.endjob_step,process.PREMIXRAWoutput_step])
 process.schedule.extend([process.raw2digi_step,process.reconstruction_step,process.eventinterpretaion_step,process.endjob_step,process.AODSIMoutput_step])
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
 #Setup FWK for multithreaded
-process.options.numberOfThreads=cms.untracked.uint32(8)
+process.options.numberOfThreads=cms.untracked.uint32(1)
 process.options.numberOfStreams=cms.untracked.uint32(0)
 
 # filter all path with the production filter sequence
@@ -196,5 +178,5 @@ from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEar
 process = customiseEarlyDelete(process)
 # End adding early deletion
 
-process.RandomNumberGeneratorService.externalLHEProducer.initialSeed=int("""+str(int(job*mass))+""")
-        """)
+process.RandomNumberGeneratorService.externalLHEProducer.initialSeed=int(10)
+        
