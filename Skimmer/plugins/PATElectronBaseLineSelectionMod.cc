@@ -43,10 +43,10 @@ using namespace std;
 // class declaration
 //
 
-class PATElectronBaseLineSelection : public edm::stream::EDFilter<> {
+class PATElectronBaseLineSelectionMod : public edm::stream::EDFilter<> {
 public:
-  explicit PATElectronBaseLineSelection(const edm::ParameterSet&);
-  ~PATElectronBaseLineSelection();
+  explicit PATElectronBaseLineSelectionMod(const edm::ParameterSet&);
+  ~PATElectronBaseLineSelectionMod();
   
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
   float dEtaInSeed(pat::ElectronCollection::const_iterator ele);
@@ -74,7 +74,7 @@ private:
   edm::EDGetTokenT<reco::VertexCollection> vtx_;
 };
 
-PATElectronBaseLineSelection::PATElectronBaseLineSelection(const edm::ParameterSet& iConfig):
+PATElectronBaseLineSelectionMod::PATElectronBaseLineSelectionMod(const edm::ParameterSet& iConfig):
   electronSrc_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
   rho_(consumes<double>(iConfig.getParameter<edm::InputTag>("Rho"))),
   convs_(consumes<reco::ConversionCollection>(iConfig.getParameter<edm::InputTag>("conv"))),
@@ -88,19 +88,19 @@ PATElectronBaseLineSelection::PATElectronBaseLineSelection(const edm::ParameterS
 }
 
 
-PATElectronBaseLineSelection::~PATElectronBaseLineSelection(){}
+PATElectronBaseLineSelectionMod::~PATElectronBaseLineSelectionMod(){}
 
-float PATElectronBaseLineSelection::dEtaInSeed (pat::ElectronCollection::const_iterator ele){
+float PATElectronBaseLineSelectionMod::dEtaInSeed (pat::ElectronCollection::const_iterator ele){
   return ele->superCluster().isNonnull() && ele->superCluster()->seed().isNonnull() ?
     ele->deltaEtaSuperClusterTrackAtVtx() - ele->superCluster()->eta() + ele->superCluster()->seed()->eta() : std::numeric_limits<float>::max();
 }
-float PATElectronBaseLineSelection::GsfEleEInverseMinusPInverse (pat::ElectronCollection::const_iterator ele)
+float PATElectronBaseLineSelectionMod::GsfEleEInverseMinusPInverse (pat::ElectronCollection::const_iterator ele)
 {
   const float ecal_energy_inverse = 1.0/ele->ecalEnergy();
   const float eSCoverP = ele->eSuperClusterOverP();
   return std::abs(1.0 - eSCoverP)*ecal_energy_inverse;
 }
-int PATElectronBaseLineSelection::GsfEleMissingHitsCut(pat::ElectronCollection::const_iterator ele)
+int PATElectronBaseLineSelectionMod::GsfEleMissingHitsCut(pat::ElectronCollection::const_iterator ele)
 {
 
   constexpr reco::HitPattern::HitCategory missingHitType =
@@ -111,7 +111,7 @@ int PATElectronBaseLineSelection::GsfEleMissingHitsCut(pat::ElectronCollection::
 }
 
 
-bool PATElectronBaseLineSelection::GsfEleConversionVetoCut(pat::ElectronCollection::const_iterator ele ,edm::Event& iEvent)
+bool PATElectronBaseLineSelectionMod::GsfEleConversionVetoCut(pat::ElectronCollection::const_iterator ele ,edm::Event& iEvent)
 {
 
   edm::Handle<reco::ConversionCollection> convs;
@@ -129,7 +129,7 @@ bool PATElectronBaseLineSelection::GsfEleConversionVetoCut(pat::ElectronCollecti
 }
 
 // ------------ method called on each new Event  ------------
-bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
+bool PATElectronBaseLineSelectionMod::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   
   Handle<pat::ElectronCollection> electrons;
@@ -162,6 +162,7 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
       if( iele->isEB()) {
 	if( (iele->full5x5_sigmaIetaIeta()<0.0112)  &&
 	    //	    (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)) &&
+	    (HoE < 0.215) &&
 	    (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.0884) &&
 	    (GsfEleEInverseMinusPInverseCut < 0.193) &&
 	    (dEtaInSeedCut < 0.00377) &&
@@ -181,15 +182,17 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 			<< GsfEleEInverseMinusPInverseCut << " | "
 			<< abs(iele->deltaPhiSuperClusterTrackAtVtx()) << " | "
 			<< iele->full5x5_sigmaIetaIeta() << " | "
-	      		<< HoE << " | "
-	       		<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
+			<< HoE << " | "
+//			<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
+			<< (0.215) << " | "
 			<< GsfEleConversionVetoCut(iele,iEvent) << "\n";
 	  }
 	}
       }
       if(iele->isEE()) {
 	if( (iele->full5x5_sigmaIetaIeta() < 0.0425) &&
-	    //	    (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)) &&
+//	    (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)) &&
+	    (HoE < 0.0984) &&
 	    (abs(iele->deltaPhiSuperClusterTrackAtVtx()) < 0.169) &&
 	    (GsfEleEInverseMinusPInverseCut < 0.111) &&
 	    (dEtaInSeedCut <0.00674) &&
@@ -209,8 +212,9 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 			<< GsfEleEInverseMinusPInverseCut << " | "
 			<< abs(iele->deltaPhiSuperClusterTrackAtVtx()) << " | "
 			<< iele->full5x5_sigmaIetaIeta() << " | "
-	           	<< HoE << " | "
-       			<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
+			<< HoE << " | "
+		//<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
+			<< (0.0984) << " | "
 			<< GsfEleConversionVetoCut(iele,iEvent) << "\n";
 	  }
 	}
@@ -224,16 +228,16 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 
 // ------------ method called once each stream before processing any runs, lumis or events  ------------
 void
-PATElectronBaseLineSelection::beginStream(edm::StreamID)
+PATElectronBaseLineSelectionMod::beginStream(edm::StreamID)
 {}
 
 // ------------ method called once each stream after processing all runs, lumis and events  ------------
 void
-PATElectronBaseLineSelection::endStream() {}
+PATElectronBaseLineSelectionMod::endStream() {}
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-PATElectronBaseLineSelection::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+PATElectronBaseLineSelectionMod::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -241,4 +245,4 @@ PATElectronBaseLineSelection::fillDescriptions(edm::ConfigurationDescriptions& d
   descriptions.addDefault(desc);
 }
 //define this as a plug-in
-DEFINE_FWK_MODULE(PATElectronBaseLineSelection);
+DEFINE_FWK_MODULE(PATElectronBaseLineSelectionMod);

@@ -161,7 +161,7 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
     if ((iele -> pt() > 7) && (abs(iele -> eta()) < 2.5)) {
       if( iele->isEB()) {
 	if( (iele->full5x5_sigmaIetaIeta()<0.0112)  &&
-	    //	    (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)) &&
+	    (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)) &&
 	    (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.0884) &&
 	    (GsfEleEInverseMinusPInverseCut < 0.193) &&
 	    (dEtaInSeedCut < 0.00377) &&
@@ -181,15 +181,15 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 			<< GsfEleEInverseMinusPInverseCut << " | "
 			<< abs(iele->deltaPhiSuperClusterTrackAtVtx()) << " | "
 			<< iele->full5x5_sigmaIetaIeta() << " | "
-	      		<< HoE << " | "
-	       		<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
+			<< HoE << " | "
+			<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
 			<< GsfEleConversionVetoCut(iele,iEvent) << "\n";
 	  }
 	}
       }
       if(iele->isEE()) {
 	if( (iele->full5x5_sigmaIetaIeta() < 0.0425) &&
-	    //	    (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)) &&
+	    (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)) &&
 	    (abs(iele->deltaPhiSuperClusterTrackAtVtx()) < 0.169) &&
 	    (GsfEleEInverseMinusPInverseCut < 0.111) &&
 	    (dEtaInSeedCut <0.00674) &&
@@ -209,8 +209,8 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 			<< GsfEleEInverseMinusPInverseCut << " | "
 			<< abs(iele->deltaPhiSuperClusterTrackAtVtx()) << " | "
 			<< iele->full5x5_sigmaIetaIeta() << " | "
-	           	<< HoE << " | "
-       			<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
+			<< HoE << " | "
+			<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
 			<< GsfEleConversionVetoCut(iele,iEvent) << "\n";
 	  }
 	}

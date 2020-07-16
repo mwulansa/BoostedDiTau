@@ -100,10 +100,7 @@ class TauIDEmbedder(object):
 				)
 			)
 
-	def runTauID(self, name='NewTauIDsEmbedded'):
-#	def runTauID(self, name):
-#		if name == 'NewTauIDsEmbedded': tau = 'slimmedTaus'
-#		if name == 'NewTauIDsEmbeddedMuonCleaned': tau = 'slimmedTausMuonCleaned'
+	def runTauID(self, name='NewTauIDsEmbeddedMuonCleaned'):
 		self.process.rerunMvaIsolationSequence = self.cms.Sequence()
 		tauIDSources = self.cms.PSet()
 
@@ -130,7 +127,7 @@ class TauIDEmbedder(object):
 				self.loadMVA_WPs_run2_2017()
 
 			self.process.rerunDiscriminationByIsolationOldDMMVArun2017v1raw = patDiscriminationByIsolationMVArun2v1raw.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				loadMVAfromDB = self.cms.bool(True),
 				mvaName = self.cms.string("RecoTauTag_tauIdMVAIsoDBoldDMwLT2017v1"),#RecoTauTag_tauIdMVAIsoDBoldDMwLT2016v1 writeTauIdDiscrMVAs
@@ -140,7 +137,7 @@ class TauIDEmbedder(object):
 			)
 
 			self.process.rerunDiscriminationByIsolationOldDMMVArun2017v1VLoose = patDiscriminationByIsolationMVArun2v1VLoose.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				toMultiplex = self.cms.InputTag('rerunDiscriminationByIsolationOldDMMVArun2017v1raw'),
 				key = self.cms.InputTag('rerunDiscriminationByIsolationOldDMMVArun2017v1raw:category'),#?
@@ -210,7 +207,7 @@ class TauIDEmbedder(object):
 			self.loadMVA_WPs_run2_2017()
 
 			self.process.rerunDiscriminationByIsolationOldDMMVArun2017v2raw = patDiscriminationByIsolationMVArun2v1raw.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				loadMVAfromDB = self.cms.bool(True),
 				mvaName = self.cms.string("RecoTauTag_tauIdMVAIsoDBoldDMwLT2017v2"),#RecoTauTag_tauIdMVAIsoDBoldDMwLT2016v1 writeTauIdDiscrMVAs
@@ -220,7 +217,7 @@ class TauIDEmbedder(object):
 			)
 
 			self.process.rerunDiscriminationByIsolationOldDMMVArun2017v2VLoose = patDiscriminationByIsolationMVArun2v1VLoose.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				toMultiplex = self.cms.InputTag('rerunDiscriminationByIsolationOldDMMVArun2017v2raw'),
 				key = self.cms.InputTag('rerunDiscriminationByIsolationOldDMMVArun2017v2raw:category'),#?
@@ -290,7 +287,7 @@ class TauIDEmbedder(object):
 			self.loadMVA_WPs_run2_2017()
 
 			self.process.rerunDiscriminationByIsolationNewDMMVArun2017v2raw = patDiscriminationByIsolationMVArun2v1raw.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				loadMVAfromDB = self.cms.bool(True),
 				mvaName = self.cms.string("RecoTauTag_tauIdMVAIsoDBnewDMwLT2017v2"),#RecoTauTag_tauIdMVAIsoDBoldDMwLT2016v1 writeTauIdDiscrMVAs
@@ -300,7 +297,7 @@ class TauIDEmbedder(object):
 			)
 
 			self.process.rerunDiscriminationByIsolationNewDMMVArun2017v2VLoose = patDiscriminationByIsolationMVArun2v1VLoose.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				toMultiplex = self.cms.InputTag('rerunDiscriminationByIsolationNewDMMVArun2017v2raw'),
 				key = self.cms.InputTag('rerunDiscriminationByIsolationNewDMMVArun2017v2raw:category'),#?
@@ -370,7 +367,7 @@ class TauIDEmbedder(object):
 			self.loadMVA_WPs_run2_2017()
 
 			self.process.rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2raw = patDiscriminationByIsolationMVArun2v1raw.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				loadMVAfromDB = self.cms.bool(True),
 				mvaName = self.cms.string("RecoTauTag_tauIdMVAIsoDBoldDMdR0p3wLT2017v2"),
@@ -384,7 +381,7 @@ class TauIDEmbedder(object):
 			)
 
 			self.process.rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2VLoose = patDiscriminationByIsolationMVArun2v1VLoose.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				toMultiplex = self.cms.InputTag('rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2raw'),
 				key = self.cms.InputTag('rerunDiscriminationByIsolationOldDMdR0p3MVArun2017v2raw:category'),#?
@@ -435,7 +432,7 @@ class TauIDEmbedder(object):
 
 		# 2016 training strategy(v2) - essentially the same as 2017 training strategy (v1), trained on 2016MC, old DM - currently not implemented in the tau sequence of any release
 		# self.process.rerunDiscriminationByIsolationOldDMMVArun2v2raw = patDiscriminationByIsolationMVArun2v1raw.clone(
-		#     PATTauProducer = self.cms.InputTag('slimmedTaus'),
+		#     PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 		#     Prediscriminants = noPrediscriminants,
 		#     loadMVAfromDB = self.cms.bool(True),
 		#     mvaName = self.cms.string("RecoTauTag_tauIdMVAIsoDBoldDMwLT2016v2"),#RecoTauTag_tauIdMVAIsoDBoldDMwLT2016v1 writeTauIdDiscrMVAs
@@ -445,7 +442,7 @@ class TauIDEmbedder(object):
 		# )
 		# #
 		# self.process.rerunDiscriminationByIsolationOldDMMVArun2v2VLoose = patDiscriminationByIsolationMVArun2v1VLoose.clone(
-		#     PATTauProducer = self.cms.InputTag('slimmedTaus'),
+		#     PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 		#     Prediscriminants = noPrediscriminants,
 		#     toMultiplex = self.cms.InputTag('rerunDiscriminationByIsolationOldDMMVArun2v2raw'),
 		#     key = self.cms.InputTag('rerunDiscriminationByIsolationOldDMMVArun2v2raw:category'),#?
@@ -463,7 +460,7 @@ class TauIDEmbedder(object):
 		# 2016 training strategy(v1), trained on 2016MC, old DM
 		if "2016v1" in self.toKeep:
 			self.process.rerunDiscriminationByIsolationOldDMMVArun2v1raw = patDiscriminationByIsolationMVArun2v1raw.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				loadMVAfromDB = self.cms.bool(True),
 				mvaName = self.cms.string("RecoTauTag_tauIdMVAIsoDBoldDMwLT2016v1"),
@@ -473,7 +470,7 @@ class TauIDEmbedder(object):
 			)
 
 			self.process.rerunDiscriminationByIsolationOldDMMVArun2v1VLoose = patDiscriminationByIsolationMVArun2v1VLoose.clone(
-					PATTauProducer = self.cms.InputTag('slimmedTaus'),
+					PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 					Prediscriminants = noPrediscriminants,
 					toMultiplex = self.cms.InputTag('rerunDiscriminationByIsolationOldDMMVArun2v1raw'),
 					key = self.cms.InputTag('rerunDiscriminationByIsolationOldDMMVArun2v1raw:category'),
@@ -520,7 +517,7 @@ class TauIDEmbedder(object):
 		# 2016 training strategy(v1), trained on 2016MC, new DM
 		if "newDM2016v1" in self.toKeep:
 			self.process.rerunDiscriminationByIsolationNewDMMVArun2v1raw = patDiscriminationByIsolationMVArun2v1raw.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				loadMVAfromDB = self.cms.bool(True),
 				mvaName = self.cms.string("RecoTauTag_tauIdMVAIsoDBnewDMwLT2016v1"),
@@ -530,7 +527,7 @@ class TauIDEmbedder(object):
 			)
 
 			self.process.rerunDiscriminationByIsolationNewDMMVArun2v1VLoose = patDiscriminationByIsolationMVArun2v1VLoose.clone(
-				PATTauProducer = self.cms.InputTag('slimmedTaus'),
+				PATTauProducer = self.cms.InputTag('slimmedTausMuonCleaned'),
 				Prediscriminants = noPrediscriminants,
 				toMultiplex = self.cms.InputTag('rerunDiscriminationByIsolationNewDMMVArun2v1raw'),
 				key = self.cms.InputTag('rerunDiscriminationByIsolationNewDMMVArun2v1raw:category'),
@@ -575,11 +572,8 @@ class TauIDEmbedder(object):
 			tauIDSources.byVVTightIsolationMVArun2v1DBnewDMwLT2016 = self.cms.InputTag('rerunDiscriminationByIsolationNewDMMVArun2v1VVTight')
 
 		embedID = self.cms.EDProducer("PATTauIDEmbedder",
-			src = self.cms.InputTag('slimmedTaus'),
+			src = self.cms.InputTag('slimmedTausMuonCleaned'),
 			tauIDSources = tauIDSources
 		)
-#		if name=='NewTauIDsEmbedded':
-		self.process.NewTauIDsEmbedded = embedID
-#		if name=='NewTauIDsEmbeddedMuonCleaned':
-#			self.process.NewTauIDsEmbeddedMuonCleaned = embedID
-		#setattr(process, "NewTauIDsEmbedded", embedID)
+		self.process.NewTauIDsEmbeddedMuonCleaned = embedID
+		#setattr(process, "NewTauIDsEmbeddedMuonCleaned", embedID)

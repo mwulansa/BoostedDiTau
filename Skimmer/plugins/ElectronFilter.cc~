@@ -137,7 +137,6 @@ ElectronFilter::ElectronFilter(const edm::ParameterSet& iConfig):
   //now do what ever initialization is needed
   //produces<reco::GsfElectronCollection>( "LooseElectron" );
   produces<reco::GsfElectronRefVector>("LooseElectronRef");
-  produces<reco::GsfElectronRefVector>("LooseElectronRefFlat");
 }
 
 
@@ -327,7 +326,7 @@ iSetup.get<SetupRecord>().get(pSetup);
 
   //iEvent.put(move(passedelectrons), "LooseElectron");
   iEvent.put(move(passedelectronRef),"LooseElectronRef");
-  iEvent.put(move(passedelectronRefFlat),"LooseElectronRefFlat");
+  //  iEvent.put(move(passedelectronRefFlat),"LooseElectronRefFlat");
   return false;
 }
 

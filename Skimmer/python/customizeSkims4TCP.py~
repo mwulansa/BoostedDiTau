@@ -469,7 +469,6 @@ def addCustomization(process,options,**kwargs):
             'drop *',
             #'keep *_slimmedTausMuonCleaned_*_*',
             #'keep *_slimmedTausElectronCleaned_*_*',
-            'keep *GsfElectron*_reducedEgamma_*_*',
             'keep *SuperCluster*_reducedEgamma_*_*',
             'keep *_fixedGridRhoFastjetAll_*_*',
             'keep *_TriggerResults_*_*',
