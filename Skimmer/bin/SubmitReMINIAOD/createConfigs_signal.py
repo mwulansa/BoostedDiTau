@@ -5,21 +5,20 @@ configDir="./configs/"
 
 #os.mkdir(configDir)
 
-inputFileListName = sys.argv[1]
-sample = sys.argv[2]
-mass = sys.argv[3]
+storagePrefix="root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer17DR94Premix/"
+storagePrefixM='root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/RunIISummer17DR94Premix/'
 
-inputFileList = inputFileListName
+#masses=[10, 30, 50]
+masses=[50]
+jobs=np.linspace(100,1,100)
 
-OutputDir = 'root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/Backgrounds/RunIIFall17DR94Premix/'
 
-inputSampleName = inputFileListName.replace("filelists/"+sample+"/"+mass+"/", "")
-
-print configDir+inputSampleName
-
-cfg=open (configDir+inputSampleName.replace(".txt", ".py"), "w")
-cfg.writelines("""
-
+for mass in masses:
+    for job in jobs:
+        filename="ALP_m"+str(mass)+"_w1_htjmin400_RunIISummer17DR94Premix_miniAODSIM_"+str(int(job))+".py"
+        print configDir+filename
+        cfg=open(configDir+filename,"w")
+        cfg.writelines("""
 
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet
 from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
@@ -28,7 +27,8 @@ import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
 
-options.maxEvents = 10000
+inputFiles = '"""+storagePrefix+filename.replace("miniAODSIM", "AODSIM").replace(".py",".root")+"""'
+options.maxEvents = -1
 options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Events to skip")
 options.register('reportEvery', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Report every")
 options.register('isMC', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Sample is MC")
@@ -39,13 +39,11 @@ options.register('numThreads', 8, VarParsing.multiplicity.singleton, VarParsing.
 
 if options.isStandard:
     options.doSlimming = 0
-    outputFile = '"""+OutputDir+"""standard_"""+inputSampleName.replace(".txt",".root"\
-)+"""'
+    outputFile = '"""+storagePrefixM+filename.replace("miniAODSIM", "MINIAODSIM_Standard").replace(".py",".root")+"""'
 elif options.doSlimming:
-    outputFile = '"""+OutputDir+"""slimmed_"""+inputSampleName.replace(".txt",".root")\
-+"""'
+    outputFile = '"""+storagePrefixM+filename.replace("miniAODSIM", "MINIAODSIM_Slimmed").replace(".py",".root")+"""'
 else:
-    outputFile = '"""+OutputDir+inputSampleName.replace(".txt",".root")+"""'
+    outputFile = '"""+storagePrefixM+filename.replace("miniAODSIM", "MINIAODSIM_Cleaned").replace(".py",".root")+"""'
 
 options.parseArguments()
 
@@ -81,26 +79,7 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(
-
-""")
-
-cfg.close()
-
-inputFileNames = open(inputFileList, 'r')
-for inputFileName in inputFileNames:
-#    print inputFileName
-    cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "a")
-#    cfg = open (configDir+inputFileListName.replace(".txt", ".py"), "a")
-#    cfg.writelines("""'file:"""+inputFileName.replace("\n","")+"""',\n""")
-    cfg.writelines("""'"""+inputFileName.replace("\n","")+"""',\n""")
-#    cfg.writelines("""'"""+inputFileName.replace("\n","")+"""',\n""")
-
-cfg.close()
-cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "a")
-#cfg = open (configDir+inputFileListName.replace(".txt", ".py"), "a")
-cfg.writelines("""
-),
+    fileNames = cms.untracked.vstring(inputFiles),
     secondaryFileNames = cms.untracked.vstring(),
     skipEvents = cms.untracked.uint32(options.skipEvents),
 )
@@ -129,7 +108,6 @@ massSearchReplaceAnyInputTag(process.rerunMvaIsolationSequenceElectronCleaned,cm
 
 process.rerunMvaIsolationSequenceElectronCleanedFlat=cloneProcessingSnippet(process,process.rerunMvaIsolationSequence,'ElectronCleanedFlat', addToTask =False)
 massSearchReplaceAnyInputTag(process.rerunMvaIsolationSequenceElectronCleanedFlat,cms.InputTag('slimmedTaus'),cms.InputTag('slimmedTausElectronCleanedFlat'))
-
 
 #process.NewTauIDsEmbeddedMuonCleaned=cloneProcessingSnippet(process,process.NewTauIDsEmbedded,'MuonCleaned', addToTask =False)
 #massSearchReplaceAnyInputTag(process.NewTauIDsEmbeddedMuonCleaned,cms.InputTag('slimmedTaus'),cms.InputTag('slimmedTausMuonCleaned'))
@@ -179,7 +157,6 @@ process.NewTauIDsEmbeddedElectronCleanedFlat.tauIDSources = cms.PSet(
         byVVLooseIsolationMVArun2017v2DBoldDMwLT2017 = cms.InputTag("rerunDiscriminationByIsolationOldDMMVArun2017v2VVLooseElectronCleanedFlat"),
         byVVTightIsolationMVArun2017v2DBoldDMwLT2017 = cms.InputTag("rerunDiscriminationByIsolationOldDMMVArun2017v2VVTightElectronCleanedFlat")
     )
-
 
 process.pm = cms.Path(process.rerunMvaIsolationSequenceMuonCleaned
                      * process.NewTauIDsEmbeddedMuonCleaned
@@ -310,7 +287,13 @@ process.MINIAODoutput_step = cms.EndPath(process.MINIAODoutput)
 
 #---------------------------------------------------------------
 
-process.schedule = cms.Schedule(process.p, process.pm, process.pe, process.pef, process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Flag_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStripHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilter,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Filter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.endjob_step,process.MINIAODoutput_step)
+process.schedule = cms.Schedule(process.p, process.pm, process.pe, process.pef, process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Fla\
+g_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStr\
+ipHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilte\
+r,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.\
+Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Fi\
+lter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.endjob_step,p\
+rocess.MINIAODoutput_step)
 
 process.schedule.associate(process.patTask)
 
