@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 import PhysicsTools.PatAlgos.tools.helpers as configtools
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet
 from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
-#from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC, miniAOD_customizeAllData
+#0;136;0cfrom PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC, miniAOD_customizeAllData
 # lower the pt threshold
 def lowerTauPt(process,postfix='',tauPt=8, jetPt=5):
     from FWCore.ParameterSet.MassReplace import massSearchReplaceParam
@@ -43,7 +43,7 @@ def addCustomization(process,options,**kwargs):
         process.ak4PFJetsMuonCleaned
     )
     patAlgosToolsTask.add(process.muonCleanedHPSPFTausTask)
-    
+
     jetSrc = 'ak4PFJetsMuonCleaned'
 
 
@@ -97,9 +97,18 @@ def addCustomization(process,options,**kwargs):
         pfCandCollection=cms.InputTag("particleFlow"),
         )
 
+    process.ak4PFJetsElectronCleanedFlat = cms.EDProducer(
+        'ElectronCleanedJetProducer',
+        jetSrc = cms.InputTag("ak4PFJets"),
+        electronSrc = cms.InputTag("recoElectronsForJetCleaning","LooseElectronRefFlat"),
+        pfCandSrc = cms.InputTag("particleFlow"),
+        pfCandCollection=cms.InputTag("particleFlow"),
+        )
+
     process.electronCleanedHPSPFTausTask = cms.Task(
         process.recoElectronsForJetCleaning,
-        process.ak4PFJetsElectronCleaned
+        process.ak4PFJetsElectronCleaned,
+        process.ak4PFJetsElectronCleanedFlat
     )
     
     patAlgosToolsTask.add(process.electronCleanedHPSPFTausTask)
@@ -113,8 +122,20 @@ def addCustomization(process,options,**kwargs):
     process.recoTauAK4PFJets08RegionElectronCleaned.pfCandAssocMapSrc = pfAssocMaps
     process.slimmedTausElectronCleaned = process.slimmedTaus.clone(src = cms.InputTag('selectedPatTausElectronCleaned'))
     patAlgosToolsTask.add(process.slimmedTausElectronCleaned)
-    
+
     lowerTauPt(process,'ElectronCleaned')
+
+    jetSrcF = 'ak4PFJetsElectronCleanedFlat'
+    
+    pfAssocMapsFlat = cms.InputTag('ak4PFJetsElectronCleanedFlat','pfCandAssocMapForIsolation')
+    process.PATTauSequenceElectronCleanedFlat = cloneProcessingSnippet(process,process.PATTauSequence, 'ElectronCleanedFlat', addToTask = True)
+    massSearchReplaceAnyInputTag(process.PATTauSequenceElectronCleanedFlat,cms.InputTag('ak4PFJets'),cms.InputTag(jetSrcF))
+    
+    process.recoTauAK4PFJets08RegionElectronCleanedFlat.pfCandAssocMapSrc = pfAssocMapsFlat
+    process.slimmedTausElectronCleanedFlat = process.slimmedTaus.clone(src = cms.InputTag('selectedPatTausElectronCleanedFlat'))
+    patAlgosToolsTask.add(process.slimmedTausElectronCleanedFlat)
+    
+    lowerTauPt(process,'ElectronCleanedFlat')
     
     if options.isMC:
         process.tauGenJetsElectronCleaned.GenParticles = "prunedGenParticles"
@@ -303,6 +324,7 @@ def addCustomization(process,options,**kwargs):
             'keep *_slimmedTausElectronCleaned_*_*',
             'keep *_ak4PFJetsElectronCleaned_*_*',
             'keep *_ak4PFJetsMuonCleaned_*_*',
+            'keep *_ak4PFJetsElectronCleanedFlat_*_*',
             'keep *_ak4PFJets_*_*',
         ]
 
@@ -314,6 +336,10 @@ def addCustomization(process,options,**kwargs):
     if options.isReMINIAOD:
         process.MINIAODoutput.outputCommands += [
             'keep *_NewTauIDsEmbedded_*_*',
+            'keep *_NewTauIDsEmbeddedMuonCleaned_*_*',
+            'keep *_NewTauIDsEmbeddedElectronCleaned_*_*',
+            'keep *_NewTauIDsEmbeddedElectronCleanedFlat_*_*',
+#            'keep *_NewTauIDsEmbedded*',
         ]
     
     if options.doSlimming:
@@ -396,23 +422,37 @@ def addCustomization(process,options,**kwargs):
         ### Tau requirements ###
         ########################
         process.selectedPATTaus = cms.EDFilter('PATTauSelector',
-            src = cms.InputTag('slimmedTaus'),
-            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
+            src = cms.InputTag('NewTauIDsEmbedded'),
+#            src = cms.InputTag('slimmedTaus'),
+            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5'),
+#            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
         )
     
         process.selectedPATTausMuonCleaned = cms.EDFilter('PATTauSelector',
-            src = cms.InputTag('slimmedTausMuonCleaned'),
-            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
+            src = cms.InputTag('NewTauIDsEmbeddedMuonCleaned'),
+#            src = cms.InputTag('slimmedTausMuonCleaned'),
+            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5'),
+#            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
         )
     
         process.selectedPATTausElectronCleaned = cms.EDFilter('PATTauSelector',
-            src = cms.InputTag('slimmedTausElectronCleaned'),
-            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
+            src = cms.InputTag('NewTauIDsEmbeddedElectronCleaned'),
+#            src = cms.InputTag('slimmedTausElectronCleaned'),
+            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5'),
+#            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
+        )
+
+        process.selectedPATTausElectronCleanedFlat = cms.EDFilter('PATTauSelector',
+            src = cms.InputTag('NewTauIDsEmbeddedElectronCleanedFlat'),
+#            src = cms.InputTag('slimmedTausElectronCleaned'),
+            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5'),
+#            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
         )
     
         process.selectedPATTausBoosted = cms.EDFilter('PATTauSelector',
             src = cms.InputTag('slimmedTausElectronCleaned'),
-            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
+            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5'),
+#            cut = cms.string('pt > 10.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5 && tauID(\'byIsolationMVArun2v1DBoldDMwLTraw\')>-0.5'),
         )
     
         patAlgosToolsTask.add(process.selectedPATMuons)
@@ -421,6 +461,7 @@ def addCustomization(process,options,**kwargs):
         patAlgosToolsTask.add(process.selectedPATTaus)
         patAlgosToolsTask.add(process.selectedPATTausMuonCleaned)
         patAlgosToolsTask.add(process.selectedPATTausElectronCleaned)
+        patAlgosToolsTask.add(process.selectedPATTausElectronCleanedFlat)
         patAlgosToolsTask.add(process.selectedPATTausBoosted)
     
         # additional changes to standard MiniAOD content
@@ -428,6 +469,9 @@ def addCustomization(process,options,**kwargs):
             'drop *',
             #'keep *_slimmedTausMuonCleaned_*_*',
             #'keep *_slimmedTausElectronCleaned_*_*',
+            'keep *GsfElectron*_reducedEgamma_*_*',
+            'keep *SuperCluster*_reducedEgamma_*_*',
+            'keep *_fixedGridRhoFastjetAll_*_*',
             'keep *_TriggerResults_*_*',
             'keep recoGenParticles_prunedGenParticles_*_*',
             'keep *_generator_*_*',
@@ -438,6 +482,7 @@ def addCustomization(process,options,**kwargs):
             'keep *_selectedPATTaus_*_*',
             'keep *_selectedPATTausMuonCleaned_*_*',
             'keep *_selectedPATTausElectronCleaned_*_*',
+            'keep *_selectedPATTausElectronCleanedFlat_*_*',
             'keep *_selectedPATTausBoosted_*_*',
             'keep *_slimmedMETs_*_*',
             #'keep patPackedCandidates_packedPFCandidates_*_*',

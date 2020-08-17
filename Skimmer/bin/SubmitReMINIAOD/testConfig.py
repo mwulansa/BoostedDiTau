@@ -1,24 +1,3 @@
-import os, sys, random
-import numpy as np
-
-configDir="./configs/"
-
-#os.mkdir(configDir)
-
-inputFileListName = sys.argv[1]
-sample = sys.argv[2]
-mass = sys.argv[3]
-
-inputFileList = inputFileListName
-
-OutputDir = 'root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/Backgrounds/RunIIFall17DR94Premix/'
-
-inputSampleName = inputFileListName.replace("filelists/"+sample+"/"+mass+"/", "")
-
-print configDir+inputSampleName
-
-cfg=open (configDir+inputSampleName.replace(".txt", ".py"), "w")
-cfg.writelines("""
 
 
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet
@@ -28,7 +7,8 @@ import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
 
-options.maxEvents = 10000
+inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer17DR94Premix/ALP_m10_w1_htjmin400_RunIISummer17DR94Premix_AODSIM_1.root'
+options.maxEvents = 200
 options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Events to skip")
 options.register('reportEvery', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Report every")
 options.register('isMC', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Sample is MC")
@@ -39,13 +19,12 @@ options.register('numThreads', 8, VarParsing.multiplicity.singleton, VarParsing.
 
 if options.isStandard:
     options.doSlimming = 0
-    outputFile = '"""+OutputDir+"""standard_"""+inputSampleName.replace(".txt",".root"\
-)+"""'
+    outputFile = 'root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/RunIISummer17DR94Premix/ALP_m10_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_Standard_1.root'
 elif options.doSlimming:
-    outputFile = '"""+OutputDir+"""slimmed_"""+inputSampleName.replace(".txt",".root")\
-+"""'
+#    outputFile = 'root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/RunIISummer17DR94Premix/ALP_m10_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_Slimmed_1.root'
+    outputFile = 'test.root'
 else:
-    outputFile = '"""+OutputDir+inputSampleName.replace(".txt",".root")+"""'
+    outputFile = 'root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/RunIISummer17DR94Premix/ALP_m10_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_Cleaned_1.root'
 
 options.parseArguments()
 
@@ -81,26 +60,7 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(
-
-""")
-
-cfg.close()
-
-inputFileNames = open(inputFileList, 'r')
-for inputFileName in inputFileNames:
-#    print inputFileName
-    cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "a")
-#    cfg = open (configDir+inputFileListName.replace(".txt", ".py"), "a")
-#    cfg.writelines("""'file:"""+inputFileName.replace("\n","")+"""',\n""")
-    cfg.writelines("""'"""+inputFileName.replace("\n","")+"""',\n""")
-#    cfg.writelines("""'"""+inputFileName.replace("\n","")+"""',\n""")
-
-cfg.close()
-cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "a")
-#cfg = open (configDir+inputFileListName.replace(".txt", ".py"), "a")
-cfg.writelines("""
-),
+    fileNames = cms.untracked.vstring(inputFiles),
     secondaryFileNames = cms.untracked.vstring(),
     skipEvents = cms.untracked.uint32(options.skipEvents),
 )
@@ -129,7 +89,6 @@ massSearchReplaceAnyInputTag(process.rerunMvaIsolationSequenceElectronCleaned,cm
 
 process.rerunMvaIsolationSequenceElectronCleanedFlat=cloneProcessingSnippet(process,process.rerunMvaIsolationSequence,'ElectronCleanedFlat', addToTask =False)
 massSearchReplaceAnyInputTag(process.rerunMvaIsolationSequenceElectronCleanedFlat,cms.InputTag('slimmedTaus'),cms.InputTag('slimmedTausElectronCleanedFlat'))
-
 
 #process.NewTauIDsEmbeddedMuonCleaned=cloneProcessingSnippet(process,process.NewTauIDsEmbedded,'MuonCleaned', addToTask =False)
 #massSearchReplaceAnyInputTag(process.NewTauIDsEmbeddedMuonCleaned,cms.InputTag('slimmedTaus'),cms.InputTag('slimmedTausMuonCleaned'))
@@ -179,7 +138,6 @@ process.NewTauIDsEmbeddedElectronCleanedFlat.tauIDSources = cms.PSet(
         byVVLooseIsolationMVArun2017v2DBoldDMwLT2017 = cms.InputTag("rerunDiscriminationByIsolationOldDMMVArun2017v2VVLooseElectronCleanedFlat"),
         byVVTightIsolationMVArun2017v2DBoldDMwLT2017 = cms.InputTag("rerunDiscriminationByIsolationOldDMMVArun2017v2VVTightElectronCleanedFlat")
     )
-
 
 process.pm = cms.Path(process.rerunMvaIsolationSequenceMuonCleaned
                      * process.NewTauIDsEmbeddedMuonCleaned
@@ -355,4 +313,4 @@ process.slimmedPatTrigger.triggerResults = cms.InputTag("TriggerResults","","REC
 dump_file = open('dump_config.py','w')
 dump_file.write(process.dumpPython())
 
-        """)
+        

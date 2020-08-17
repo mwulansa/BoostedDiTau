@@ -101,6 +101,9 @@ class TauIDEmbedder(object):
 			)
 
 	def runTauID(self, name='NewTauIDsEmbedded'):
+#	def runTauID(self, name):
+#		if name == 'NewTauIDsEmbedded': tau = 'slimmedTaus'
+#		if name == 'NewTauIDsEmbeddedMuonCleaned': tau = 'slimmedTausMuonCleaned'
 		self.process.rerunMvaIsolationSequence = self.cms.Sequence()
 		tauIDSources = self.cms.PSet()
 
@@ -575,5 +578,8 @@ class TauIDEmbedder(object):
 			src = self.cms.InputTag('slimmedTaus'),
 			tauIDSources = tauIDSources
 		)
+#		if name=='NewTauIDsEmbedded':
 		self.process.NewTauIDsEmbedded = embedID
+#		if name=='NewTauIDsEmbeddedMuonCleaned':
+#			self.process.NewTauIDsEmbeddedMuonCleaned = embedID
 		#setattr(process, "NewTauIDsEmbedded", embedID)

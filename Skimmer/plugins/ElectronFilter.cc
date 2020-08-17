@@ -137,6 +137,7 @@ ElectronFilter::ElectronFilter(const edm::ParameterSet& iConfig):
   //now do what ever initialization is needed
   //produces<reco::GsfElectronCollection>( "LooseElectron" );
   produces<reco::GsfElectronRefVector>("LooseElectronRef");
+  produces<reco::GsfElectronRefVector>("LooseElectronRefFlat");
 }
 
 
@@ -238,6 +239,7 @@ iSetup.get<SetupRecord>().get(pSetup);
   iEvent.getByToken(electronSrc_,electrons);
   //unique_ptr<reco::GsfElectronCollection> passedelectrons(new reco::GsfElectronCollection);
   unique_ptr<reco::GsfElectronRefVector> passedelectronRef(new reco::GsfElectronRefVector);
+  unique_ptr<reco::GsfElectronRefVector> passedelectronRefFlat(new reco::GsfElectronRefVector);
   Handle<reco::VertexCollection> Vertex;
   iEvent.getByToken(vtx_,Vertex);
   //Handle<reco::GsfTrackCollection> trk;
@@ -280,29 +282,44 @@ iSetup.get<SetupRecord>().get(pSetup);
       
       if( iele->isEB())	{++EBcount;
 	  //cout << "EBloop" <<endl;
+
+	// 94x: HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)
+	// mod: HoE < 0.215
 	  
-	if( (iele->full5x5_sigmaIetaIeta()<0.0112)  && (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)) && (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.0884) && (GsfEleEInverseMinusPInverseCut < 0.193) && (dEtaInSeedCut < 0.00377) && (GsfEleMissingHitsCut(iele) <= 1 ) && (GsfEleConversionVetoCut(iele,iEvent)) && (iele->pt()>7))
-	    {
+	if( (iele->full5x5_sigmaIetaIeta()<0.0112) && (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.0884) && (GsfEleEInverseMinusPInverseCut < 0.193) && (dEtaInSeedCut < 0.00377) && (GsfEleMissingHitsCut(iele) <= 1 ) && (GsfEleConversionVetoCut(iele,iEvent)) && (iele->pt()>7)){
+	  if (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)){
 	      //passedelectrons->push_back(*iele);
-	      passedelectronRef->push_back(ERef);
+	    passedelectronRef->push_back(ERef);
 	      //cout<< "EBPushback" <<endl;
-	      ++EBpcount;
-	      ++EBpcount_c;
-	    }
-	  
+	    ++EBpcount;
+	    ++EBpcount_c;
+	  }
+	  if (HoE < 0.215){
+	    passedelectronRefFlat->push_back(ERef);
+	  }
 	}
+      }
       
       if(iele->isEE())	
 	{++EEcount;
 	  //cout<<" EEloop " << endl;
-	  if((iele->full5x5_sigmaIetaIeta()<0.0425) && (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)) && (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.169) && (GsfEleEInverseMinusPInverseCut < 0.111) &&(dEtaInSeedCut <0.00674) && (GsfEleMissingHitsCut(iele) <= 1 ) && (GsfEleConversionVetoCut(iele,iEvent)) && (iele->pt()>7) )
+
+	  //94x: HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)
+	  //mod: HoE < 0.0984
+
+	  if((iele->full5x5_sigmaIetaIeta()<0.0425) && (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.169) && (GsfEleEInverseMinusPInverseCut < 0.111) &&(dEtaInSeedCut <0.00674) && (GsfEleMissingHitsCut(iele) <= 1 ) && (GsfEleConversionVetoCut(iele,iEvent)) && (iele->pt()>7) )
 
 	    {
+	      if (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)){
 	      //passedelectrons->push_back(*iele);
 	      passedelectronRef->push_back(ERef);
 	      //cout<< "EEPushback" <<endl;
 	      ++EEpcount;
 	      ++EEpcount_c;
+	    }
+	      if (HoE < 0.0984){
+		passedelectronRefFlat->push_back(ERef);
+	      }
 	    }
 	}
     }
@@ -310,6 +327,7 @@ iSetup.get<SetupRecord>().get(pSetup);
 
   //iEvent.put(move(passedelectrons), "LooseElectron");
   iEvent.put(move(passedelectronRef),"LooseElectronRef");
+  iEvent.put(move(passedelectronRefFlat),"LooseElectronRefFlat");
   return false;
 }
 
