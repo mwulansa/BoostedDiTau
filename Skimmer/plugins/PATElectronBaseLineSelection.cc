@@ -119,7 +119,7 @@ bool PATElectronBaseLineSelection::GsfEleConversionVetoCut(pat::ElectronCollecti
   edm::Handle<reco::BeamSpot> thebs;
   iEvent.getByToken(thebs_,thebs);
   if(thebs.isValid() && convs.isValid() ) {
-    return !ConversionTools::hasMatchedConversion(*ele,convs,
+    return !ConversionTools::hasMatchedConversion(*ele,*convs,
 						  thebs->position());
   } else {
     edm::LogWarning("GsfEleConversionVetoCut")
