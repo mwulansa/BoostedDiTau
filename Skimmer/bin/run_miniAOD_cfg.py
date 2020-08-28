@@ -9,7 +9,9 @@ import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
 
-inputFiles = 'file:/uscms/home/jingyu/nobackup/TCP/Generator/CMSSW_10_6_12/src/BPH_2017Legacy_TuneCUETP8M1_13TeV_pythia8_AODSIM.root'
+#inputFiles = 'file:/uscms/home/jingyu/nobackup/TCP/Generator/CMSSW_10_6_12/src/BPH_2017Legacy_TuneCUETP8M1_13TeV_pythia8_AODSIM.root'
+#inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/UpsilonTauTau/RunIISummer19UL17RECO/UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_AODSIM_119.root'
+inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/ALP/ALP_m10_w1_htjmin400_RunIISummer17DR94Premix_RECO_99.root'
 
 
 options.maxEvents = -1
@@ -17,16 +19,18 @@ options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.
 options.register('reportEvery', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Report every")
 options.register('isMC', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Sample is MC")
 options.register('doSlimming', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
-options.register('isStandard', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
+options.register('isStandard', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
+options.register('isReMINIAOD', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
 options.register('numThreads', 8, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Set number of threads")
 
 if options.isStandard:
     options.doSlimming = 0
     outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Standard.root' 
 elif options.doSlimming:
-    outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Slimmed_100.root'
+    outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Slimmed.root'
 else:
-    outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Cleaned_100.root'
+    #outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Cleaned.root'
+    outputFile = 'TCP_m10_RunIISummer19UL17RECO_MINIAODSIM_Cleaned.root'
 
 
 options.parseArguments()
@@ -155,10 +159,6 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v6', '')
 #    getattr(process,updatedTauName)
 #)
 
-process.MINIAODSIMEventContent.outputCommands += [
-    'keep *_slimmedTausNewID_*_*',
-]
-
 # Path and EndPath definitions
 process.Flag_trackingFailureFilter = cms.Path(process.goodVertices+process.trackingFailureFilter)
 process.Flag_goodVertices = cms.Path(process.primaryVertexFilter)
@@ -237,14 +237,11 @@ updatedTauName = "slimmedTausNewID"
 import BoostedDiTau.Skimmer.runTauIdMVA as tauIdConfig
 tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = True,
                                           updatedTauName = updatedTauName,
+                                          tauSrc = 'slimmedTaus',
                                           toKeep = ["2017v2",
-                                                    #"deepTau2017v2p1", #deepTau TauIDs
+                                                    "deepTau2017v2p1", #deepTau TauIDs
                                           ])
 tauIdEmbedder.runTauID()
-#process.tauId = cms.Task(
-#    process.rerunMvaIsolationSequence *
-#    getattr(process,updatedTauName)
-#    )
 
 import PhysicsTools.PatAlgos.tools.helpers as configtools
 patAlgosToolsTask = configtools.getPatAlgosToolsTask(process)
@@ -255,6 +252,10 @@ process.tauId = cms.Task(
 )
 
 patAlgosToolsTask.add(process.tauId)
+
+process.MINIAODSIMEventContent.outputCommands += [
+    'keep *_slimmedTausNewID_*_*',
+]
 
 #print tauIdEmbedder.toKeep
 
