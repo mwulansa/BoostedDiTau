@@ -4,9 +4,9 @@ Executable = run_condor.csh
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT
 Transfer_Input_Files = run_condor.csh
-Output = ./condorOut/condor_$ENV(JOBNUMBER).stdout
-Error = ./condorOut/condor_$ENV(JOBNUMBER).stderr
-Log = ./condorOut/condor_$ENV(JOBNUMBER).log
-Arguments = $ENV(CFG)
+Output = ./condorOut/condor_$ENV(SAMPLE)_$ENV(MASS)_$(Process).stdout
+Error = ./condorOut/condor_$ENV(SAMPLE)_$ENV(MASS)_$(Process).stderr
+Log = ./condorOut/condor_$ENV(SAMPLE)_$ENV(MASS)_$(Process).log
+Arguments = ./configs/$ENV(SAMPLE)_$ENV(MASS)_$(Process).py slimmed_$ENV(SAMPLE)_$ENV(MASS)_$(Process).root
 getenv = True
-Queue 1
+Queue $ENV(NQueue)
