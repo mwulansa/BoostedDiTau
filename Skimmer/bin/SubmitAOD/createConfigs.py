@@ -16,7 +16,6 @@ if len(sys.argv) > 2 :
     mass = sys.argv[3]
     inputSampleName = inputFileListName.replace("filelists/"+sample+"/"+mass+"/", "")
 
-#storagePrefix="root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer17DR94Premix/"
 OutputDir = 'root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/Backgrounds/RunIIUL17/'
 
 cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "w")
@@ -82,7 +81,7 @@ cfg.close()
 
 inputFileNames = open(inputFileList, 'r')
 for inputFileName in inputFileNames:
-#    print inputFileName
+    print inputFileName
     cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "a")
     cfg.writelines("""'"""+inputFileName.replace("\n","")+"""',\n""")
 
