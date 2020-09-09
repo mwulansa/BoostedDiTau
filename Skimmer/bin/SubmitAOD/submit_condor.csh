@@ -14,7 +14,7 @@ if ($MAKETARBALL == 1) then
 
     cd $CMSSW_BASE/src
 
-    tar -zcvf ../../CMSSW.tgz ../../CMSSW_10_6_16/ --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.log" --exclude="*stderr" --exclude="*stdout" --exclude="*.txt"
+    tar -zcvf ../../CMSSW.tgz ../../CMSSW_10_6_16/ --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.log" --exclude="*stderr" --exclude="*stdout"
 
     eosrm /eos/uscms/store/user/mwulansa/DIS/TCPAnalysis/CMSSW.tgz
 
