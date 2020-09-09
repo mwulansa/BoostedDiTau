@@ -109,7 +109,7 @@ for job in jobs:
         if len(selected_taus)>0:
             selected_taus.sort(key=lambda x: x.pt(), reverse=True)
             h['hNTaus'].Fill(0.5 , 1)
-            h['hTauPt'].Fill(selected_taus[0].pt(), genweight)
+            h['hTauPt'].Fill(selected_taus[0].pt())
 
         selected_etaus=[]
         if tausElectronCleaned.size()>0:
@@ -120,7 +120,7 @@ for job in jobs:
         if len(selected_etaus)>0:
             selected_etaus.sort(key=lambda x: x.pt(), reverse=True)
             h['hNTaus'].Fill(1.5 , 1)
-            h['heTauPt'].Fill(selected_etaus[0].pt(), genweight)
+            h['heTauPt'].Fill(selected_etaus[0].pt())
 
         selected_mtaus=[]
         if tausMuonCleaned.size()>0:
@@ -131,7 +131,7 @@ for job in jobs:
         if len(selected_mtaus)>0:
             selected_mtaus.sort(key=lambda x: x.pt(), reverse=True)
             h['hNTaus'].Fill(2.5 , 1)
-            h['hmTauPt'].Fill(selected_mtaus[0].pt(), genweight)
+            h['hmTauPt'].Fill(selected_mtaus[0].pt())
 
         selected_taus_newID=[]
         if tausNewID.size()>0:
@@ -142,7 +142,7 @@ for job in jobs:
         if len(selected_taus_newID)>0:            
             selected_taus_newID.sort(key=lambda x: x.pt(), reverse=True)
             h['hNTaus'].Fill(3.5 , 1)
-            h['hTauNewIDPt'].Fill(selected_taus_newID[0].pt(), genweight)
+            h['hTauNewIDPt'].Fill(selected_taus_newID[0].pt())
 
         selected_etaus_newID=[]
         if tausNewIDElectronCleaned.size()>0:
@@ -153,7 +153,7 @@ for job in jobs:
         if len(selected_etaus_newID)>0:
             selected_etaus_newID.sort(key=lambda x: x.pt(), reverse=True)
             h['hNTaus'].Fill(4.5 , 1)
-            h['heTauNewIDPt'].Fill(selected_etaus_newID[0].pt(), genweight)
+            h['heTauNewIDPt'].Fill(selected_etaus_newID[0].pt())
 
         selected_mtaus_newID=[]
         if tausNewIDMuonCleaned.size()>0:
@@ -164,19 +164,17 @@ for job in jobs:
         if len(selected_mtaus_newID)>0:
             selected_mtaus_newID.sort(key=lambda x: x.pt(), reverse=True)
             h['hNTaus'].Fill(5.5 , 1)
-            h['hmTauNewIDPt'].Fill(selected_mtaus_newID[0].pt(), genweight)
+            h['hmTauNewIDPt'].Fill(selected_mtaus_newID[0].pt())
 
         selected_btaus = []
         if tausBoosted.size>0:
             for tau in tausBoosted:
-                if tau.pt()>10 and abs(tau.eta())<2.3:
-                    selected_btaus+=[taus]
-#                    h['hbTauPt'].Fill(tau.pt(), genweight)
-#                    h['hNTaus'].Fill(6.5 , 1)
+                if tau.pt()>20 and abs(tau.eta())<2.3:
+                    selected_btaus+=[tau]
 
         if len(selected_btaus)>0:
             selected_btaus.sort(key=lambda x: x.pt(), reverse=True)
-            h['hbTauPt'].Fill(selected_btaus[0].pt(), genweight)
+            h['hbTauPt'].Fill(selected_btaus[0].pt())
             h['hNTaus'].Fill(6.5 , 1)
 
 

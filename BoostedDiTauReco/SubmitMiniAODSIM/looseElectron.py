@@ -13,7 +13,7 @@ def GsfEleEInverseMinusPInverse(ele):
     return abs(1.0 - eSCoverP)*ecal_energy_inverse
 
 def GsfEleMissingHitsCut(ele):
-    mHits = ele.gsfTrack().hitPattern().numberOfHits(1)
+    mHits = ele.gsfTrack().hitPattern().numberOfAllHits(1)
     return mHits
 
 def GsfEleConversionVetoCut(ele, bs, convs):
