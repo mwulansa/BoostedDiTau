@@ -1,36 +1,3 @@
-import os, sys, random
-import numpy as np
-
-lines=open('preMixFileList.txt', 'r')
-
-pufilelist=[]
-for line in lines:
-    pufilelist+=[line]
-
-#pufile='file:root://xrootd.unl.edu/'+pufilelist[random.randint(0,len(pufilelist))]
-
-#print pufile
-
-configDir="./configs/"
-
-outputPrefix="root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer19UL17RECO/"
-
-#masses=[30, 50]
-masses=[10, 30, 50]
-
-jobs=np.linspace(100,1,100)
-#jobs=[2,68,92,93,94,95,96,97,98,99,100]
-#jobs=[41, 49]
-
-for mass in masses:
-    for job in jobs:
-        filename="TCP_m"+str(mass)+"_w1_htjmin400_RunIISummer19UL17RECO_AODSIM_"+str(int(job))+".py"
-        print filename
-        ipufile=random.randint(0,len(pufilelist))
-        pufile='file:root://cmsxrootd.fnal.gov/'+pufilelist[ipufile].replace("\n","")
-        print pufile
-        cfg=open(configDir+filename,"w")
-        cfg.writelines("""
 import FWCore.ParameterSet.Config as cms
 import os
 
@@ -67,7 +34,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('CommonTools.ParticleFlow.EITopPAG_cff')
 process.load('Configuration.StandardSequences.L1Reco_cff')
 
-nevents=1000
+nevents=10
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(nevents)
@@ -99,7 +66,7 @@ process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     eventAutoFlushCompressedSize = cms.untracked.int32(15728640),
-    fileName = cms.untracked.string('file:"""+outputPrefix+filename.replace(".py",".root")+"""'),
+    fileName = cms.untracked.string('file:BPH_2017Legacy_TuneCUETP8M1_13TeV_pythia8_AODSIM.root'),
     outputCommands = process.AODSIMEventContent.outputCommands
 )
 
@@ -109,7 +76,7 @@ process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
 process.XMLFromDBSource.label = cms.string("Extended")
 process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 
-process.mixData.input.fileNames = cms.untracked.vstring(['"""+pufile+"""'])
+process.mixData.input.fileNames = cms.untracked.vstring(['file:root://xrootd.unl.edu//store/mc/RunIISummer19ULPrePremix/Neutrino_E-10_gun/PREMIX/UL17_106X_mc2017_realistic_v6-v1/30011/CCEC6BFB-3E09-3A49-9DFB-187D8BD5F878.root'])
 
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v6', '')
@@ -140,10 +107,8 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
     pythiaPylistVerbosity = cms.untracked.int32(1)
 )
 
-
 process.externalLHEProducer = cms.EDProducer("ExternalLHEProducer",
-                                             #args = cms.vstring('file:root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/TCP_m_"""+str(mass)+"""_w_1_htjmin_400_slc6_amd64_gcc630_CMSSW_9_3_8_tarball.tar.xz'),
-                                             args = cms.vstring(os.getcwd()+'/TCP_m_"""+str(mass)+"""_w_1_htjmin_400_slc6_amd64_gcc630_CMSSW_9_3_8_tarball.tar.xz'),
+                                             args = cms.vstring(os.getcwd()+'/../../TCP_m_10_w_1_htjmin_400_slc6_amd64_gcc630_CMSSW_9_3_8_tarball.tar.xz'),
     nEvents = cms.untracked.uint32(nevents),
     numberOfParameters = cms.uint32(1),
     outputFile = cms.string('cmsgrid_final.lhe'),
@@ -184,8 +149,8 @@ process.options.numberOfStreams=cms.untracked.uint32(0)
 
 # filter all path with the production filter sequence
 for path in process.paths:
-        if path in ['lhe_step']: continue
-        getattr(process,path)._seq = process.generator * getattr(process,path)._seq 
+	if path in ['lhe_step']: continue
+	getattr(process,path)._seq = process.generator * getattr(process,path)._seq 
 
 # customisation of the process.
 
@@ -208,5 +173,5 @@ from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEar
 process = customiseEarlyDelete(process)
 # End adding early deletion
 
-process.RandomNumberGeneratorService.externalLHEProducer.initialSeed=int("""+str(int(job*mass))+""")
-        """)
+process.RandomNumberGeneratorService.externalLHEProducer.initialSeed=int(200)
+        
