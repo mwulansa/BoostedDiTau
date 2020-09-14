@@ -53,7 +53,10 @@ if sample == "QCD" : prefix="root://cmseos.fnal.gov//eos/uscms/store/user/mwulan
 
 #jobs=np.linspace(100, 1, 100)
 
-outputFileName = "h_"+sample+"_backgroundEstimation.root"
+#outputFileName = "h_"+sample+"_backgroundEstimation.root"
+
+outputFileName = outputFileDir+"h_backgroundEstimation_"+inputFileListName.split("/")[-1].replace(".txt",".root")
+
 print outputFileName
 
 out=ROOT.TFile.Open(outputFileName,'recreate')
@@ -255,10 +258,10 @@ for inputFileName in inputFileNames:
                     m = ROOT.TLorentzVector()
                     m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
 
-                    if jet.Pt()>500 \
-                    and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
-                    or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
-                    or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
+                    if jet.Pt()>500:
+#                    and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
+#                    or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
+#                    or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
 
                         h['hTauTauTrig_M'].Fill((btau1+btau2).M())
 
