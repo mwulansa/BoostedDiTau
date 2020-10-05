@@ -1,9 +1,9 @@
 # BoostedDiTau
 
-Cleaning and slimming scipts are in Skimming/bin/SubmitReMINIAOD
+Cleaning and slimming scipts are in Skimmer
 
-plotting scripts are in BoostedDiTauReco/SubmitMiniAODSIM
+Plotting scripts are in BoostedDiTauReco
 
-Slimmed signal samples : store/user/mwulansa/DIS/TCPAnalysis/RunIISummer17DR94Premix/ALP_m*_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_Slimmed_*.root
+Signal MC generation: SignalGeneration
 
-Slimmed background samples : store/user/mwulansa/DIS/TCPAnalysis/Backgrounds/RunIIFall17DR94Premix/slimmed_DYJetsToLL_M*_HT-*.root
+Branch based on CMSSW_10_6_X, can be used for 2017 (and 2016 and 2018) UL analysis.
