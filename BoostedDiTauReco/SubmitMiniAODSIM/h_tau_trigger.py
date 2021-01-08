@@ -1,5 +1,7 @@
 import os, sys
 
+ch = "ETau"
+
 script = open ("plotTauTriggerEfficiency.py", "w")
 script.writelines("""
 
@@ -19,8 +21,33 @@ if len(sys.argv)>2:
 else:
     outputFileDir = "./plots/"
 
-outputFileName = outputFileDir+"h_TauTriggerEfficiency.root"
+""")
+
+script.close()
+
+script = open ("plotTauTriggerEfficiency.py", "a")
+
+if ch == "ETau":
+    script.writelines("""
+outputFileName = outputFileDir+"h_TauTriggerEfficiency_ETau.root"
 print outputFileName
+    """)
+
+if ch == "BTau":
+    script.writelines("""
+outputFileName = outputFileDir+"h_TauTriggerEfficiency_BTau.root"
+print outputFileName
+    """)
+
+if ch == "MuTau":
+    script.writelines("""
+outputFileName = outputFileDir+"h_TauTriggerEfficiency_MuTau.root"
+print outputFileName
+    """)
+
+script.close()
+script = open ("plotTauTriggerEfficiency.py", "a")
+script.writelines("""
 
 out=ROOT.TFile.Open(outputFileName,'recreate')
 
@@ -69,9 +96,14 @@ h = {}
 
 h['hNEvent'] = ROOT.TH1F ("hNEvent","Number of Events;;N_{events}", 2, 0, 2)
 
-#---------------------eTau-----------------------
+""")
 
-#-----Require e and tau
+script.close()
+script = open ("plotTauTriggerEfficiency.py", "a")
+
+if ch == "ETau":
+    script.writelines("""
+
 
 h['hETaudR_M'] = ROOT.TH1F ("hETau_dR_M", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
 h['hETaudR_ePt'] = ROOT.TH1F ("hETau_dR_ePt", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
@@ -80,16 +112,45 @@ h['hETaudR_jPt'] = ROOT.TH1F ("hETau_dR_jPt", "jet P_{t}; P_{t};N_{events}", 200
 h['hETaudR_dR'] = ROOT.TH1F ("hETau_dR_dR", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETaudR_dRlj'] = ROOT.TH1F ("hETau_dR_dRlj", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
-""")
+    """)
+
+if ch == "MuTau":
+    script.writelines("""
+
+
+h['hMuTaudR_M'] = ROOT.TH1F ("hMuTau_dR_M", "#mu - #tau mass;M_{#mu#tau};N_{events}", 1000, 0, 200)
+h['hMuTaudR_muPt'] = ROOT.TH1F ("hMuTau_dR_muPt", "muon P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTaudR_tauPt'] = ROOT.TH1F ("hMuTau_dR_tauPt", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTaudR_jPt'] = ROOT.TH1F ("hMuTau_dR_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hMuTaudR_dR'] = ROOT.TH1F ("hMuTau_dR_dR", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hMuTaudR_dRlj'] = ROOT.TH1F ("hMuTau_dR_dRlj", "#e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+    """)
+
+if ch == "BTau":
+    script.writelines("""
+
+
+h['hBTaudR_M'] = ROOT.TH1F ("hBTau_dR_M", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hBTaudR_tau1Pt'] = ROOT.TH1F ("hBTau_dR_tau1Pt", "tau1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTaudR_tau2Pt'] = ROOT.TH1F ("hBTau_dR_tau2Pt", "tau2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTaudR_jPt'] = ROOT.TH1F ("hBTau_dR_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hBTaudR_dR'] = ROOT.TH1F ("hBTau_dR_dR", "#tau1 #tau2 #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hBTaudR_dRlj'] = ROOT.TH1F ("hBTau_dR_dRlj", "#tau#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+    """)
+
 
 script.close()
 
-triggerNames  = open("triggerTauList.txt", "r")
-for triggerName in triggerNames:
-    script = open ("plotTauTriggerEfficiency.py", "a")
-    script.writelines("""
+if ch == "ETau":
 
-    #-----Passing Trigger ("""+triggerName.replace("\n","")+""")
+    triggerNames  = open("triggerTauList.txt", "r")
+    for triggerName in triggerNames:
+        script = open ("plotTauTriggerEfficiency.py", "a")
+        script.writelines("""
+
+        #-----Passing Trigger ("""+triggerName.replace("\n","")+""")
 
 h['hETauTrig_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_M_"""+triggerName.replace("\n","")+"""", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
 h['hETauTrig_ePt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_ePt_"""+triggerName.replace("\n","")+"""", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
@@ -97,10 +158,50 @@ h['hETauTrig_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Tr
 h['hETauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_dR_"""+triggerName.replace("\n","")+"""", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+OB
+    """)
 
-""")
+    script.close()
 
-script.close()
+if ch == "BTau":
+
+    triggerNames  = open("triggerTauList.txt", "r")
+    for triggerName in triggerNames:
+        script = open ("plotTauTriggerEfficiency.py", "a")
+        script.writelines("""
+
+        #-----Passing Trigger ("""+triggerName.replace("\n","")+""")
+
+h['hBTauTrig_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_M_"""+triggerName.replace("\n","")+"""", "#tau mass;M_{#tau};N_{events}", 1000, 0, 200)
+h['hBTauTrig_tau1Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_tau1Pt_"""+triggerName.replace("\n","")+"""", "tau 1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauTrig_tau2Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_tau2Pt_"""+triggerName.replace("\n","")+"""", "tau 2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hBTauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_dR_"""+triggerName.replace("\n","")+"""", "#tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hBTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+    """)
+
+    script.close()
+
+if ch == "MuTau":
+
+    triggerNames  = open("triggerTauList.txt", "r")
+    for triggerName in triggerNames:
+        script = open ("plotTauTriggerEfficiency.py", "a")
+        script.writelines("""
+
+        #-----Passing Trigger ("""+triggerName.replace("\n","")+""")
+
+h['hMuTauTrig_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_M_"""+triggerName.replace("\n","")+"""", "#mu - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hMuTauTrig_muPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_muPt_"""+triggerName.replace("\n","")+"""", "#mu P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauTrig_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_tauPt_"""+triggerName.replace("\n","")+"""", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hMuTauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_dR_"""+triggerName.replace("\n","")+"""", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hMuTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+    """)
+
+    script.close()
 
 script = open ("plotTauTriggerEfficiency.py", "a")
 script.writelines("""
@@ -192,6 +293,14 @@ for inputFileName in inputFileNames:
 
 #<tauSelection>
 
+""")
+
+script.close()
+
+script = open ("plotTauTriggerEfficiency.py", "a")
+
+if ch == "BTau":
+    script.writelines("""
         selected_btaus=[]
 
         for tau in btaus:
@@ -201,7 +310,10 @@ for inputFileName in inputFileNames:
             selected_btaus+=[tau]
 
         selected_btaus.sort(key=lambda x: x.pt(), reverse=True)
+""")
 
+if ch == "ETau":
+    script.writelines("""
         selected_etaus=[]
 
         for tau in etaus:
@@ -211,7 +323,10 @@ for inputFileName in inputFileNames:
             selected_etaus+=[tau]
 
         selected_etaus.sort(key=lambda x: x.pt(), reverse=True)
+""")
 
+if ch == "MuTau":
+    script.writelines("""
         selected_mutaus=[]
 
         for tau in mutaus:
@@ -221,6 +336,13 @@ for inputFileName in inputFileNames:
             selected_mutaus+=[tau]
 
         selected_mutaus.sort(key=lambda x: x.pt(), reverse=True)
+""")
+
+script.close()
+
+script = open ("plotTauTriggerEfficiency.py", "a")
+script.writelines("""
+
 
 #</tauSelection>
 
@@ -242,6 +364,13 @@ for inputFileName in inputFileNames:
         selected_jets.sort(key=lambda x: x.pt(), reverse=True)
 
 #</jetSelection>
+
+""")
+
+script.close()
+script = open ("plotTauTriggerEfficiency.py", "a")
+if ch == "ETau":
+    script.writelines("""
 
 #----------ETau----------
 
@@ -276,15 +405,15 @@ for inputFileName in inputFileNames:
                 h['hETaudR_dR'].Fill(e.DeltaR(etau), genweight)
                 h['hETaudR_dRlj'].Fill((e+etau).DeltaR(j), genweight)
 
-""")
+    """)
 
-script.close()
+    script.close()
 
-triggerNames  = open("triggerTauList.txt", "r")
-for triggerName in triggerNames:
-    print triggerName
-    script = open ("plotTauTriggerEfficiency.py", "a")
-    script.writelines("""
+    triggerNames  = open("triggerTauList.txt", "r")
+    for triggerName in triggerNames:
+        print triggerName
+        script = open ("plotTauTriggerEfficiency.py", "a")
+        script.writelines("""
 
     #-----Passing Trigger ("""+triggerName.replace("\n","")+""")
 
@@ -298,7 +427,116 @@ for triggerName in triggerNames:
                     h['hETauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((e+etau).DeltaR(j), genweight)
 """)
 
-script.close()
+        script.close()
+
+if ch == "BTau":
+    script.writelines("""
+
+#----------BTau----------
+OB
+        if len(selected_btaus)>=2 and selected_btaus[0].charge()*selected_btaus[1].charge()<0 and len(selected_jets)>=1:
+
+            tau2 = ROOT.TLorentzVector()
+            tau2.SetPtEtaPhiM(selected_btaus[1].pt(), selected_btaus[1].eta(), selected_btaus[1].phi(), selected_btaus[1].mass())
+
+            tau1 = ROOT.TLorentzVector()
+            tau1.SetPtEtaPhiM(selected_btaus[0].pt(), selected_btaus[0].eta(), selected_btaus[0].phi(), selected_btaus[0].mass())
+
+            j=ROOT.TLorentzVector()
+            j.SetPtEtaPhiM(selected_jets[0].pt(), selected_jets[0].eta(), selected_jets[0].phi(), selected_jets[0].mass())
+            
+            if tau2.DeltaR(tau1)<0.4 and tau2.DeltaR(j)>0.8 and tau1.DeltaR(j)>0.8:
+
+                h['hBTaudR_M'].Fill((tau1+tau2).M(), genweight)
+                h['hBTaudR_tau2Pt'].Fill(tau2.Pt(), genweight) 
+                h['hBTaudR_tau1Pt'].Fill(tau1.Pt(), genweight)
+                h['hBTaudR_jPt'].Fill(j.Pt(), genweight)
+                h['hBTaudR_dR'].Fill(tau2.DeltaR(tau1), genweight)
+                h['hBTaudR_dRlj'].Fill((tau2+tau1).DeltaR(j), genweight)
+
+    """)
+
+    script.close()
+
+    triggerNames  = open("triggerTauList.txt", "r")
+    for triggerName in triggerNames:
+        print triggerName
+        script = open ("plotTauTriggerEfficiency.py", "a")
+        script.writelines("""
+
+    #-----Passing Trigger ("""+triggerName.replace("\n","")+""")
+
+                if triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""')):
+
+                    h['hBTauTrig_M_"""+triggerName.replace("\n","")+"""'].Fill((tau1+tau2).M(), genweight)
+                    h['hBTauTrig_tau2Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau2.Pt(), genweight)
+                    h['hBTauTrig_tau1Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau1.Pt(), genweight)
+                    h['hBTauTrig_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                    h['hBTauTrig_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
+                    h['hBTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
+""")
+
+        script.close()
+
+if ch == "MuTau":
+    script.writelines("""
+
+#----------MuTau----------
+
+        if len(selected_mutaus)>=1 and len(selected_muons)>=1 and selected_mutaus[0].charge()*selected_muons[0].charge()<0 and len(selected_jets)>=1:
+
+            mutau = ROOT.TLorentzVector()
+            mutau.SetPtEtaPhiM(selected_mutaus[0].pt(), selected_mutaus[0].eta(), selected_mutaus[0].phi(), selected_mutaus[0].mass())
+
+            mu = ROOT.TLorentzVector()
+            mu.SetPtEtaPhiM(selected_muons[0].pt(), selected_muons[0].eta(), selected_muons[0].phi(), selected_muons[0].mass())
+
+            if len(selected_jets)==1:
+                j0=ROOT.TLorentzVector()
+                j0.SetPtEtaPhiM(selected_jets[0].pt(), selected_jets[0].eta(), selected_jets[0].phi(), selected_jets[0].mass())
+                j=j0
+            else:
+                j1=ROOT.TLorentzVector()
+                j1.SetPtEtaPhiM(selected_jets[0].pt(), selected_jets[0].eta(), selected_jets[0].phi(), selected_jets[0].mass())
+                j2=ROOT.TLorentzVector()
+                j2.SetPtEtaPhiM(selected_jets[1].pt(), selected_jets[1].eta(), selected_jets[1].phi(), selected_jets[1].mass())
+                if mutau.DeltaR(j1)>0.3:
+                    j=j1
+                else:
+                    j=j2
+
+            if mutau.DeltaR(mu)<0.4 and mutau.DeltaR(j)>0.8 and mu.DeltaR(j)>0.8:
+
+                h['hMuTaudR_M'].Fill((mutau+mu).M(), genweight)
+                h['hMuTaudR_muPt'].Fill(mu.Pt(), genweight) 
+                h['hMuTaudR_tauPt'].Fill(mutau.Pt(), genweight)
+                h['hMuTaudR_jPt'].Fill(j.Pt(), genweight)
+                h['hMuTaudR_dR'].Fill(mu.DeltaR(mutau), genweight)
+                h['hMuTaudR_dRlj'].Fill((mu+mutau).DeltaR(j), genweight)
+
+    """)
+
+    script.close()
+
+    triggerNames  = open("triggerTauList.txt", "r")
+    for triggerName in triggerNames:
+        print triggerName
+        script = open ("plotTauTriggerEfficiency.py", "a")
+        script.writelines("""
+
+    #-----Passing Trigger ("""+triggerName.replace("\n","")+""")
+
+                if triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""')):
+
+                    h['hMuTauTrig_M_"""+triggerName.replace("\n","")+"""'].Fill((mutau+mu).M(), genweight)
+                    h['hMuTauTrig_muPt_"""+triggerName.replace("\n","")+"""'].Fill(mu.Pt(), genweight)
+                    h['hMuTauTrig_tauPt_"""+triggerName.replace("\n","")+"""'].Fill(mutau.Pt(), genweight)
+                    h['hMuTauTrig_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                    h['hMuTauTrig_dR_"""+triggerName.replace("\n","")+"""'].Fill(mu.DeltaR(mutau), genweight)
+                    h['hMuTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((mu+mutau).DeltaR(j), genweight)
+""")
+
+        script.close()
 
 script = open ("plotTauTriggerEfficiency.py", "a")
 script.writelines("""
