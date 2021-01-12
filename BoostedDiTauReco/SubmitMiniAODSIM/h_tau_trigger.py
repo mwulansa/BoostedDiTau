@@ -158,7 +158,21 @@ h['hETauTrig_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Tr
 h['hETauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_dR_"""+triggerName.replace("\n","")+"""", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_M_"""+triggerName.replace("\n","")+"""", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_ePt_"""+triggerName.replace("\n","")+"""", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_tauPt_"""+triggerName.replace("\n","")+"""", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_dR_"""+triggerName.replace("\n","")+"""", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_dRlj_"""+triggerName.replace("\n","")+"""", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_M_"""+triggerName.replace("\n","")+"""", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_"""+triggerName.replace("\n","")+"""", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_dR_"""+triggerName.replace("\n","")+"""", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     """)
 
     script.close()
@@ -179,6 +193,20 @@ h['hBTauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig
 h['hBTauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_dR_"""+triggerName.replace("\n","")+"""", "#tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hBTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
+h['hBTauTrigJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_M_"""+triggerName.replace("\n","")+"""", "#tau mass;M_{#tau};N_{events}", 1000, 0, 200)
+h['hBTauTrigJet_tau1Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_tau1Pt_"""+triggerName.replace("\n","")+"""", "tau 1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauTrigJet_tau2Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_tau2Pt_"""+triggerName.replace("\n","")+"""", "tau 2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hBTauTrigJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_dR_"""+triggerName.replace("\n","")+"""", "#tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hBTauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_dRlj_"""+triggerName.replace("\n","")+"""", "#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hBTauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_M_"""+triggerName.replace("\n","")+"""", "#tau mass;M_{#tau};N_{events}", 1000, 0, 200)
+h['hBTauTrigTauJet_tau1Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_tau1Pt_"""+triggerName.replace("\n","")+"""", "tau 1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauTrigTauJet_tau2Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_tau2Pt_"""+triggerName.replace("\n","")+"""", "tau 2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hBTauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_dR_"""+triggerName.replace("\n","")+"""", "#tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hBTauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""", "#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     """)
 
     script.close()
@@ -198,6 +226,20 @@ h['hMuTauTrig_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_
 h['hMuTauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hMuTauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_dR_"""+triggerName.replace("\n","")+"""", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hMuTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hMuTauTrigJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_M_"""+triggerName.replace("\n","")+"""", "#mu - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hMuTauTrigJet_muPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_muPt_"""+triggerName.replace("\n","")+"""", "#mu P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauTrigJet_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_tauPt_"""+triggerName.replace("\n","")+"""", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hMuTauTrigJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_dR_"""+triggerName.replace("\n","")+"""", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hMuTauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_dRlj_"""+triggerName.replace("\n","")+"""", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hMuTauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigTauJet_M_"""+triggerName.replace("\n","")+"""", "#mu - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hMuTauTrigTauJet_muPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigTauJet_muPt_"""+triggerName.replace("\n","")+"""", "#mu P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauTrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigTauJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hMuTauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigTauJet_dR_"""+triggerName.replace("\n","")+"""", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hMuTauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
     """)
 
@@ -234,7 +276,7 @@ for inputFileName in inputFileNames:
 
         event.getByLabel(labelHLT, handleHLT)
         triggerResults=handleHLT.product()
-        names = event.object().triggerNames(triggerResults)
+        names = event.TrigTauJetject().triggerNames(triggerResults)
 
         event.getByLabel(labelBs, handleBs)
         bs=handleBs.product()
@@ -425,6 +467,22 @@ if ch == "ETau":
                     h['hETauTrig_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_"""+triggerName.replace("\n","")+"""'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""'))):
+                    h['hETauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_"""+triggerName.replace("\n","")+"""'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_"""+triggerName.replace("\n","")+"""'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_"""+triggerName.replace("\n","")+"""'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_"""+triggerName.replace("\n","")+"""'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((e+etau).DeltaR(j), genweight)
 """)
 
         script.close()
@@ -433,7 +491,7 @@ if ch == "BTau":
     script.writelines("""
 
 #----------BTau----------
-OB
+
         if len(selected_btaus)>=2 and selected_btaus[0].charge()*selected_btaus[1].charge()<0 and len(selected_jets)>=1:
 
             tau2 = ROOT.TLorentzVector()
@@ -474,6 +532,22 @@ OB
                     h['hBTauTrig_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
                     h['hBTauTrig_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
                     h['hBTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""'))):
+                    h['hBTauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'].Fill((tau1+tau2).M(), genweight)
+                    h['hBTauTrigTauJet_tau2Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau2.Pt(), genweight)
+                    h['hBTauTrigTauJet_tau1Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau1.Pt(), genweight)
+                    h['hBTauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                    h['hBTauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
+                    h['hBTauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hBTauTrigJet_M_"""+triggerName.replace("\n","")+"""'].Fill((tau1+tau2).M(), genweight)
+                    h['hBTauTrigJet_tau2Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau2.Pt(), genweight)
+                    h['hBTauTrigJet_tau1Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau1.Pt(), genweight)
+                    h['hBTauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                    h['hBTauTrigJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
+                    h['hBTauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
 """)
 
         script.close()
@@ -534,6 +608,23 @@ if ch == "MuTau":
                     h['hMuTauTrig_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
                     h['hMuTauTrig_dR_"""+triggerName.replace("\n","")+"""'].Fill(mu.DeltaR(mutau), genweight)
                     h['hMuTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((mu+mutau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""'))) or (mu.Pt()>26 and (triggerResults.accept(names.triggerIndex("HLT_IsoTkMu24_v4")) or triggerResults.accept(names.triggerIndex("HLT_IsoMu24_v4")))) or (mu.Pt()>50 and (triggerResults.accept(names.triggerIndex("HLT_TkMu50_v3")) or triggerResults.accept(names.triggerIndex("HLT_Mu50_v5")))):
+                    h['hMuTauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'].Fill((mutau+mu).M(), genweight)
+                    h['hMuTauTrigTauJet_muPt_"""+triggerName.replace("\n","")+"""'].Fill(mu.Pt(), genweight)
+                    h['hMuTauTrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""'].Fill(mutau.Pt(), genweight)
+                    h['hMuTauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                    h['hMuTauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(mu.DeltaR(mutau), genweight)
+                    h['hMuTauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((mu+mutau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (mu.Pt()>26 and (triggerResults.accept(names.triggerIndex("HLT_IsoTkMu24_v4")) or triggerResults.accept(names.triggerIndex("HLT_IsoMu24_v4")))) or (mu.Pt()>50 and (triggerResults.accept(names.triggerIndex("HLT_TkMu50_v3")) or triggerResults.accept(names.triggerIndex("HLT_Mu50_v5")))):
+                    h['hMuTauTrigJet_M_"""+triggerName.replace("\n","")+"""'].Fill((mutau+mu).M(), genweight)
+                    h['hMuTauTrigJet_muPt_"""+triggerName.replace("\n","")+"""'].Fill(mu.Pt(), genweight)
+                    h['hMuTauTrigJet_tauPt_"""+triggerName.replace("\n","")+"""'].Fill(mutau.Pt(), genweight)
+                    h['hMuTauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                    h['hMuTauTrigJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(mu.DeltaR(mutau), genweight)
+                    h['hMuTauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((mu+mutau).DeltaR(j), genweight)
+
 """)
 
         script.close()
