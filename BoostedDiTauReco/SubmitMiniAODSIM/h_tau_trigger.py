@@ -276,7 +276,7 @@ for inputFileName in inputFileNames:
 
         event.getByLabel(labelHLT, handleHLT)
         triggerResults=handleHLT.product()
-        names = event.TrigTauJetject().triggerNames(triggerResults)
+        names = event.object().triggerNames(triggerResults)
 
         event.getByLabel(labelBs, handleBs)
         bs=handleBs.product()
