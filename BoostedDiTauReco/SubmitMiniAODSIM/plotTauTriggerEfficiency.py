@@ -88,7 +88,21 @@ h['hETauTrig_tauPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROO
 h['hETauTrig_jPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2)
@@ -99,7 +113,21 @@ h['hETauTrig_tauPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT
 h['hETauTrig_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1)
@@ -110,7 +138,21 @@ h['hETauTrig_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROO
 h['hETauTrig_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1)
@@ -121,7 +163,21 @@ h['hETauTrig_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT
 h['hETauTrig_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1)
@@ -132,7 +188,21 @@ h['hETauTrig_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH
 h['hETauTrig_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1)
@@ -143,7 +213,21 @@ h['hETauTrig_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1
 h['hETauTrig_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5)
@@ -154,7 +238,21 @@ h['hETauTrig_tauPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F (
 h['hETauTrig_jPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7)
@@ -165,7 +263,21 @@ h['hETauTrig_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F (
 h['hETauTrig_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7)
@@ -176,7 +288,21 @@ h['hETauTrig_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hET
 h['hETauTrig_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_Trig_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1)
@@ -187,7 +313,21 @@ h['hETauTrig_tauPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F (
 h['hETauTrig_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1)
@@ -198,7 +338,21 @@ h['hETauTrig_tauPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v
 h['hETauTrig_jPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1)
@@ -209,7 +363,21 @@ h['hETauTrig_tauPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1
 h['hETauTrig_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1)
@@ -220,7 +388,21 @@ h['hETauTrig_tauPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v
 h['hETauTrig_jPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1)
@@ -231,7 +413,21 @@ h['hETauTrig_tauPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1
 h['hETauTrig_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5)
@@ -242,7 +438,21 @@ h['hETauTrig_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hET
 h['hETauTrig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5)
@@ -253,7 +463,21 @@ h['hETauTrig_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hET
 h['hETauTrig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5)
@@ -264,7 +488,21 @@ h['hETauTrig_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hE
 h['hETauTrig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5)
@@ -275,7 +513,21 @@ h['hETauTrig_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hE
 h['hETauTrig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_v7)
@@ -286,7 +538,21 @@ h['hETauTrig_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_Tri
 h['hETauTrig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_Trig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_PFTau120_eta2p1_v5)
@@ -297,7 +563,21 @@ h['hETauTrig_tauPt_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_tauPt_HLT_P
 h['hETauTrig_jPt_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_PFTau120_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_PFTau120_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_PFTau120_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_PFTau120_eta2p1_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_PFTau120_eta2p1_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_PFTau120_eta2p1_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_PFTau120_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_PFTau120_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_PFTau120_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_PFTau120_eta2p1_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_PFTau120_eta2p1_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_PFTau120_eta2p1_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_PFTau120_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_PFTau120_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_PFTau120_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_PFTau120_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_PFTau140_eta2p1_v5)
@@ -308,7 +588,21 @@ h['hETauTrig_tauPt_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_tauPt_HLT_P
 h['hETauTrig_jPt_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_PFTau140_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_PFTau140_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_PFTau140_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_PFTau140_eta2p1_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_PFTau140_eta2p1_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_PFTau140_eta2p1_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_PFTau140_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_PFTau140_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_PFTau140_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_PFTau140_eta2p1_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_PFTau140_eta2p1_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_PFTau140_eta2p1_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_PFTau140_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_PFTau140_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_PFTau140_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_PFTau140_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5)
@@ -319,7 +613,21 @@ h['hETauTrig_tauPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_T
 h['hETauTrig_jPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
         #-----Passing Trigger (HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5)
@@ -330,15 +638,27 @@ h['hETauTrig_tauPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_T
 h['hETauTrig_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hETauTrig_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_Trig_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-OB
+
+h['hETauTrigJet_M_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_M_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_ePt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_tauPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigJet_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hETauTrigTauJet_M_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_M_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
     
 
 inputFileNames=open(inputFileList, 'r')
 for inputFileName in inputFileNames:
-    print inputFileName.replace("
-","")
-    inputFileName=inputFileName.replace("
-","")
+    print inputFileName.replace("\n","")
+    inputFileName=inputFileName.replace("\n","")
     f=ROOT.TFile.Open(inputFileName)
 
     if not f.IsZombie():
@@ -363,7 +683,7 @@ for inputFileName in inputFileNames:
 
         event.getByLabel(labelHLT, handleHLT)
         triggerResults=handleHLT.product()
-        names = event.object().triggerNames(triggerResults)
+        names = event.TrigTauJetject().triggerNames(triggerResults)
 
         event.getByLabel(labelBs, handleBs)
         bs=handleBs.product()
@@ -504,6 +824,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2)
 
@@ -515,6 +851,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau35_Trk1_eta2p1_Reg_v2'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1)
@@ -528,6 +880,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1)
 
@@ -539,6 +907,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1)
@@ -552,6 +936,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleMediumCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1)
 
@@ -563,6 +963,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleTightCombinedIsoPFTau40_Trk1_eta2p1_v1'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5)
@@ -576,6 +992,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v5'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7)
 
@@ -587,6 +1019,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v7'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7)
@@ -600,6 +1048,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'))):
+                    h['hETauTrigTauJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_v7'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1)
 
@@ -611,6 +1075,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'))):
+                    h['hETauTrigTauJet_M_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_IsoMu19_eta2p1_LooseCombinedIsoPFTau20_v1'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1)
@@ -624,6 +1104,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'))):
+                    h['hETauTrigTauJet_M_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_IsoMu19_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1)
 
@@ -635,6 +1131,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'))):
+                    h['hETauTrigTauJet_M_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_IsoMu19_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1)
@@ -648,6 +1160,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'))):
+                    h['hETauTrigTauJet_M_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_IsoMu21_eta2p1_MediumCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1)
 
@@ -659,6 +1187,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'))):
+                    h['hETauTrigTauJet_M_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_IsoMu21_eta2p1_TightCombinedIsoPFTau32_Trk1_eta2p1_Reg_v1'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5)
@@ -672,6 +1216,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'))):
+                    h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET80_v5'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5)
 
@@ -683,6 +1243,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'))):
+                    h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90_v5'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5)
@@ -696,6 +1272,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'))):
+                    h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET110_v5'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5)
 
@@ -707,6 +1299,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'))):
+                    h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_MET120_v5'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_LooseIsoPFTau50_Trk30_eta2p1_v7)
@@ -720,6 +1328,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'))):
+                    h['hETauTrigTauJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_LooseIsoPFTau50_Trk30_eta2p1_v7'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_PFTau120_eta2p1_v5)
 
@@ -731,6 +1355,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_PFTau120_eta2p1_v5'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_PFTau120_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_PFTau120_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_PFTau120_eta2p1_v5'))):
+                    h['hETauTrigTauJet_M_HLT_PFTau120_eta2p1_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_PFTau120_eta2p1_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_PFTau120_eta2p1_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_PFTau120_eta2p1_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_PFTau120_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_PFTau120_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_PFTau120_eta2p1_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_PFTau120_eta2p1_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_PFTau120_eta2p1_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_PFTau120_eta2p1_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_PFTau120_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_PFTau120_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
 
 
     #-----Passing Trigger (HLT_PFTau140_eta2p1_v5)
@@ -744,6 +1384,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_PFTau140_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_PFTau140_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_PFTau140_eta2p1_v5'))):
+                    h['hETauTrigTauJet_M_HLT_PFTau140_eta2p1_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_PFTau140_eta2p1_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_PFTau140_eta2p1_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_PFTau140_eta2p1_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_PFTau140_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_PFTau140_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_PFTau140_eta2p1_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_PFTau140_eta2p1_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_PFTau140_eta2p1_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_PFTau140_eta2p1_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_PFTau140_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_PFTau140_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5)
 
@@ -756,6 +1412,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
 
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'))):
+                    h['hETauTrigTauJet_M_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_VLooseIsoPFTau120_Trk50_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
+
 
     #-----Passing Trigger (HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5)
 
@@ -767,6 +1439,22 @@ for inputFileName in inputFileNames:
                     h['hETauTrig_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(j.Pt(), genweight)
                     h['hETauTrig_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'))):
+                    h['hETauTrigTauJet_M_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigTauJet_ePt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigTauJet_tauPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigTauJet_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigTauJet_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigTauJet_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
+
+                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                    h['hETauTrigJet_M_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill((etau+e).M(), genweight)
+                    h['hETauTrigJet_ePt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(e.Pt(), genweight)
+                    h['hETauTrigJet_tauPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(etau.Pt(), genweight)
+                    h['hETauTrigJet_jPt_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(j.Pt(), genweight)
+                    h['hETauTrigJet_dR_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill(e.DeltaR(etau), genweight)
+                    h['hETauTrigJet_dRlj_HLT_VLooseIsoPFTau140_Trk50_eta2p1_v5'].Fill((e+etau).DeltaR(j), genweight)
 
 
 out.cd()
