@@ -2,21 +2,33 @@
 #Sample = 'DYJetsToLL_94X'
 #Sample = 'DYJetsToLL'
 #Sample = 'DYJetsToLLNLO'
-Sample = 'TTJets'
+#Sample = 'TTJets'
 #Sample = 'ST'
 #Sample = 'Diboson'
 #Sample = 'QCD'
 #Sample = 'DYJetsToQQ'
 #Sample = 'ZJetsToQQ'
 #Sample = 'WJetsToQQ'
+Sample = 'JetHT'
 
-isCopy=True
-version="vBT-7"
-isGen=False
+isHad = False
+isCopy = True
+version = "v1"
+isGen = False
 
 if Sample == 'TCP':
     masses=['m10', 'm30', 'm50']
     prefix="root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCP/OutputMiniAODSIM/"
+
+elif Sample == 'JetHT':
+#    masses=['Run2016C','Run2016D','Run2016E','Run2016F','Run2016G']
+#    masses = ['Run2016B']
+#    masses = ['Run2016H']
+    masses=['Run2016C','Run2016D','Run2016E','Run2016F','Run2016G','Run2016B','Run2016H'] #For doing Hadd
+#    preSearchString="/"+Sample+"/REPLACEME-23Sep2016-v1/MINIAOD"
+#    preSearchString="/"+Sample+"/REPLACEME-23Sep2016-v3/MINIAOD"
+    preSearchString="/"+Sample+"/REPLACEME-PromptReco-v3/MINIAOD"
+    prefix="root://cmsxrootd.fnal.gov/"
 
 elif Sample == 'DYJetsToLL_94X':
     SampleText = 'DYJetsToLL'
@@ -66,12 +78,11 @@ elif Sample == 'ZJetsToQQ':
     prefix = "root://xrootd.unl.edu/"
 
 elif Sample == 'WJetsToQQ':
-    masses = ['HT-600ToInf']
-    preSearchString="/"+Sample+"_REPLACEME_TuneCUETP8M1*/RunIISummer16MiniAODv2*/MINIAODSIM"
-    prefix = "root://xrootc.unl.edu/"
+    masses = ['HT-600ToInf','HT180']
+    preSearchString="/"+Sample+"_REPLACEME_*13TeV*/RunIISummer16MiniAODv2*80X*/MINIAODSIM"
+#    prefix = "root://xrootc.unl.edu/"
+    prefix="root://cmsxrootd.fnal.gov/"
 
 else:
     print "Please Specify Sample Name!"
     sys.exit()
-
-    
