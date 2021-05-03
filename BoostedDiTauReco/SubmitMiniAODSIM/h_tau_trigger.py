@@ -1,6 +1,6 @@
 import os, sys
 
-ch = "BTau"
+ch = "ETau"
 
 script = open ("plotTauTriggerEfficiency.py", "w")
 script.writelines("""
@@ -484,7 +484,7 @@ if ch == "ETau":
 
             #genMatch
 
-                if len(genElectrions)==1 and len(genMuons)==0:
+                if len(genElectrons)==1 and len(genMuons)==0:
                     genEle=ROOT.TLorentzVector()
                     genEle.SetPtEtaPhiM(genElectrons[0].pt(), genElectrons[0].eta(), genElectrons[0].phi(), genElectrons[0].mass())
                     genTau=ROOT.TLorentzVector()
