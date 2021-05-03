@@ -1,6 +1,6 @@
 import os, sys
 
-ch = "ETau"
+ch = "BTau"
 
 script = open ("plotTauTriggerEfficiency.py", "w")
 script.writelines("""
@@ -89,6 +89,12 @@ labelJet = ('slimmedJets')
 
 handleGenJet = Handle ('vector<reco::GenJet>')
 labelGenJet = ('slimmedGenJets')
+
+handleGenParticle = Handle ('vector<reco::GenParticle>')
+labelGenParticle = ('prunedGenParticles')
+
+handlePatMETs = Handle("vector<pat::MET>")
+labelPatMETs = ('slimmedMETs')
 
 #<Histograms>
 
@@ -299,9 +305,40 @@ for inputFileName in inputFileNames:
 
         event.getByLabel(labelBoostedTaus, handleBoostedTaus)
         btaus=handleBoostedTaus.product()
-        
+
+        event.getByLabel(labelGenParticle, handleGenParticle)
+        particles=handleGenParticle.product()
+
+        event.getByLabel(labelPatMETs, handlePatMETs)
+        met=handlePatMETs.product().front()
+        mets=[]
+        mets+=[met]
+        mets.sort(key=lambda x: x.pt(), reverse=True)
+
+        m=ROOT.TLorentzVector()
+        m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
+
         h['hNEvent'].Fill(0.5, 1)
         h['hNEvent'].Fill(1.5, genweight)
+
+#<genInfo>
+
+        genMuons=[]
+        genTaus=[]
+        genElectrons=[]
+        genNutaus=[]
+
+        for particle in particles:
+            if abs(particle.pdgId())==15 and particle.mother().pdgId()==9999:
+                genTaus+=[particle]
+            if abs(particle.pdgId())==11 and particle.isDirectHardProcessTauDecayProductFinalState():
+                genElectrons+=[particle]
+            if abs(particle.pdgId())==13 and particle.isDirectHardProcessTauDecayProductFinalState():
+                genMuons+=[particle]
+            if abs(particle.pdgId())==16 and particle.isDirectHardProcessTauDecayProductFinalState():
+                genNutaus+=[particle]
+
+#</genInfo>
         
 #<muonSelection>
 
@@ -447,6 +484,8 @@ if ch == "ETau":
                 h['hETaudR_dR'].Fill(e.DeltaR(etau), genweight)
                 h['hETaudR_dRlj'].Fill((e+etau).DeltaR(j), genweight)
 
+
+
     """)
 
     script.close()
@@ -468,7 +507,7 @@ if ch == "ETau":
                     h['hETauTrig_dR_"""+triggerName.replace("\n","")+"""'].Fill(e.DeltaR(etau), genweight)
                     h['hETauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((e+etau).DeltaR(j), genweight)
 
-                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""'))):
+                    if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""'))):
                     h['hETauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'].Fill((etau+e).M(), genweight)
                     h['hETauTrigTauJet_ePt_"""+triggerName.replace("\n","")+"""'].Fill(e.Pt(), genweight)
                     h['hETauTrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""'].Fill(etau.Pt(), genweight)
