@@ -125,12 +125,12 @@ h['hETauGen_jPt'] = ROOT.TH1F ("hETau_Gen_jPt", "jet P_{t}; P_{t};N_{events}", 2
 h['hETauGen_dR'] = ROOT.TH1F ("hETau_Gen_dR", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauGen_dRlj'] = ROOT.TH1F ("hETau_Gen_dRlj", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
-h['hETauTrigTauJet_M'] = ROOT.TH1F ("hETau_TrigTauJet_M", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
-h['hETauTrigTauJet_ePt'] = ROOT.TH1F ("hETau_TrigTauJet_ePt", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
-h['hETauTrigTauJet_tauPt'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
-h['hETauTrigTauJet_jPt'] = ROOT.TH1F ("hETau_TrigTauJet_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
-h['hETauTrigTauJet_dR'] = ROOT.TH1F ("hETau_TrigTauJet_dR", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
-h['hETauTrigTauJet_dRlj'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_M'] = ROOT.TH1F ("hETau_TrigJet_M", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigJet_ePt'] = ROOT.TH1F ("hETau_TrigJet_ePt", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_tauPt'] = ROOT.TH1F ("hETau_TrigJet_tauPt", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigJet_jPt'] = ROOT.TH1F ("hETau_TrigJet_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigJet_dR'] = ROOT.TH1F ("hETau_TrigJet_dR", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigJet_dRlj'] = ROOT.TH1F ("hETau_TrigJet_dRlj", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
     """)
 
@@ -179,12 +179,12 @@ h['hETauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig
 h['hETauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_dR_"""+triggerName.replace("\n","")+"""", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hETauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
-h['hETauTrigJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_M_"""+triggerName.replace("\n","")+"""", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
-h['hETauTrigJet_ePt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_ePt_"""+triggerName.replace("\n","")+"""", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
-h['hETauTrigJet_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_tauPt_"""+triggerName.replace("\n","")+"""", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
-h['hETauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
-h['hETauTrigJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_dR_"""+triggerName.replace("\n","")+"""", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
-h['hETauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigJet_dRlj_"""+triggerName.replace("\n","")+"""", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_M_"""+triggerName.replace("\n","")+"""", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hETauTrigTauJet_ePt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_ePt_"""+triggerName.replace("\n","")+"""", "electron P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_tauPt_"""+triggerName.replace("\n","")+"""", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hETauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hETauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_dR_"""+triggerName.replace("\n","")+"""", "e #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hETauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hETau_TrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""", "e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
     """)
 
