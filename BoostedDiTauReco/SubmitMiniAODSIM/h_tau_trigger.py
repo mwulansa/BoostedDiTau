@@ -29,7 +29,7 @@ script = open ("plotTauTriggerEfficiency.py", "a")
 
 if ch == "ETau":
     script.writelines("""
-outputFileName = outputFileDir+"h_TauTriggerEfficiency_ETau.root"
+outputFileName = outputFileDir+"h_TauTriggerEfficiency_ETau_"+ch+".root"
 print outputFileName
     """)
 
