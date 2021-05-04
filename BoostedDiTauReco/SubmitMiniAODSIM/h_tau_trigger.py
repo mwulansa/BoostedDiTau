@@ -143,7 +143,21 @@ h['hMuTaudR_muPt'] = ROOT.TH1F ("hMuTau_dR_muPt", "muon P_{t} ; P_{t} ; N_{event
 h['hMuTaudR_tauPt'] = ROOT.TH1F ("hMuTau_dR_tauPt", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
 h['hMuTaudR_jPt'] = ROOT.TH1F ("hMuTau_dR_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hMuTaudR_dR'] = ROOT.TH1F ("hMuTau_dR_dR", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
-h['hMuTaudR_dRlj'] = ROOT.TH1F ("hMuTau_dR_dRlj", "#e#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hMuTaudR_dRlj'] = ROOT.TH1F ("hMuTau_dR_dRlj", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hMuTauGen_M'] = ROOT.TH1F ("hMuTau_Gen_M", "#mu - #tau mass;M_{#mu#tau};N_{events}", 1000, 0, 200)
+h['hMuTauGen_muPt'] = ROOT.TH1F ("hMuTau_Gen_muPt", "muon P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauGen_tauPt'] = ROOT.TH1F ("hMuTau_Gen_tauPt", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauGen_jPt'] = ROOT.TH1F ("hMuTau_Gen_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hMuTauGen_dR'] = ROOT.TH1F ("hMuTau_Gen_dR", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hMuTauGen_dRlj'] = ROOT.TH1F ("hMuTau_Gen_dRlj", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hMuTauTrigJet_M'] = ROOT.TH1F ("hMuTau_TrigJet_M", "#mu - #tau mass;M_{#mu#tau};N_{events}", 1000, 0, 200)
+h['hMuTauTrigJet_muPt'] = ROOT.TH1F ("hMuTau_TrigJet_muPt", "muon P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauTrigJet_tauPt'] = ROOT.TH1F ("hMuTau_TrigJet_tauPt", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hMuTauTrigJet_jPt'] = ROOT.TH1F ("hMuTau_TrigJet_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hMuTauTrigJet_dR'] = ROOT.TH1F ("hMuTau_TrigJet_dR", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hMuTauTrigJet_dRlj'] = ROOT.TH1F ("hMuTau_TrigJet_dRlj", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
     """)
 
@@ -151,12 +165,26 @@ if ch == "BTau":
     script.writelines("""
 
 
-h['hBTaudR_M'] = ROOT.TH1F ("hBTau_dR_M", "e - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
+h['hBTaudR_M'] = ROOT.TH1F ("hBTau_dR_M", "#tau - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
 h['hBTaudR_tau1Pt'] = ROOT.TH1F ("hBTau_dR_tau1Pt", "tau1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
 h['hBTaudR_tau2Pt'] = ROOT.TH1F ("hBTau_dR_tau2Pt", "tau2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
 h['hBTaudR_jPt'] = ROOT.TH1F ("hBTau_dR_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hBTaudR_dR'] = ROOT.TH1F ("hBTau_dR_dR", "#tau1 #tau2 #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hBTaudR_dRlj'] = ROOT.TH1F ("hBTau_dR_dRlj", "#tau#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hBTauGen_M'] = ROOT.TH1F ("hBTau_Gen_M", "#tau - #tau mass;M_{#mu#tau};N_{events}", 1000, 0, 200)
+h['hBTauGen_tau1Pt'] = ROOT.TH1F ("hBTau_Gen_tau1Pt", "tau1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauGen_tau2Pt'] = ROOT.TH1F ("hBTau_Gen_tau2Pt", "tau2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauGen_jPt'] = ROOT.TH1F ("hBTau_Gen_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hBTauGen_dR'] = ROOT.TH1F ("hBTau_Gen_dR", "#tau1 #tau2 #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hBTauGen_dRlj'] = ROOT.TH1F ("hBTau_Gen_dRlj", "#tau#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
+
+h['hBTauTrigJet_M'] = ROOT.TH1F ("hBTau_TrigJet_M", "#tau - #tau mass;M_{#mu#tau};N_{events}", 1000, 0, 200)
+h['hBTauTrigJet_tau1Pt'] = ROOT.TH1F ("hBTau_TrigJet_tau1Pt", "tau1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauTrigJet_tau2Pt'] = ROOT.TH1F ("hBTau_TrigJet_tau2Pt", "tau2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
+h['hBTauTrigJet_jPt'] = ROOT.TH1F ("hBTau_TrigJet_jPt", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
+h['hBTauTrigJet_dR'] = ROOT.TH1F ("hBTau_TrigJet_dR", "#tau1 #tau2 #Delta R;#Delta R;N_{events}", 100, 0, 5)
+h['hBTauTrigJet_dRlj'] = ROOT.TH1F ("hBTau_TrigJet_dRlj", "#tau#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
     """)
 
@@ -206,13 +234,6 @@ h['hBTauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig
 h['hBTauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_dR_"""+triggerName.replace("\n","")+"""", "#tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hBTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
-h['hBTauTrigJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_M_"""+triggerName.replace("\n","")+"""", "#tau mass;M_{#tau};N_{events}", 1000, 0, 200)
-h['hBTauTrigJet_tau1Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_tau1Pt_"""+triggerName.replace("\n","")+"""", "tau 1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
-h['hBTauTrigJet_tau2Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_tau2Pt_"""+triggerName.replace("\n","")+"""", "tau 2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
-h['hBTauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
-h['hBTauTrigJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_dR_"""+triggerName.replace("\n","")+"""", "#tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
-h['hBTauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigJet_dRlj_"""+triggerName.replace("\n","")+"""", "#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-
 h['hBTauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_M_"""+triggerName.replace("\n","")+"""", "#tau mass;M_{#tau};N_{events}", 1000, 0, 200)
 h['hBTauTrigTauJet_tau1Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_tau1Pt_"""+triggerName.replace("\n","")+"""", "tau 1 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
 h['hBTauTrigTauJet_tau2Pt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hBTau_TrigTauJet_tau2Pt_"""+triggerName.replace("\n","")+"""", "tau 2 P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
@@ -239,13 +260,6 @@ h['hMuTauTrig_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_
 h['hMuTauTrig_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
 h['hMuTauTrig_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_dR_"""+triggerName.replace("\n","")+"""", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
 h['hMuTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_Trig_dRlj_"""+triggerName.replace("\n","")+"""", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
-
-h['hMuTauTrigJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_M_"""+triggerName.replace("\n","")+"""", "#mu - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
-h['hMuTauTrigJet_muPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_muPt_"""+triggerName.replace("\n","")+"""", "#mu P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
-h['hMuTauTrigJet_tauPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_tauPt_"""+triggerName.replace("\n","")+"""", "tau P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
-h['hMuTauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_jPt_"""+triggerName.replace("\n","")+"""", "jet P_{t}; P_{t};N_{events}", 2000, 0, 2000)
-h['hMuTauTrigJet_dR_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_dR_"""+triggerName.replace("\n","")+"""", "#mu #tau #Delta R;#Delta R;N_{events}", 100, 0, 5)
-h['hMuTauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigJet_dRlj_"""+triggerName.replace("\n","")+"""", "#mu#tau and jet #Delta R;#Delta R;N_{events}", 100, 0, 5)
 
 h['hMuTauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigTauJet_M_"""+triggerName.replace("\n","")+"""", "#mu - #tau mass;M_{e#tau};N_{events}", 1000, 0, 200)
 h['hMuTauTrigTauJet_muPt_"""+triggerName.replace("\n","")+"""'] = ROOT.TH1F ("hMuTau_TrigTauJet_muPt_"""+triggerName.replace("\n","")+"""", "#mu P_{t} ; P_{t} ; N_{events}", 500, 0, 500)
