@@ -1,6 +1,6 @@
 import os, sys
 
-ch = "ETau"
+ch = "BTau"
 
 script = open ("plotTauTriggerEfficiency.py", "w")
 script.writelines("""
