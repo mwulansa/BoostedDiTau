@@ -277,8 +277,8 @@ script.writelines("""
 
 inputFileNames=open(inputFileList, 'r')
 for inputFileName in inputFileNames:
-    print inputFileName.replace("\n","")
-    inputFileName=inputFileName.replace("\n","")
+    print inputFileName.replace("","")
+    inputFileName=inputFileName.replace("","")
     f=ROOT.TFile.Open(inputFileName)
 
     if not f.IsZombie():
@@ -584,6 +584,36 @@ if ch == "BTau":
                 h['hBTaudR_dR'].Fill(tau2.DeltaR(tau1), genweight)
                 h['hBTaudR_dRlj'].Fill((tau2+tau1).DeltaR(j), genweight)
 
+                if len(genTaus) == 2 and len(genMuons) == 0 and len(genElectrons) == 0:
+                    btau1 = genTaus[0]
+                    btau2 = genTaus[1]
+
+                    genTau1 = ROOT.TLorentzVector()
+                    genTau2 = ROOT.TLorentzVector()
+                    genNt1 = ROOT.TLorentzVector()
+                    genNt2 = ROOT.TLorentzVector()
+
+                    genTau1.SetPtEtaPhiM(btau1.pt(), btau1.eta(), btau1.phi(), btau1.mass()) if btau1.pdgId()==15 else genTau1.SetPtEtaPhiM(btau2.pt(), btau2.eta(), btau2.phi(), btau2.mass())
+                    genNt1.SetPtEtaPhiM(genNutaus[0].pt(), genNutaus[0].eta(), genNutaus[0].phi(), genNutaus[0].mass()) if genNutaus[0].pdgId==16 else genNt1.SetPtEtaPhiM(genNutaus[1].pt(), genNutaus[1].eta(), genNutaus[1].phi(), genNutaus[1].mass())
+                    genTau2.SetPtEtaPhiM(btau1.pt(), btau1.eta(), btau1.phi(), btau1.mass()) if btau1.pdgId()==-15 else genTau2.SetPtEtaPhiM(btau2.pt(), btau2.eta(), btau2.phi(), btau2.mass())
+                    genNt2.SetPtEtaPhiM(genNutaus[0].pt(), genNutaus[0].eta(), genNutaus[0].phi(), genNutaus[0].mass()) if genNutaus[0].pdgId==-16 else genNt2.SetPtEtaPhiM(genNutaus[1].pt(), genNutaus[1].eta(), genNutaus[1].phi(), genNutaus[1].mass())
+ 
+                    if (tau1.DeltaR(genTau1-genNt1)<0.4 or tau1.DeltaR(genTau2-genNt2)<0.4) and (tau2.DeltaR(genTau1-genNt1)<0.4 or tau2.DeltaR(genTau2-genNt2)<0.4):                       
+                        h['hBTauGen_M'].Fill((tau1+tau2).M(), genweight)
+                        h['hBTauGen_tau2Pt'].Fill(tau2.Pt(), genweight) 
+                        h['hBTauGen_tau1Pt'].Fill(tau1.Pt(), genweight)
+                        h['hBTauGen_jPt'].Fill(j.Pt(), genweight)
+                        h['hBTauGen_dR'].Fill(tau2.DeltaR(tau1), genweight)
+                        h['hBTauGen_dRlj'].Fill((tau2+tau1).DeltaR(j), genweight)
+
+                        if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                            h['hBTauTrigJet_M'].Fill((tau1+tau2).M(), genweight)
+                            h['hBTauTrigJet_tau2Pt'].Fill(tau2.Pt(), genweight) 
+                            h['hBTauTrigJet_tau1Pt'].Fill(tau1.Pt(), genweight)
+                            h['hBTauTrigJet_jPt'].Fill(j.Pt(), genweight)
+                            h['hBTauTrigJet_dR'].Fill(tau2.DeltaR(tau1), genweight)
+                            h['hBTauTrigJet_dRlj'].Fill((tau2+tau1).DeltaR(j), genweight)                    
+
     """)
 
     script.close()
@@ -596,30 +626,22 @@ if ch == "BTau":
 
     #-----Passing Trigger ("""+triggerName.replace("\n","")+""")
 
-                if triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""')):
+                            if triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""')):
+                                h['hBTauTrig_M_"""+triggerName.replace("\n","")+"""'].Fill((tau1+tau2).M(), genweight)
+                                h['hBTauTrig_tau2Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau2.Pt(), genweight)
+                                h['hBTauTrig_tau1Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau1.Pt(), genweight)
+                                h['hBTauTrig_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                                h['hBTauTrig_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
+                                h['hBTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
 
-                    h['hBTauTrig_M_"""+triggerName.replace("\n","")+"""'].Fill((tau1+tau2).M(), genweight)
-                    h['hBTauTrig_tau2Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau2.Pt(), genweight)
-                    h['hBTauTrig_tau1Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau1.Pt(), genweight)
-                    h['hBTauTrig_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
-                    h['hBTauTrig_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
-                    h['hBTauTrig_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
+                            if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""'))):
+                                h['hBTauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'].Fill((tau1+tau2).M(), genweight)
+                                h['hBTauTrigTauJet_tau2Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau2.Pt(), genweight)
+                                h['hBTauTrigTauJet_tau1Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau1.Pt(), genweight)
+                                h['hBTauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
+                                h['hBTauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
+                                h['hBTauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
 
-                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))) or (triggerResults.accept(names.triggerIndex('"""+triggerName.replace("\n","")+"""'))):
-                    h['hBTauTrigTauJet_M_"""+triggerName.replace("\n","")+"""'].Fill((tau1+tau2).M(), genweight)
-                    h['hBTauTrigTauJet_tau2Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau2.Pt(), genweight)
-                    h['hBTauTrigTauJet_tau1Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau1.Pt(), genweight)
-                    h['hBTauTrigTauJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
-                    h['hBTauTrigTauJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
-                    h['hBTauTrigTauJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
-
-                if (j.Pt() > 500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
-                    h['hBTauTrigJet_M_"""+triggerName.replace("\n","")+"""'].Fill((tau1+tau2).M(), genweight)
-                    h['hBTauTrigJet_tau2Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau2.Pt(), genweight)
-                    h['hBTauTrigJet_tau1Pt_"""+triggerName.replace("\n","")+"""'].Fill(tau1.Pt(), genweight)
-                    h['hBTauTrigJet_jPt_"""+triggerName.replace("\n","")+"""'].Fill(j.Pt(), genweight)
-                    h['hBTauTrigJet_dR_"""+triggerName.replace("\n","")+"""'].Fill(tau2.DeltaR(tau1), genweight)
-                    h['hBTauTrigJet_dRlj_"""+triggerName.replace("\n","")+"""'].Fill((tau2+tau1).DeltaR(j), genweight)
 """)
 
         script.close()
