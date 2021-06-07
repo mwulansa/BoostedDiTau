@@ -19,7 +19,7 @@ if len(sys.argv)>2:
 else:
     outputFileDir = "./plots/"
 
-outputFileName = outputFileDir+"h_BE_lowMET_"+inputFileListName.split("/")[-1].replace(".txt",".root")
+outputFileName = outputFileDir+"h_BE_lowMET_charge_"+inputFileListName.split("/")[-1].replace(".txt",".root")
 
 print outputFileName
 
@@ -82,6 +82,10 @@ h['hTauTaudR_oo_M'] = ROOT.TH1F ("hTauTau_dR_oo_M", "#tau - #tau mass;M_{#tau#ta
 h['hTauTauTrig_oo_M'] = ROOT.TH1F ("hTauTau_Trig_oo_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['hTauTauInvMetcut_oo_M'] = ROOT.TH1F ("hTauTau_Metcut_oo_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 
+h['hTauTauBaseline_oo_charge'] = ROOT.TH1F ("hTauTau_Baseline_oo_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+h['hTauTauTrig_oo_charge'] = ROOT.TH1F ("hTauTau_Trig_oo_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+h['hTauTaudR_oo_charge'] = ROOT.TH1F ("hTauTau_dR_oo_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+
 h['OS_oo'] = ROOT.TH1F ("OS_oo_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['SS_oo'] = ROOT.TH1F ("SS_oo_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 
@@ -95,6 +99,10 @@ h['hTauTauBaseline_ii_M'] = ROOT.TH1F ("hTauTau_Baseline_ii_M", "#tau - #tau mas
 h['hTauTaudR_ii_M'] = ROOT.TH1F ("hTauTau_dR_ii_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['hTauTauTrig_ii_M'] = ROOT.TH1F ("hTauTau_Trig_ii_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['hTauTauInvMetcut_ii_M'] = ROOT.TH1F ("hTauTau_Metcut_ii_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
+
+h['hTauTauBaseline_ii_charge'] = ROOT.TH1F ("hTauTau_Baseline_ii_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+h['hTauTauTrig_ii_charge'] = ROOT.TH1F ("hTauTau_Trig_ii_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+h['hTauTaudR_ii_charge'] = ROOT.TH1F ("hTauTau_dR_ii_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
 
 h['OS_ii'] = ROOT.TH1F ("OS_ii_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['SS_ii'] = ROOT.TH1F ("SS_ii_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
@@ -110,6 +118,10 @@ h['hTauTaudR_io_M'] = ROOT.TH1F ("hTauTau_dR_io_M", "#tau - #tau mass;M_{#tau#ta
 h['hTauTauTrig_io_M'] = ROOT.TH1F ("hTauTau_Trig_io_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['hTauTauInvMetcut_io_M'] = ROOT.TH1F ("hTauTau_Metcut_io_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 
+h['hTauTauBaseline_io_charge'] = ROOT.TH1F ("hTauTau_Baseline_io_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+h['hTauTauTrig_io_charge'] = ROOT.TH1F ("hTauTau_Trig_io_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+h['hTauTaudR_io_charge'] = ROOT.TH1F ("hTauTau_dR_io_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+
 h['OS_io'] = ROOT.TH1F ("OS_io_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['SS_io'] = ROOT.TH1F ("SS_io_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 
@@ -123,6 +135,10 @@ h['hTauTauBaseline_oi_M'] = ROOT.TH1F ("hTauTau_Baseline_oi_M", "#tau - #tau mas
 h['hTauTaudR_oi_M'] = ROOT.TH1F ("hTauTau_dR_oi_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['hTauTauTrig_oi_M'] = ROOT.TH1F ("hTauTau_Trig_oi_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['hTauTauInvMetcut_oi_M'] = ROOT.TH1F ("hTauTau_Metcut_oi_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
+
+h['hTauTauBaseline_oi_charge'] = ROOT.TH1F ("hTauTau_Baseline_oi_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+h['hTauTauTrig_oi_charge'] = ROOT.TH1F ("hTauTau_Trig_oi_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
+h['hTauTaudR_oi_charge'] = ROOT.TH1F ("hTauTau_dR_oi_charge", "#tau - #tau charge; charge;", 3, -1.5, 1.5)
 
 h['OS_oi'] = ROOT.TH1F ("OS_oi_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
 h['SS_oi'] = ROOT.TH1F ("SS_oi_M", "#tau - #tau mass;M_{#tau#tau};", 500, 0, 200)
@@ -250,9 +266,9 @@ for inputFileName in inputFileNames:
                 #and tau.leadChargedHadrCand().get().dxy(vertex[0].position()) < 0.2
         
         for tau in btaus:
-            if tau.pt() > 20 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") :
-                if not tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"): selected_btaus_aiso+=[tau]
-                if tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"): selected_btaus_iso+=[tau]
+            if tau.pt() > 20 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") and tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"):
+                if not tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT"): selected_btaus_aiso+=[tau]
+                if tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT"): selected_btaus_iso+=[tau]
 
         if len(selected_btaus_aiso)>0:
             selected_btaus_aiso.sort(key=lambda x: x.pt(), reverse=True)
@@ -307,25 +323,28 @@ for inputFileName in inputFileNames:
             jet = ROOT.TLorentzVector()
             jet.SetPtEtaPhiM(selected_jets[0].pt(), selected_jets[0].eta(), selected_jets[0].phi(), selected_jets[0].mass())
 
-            h['hTauTauBaseline_oo_M'].Fill((btau1+btau2).M(), genweight)
+            m = ROOT.TLorentzVector()
+            m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
 
-            if btau1.DeltaR(btau2)<0.4 and btau1.DeltaR(jet)>0.8 and btau2.DeltaR(jet)>0.8:
+            if m.Pt()<100:
 
-                h['hTauTaudR_oo_M'].Fill((btau1+btau2).M(), genweight)
+                h['hTauTauBaseline_oo_M'].Fill((btau1+btau2).M(), genweight)
+                h['hTauTauBaseline_oo_charge'].Fill(selected_btaus_aiso[0].charge()*selected_btaus_aiso[1].charge(), genweight)
+                
+                if btau1.DeltaR(btau2)<0.4 and btau1.DeltaR(jet)>0.8 and btau2.DeltaR(jet)>0.8:
 
-                m = ROOT.TLorentzVector()
-                m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
+                    h['hTauTaudR_oo_M'].Fill((btau1+btau2).M(), genweight)
+                    h['hTauTaudR_oo_charge'].Fill(selected_btaus_aiso[0].charge()*selected_btaus_aiso[1].charge(), genweight)
 
-                if jet.Pt()>500 \
-                and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
-                or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
-                or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
+                    if jet.Pt()>500 \
+                    and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
+                    or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
+                    or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
 
-                    h['hTauTauTrig_oo_M'].Fill((btau1+btau2).M(), genweight)
+                        h['hTauTauTrig_oo_M'].Fill((btau1+btau2).M(), genweight)
+                        h['hTauTauTrig_oo_charge'].Fill(selected_btaus_aiso[0].charge()*selected_btaus_aiso[1].charge(), genweight)
 
-                    if m.Pt()<100:
-
-                        h['hTauTauInvMetcut_oo_M'].Fill((btau1+btau2).M(), genweight)
+#                        h['hTauTauInvMetcut_oo_M'].Fill((btau1+btau2).M(), genweight)
 
                         if selected_btaus_aiso[0].charge()*selected_btaus_aiso[1].charge()<0:
                             h['OS_oo'].Fill((btau1+btau2).M(), genweight)
@@ -349,25 +368,28 @@ for inputFileName in inputFileNames:
             jet = ROOT.TLorentzVector()
             jet.SetPtEtaPhiM(selected_jets[0].pt(), selected_jets[0].eta(), selected_jets[0].phi(), selected_jets[0].mass())
 
-            h['hTauTauBaseline_ii_M'].Fill((btau1+btau2).M(), genweight)
+            m = ROOT.TLorentzVector()
+            m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
 
-            if btau1.DeltaR(btau2)<0.4 and btau1.DeltaR(jet)>0.8 and btau2.DeltaR(jet)>0.8:
+            if m.Pt()<100:
 
-                h['hTauTaudR_ii_M'].Fill((btau1+btau2).M(), genweight)
+                h['hTauTauBaseline_ii_M'].Fill((btau1+btau2).M(), genweight)
+                h['hTauTauBaseline_ii_charge'].Fill(selected_btaus_iso[0].charge()*selected_btaus_iso[1].charge(), genweight)
 
-                m = ROOT.TLorentzVector()
-                m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
+                if btau1.DeltaR(btau2)<0.4 and btau1.DeltaR(jet)>0.8 and btau2.DeltaR(jet)>0.8:
 
-                if jet.Pt()>500 \
-                and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
-                or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
-                or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
+                    h['hTauTaudR_ii_M'].Fill((btau1+btau2).M(), genweight)
+                    h['hTauTaudR_ii_charge'].Fill(selected_btaus_iso[0].charge()*selected_btaus_iso[1].charge(), genweight)
 
-                    h['hTauTauTrig_ii_M'].Fill((btau1+btau2).M(), genweight)
+                    if jet.Pt()>500 \
+                    and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
+                    or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
+                    or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
 
-                    if m.Pt()<100:
+                        h['hTauTauTrig_ii_M'].Fill((btau1+btau2).M(), genweight)
+                        h['hTauTauTrig_ii_charge'].Fill(selected_btaus_iso[0].charge()*selected_btaus_iso[1].charge(), genweight)
 
-                        h['hTauTauInvMetcut_ii_M'].Fill((btau1+btau2).M(), genweight)
+#                        h['hTauTauInvMetcut_ii_M'].Fill((btau1+btau2).M(), genweight)
 
                         if selected_btaus_iso[0].charge()*selected_btaus_iso[1].charge()<0:
                             h['OS_ii'].Fill((btau1+btau2).M(), genweight)
@@ -389,25 +411,28 @@ for inputFileName in inputFileNames:
             jet = ROOT.TLorentzVector()
             jet.SetPtEtaPhiM(selected_jets[0].pt(), selected_jets[0].eta(), selected_jets[0].phi(), selected_jets[0].mass())
 
-            h['hTauTauBaseline_io_M'].Fill((btau1+btau2).M(), genweight)
+            m = ROOT.TLorentzVector()
+            m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
 
-            if btau1.DeltaR(btau2)<0.4 and btau1.DeltaR(jet)>0.8 and btau2.DeltaR(jet)>0.8:
+            if m.Pt()<100:
+                
+                h['hTauTauBaseline_io_M'].Fill((btau1+btau2).M(), genweight)
+                h['hTauTauBaseline_io_charge'].Fill(leading_btaus[0].charge()*leading_btaus[1].charge(), genweight)
 
-                h['hTauTaudR_io_M'].Fill((btau1+btau2).M(), genweight)
+                if btau1.DeltaR(btau2)<0.4 and btau1.DeltaR(jet)>0.8 and btau2.DeltaR(jet)>0.8:
 
-                m = ROOT.TLorentzVector()
-                m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
+                    h['hTauTaudR_io_M'].Fill((btau1+btau2).M(), genweight)
+                    h['hTauTaudR_io_charge'].Fill(leading_btaus[0].charge()*leading_btaus[1].charge(), genweight)
+ 
+                    if jet.Pt()>500 \
+                    and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
+                    or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
+                    or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
 
-                if jet.Pt()>500 \
-                and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
-                or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
-                or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
+                        h['hTauTauTrig_io_M'].Fill((btau1+btau2).M(), genweight)
+                        h['hTauTauTrig_io_charge'].Fill(leading_btaus[0].charge()*leading_btaus[1].charge(), genweight)
 
-                    h['hTauTauTrig_io_M'].Fill((btau1+btau2).M(), genweight)
-
-                    if m.Pt()<100:
-
-                        h['hTauTauInvMetcut_io_M'].Fill((btau1+btau2).M(), genweight)
+#                        h['hTauTauInvMetcut_io_M'].Fill((btau1+btau2).M(), genweight)
 
                         if leading_btaus[0].charge()*leading_btaus[1].charge()<0:
                             h['OS_io'].Fill((btau1+btau2).M(), genweight)
@@ -429,25 +454,28 @@ for inputFileName in inputFileNames:
             jet = ROOT.TLorentzVector()
             jet.SetPtEtaPhiM(selected_jets[0].pt(), selected_jets[0].eta(), selected_jets[0].phi(), selected_jets[0].mass())
 
-            h['hTauTauBaseline_oi_M'].Fill((btau1+btau2).M(), genweight)
+            m = ROOT.TLorentzVector()
+            m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
 
-            if btau1.DeltaR(btau2)<0.4 and btau1.DeltaR(jet)>0.8 and btau2.DeltaR(jet)>0.8:
+            if m.Pt()<100:
 
-                h['hTauTaudR_oi_M'].Fill((btau1+btau2).M(), genweight)
+                h['hTauTauBaseline_oi_M'].Fill((btau1+btau2).M(), genweight)
+                h['hTauTauBaseline_oi_charge'].Fill(trailing_btaus[0].charge()*trailing_btaus[1].charge(), genweight)
 
-                m = ROOT.TLorentzVector()
-                m.SetPtEtaPhiM(mets[0].pt(), mets[0].eta(), mets[0].phi(), mets[0].mass())
+                if btau1.DeltaR(btau2)<0.4 and btau1.DeltaR(jet)>0.8 and btau2.DeltaR(jet)>0.8:
 
-                if jet.Pt()>500 \
-                and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
-                or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
-                or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
+                    h['hTauTaudR_oi_M'].Fill((btau1+btau2).M(), genweight)
+                    h['hTauTaudR_oi_charge'].Fill(trailing_btaus[0].charge()*trailing_btaus[1].charge(), genweight)
 
-                    h['hTauTauTrig_oi_M'].Fill((btau1+btau2).M(), genweight)
+                    if jet.Pt()>500 \
+                    and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) \
+                    or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) \
+                    or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5"))):
 
-                    if m.Pt()<100:
+                        h['hTauTauTrig_oi_M'].Fill((btau1+btau2).M(), genweight)
+                        h['hTauTauTrig_oi_charge'].Fill(trailing_btaus[0].charge()*trailing_btaus[1].charge(), genweight)
 
-                        h['hTauTauInvMetcut_oi_M'].Fill((btau1+btau2).M(), genweight)
+#                        h['hTauTauInvMetcut_oi_M'].Fill((btau1+btau2).M(), genweight)
 
                         if trailing_btaus[0].charge()*trailing_btaus[1].charge()<0:
                             h['OS_oi'].Fill((btau1+btau2).M(), genweight)

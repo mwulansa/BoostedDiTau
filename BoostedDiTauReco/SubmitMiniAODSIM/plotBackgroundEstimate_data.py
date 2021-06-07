@@ -237,9 +237,9 @@ for inputFileName in inputFileNames:
                 #and tau.leadChargedHadrCand().get().dxy(vertex[0].position()) < 0.2
         
         for tau in btaus:
-            if tau.pt() > 20 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") :
-                if not tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"): selected_btaus_aiso+=[tau]
-                if tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"): selected_btaus_iso+=[tau]
+            if tau.pt() > 20 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") and tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"):
+                if not tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT"): selected_btaus_aiso+=[tau]
+                if tau.tauID("byLooseIsolationMVArun2v1DBoldDMwLT"): selected_btaus_iso+=[tau]
 
         if len(selected_btaus_aiso)>0:
             selected_btaus_aiso.sort(key=lambda x: x.pt(), reverse=True)
