@@ -40,17 +40,17 @@ The values have been updated for 2017 MC/Data
 #include "DataFormats/Common/interface/ValueMap.h"
 #include "TLorentzVector.h"
 
+#include "DataFormats/EgammaCandidates/interface/Conversion.h"
+#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+#include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
+
 
 #include "TMath.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
 
-#include "DataFormats/EgammaCandidates/interface/Conversion.h"
-#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
-
 #include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 #include "PhysicsTools/SelectorUtils/interface/CutApplicatorWithEventContentBase.h"
 
-#include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
 #include "DataFormats/TrackReco/interface/TrackBase.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -77,7 +77,6 @@ public:
   
   double GsfEleEffAreaPFIsoCut(reco::GsfElectronCollection::const_iterator ele,edm::Event& iEvent);
   bool GsfEleConversionVetoCut(reco::GsfElectronCollection::const_iterator ele,edm::Event& iEvent);
-  
   
 private:
   virtual void beginStream(edm::StreamID) override;
@@ -203,6 +202,7 @@ double ElectronFilter::GsfEleEffAreaPFIsoCut(reco::GsfElectronCollection::const_
   return iso;
 
 }
+
 bool ElectronFilter::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_iterator ele ,edm::Event& iEvent)
 {
 
@@ -211,7 +211,7 @@ bool ElectronFilter::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_
   edm::Handle<reco::BeamSpot> thebs;
   iEvent.getByToken(thebs_,thebs);
   if(thebs.isValid() && convs.isValid() ) {
-    return !ConversionTools::hasMatchedConversion(*ele,convs,
+    return !ConversionTools::hasMatchedConversion(*ele,*convs,
 						  thebs->position());
   } else {
     edm::LogWarning("GsfEleConversionVetoCut")
