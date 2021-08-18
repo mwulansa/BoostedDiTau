@@ -5,17 +5,23 @@ configDir="./configs/"
 
 #os.mkdir(configDir)
 
-storagePrefix="root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer17DR94Premix/"
+storagePrefix1='root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/ALP/'
+storagePrefix2='root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer19UL17RECO/'
+#storagePrefix2 = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/UpsilonTauTau/RunIISummer19UL17RECO/'
 
-masses=[10, 30, 50]
+#masses=[10, 30, 50]
 #masses=[10]
+masses = [30, 50]
 jobs=np.linspace(100,1,100)
 
 for mass in masses:
     for job in jobs:
-        filename="ALP_m"+str(mass)+"_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_"+str(int(job))+".py"
-        print configDir+filename
-        cfg=open(configDir+filename,"w")
+        configFile = "ALP_m"+str(mass)+"_w1_htjmin400_RunIISummer19UL17RECO_MINIAODSIM_"+str(int(job))+".py"
+        inputFile = "TCP_m"+str(mass)+"_w1_htjmin400_RunIISummer19UL17RECO_AODSIM_"+str(int(job))+".root"
+        #configFile = "UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_"+str(int(job))+".py"
+        #inputFile = "UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_AODSIM_"+str(int(job))+".root"
+        print configDir+configFile
+        cfg=open(configDir+configFile, "w")
         cfg.writelines("""
 import FWCore.ParameterSet.Config as cms
 
@@ -23,7 +29,7 @@ import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
 
-inputFiles = '"""+storagePrefix+filename.replace("MINIAODSIM", "AODSIM").replace(".py",".root")+"""'
+inputFiles = '"""+storagePrefix2+inputFile+"""'
 
 options.maxEvents = -1
 options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Events to skip")
@@ -34,20 +40,22 @@ options.register('isStandard', 0, VarParsing.multiplicity.singleton, VarParsing.
 #options.register('isReMINIAOD', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
 options.register('numThreads', 8, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Set number of threads")
 
-
-outputFile = '"""+storagePrefix+filename.replace("MINIAODSIM", "MINIAODSIM_Cleaned").replace(".py",".root")+"""'
+if options.isStandard:
+    options.doSlimming = 0
+    outputFile = '"""+storagePrefix2+configFile.replace("MINIAODSIM", "MINIAODSIM_Standard").replace(".py",".root")+"""'
+elif options.doSlimming:
+    outputFile = '"""+storagePrefix2+configFile.replace("MINIAODSIM", "MINIAODSIM_Slimmed").replace(".py",".root")+"""'
+else:
+    outputFile = '"""+storagePrefix2+configFile.replace("MINIAODSIM", "MINIAODSIM_Cleaned").replace(".py",".root")+"""'
 
 options.parseArguments()
 
 #########################
 ### Main MINIAOD Path ###
 #########################
-#from Configuration.Eras.Era_Run2_2017_cff import Run2_2017
+from Configuration.Eras.Era_Run2_2017_cff import Run2_2017
 
-#process = cms.Process('PAT',Run2_2017)
-from Configuration.StandardSequences.Eras import eras
-
-process = cms.Process('reMINIAOD',eras.Run2_2017,eras.run2_miniAOD_94XFall17)
+process = cms.Process('PAT',Run2_2017)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -156,7 +164,7 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v6', '')
 
 #patAlgosToolsTask.add(process.selectedPATTausElectronCleaned)
 
@@ -230,8 +238,6 @@ from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEar
 process = customiseEarlyDelete(process)
 # End adding early deletion
 
-#print tauIdEmbedder.toKeep
-
 # Add the customization
 if not options.isStandard:
     from BoostedDiTau.Skimmer.customizeSkims4TCP import addCustomization
@@ -240,6 +246,29 @@ if not options.isStandard:
 process.patTrigger.processName = cms.string('RECO')
 process.slimmedPatTrigger.triggerResults = cms.InputTag("TriggerResults","","RECO")
 
-dump_file = open('dump_config.py','w')
-dump_file.write(process.dumpPython())
+# add tauID
+updatedTauName = "slimmedTausNewID"
+#import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
+import BoostedDiTau.Skimmer.runTauIdMVA as tauIdConfig
+tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = True,
+                                          updatedTauName = updatedTauName,
+                                          tauSrc = 'slimmedTaus',
+                                          toKeep = ["2017v2",
+                                                    "deepTau2017v2p1", #deepTau TauIDs
+                                          ])
+tauIdEmbedder.runTauID()
+
+import PhysicsTools.PatAlgos.tools.helpers as configtools
+patAlgosToolsTask = configtools.getPatAlgosToolsTask(process)
+
+process.tauId = cms.Task(
+    process.rerunMvaIsolationTask,
+    process.slimmedTausNewID,
+)
+
+patAlgosToolsTask.add(process.tauId)
+
+process.MINIAODSIMEventContent.outputCommands += [
+    'keep *_slimmedTausNewID_*_*',
+]
         """)
