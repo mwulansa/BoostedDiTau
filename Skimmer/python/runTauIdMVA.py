@@ -749,229 +749,155 @@ class TauIDEmbedder(object):
                     "VVTight": 0.9859
                 }
             }
-            file_names = ['RecoTauTag/TrainingFiles/data/DeepTauId/deepTau_2017v1_20L1024N_quantized.pb']
+            file_names = 'RecoTauTag/TrainingFiles/data/DeepTauId/deepTau_2017v1_20L1024N_quantized.pb'
             self.process.deepTau2017v1 = self.cms.EDProducer("DeepTauId",
-                electrons              = self.cms.InputTag('slimmedElectrons'),
-                muons                  = self.cms.InputTag('slimmedMuons'),
-                taus                   = self.cms.InputTag('slimmedTaus'),
-                pfcands                = self.cms.InputTag('packedPFCandidates'),
-                vertices               = self.cms.InputTag('offlineSlimmedPrimaryVertices'),
-                rho                    = self.cms.InputTag('fixedGridRhoAll'),
-                graph_file             = self.cms.vstring(file_names),
-                mem_mapped             = self.cms.bool(False),
-                version                = self.cms.uint32(self.getDeepTauVersion(file_names[0])[1]),
-                debug_level            = self.cms.int32(0),
-                disable_dxy_pca        = self.cms.bool(False)
-
-            )
-
-            self.processDeepProducer('deepTau2017v1', tauIDSources, workingPoints_)
-
-            self.process.rerunMvaIsolationTask.add(self.process.deepTau2017v1)
-            self.process.rerunMvaIsolationSequence += self.process.deepTau2017v1
-
-        if "deepTau2017v2" in self.toKeep:
-            if self.debug: print ("Adding DeepTau IDs")
-
-            workingPoints_ = {
-                "e": {
-                    "VVVLoose": 0.0630386,
-                    "VVLoose": 0.1686942,
-                    "VLoose": 0.3628130,
-                    "Loose": 0.6815435,
-                    "Medium": 0.8847544,
-                    "Tight": 0.9675541,
-                    "VTight": 0.9859251,
-                    "VVTight": 0.9928449,
-                },
-                "mu": {
-                    "VLoose": 0.1058354,
-                    "Loose": 0.2158633,
-                    "Medium": 0.5551894,
-                    "Tight": 0.8754835,
-                },
-                "jet": {
-                    "VVVLoose": 0.2599605,
-                    "VVLoose": 0.4249705,
-                    "VLoose": 0.5983682,
-                    "Loose": 0.7848675,
-                    "Medium": 0.8834768,
-                    "Tight": 0.9308689,
-                    "VTight": 0.9573137,
-                    "VVTight": 0.9733927,
-                },
-            }
-
-            file_names = [
-                'core:RecoTauTag/TrainingFiles/data/DeepTauId/deepTau_2017v2p6_e6_core.pb',
-                'inner:RecoTauTag/TrainingFiles/data/DeepTauId/deepTau_2017v2p6_e6_inner.pb',
-                'outer:RecoTauTag/TrainingFiles/data/DeepTauId/deepTau_2017v2p6_e6_outer.pb',
-            ]
-            self.process.deepTau2017v2 = self.cms.EDProducer("DeepTauId",
-                electrons              = self.cms.InputTag('slimmedElectrons'),
-                muons                  = self.cms.InputTag('slimmedMuons'),
-                taus                   = self.cms.InputTag('slimmedTaus'),
-                pfcands                = self.cms.InputTag('packedPFCandidates'),
-                vertices               = self.cms.InputTag('offlineSlimmedPrimaryVertices'),
-                rho                    = self.cms.InputTag('fixedGridRhoAll'),
-                graph_file             = self.cms.vstring(file_names),
-                mem_mapped             = self.cms.bool(True),
-                version                = self.cms.uint32(self.getDeepTauVersion(file_names[0])[1]),
-                debug_level            = self.cms.int32(0),
-                disable_dxy_pca        = self.cms.bool(False)
-
-            )
-
-            self.processDeepProducer('deepTau2017v2', tauIDSources, workingPoints_)
-
-            self.process.rerunMvaIsolationTask.add(self.process.deepTau2017v2)
-            self.process.rerunMvaIsolationSequence += self.process.deepTau2017v2
-
-        if "deepTau2017v2p1" in self.toKeep:
-            if self.debug: print ("Adding DeepTau IDs")
-
-            workingPoints_ = {
-                "e": {
-                    "VVVLoose": 0.0630386,
-                    "VVLoose": 0.1686942,
-                    "VLoose": 0.3628130,
-                    "Loose": 0.6815435,
-                    "Medium": 0.8847544,
-                    "Tight": 0.9675541,
-                    "VTight": 0.9859251,
-                    "VVTight": 0.9928449,
-                },
-                "mu": {
-                    "VLoose": 0.1058354,
-                    "Loose": 0.2158633,
-                    "Medium": 0.5551894,
-                    "Tight": 0.8754835,
-                },
-                "jet": {
-                    "VVVLoose": 0.2599605,
-                    "VVLoose": 0.4249705,
-                    "VLoose": 0.5983682,
-                    "Loose": 0.7848675,
-                    "Medium": 0.8834768,
-                    "Tight": 0.9308689,
-                    "VTight": 0.9573137,
-                    "VVTight": 0.9733927,
-                },
-            }
-
-            file_names = [
-                'core:RecoTauTag/TrainingFiles/data/DeepTauId/deepTau_2017v2p6_e6_core.pb',
-                'inner:RecoTauTag/TrainingFiles/data/DeepTauId/deepTau_2017v2p6_e6_inner.pb',
-                'outer:RecoTauTag/TrainingFiles/data/DeepTauId/deepTau_2017v2p6_e6_outer.pb',
-            ]
-            self.process.deepTau2017v2p1 = self.cms.EDProducer("DeepTauId",
-                electrons                = self.cms.InputTag('slimmedElectrons'),
-                muons                    = self.cms.InputTag('slimmedMuons'),
-                taus                     = self.cms.InputTag('slimmedTaus'),
-                pfcands                  = self.cms.InputTag('packedPFCandidates'),
-                vertices                 = self.cms.InputTag('offlineSlimmedPrimaryVertices'),
-                rho                      = self.cms.InputTag('fixedGridRhoAll'),
-                graph_file               = self.cms.vstring(file_names),
-                mem_mapped               = self.cms.bool(True),
-                version                  = self.cms.uint32(self.getDeepTauVersion(file_names[0])[1]),
-                debug_level              = self.cms.int32(0),
-                disable_dxy_pca          = self.cms.bool(True)
-
-            )
-
-            self.process.deepTau2017v2p1MuonCleaned = self.cms.EDProducer("DeepTauId",
                 VSeWP = self.cms.PSet(
-                    Loose = self.cms.string('0.6815435'),
-                    Medium = self.cms.string('0.8847544'),
-                    Tight = self.cms.string('0.9675541'),
-                    VLoose = self.cms.string('0.362813'),
-                    VTight = self.cms.string('0.9859251'),
-                    VVLoose = self.cms.string('0.1686942'),
-                    VVTight = self.cms.string('0.9928449'),
-                    VVVLoose = self.cms.string('0.0630386')
+                    Loose = self.cms.string('0.99831'),
+                    Medium = self.cms.string('0.99868'),
+                    Tight = self.cms.string('0.99898'),
+                    VLoose = self.cms.string('0.99574'),
+                    VTight = self.cms.string('0.99911'),
+                    VVLoose = self.cms.string('0.98992'),
+                    VVTight = self.cms.string('0.99918'),
+                    VVVLoose = self.cms.string('0.96424')
                 ),
                 VSjetWP = self.cms.PSet(
-                    Loose = self.cms.string('0.7848675'),
-                    Medium = self.cms.string('0.8834768'),
-                    Tight = self.cms.string('0.9308689'),
-                    VLoose = self.cms.string('0.5983682'),
-                    VTight = self.cms.string('0.9573137'),
-                    VVLoose = self.cms.string('0.4249705'),
-                    VVTight = self.cms.string('0.9733927'),
-                    VVVLoose = self.cms.string('0.2599605')
-                    ),
+                    Loose = self.cms.string('0.914'),
+                    Medium = self.cms.string('0.9464'),
+                    Tight = self.cms.string('0.9635'),
+                    VLoose = self.cms.string('0.8623'),
+                    VTight = self.cms.string('0.976'),
+                    VVLoose = self.cms.string('0.7645'),
+                    VVTight = self.cms.string('0.9859'),
+                    VVVLoose = self.cms.string('0.5329')
+                ),
                 VSmuWP = self.cms.PSet(
-                    Loose = self.cms.string('0.2158633'),
-                    Medium = self.cms.string('0.5551894'),
-                    Tight = self.cms.string('0.8754835'),
-                    VLoose = self.cms.string('0.1058354')
+                    Loose = self.cms.string('0.999755'),
+                    Medium = self.cms.string('0.999854'),
+                    Tight = self.cms.string('0.999886'),
+                    VLoose = self.cms.string('0.999392'),
+                    VTight = self.cms.string('0.999944'),
+                    VVLoose = self.cms.string('0.997687'),
+                    VVTight = self.cms.string('0.9999971'),
+                    VVVLoose = self.cms.string('0.959619')
+                ),
+                electrons              = self.cms.InputTag('slimmedElectrons'),
+                muons                  = self.cms.InputTag('slimmedMuons'),
+                taus                   = self.cms.InputTag('slimmedTaus'),
+                #pfcands                = self.cms.InputTag('packedPFCandidates'),
+                #vertices               = self.cms.InputTag('offlineSlimmedPrimaryVertices'),
+                #rho                    = self.cms.InputTag('fixedGridRhoAll'),
+                graph_file             = self.cms.string(file_names),
+                mem_mapped             = self.cms.bool(False)
+                #version                = self.cms.uint32(self.getDeepTauVersion(file_names[0])[1]),
+                #debug_level            = self.cms.int32(0),
+                #disable_dxy_pca        = self.cms.bool(False)
+
+            )
+
+            self.process.deepTau2017v1MuonCleaned = self.cms.EDProducer("DeepTauId",
+                VSeWP = self.cms.PSet(
+                    Loose = self.cms.string('0.99831'),
+                    Medium = self.cms.string('0.99868'),
+                    Tight = self.cms.string('0.99898'),
+                    VLoose = self.cms.string('0.99574'),
+                    VTight = self.cms.string('0.99911'),
+                    VVLoose = self.cms.string('0.98992'),
+                    VVTight = self.cms.string('0.99918'),
+                    VVVLoose = self.cms.string('0.96424')
+                ),
+                VSjetWP = self.cms.PSet(
+                    Loose = self.cms.string('0.914'),
+                    Medium = self.cms.string('0.9464'),
+                    Tight = self.cms.string('0.9635'),
+                    VLoose = self.cms.string('0.8623'),
+                    VTight = self.cms.string('0.976'),
+                    VVLoose = self.cms.string('0.7645'),
+                    VVTight = self.cms.string('0.9859'),
+                    VVVLoose = self.cms.string('0.5329')
+                ),
+                VSmuWP = self.cms.PSet(
+                    Loose = self.cms.string('0.999755'),
+                    Medium = self.cms.string('0.999854'),
+                    Tight = self.cms.string('0.999886'),
+                    VLoose = self.cms.string('0.999392'),
+                    VTight = self.cms.string('0.999944'),
+                    VVLoose = self.cms.string('0.997687'),
+                    VVTight = self.cms.string('0.9999971'),
+                    VVVLoose = self.cms.string('0.959619')
                 ),
                 electrons                = self.cms.InputTag('slimmedElectrons'),
                 muons                    = self.cms.InputTag('MuonCollectionClean','slimmedMuonsCleaned'),
                 taus                     = self.cms.InputTag('slimmedTausMuonCleaned'),
-                pfcands                  = self.cms.InputTag('MuonCollectionClean','packedPFCandidatesMuonCleaned'),
-                vertices                 = self.cms.InputTag('offlineSlimmedPrimaryVertices'),
-                rho                      = self.cms.InputTag('fixedGridRhoAll'),
-                graph_file               = self.cms.vstring(file_names),
-                mem_mapped               = self.cms.bool(True),
-                version                  = self.cms.uint32(self.getDeepTauVersion(file_names[0])[1]),
-                debug_level              = self.cms.int32(0),
-                disable_dxy_pca          = self.cms.bool(True)
+                #pfcands                  = self.cms.InputTag('MuonCollectionClean','packedPFCandidatesMuonCleaned'),
+                #vertices                 = self.cms.InputTag('offlineSlimmedPrimaryVertices'),
+                #rho                      = self.cms.InputTag('fixedGridRhoAll'),
+                graph_file               = self.cms.string(file_names),
+                mem_mapped               = self.cms.bool(False)
+                #version                  = self.cms.uint32(self.getDeepTauVersion(file_names[0])[1]),
+                #debug_level              = self.cms.int32(0),
+                #disable_dxy_pca          = self.cms.bool(False)
 
             )
 
-            self.process.deepTau2017v2p1ElectronCleaned = self.cms.EDProducer("DeepTauId",
-VSeWP = self.cms.PSet(
-                    Loose = self.cms.string('0.6815435'),
-                    Medium = self.cms.string('0.8847544'),
-                    Tight = self.cms.string('0.9675541'),
-                    VLoose = self.cms.string('0.362813'),
-                    VTight = self.cms.string('0.9859251'),
-                    VVLoose = self.cms.string('0.1686942'),
-                    VVTight = self.cms.string('0.9928449'),
-                    VVVLoose = self.cms.string('0.0630386')
+            self.process.deepTau2017v1ElectronCleaned = self.cms.EDProducer("DeepTauId",
+                VSeWP = self.cms.PSet(
+                    Loose = self.cms.string('0.99831'),
+                    Medium = self.cms.string('0.99868'),
+                    Tight = self.cms.string('0.99898'),
+                    VLoose = self.cms.string('0.99574'),
+                    VTight = self.cms.string('0.99911'),
+                    VVLoose = self.cms.string('0.98992'),
+                    VVTight = self.cms.string('0.99918'),
+                    VVVLoose = self.cms.string('0.96424')
                 ),
                 VSjetWP = self.cms.PSet(
-                    Loose = self.cms.string('0.7848675'),
-                    Medium = self.cms.string('0.8834768'),
-                    Tight = self.cms.string('0.9308689'),
-                    VLoose = self.cms.string('0.5983682'),
-                    VTight = self.cms.string('0.9573137'),
-                    VVLoose = self.cms.string('0.4249705'),
-                    VVTight = self.cms.string('0.9733927'),
-                    VVVLoose = self.cms.string('0.2599605')
-                    ),
+                    Loose = self.cms.string('0.914'),
+                    Medium = self.cms.string('0.9464'),
+                    Tight = self.cms.string('0.9635'),
+                    VLoose = self.cms.string('0.8623'),
+                    VTight = self.cms.string('0.976'),
+                    VVLoose = self.cms.string('0.7645'),
+                    VVTight = self.cms.string('0.9859'),
+                    VVVLoose = self.cms.string('0.5329')
+                ),
                 VSmuWP = self.cms.PSet(
-                    Loose = self.cms.string('0.2158633'),
-                    Medium = self.cms.string('0.5551894'),
-                    Tight = self.cms.string('0.8754835'),
-                    VLoose = self.cms.string('0.1058354')
+                    Loose = self.cms.string('0.999755'),
+                    Medium = self.cms.string('0.999854'),
+                    Tight = self.cms.string('0.999886'),
+                    VLoose = self.cms.string('0.999392'),
+                    VTight = self.cms.string('0.999944'),
+                    VVLoose = self.cms.string('0.997687'),
+                    VVTight = self.cms.string('0.9999971'),
+                    VVVLoose = self.cms.string('0.959619')
                 ),
                 electrons                = self.cms.InputTag('ElectronCollectionClean','slimmedElectronsCleaned'),
                 muons                    = self.cms.InputTag('slimmedMuons'),
                 taus                     = self.cms.InputTag('slimmedTausElectronCleaned'),
-                pfcands                  = self.cms.InputTag('ElectronCollectionClean','packedPFCandidatesElectronCleaned'),
-                vertices                 = self.cms.InputTag('offlineSlimmedPrimaryVertices'),
-                rho                      = self.cms.InputTag('fixedGridRhoAll'),
-                graph_file               = self.cms.vstring(file_names),
-                mem_mapped               = self.cms.bool(True),
-                version                  = self.cms.uint32(self.getDeepTauVersion(file_names[0])[1]),
-                debug_level              = self.cms.int32(0),
-                disable_dxy_pca          = self.cms.bool(True)
+                #pfcands                  = self.cms.InputTag('ElectronCollectionClean','packedPFCandidatesElectronCleaned'),
+                #vertices                 = self.cms.InputTag('offlineSlimmedPrimaryVertices'),
+                #rho                      = self.cms.InputTag('fixedGridRhoAll'),
+                graph_file               = self.cms.string(file_names),
+                mem_mapped               = self.cms.bool(False)
+                #version                  = self.cms.uint32(self.getDeepTauVersion(file_names[0])[1]),
+                #debug_level              = self.cms.int32(0),
+                #disable_dxy_pca          = self.cms.bool(False)
 
             )
 
             if self.tauSrc == "slimmedTaus":
-                self.processDeepProducer('deepTau2017v2p1', tauIDSources, workingPoints_)
+                self.processDeepProducer('deepTau2017v1', tauIDSources, workingPoints_)
             elif self.tauSrc == "slimmedTausMuonCleaned": 
-                self.processDeepProducer('deepTau2017v2p1MuonCleaned', tauIDSources, workingPoints_)
+                self.processDeepProducer('deepTau2017v1MuonCleaned', tauIDSources, workingPoints_)
             elif self.tauSrc == "slimmedTausElectronCleaned": 
-                self.processDeepProducer('deepTau2017v2p1ElectronCleaned', tauIDSources, workingPoints_)    
+                self.processDeepProducer('deepTau2017v1ElectronCleaned', tauIDSources, workingPoints_)    
 
-            self.process.rerunMvaIsolationTask.add(self.process.deepTau2017v2p1)
-            self.process.rerunMvaIsolationTaskMuonCleaned.add(self.process.deepTau2017v2p1MuonCleaned)
-            self.process.rerunMvaIsolationTaskElectronCleaned.add(self.process.deepTau2017v2p1ElectronCleaned)
-            self.process.rerunMvaIsolationSequence += self.process.deepTau2017v2p1
+
+            self.process.rerunMvaIsolationTask.add(self.process.deepTau2017v1)
+            self.process.rerunMvaIsolationTaskMuonCleaned.add(self.process.deepTau2017v1MuonCleaned)
+            self.process.rerunMvaIsolationTaskElectronCleaned.add(self.process.deepTau2017v1ElectronCleaned)
+            self.process.rerunMvaIsolationSequence += self.process.deepTau2017v1
+
 
         if "DPFTau_2016_v0" in self.toKeep:
             if self.debug: print ("Adding DPFTau isolation (v0)")

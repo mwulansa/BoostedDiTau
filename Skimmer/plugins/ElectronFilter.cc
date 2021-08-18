@@ -211,7 +211,7 @@ bool ElectronFilter::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_
   edm::Handle<reco::BeamSpot> thebs;
   iEvent.getByToken(thebs_,thebs);
   if(thebs.isValid() && convs.isValid() ) {
-    return !ConversionTools::hasMatchedConversion(*ele,*convs,
+    return !ConversionTools::hasMatchedConversion(*ele,convs,
 						  thebs->position());
   } else {
     edm::LogWarning("GsfEleConversionVetoCut")
@@ -262,26 +262,9 @@ iSetup.get<SetupRecord>().get(pSetup);
       double HoE=iele->hadronicOverEm();
       double E_c = iele->superCluster()->energy();
       double rho = _rhoHandle.isValid() ? (*_rhoHandle) : 0; 
-
-  
-//       p1 = iele->trackPositionAtVtx();
-//       for(unsigned j= 0;j< Vertex->size();j++)
-// 	{
-// 	  p2=(Vertex->at(0)).position();
-// 	  
-// 	  
-// 	  
-// 	}
-//       
-//       
-//       
-//       dz = abs(p1.z()-p2.z());
-//       dxy = sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()));
-//       // p2=Vertex->position();
-      
       
       if( iele->isEB())	{++EBcount;
-	  //cout << "EBloop" <<endl;
+	//cout << "EBloop" <<endl;
 
 	// 94x: HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)
 	// mod: HoE < 0.215

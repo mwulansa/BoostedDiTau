@@ -6,8 +6,8 @@ source /cvmfs/cms.cern.ch/cmsset_default.csh  ## if a bash script, use .sh inste
 xrdcp root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/TCPAnalysis/CMSSW.tgz CMSSW.tgz
 tar -xf CMSSW.tgz
 rm CMSSW.tgz
-setenv SCRAM_ARCH slc6_amd64_gcc530
-cd CMSSW_8_0_30/src/
+setenv SCRAM_ARCH slc7_amd64_gcc630
+cd CMSSW_9_4_15/src/
 scramv1 b ProjectRename
 eval `scramv1 runtime -csh` # cmsenv is an alias not on the workers
 cd BoostedDiTau/BoostedDiTauReco/SubmitMiniAODSIM
@@ -19,8 +19,8 @@ echo "  for 1: $1"
 echo "  for 2: $2"
 echo "  for 3: $3"
 python ${1} ${2} ${3}
-echo /eos/uscms/store/user/zhangj/TCPAnalysis/Plots/h_${4}
+echo /eos/uscms/store/user/zhangj/TCPAnalysis/Plots94X/h_analyzeMC_${4}
 #eosrm /eos/uscms/store/user/zhangj/TCPAnalysis/Plots/h_${4}
 #xrdcp h_${4} root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/TCPAnalysis/Plots/h_${4}
 cd ${_CONDOR_SCRATCH_DIR}
-rm -rf CMSSW_8_0_30
+rm -rf CMSSW_9_4_15
