@@ -13,7 +13,7 @@ jobs=np.linspace(100,1,100)
 
 for mass in masses:
     for job in jobs:
-        filename="ALP_m"+str(mass)+"_w1_htjmin400_RunIISummer17DR94Premix_miniAODSIM_"+str(int(job))+".py"
+        filename="ALP_m"+str(mass)+"_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_"+str(int(job))+".py"
         print configDir+filename
         cfg=open(configDir+filename,"w")
         cfg.writelines("""
@@ -23,32 +23,31 @@ import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
 
-inputFiles = '"""+storagePrefix+filename.replace("miniAODSIM", "AODSIM").replace(".py",".root")+"""'
+inputFiles = '"""+storagePrefix+filename.replace("MINIAODSIM", "AODSIM").replace(".py",".root")+"""'
+
 options.maxEvents = -1
 options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Events to skip")
 options.register('reportEvery', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Report every")
 options.register('isMC', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Sample is MC")
-options.register('doSlimming', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
+options.register('doSlimming', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
 options.register('isStandard', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
-options.register('isReMINIAOD', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
+#options.register('isReMINIAOD', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
 options.register('numThreads', 8, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Set number of threads")
 
-if options.isStandard:
-    options.doSlimming = 0
-    outputFile = '"""+storagePrefix+filename.replace("miniAODSIM", "MINIAODSIM_Standard").replace(".py",".root")+"""'
-elif options.doSlimming:
-    outputFile = '"""+storagePrefix+filename.replace("miniAODSIM", "MINIAODSIM_Slimmed").replace(".py",".root")+"""'
-else:
-    outputFile = '"""+storagePrefix+filename.replace("miniAODSIM", "MINIAODSIM_Cleaned").replace(".py",".root")+"""'
+
+outputFile = '"""+storagePrefix+filename.replace("MINIAODSIM", "MINIAODSIM_Cleaned").replace(".py",".root")+"""'
 
 options.parseArguments()
 
 #########################
 ### Main MINIAOD Path ###
 #########################
+#from Configuration.Eras.Era_Run2_2017_cff import Run2_2017
+
+#process = cms.Process('PAT',Run2_2017)
 from Configuration.StandardSequences.Eras import eras
 
-process = cms.Process('PAT',eras.Run2_2017,eras.run2_miniAOD_94XFall17)
+process = cms.Process('reMINIAOD',eras.Run2_2017,eras.run2_miniAOD_94XFall17)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -59,10 +58,7 @@ process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('PhysicsTools.PatAlgos.slimming.metFilterPaths_cff')
-if options.isMC:
-    process.load('Configuration.StandardSequences.PATMC_cff')
-else:
-    process.load('Configuration.StandardSequences.PAT_cff')
+process.load('Configuration.StandardSequences.PATMC_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
@@ -80,24 +76,21 @@ process.source = cms.Source("PoolSource",
 )
 
 process.options = cms.untracked.PSet(
-    allowUnscheduled = cms.untracked.bool(True),
-    #wantSummary = cms.untracked.bool(True),
 )
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('step1 nevts:4800'),
+    annotation = cms.untracked.string('step2 nevts:4800'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
 
 # Output definition
-
-process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
+process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
     compressionLevel = cms.untracked.int32(4),
     dataset = cms.untracked.PSet(
-        dataTier = cms.untracked.string('MINIAODSIM' if options.isMC else 'MINIAOD'),
+        dataTier = cms.untracked.string('MINIAODSIM'),
         filterName = cms.untracked.string('')
     ),
     dropMetaData = cms.untracked.string('ALL'),
@@ -105,10 +98,11 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
     fastCloning = cms.untracked.bool(False),
     fileName = cms.untracked.string(outputFile),
     outputCommands = process.MINIAODSIMEventContent.outputCommands,
-    overrideBranchesSplitLevel = cms.untracked.VPSet(cms.untracked.PSet(
-        branch = cms.untracked.string('patPackedCandidates_packedPFCandidates__*'),
-        splitLevel = cms.untracked.int32(99)
-    ), 
+    overrideBranchesSplitLevel = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            branch = cms.untracked.string('patPackedCandidates_packedPFCandidates__*'),
+            splitLevel = cms.untracked.int32(99)
+        ), 
         cms.untracked.PSet(
             branch = cms.untracked.string('recoGenParticles_prunedGenParticles__*'),
             splitLevel = cms.untracked.int32(99)
@@ -152,21 +146,25 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
         cms.untracked.PSet(
             branch = cms.untracked.string('EcalRecHitsSorted_reducedEgamma_reducedESRecHits_*'),
             splitLevel = cms.untracked.int32(99)
-        )),
+        )
+    ),
     overrideInputFileSplitLevels = cms.untracked.bool(True),
     splitLevel = cms.untracked.int32(0)
 )
 
-if not options.isMC:
-    process.MINIAODoutput.outputCommands = process.MINIAODEventContent.outputCommands
-
 # Additional output definition
 
 # Other statements
-envvar = 'mcgt' if options.isMC else 'datagt'
 from Configuration.AlCa.GlobalTag import GlobalTag
-GT = {'mcgt': '94X_mc2017_realistic_v17', 'datagt': '94X_dataRun2_v11',}
-process.GlobalTag = GlobalTag(process.GlobalTag, GT[envvar], '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17', '')
+
+#patAlgosToolsTask.add(process.selectedPATTausElectronCleaned)
+
+# Path and EndPath definitions
+#process.tauId = cms.Path(
+#    process.rerunMvaIsolationSequence *
+#    getattr(process,updatedTauName)
+#)
 
 # Path and EndPath definitions
 process.Flag_trackingFailureFilter = cms.Path(process.goodVertices+process.trackingFailureFilter)
@@ -197,17 +195,19 @@ process.Flag_BadPFMuonSummer16Filter = cms.Path(process.BadPFMuonSummer16Filter)
 process.Flag_muonBadTrackFilter = cms.Path(process.muonBadTrackFilter)
 process.Flag_CSCTightHalo2015Filter = cms.Path(process.CSCTightHalo2015Filter)
 process.endjob_step = cms.EndPath(process.endOfProcess)
-process.MINIAODoutput_step = cms.EndPath(process.MINIAODoutput)
+process.MINIAODSIMoutput_step = cms.EndPath(process.MINIAODSIMoutput)
 
 # Schedule definition
-process.schedule = cms.Schedule(process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Flag_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStripHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilter,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Filter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.endjob_step,process.MINIAODoutput_step)
+process.schedule = cms.Schedule(process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Flag_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStripHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilter,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Filter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.endjob_step,process.MINIAODSIMoutput_step)
 process.schedule.associate(process.patTask)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
+
 #Setup FWK for multithreaded
 process.options.numberOfThreads=cms.untracked.uint32(options.numThreads)
 process.options.numberOfStreams=cms.untracked.uint32(0)
+process.options.numberOfConcurrentLuminosityBlocks=cms.untracked.uint32(1)
 
 #do not add changes to your config after this point (unless you know what you are doing)
 from FWCore.ParameterSet.Utilities import convertToUnscheduled
@@ -216,13 +216,10 @@ process=convertToUnscheduled(process)
 # customisation of the process.
 
 # Automatic addition of the customisation function from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC, miniAOD_customizeAllData
+from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC 
 
 #call to customisation function miniAOD_customizeAllMC imported from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-if options.isMC:
-    process = miniAOD_customizeAllMC(process)
-else:
-    process = miniAOD_customizeAllData(process)
+process = miniAOD_customizeAllMC(process)
 
 # End of customisation functions
 
@@ -233,7 +230,9 @@ from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEar
 process = customiseEarlyDelete(process)
 # End adding early deletion
 
-# Add the skim part
+#print tauIdEmbedder.toKeep
+
+# Add the customization
 if not options.isStandard:
     from BoostedDiTau.Skimmer.customizeSkims4TCP import addCustomization
     addCustomization(process,options)

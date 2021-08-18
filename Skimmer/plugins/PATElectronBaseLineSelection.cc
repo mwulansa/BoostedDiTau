@@ -56,6 +56,8 @@ public:
 
 private:
   bool isDebug_ ;
+  double ptcut_;
+  double etacut_;
   
   
 private:
@@ -83,6 +85,8 @@ PATElectronBaseLineSelection::PATElectronBaseLineSelection(const edm::ParameterS
   //isDebug_ (iConfig.getUntrackedParameter<bool>("isDebug", false))
 {
 
+  ptcut_ = iConfig.getParameter<double>("cutPt");
+  etacut_ = iConfig.getParameter<double>("cutEta");
   isDebug_ = iConfig.getUntrackedParameter<bool>("isDebug", false);
   produces<pat::ElectronCollection>( "myElectrons" );
 }
@@ -119,7 +123,7 @@ bool PATElectronBaseLineSelection::GsfEleConversionVetoCut(pat::ElectronCollecti
   edm::Handle<reco::BeamSpot> thebs;
   iEvent.getByToken(thebs_,thebs);
   if(thebs.isValid() && convs.isValid() ) {
-    return !ConversionTools::hasMatchedConversion(*ele,*convs,
+    return !ConversionTools::hasMatchedConversion(*ele,convs,
 						  thebs->position());
   } else {
     edm::LogWarning("GsfEleConversionVetoCut")
@@ -158,17 +162,15 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
     //if ((iele -> pt() > 7) && (abs(iele -> eta()) < 2.5) ) {
     //	 passedelectrons->push_back(*iele);
 	
-    if ((iele -> pt() > 7) && (abs(iele -> eta()) < 2.5)) {
+    if ((iele -> pt() > ptcut_) && (abs(iele -> eta()) < etacut_)) {
       if( iele->isEB()) {
 	if( (iele->full5x5_sigmaIetaIeta()<0.0112)  &&
-	    //	    (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)) &&
+	    (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)) &&
 	    (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.0884) &&
 	    (GsfEleEInverseMinusPInverseCut < 0.193) &&
 	    (dEtaInSeedCut < 0.00377) &&
 	    (GsfEleMissingHitsCut(iele) <= 1 ) &&
-	    (GsfEleConversionVetoCut(iele,iEvent)) && 
-	    (dxy < 0.05) &&
-	    (dz < 0.1) ) {
+	    (GsfEleConversionVetoCut(iele,iEvent)) ) {
 	  passedelectrons->push_back(*iele);
 	  //if (iele -> pt() > 10 && iele -> pt() < 11 && isDebug_) {
 	  if (isDebug_) {
@@ -189,14 +191,12 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
       }
       if(iele->isEE()) {
 	if( (iele->full5x5_sigmaIetaIeta() < 0.0425) &&
-	    //	    (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)) &&
+	    (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)) &&
 	    (abs(iele->deltaPhiSuperClusterTrackAtVtx()) < 0.169) &&
 	    (GsfEleEInverseMinusPInverseCut < 0.111) &&
 	    (dEtaInSeedCut <0.00674) &&
 	    (GsfEleMissingHitsCut(iele) <= 1 ) &&
-	    (GsfEleConversionVetoCut(iele,iEvent)) &&
-	    (dxy < 0.1) &&
-	    (dz < 0.2) ) {
+	    (GsfEleConversionVetoCut(iele,iEvent)) ) {
 	  passedelectrons->push_back(*iele);
 	  //if (iele -> pt() > 10 && iele -> pt() < 11 && and isDebug_) {
 	  if (isDebug_) {
