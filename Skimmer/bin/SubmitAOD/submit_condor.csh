@@ -1,10 +1,18 @@
 #!/bin/tcsh
 
+<<<<<<< HEAD
 setenv CMSSW_BASE /uscms/home/jingyu/nobackup/TCP/boostedDiTauReco/CMSSW_10_6_12
 
 cd $CMSSW_BASE/src
 
 tar -zcvf ../../CMSSW.tgz ../../CMSSW_10_6_12/ --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.log" --exclude="*stderr" --exclude="*stdout"
+=======
+setenv CMSSW_BASE /uscms/home/jingyu/nobackup/TCP/boostedDiTauReco/CMSSW_9_4_15
+
+cd $CMSSW_BASE/src
+
+tar -zcvf ../../CMSSW.tgz ../../CMSSW_9_4_15/ --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.log" --exclude="*stderr" --exclude="*stdout"
+>>>>>>> 3554be3e720764bf620d741ecd83258ee4d6c1fb
 
 eosrm /eos/uscms/store/user/zhangj/events/ALP/CMSSW.tgz
 

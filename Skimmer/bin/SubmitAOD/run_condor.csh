@@ -15,3 +15,4 @@ echo "Arguments passed to this script are: for 1: $1"
 cmsRun ${1}
 cd ${_CONDOR_SCRATCH_DIR}
 rm -rf CMSSW_10_6_12
+

@@ -13,34 +13,35 @@ options = VarParsing('analysis')
 #inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/UpsilonTauTau/RunIISummer19UL17RECO/UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_AODSIM_119.root'
 inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer19UL17RECO/TCP_m10_w1_htjmin400_RunIISummer19UL17RECO_AODSIM_10.root'
 
-
 options.maxEvents = 100
 options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Events to skip")
 options.register('reportEvery', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Report every")
 options.register('isMC', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Sample is MC")
-options.register('doSlimming', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
+options.register('doSlimming', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
 options.register('isStandard', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
-options.register('isReMINIAOD', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
+#options.register('isReMINIAOD', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
 options.register('numThreads', 8, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Set number of threads")
 
-if options.isStandard:
-    options.doSlimming = 0
-    outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Standard.root' 
-elif options.doSlimming:
-    outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Slimmed.root'
-else:
+#if options.isStandard:
+#    options.doSlimming = 0
+#    outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Standard.root' 
+#elif options.doSlimming:
+#    outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Slimmed.root'
+#else:
     #outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Cleaned.root'
     outputFile = 'ALP_m10_RunIISummer19UL17RECO_MINIAODSIM_Cleaned_v2.root'
-
 
 options.parseArguments()
 
 #########################
 ### Main MINIAOD Path ###
 #########################
-from Configuration.Eras.Era_Run2_2017_cff import Run2_2017
+#from Configuration.Eras.Era_Run2_2017_cff import Run2_2017
 
-process = cms.Process('PAT',Run2_2017)
+#process = cms.Process('PAT',Run2_2017)
+from Configuration.StandardSequences.Eras import eras
+
+process = cms.Process('reMINIAOD',eras.Run2_2017,eras.run2_miniAOD_94XFall17)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -149,7 +150,7 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v6', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v17', '')
 
 #patAlgosToolsTask.add(process.selectedPATTausElectronCleaned)
 
@@ -223,6 +224,8 @@ from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEar
 process = customiseEarlyDelete(process)
 # End adding early deletion
 
+#print tauIdEmbedder.toKeep
+
 # Add the customization
 if not options.isStandard:
     from BoostedDiTau.Skimmer.customizeSkims4TCP import addCustomization
@@ -230,34 +233,6 @@ if not options.isStandard:
 ## fix things
 process.patTrigger.processName = cms.string('RECO')
 process.slimmedPatTrigger.triggerResults = cms.InputTag("TriggerResults","","RECO")
-
-# add tauID
-updatedTauName = "slimmedTausNewID"
-#import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
-import BoostedDiTau.Skimmer.runTauIdMVA as tauIdConfig
-tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = True,
-                                          updatedTauName = updatedTauName,
-                                          tauSrc = 'slimmedTaus',
-                                          toKeep = ["2017v2",
-                                                    "deepTau2017v2p1", #deepTau TauIDs
-                                          ])
-tauIdEmbedder.runTauID()
-
-import PhysicsTools.PatAlgos.tools.helpers as configtools
-patAlgosToolsTask = configtools.getPatAlgosToolsTask(process)
-
-process.tauId = cms.Task(
-    process.rerunMvaIsolationTask,
-    process.slimmedTausNewID,
-)
-
-patAlgosToolsTask.add(process.tauId)
-
-process.MINIAODSIMEventContent.outputCommands += [
-    'keep *_slimmedTausNewID_*_*',
-]
-
-#print tauIdEmbedder.toKeep
 
 dump_file = open('dump_config.py','w')
 dump_file.write(process.dumpPython())
