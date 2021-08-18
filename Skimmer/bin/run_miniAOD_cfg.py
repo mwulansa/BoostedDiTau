@@ -11,10 +11,10 @@ options = VarParsing('analysis')
 
 #inputFiles = 'file:/uscms/home/jingyu/nobackup/TCP/Generator/CMSSW_10_6_12/src/BPH_2017Legacy_TuneCUETP8M1_13TeV_pythia8_AODSIM.root'
 #inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/UpsilonTauTau/RunIISummer19UL17RECO/UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_AODSIM_119.root'
-inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/ALP/ALP_m10_w1_htjmin400_RunIISummer17DR94Premix_RECO_99.root'
+inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer19UL17RECO/TCP_m10_w1_htjmin400_RunIISummer19UL17RECO_AODSIM_10.root'
 
 
-options.maxEvents = -1
+options.maxEvents = 100
 options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Events to skip")
 options.register('reportEvery', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Report every")
 options.register('isMC', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Sample is MC")
@@ -30,7 +30,7 @@ elif options.doSlimming:
     outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Slimmed.root'
 else:
     #outputFile = 'UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_Cleaned.root'
-    outputFile = 'TCP_m10_RunIISummer19UL17RECO_MINIAODSIM_Cleaned.root'
+    outputFile = 'ALP_m10_RunIISummer19UL17RECO_MINIAODSIM_Cleaned_v2.root'
 
 
 options.parseArguments()
