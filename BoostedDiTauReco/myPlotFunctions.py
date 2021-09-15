@@ -34,6 +34,7 @@ def SetHistStyle(h,color,lineStyle,lineWidth,markerSize):
     h.SetLineStyle(lineStyle)
     h.SetLineWidth(lineWidth)
     h.SetMarkerSize(markerSize)
+    h.SetMarkerColor(color)
     return
 
 def SetupAxis(h, whichAxis, Ndivisions, labelSize, labelOffset, title, titleSize, titleOffset, pSet=None):

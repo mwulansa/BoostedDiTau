@@ -137,7 +137,7 @@ def addCustomization(process,options,**kwargs):
     #############################
     ### Electron cleaned taus ###
     #############################
-    process.recoElectronsForJetCleaning = cms.EDFilter('ElectronFilter',
+    process.recoElectronsForJetCleaning = cms.EDFilter('ElectronFilterAOD',
                                                vertex = cms.InputTag("offlinePrimaryVerticesWithBS"),
                                                Rho = cms.InputTag("fixedGridRhoFastjetAll"),
                                                electrons = cms.InputTag("gedGsfElectrons"),

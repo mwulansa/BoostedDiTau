@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
 // Package:    RecoJets/JetProducers
-// Class:      ElectronFilter
+// Class:      ElectronFilterAOD
 // 
-/**\class ElectronFilter ElectronFilter.cc RecoJets/JetProducers/plugins/ElectronFilter.cc
+/**\class ElectronFilterAOD ElectronFilterAOD.cc RecoJets/JetProducers/plugins/ElectronFilterAOD.cc
 
  Description: [one line class summary]
 Creates a collection of electrons passing the Loose Electron ID.returns true if at least one electron passes
@@ -64,10 +64,10 @@ using namespace std;
 // class declaration
 //
 
-class ElectronFilter : public edm::stream::EDFilter<> {
+class ElectronFilterAOD : public edm::stream::EDFilter<> {
 public:
-      explicit ElectronFilter(const edm::ParameterSet&);
-  ~ElectronFilter();
+      explicit ElectronFilterAOD(const edm::ParameterSet&);
+  ~ElectronFilterAOD();
   
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
   float dEtaInSeed(reco::GsfElectronCollection::const_iterator ele);
@@ -125,7 +125,7 @@ private:
 //
 // constructors and destructor
 //
-ElectronFilter::ElectronFilter(const edm::ParameterSet& iConfig):
+ElectronFilterAOD::ElectronFilterAOD(const edm::ParameterSet& iConfig):
   electronSrc_(consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
   rho_(consumes<double>(iConfig.getParameter<edm::InputTag>("Rho"))),
   convs_(consumes<reco::ConversionCollection>(iConfig.getParameter<edm::InputTag>("conv"))),
@@ -140,7 +140,7 @@ ElectronFilter::ElectronFilter(const edm::ParameterSet& iConfig):
 }
 
 
-ElectronFilter::~ElectronFilter()
+ElectronFilterAOD::~ElectronFilterAOD()
 {
   
   // do anything here that needs to be done at destruction time
@@ -152,17 +152,17 @@ ElectronFilter::~ElectronFilter()
 //
 // member functions
 //
-float ElectronFilter::dEtaInSeed (reco::GsfElectronCollection::const_iterator ele){
+float ElectronFilterAOD::dEtaInSeed (reco::GsfElectronCollection::const_iterator ele){
   return ele->superCluster().isNonnull() && ele->superCluster()->seed().isNonnull() ?
     ele->deltaEtaSuperClusterTrackAtVtx() - ele->superCluster()->eta() + ele->superCluster()->seed()->eta() : std::numeric_limits<float>::max();
 }
-float ElectronFilter::GsfEleEInverseMinusPInverse (reco::GsfElectronCollection::const_iterator ele)
+float ElectronFilterAOD::GsfEleEInverseMinusPInverse (reco::GsfElectronCollection::const_iterator ele)
 {
   const float ecal_energy_inverse = 1.0/ele->ecalEnergy();
   const float eSCoverP = ele->eSuperClusterOverP();
   return std::abs(1.0 - eSCoverP)*ecal_energy_inverse;
 }
-int ElectronFilter::GsfEleMissingHitsCut(reco::GsfElectronCollection::const_iterator ele)
+int ElectronFilterAOD::GsfEleMissingHitsCut(reco::GsfElectronCollection::const_iterator ele)
 {
 
   constexpr reco::HitPattern::HitCategory missingHitType =
@@ -171,7 +171,7 @@ int ElectronFilter::GsfEleMissingHitsCut(reco::GsfElectronCollection::const_iter
       ele->gsfTrack()->hitPattern().numberOfAllHits(missingHitType);
     return mHits;
 }
-double ElectronFilter::GsfEleEffAreaPFIsoCut(reco::GsfElectronCollection::const_iterator ele,edm::Event& iEvent)
+double ElectronFilterAOD::GsfEleEffAreaPFIsoCut(reco::GsfElectronCollection::const_iterator ele,edm::Event& iEvent)
 {
   //Compute the combined isolation with effective area correction
 
@@ -203,7 +203,7 @@ double ElectronFilter::GsfEleEffAreaPFIsoCut(reco::GsfElectronCollection::const_
 
 }
 
-bool ElectronFilter::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_iterator ele ,edm::Event& iEvent)
+bool ElectronFilterAOD::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_iterator ele ,edm::Event& iEvent)
 {
 
   edm::Handle<reco::ConversionCollection> convs;
@@ -221,7 +221,7 @@ bool ElectronFilter::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_
 }
 
 // ------------ method called on each new Event  ------------
-bool ElectronFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
+bool ElectronFilterAOD::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   using namespace reco;
    unsigned int EBpcount = 0;
@@ -316,18 +316,18 @@ iSetup.get<SetupRecord>().get(pSetup);
 
 // ------------ method called once each stream before processing any runs, lumis or events  ------------
 void
-ElectronFilter::beginStream(edm::StreamID)
+ElectronFilterAOD::beginStream(edm::StreamID)
 {
 }
 
 // ------------ method called once each stream after processing all runs, lumis and events  ------------
 void
-ElectronFilter::endStream() {
+ElectronFilterAOD::endStream() {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-ElectronFilter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+ElectronFilterAOD::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -335,4 +335,4 @@ ElectronFilter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   descriptions.addDefault(desc);
 }
 //define this as a plug-in
-DEFINE_FWK_MODULE(ElectronFilter);
+DEFINE_FWK_MODULE(ElectronFilterAOD);

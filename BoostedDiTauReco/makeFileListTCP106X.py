@@ -13,7 +13,7 @@ def clearDir(dir):
         os.remove(fil)
 
 
-masses = ['30']
+masses = ['30','50']
 
 bins = ['0to100','100to400','400toInf']
 
@@ -22,8 +22,11 @@ for mass in masses:
     checkAndMakeDir("./filelists/TCP")
     checkAndMakeDir(fileListDir)
     clearDir(fileListDir)
-    for b in bins:
-        searchString = '/store/user/nbower/Events/TCP_m_{}_w_1_{}_slc6_amd64_gcc630_MINIAOD/'.format(mass, b)
+    for b in bins:   
+        #searchString = '/store/user/nbower/Events/TCP_m_{}_w_1_htj_{}_slc6_amd64_gcc630_MINIAOD/'.format(mass, b)
+        #fileDir = searchString
+        searchString = '/store/user/zhangj/events/ALP/UL2017ReMiniAOD/TCP_m_{}_w_1_htj_{}*'.format(mass, b)
+        fileDir = '/store/user/zhangj/events/ALP/UL2017ReMiniAOD/'
         query = 'eos root://cmseos.fnal.gov ls '+searchString
         files = os.popen(query).read().split()
 
@@ -31,5 +34,5 @@ for mass in masses:
             filelistIdx=int((nf-1)/filesPerList)
             if nf%filesPerList==1:
                 out=open(fileListDir+'TCP_m_{}_w_1_htj_{}_{}.txt'.format(mass, b, str(filelistIdx)), 'w')
-            out.write(prefix+searchString+files[nf-1]+"\n")
+            out.write(prefix+fileDir+files[nf-1]+"\n")
 
