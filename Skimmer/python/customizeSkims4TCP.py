@@ -90,7 +90,7 @@ def addCustomization(process,options,**kwargs):
         from PhysicsTools.PatAlgos.tools.coreTools import _removeMCMatchingForPATObject
         attrsToDelete = []
         postfix = ''
-        print "removing MC dependencies for tausMuonCleaned"
+        print("removing MC dependencies for tausMuonCleaned")
         _removeMCMatchingForPATObject(process, 'tauMatch', 'patTausMuonCleaned',postfix)
         ## remove mc extra configs for taus
         tauProducer = getattr(process,'patTausMuonCleaned'+postfix)
@@ -137,7 +137,7 @@ def addCustomization(process,options,**kwargs):
     #############################
     ### Electron cleaned taus ###
     #############################
-    process.recoElectronsForJetCleaning = cms.EDFilter('ElectronFilter',
+    process.recoElectronsForJetCleaning = cms.EDFilter('ElectronFilterAOD',
                                                vertex = cms.InputTag("offlinePrimaryVerticesWithBS"),
                                                Rho = cms.InputTag("fixedGridRhoFastjetAll"),
                                                electrons = cms.InputTag("gedGsfElectrons"),
@@ -238,7 +238,7 @@ def addCustomization(process,options,**kwargs):
         from PhysicsTools.PatAlgos.tools.coreTools import _removeMCMatchingForPATObject
         attrsToDelete = []
         postfix = ''
-        print "removing MC dependencies for tausElectronCleaned"
+        print ("removing MC dependencies for tausElectronCleaned")
         _removeMCMatchingForPATObject(process, 'tauMatch', 'patTausElectronCleaned',postfix)
         ## remove mc extra configs for taus
         tauProducer = getattr(process,'patTausElectronCleaned'+postfix)

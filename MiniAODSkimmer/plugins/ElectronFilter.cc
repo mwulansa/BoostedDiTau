@@ -1,19 +1,20 @@
 // -*- C++ -*-
 //
-// Package:    RecoJets/JetProducers
+// Package:    MiniAODCleanerTest/MiniAODCleaner
 // Class:      ElectronFilter
 // 
-/**\class ElectronFilter ElectronFilter.cc RecoJets/JetProducers/plugins/ElectronFilter.cc
+/**\class ElectronFilter ElectronFilter.cc MiniAODCleanerTest/MiniAODCleaner/plugins/ElectronFilter.cc
 
  Description: [one line class summary]
-Creates a collection of electrons passing the Loose Electron ID.returns true if at least one electron passes
-The values have been updated for 2017 MC/Data 
- Implementation:
+Creates a collection of electrons passing the Loose Electron ID.returns true if at least one electron passes.
+Recomissioned for use in MiniAOD cleaning.
+
+Implementation:
      [Notes on implementation]
 */
 //
 // Original Author:  Redwan Habibullah
-//         Created:  Sat, 24 Feb 2018 03:28:23 GMT
+//         Created:  Tue, 01 Jun 2021 
 //
 //
 
@@ -45,9 +46,11 @@ The values have been updated for 2017 MC/Data
 #include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
 
 #include "DataFormats/EgammaCandidates/interface/Conversion.h"
-#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
+#include "CommonTools/Egamma/interface/ConversionTools.h"
+//#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 
-#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
+#include "CommonTools/Egamma/interface/EffectiveAreas.h"
+//#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
 #include "PhysicsTools/SelectorUtils/interface/CutApplicatorWithEventContentBase.h"
 
 #include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
@@ -55,6 +58,18 @@ The values have been updated for 2017 MC/Data
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
+
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+
+#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/PatCandidates/interface/Photon.h"
+
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/MET.h"
 
 #include "DataFormats/Common/interface/RefToBaseVector.h"
 
@@ -70,13 +85,13 @@ public:
   ~ElectronFilter();
   
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-  float dEtaInSeed(reco::GsfElectronCollection::const_iterator ele);
-  float GsfEleEInverseMinusPInverse(reco::GsfElectronCollection::const_iterator ele);
+  float dEtaInSeed(pat::ElectronCollection::const_iterator ele);
+  float GsfEleEInverseMinusPInverse(pat::ElectronCollection::const_iterator ele);
   
-  int GsfEleMissingHitsCut(reco::GsfElectronCollection::const_iterator ele);
+  int GsfEleMissingHitsCut(pat::ElectronCollection::const_iterator ele);
   
-  double GsfEleEffAreaPFIsoCut(reco::GsfElectronCollection::const_iterator ele,edm::Event& iEvent);
-  bool GsfEleConversionVetoCut(reco::GsfElectronCollection::const_iterator ele,edm::Event& iEvent);
+  double GsfEleEffAreaPFIsoCut(pat::ElectronCollection::const_iterator ele,edm::Event& iEvent);
+  bool GsfEleConversionVetoCut(pat::ElectronCollection::const_iterator ele,edm::Event& iEvent);
   
   
 private:
@@ -94,7 +109,7 @@ private:
   float GsfEleEInverseMinusPInverseCut;
   float effA;
   float rhos;
-  edm::EDGetTokenT<reco::GsfElectronCollection> electronSrc_;
+  edm::EDGetTokenT<pat::ElectronCollection> electronSrc_;
   edm::EDGetTokenT<double>rho_;
   edm::EDGetTokenT<reco::ConversionCollection> convs_;
   edm::EDGetTokenT<reco::BeamSpot> thebs_;
@@ -109,10 +124,12 @@ private:
   unsigned int EBpcount_c = 0;
   unsigned int EEpcount_c = 0;
   unsigned int Passcount= 0;  
-  //math::XYZPointF p1;
-  //math::XYZPoint p2;
-  //double dz;
-  //double dxy;
+  math::XYZPointF p1;
+  math::XYZPoint p2;
+  double dz;
+  double dxy;
+  
+  
 };
 
 //
@@ -127,7 +144,7 @@ private:
 // constructors and destructor
 //
 ElectronFilter::ElectronFilter(const edm::ParameterSet& iConfig):
-  electronSrc_(consumes<reco::GsfElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
+  electronSrc_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
   rho_(consumes<double>(iConfig.getParameter<edm::InputTag>("Rho"))),
   convs_(consumes<reco::ConversionCollection>(iConfig.getParameter<edm::InputTag>("conv"))),
   thebs_(consumes<reco::BeamSpot>(iConfig.getParameter<edm::InputTag>("BM"))),
@@ -135,9 +152,8 @@ ElectronFilter::ElectronFilter(const edm::ParameterSet& iConfig):
   //trk_(consumes<reco::GsfTrackCollection>(iConfig.getParameter<edm::InputTag>("Tracks")))
 {
   //now do what ever initialization is needed
-  //produces<reco::GsfElectronCollection>( "LooseElectron" );
-  produces<reco::GsfElectronRefVector>("LooseElectronRef");
-  produces<reco::GsfElectronRefVector>("LooseElectronRefFlat");
+  produces<pat::ElectronCollection>( "MiniLooseElectron" );
+  produces<pat::ElectronRefVector>("LooseElectronRef");
 }
 
 
@@ -153,17 +169,17 @@ ElectronFilter::~ElectronFilter()
 //
 // member functions
 //
-float ElectronFilter::dEtaInSeed (reco::GsfElectronCollection::const_iterator ele){
+float ElectronFilter::dEtaInSeed (pat::ElectronCollection::const_iterator ele){
   return ele->superCluster().isNonnull() && ele->superCluster()->seed().isNonnull() ?
     ele->deltaEtaSuperClusterTrackAtVtx() - ele->superCluster()->eta() + ele->superCluster()->seed()->eta() : std::numeric_limits<float>::max();
 }
-float ElectronFilter::GsfEleEInverseMinusPInverse (reco::GsfElectronCollection::const_iterator ele)
+float ElectronFilter::GsfEleEInverseMinusPInverse (pat::ElectronCollection::const_iterator ele)
 {
   const float ecal_energy_inverse = 1.0/ele->ecalEnergy();
   const float eSCoverP = ele->eSuperClusterOverP();
   return std::abs(1.0 - eSCoverP)*ecal_energy_inverse;
 }
-int ElectronFilter::GsfEleMissingHitsCut(reco::GsfElectronCollection::const_iterator ele)
+int ElectronFilter::GsfEleMissingHitsCut(pat::ElectronCollection::const_iterator ele)
 {
 
   constexpr reco::HitPattern::HitCategory missingHitType =
@@ -172,38 +188,8 @@ int ElectronFilter::GsfEleMissingHitsCut(reco::GsfElectronCollection::const_iter
       ele->gsfTrack()->hitPattern().numberOfAllHits(missingHitType);
     return mHits;
 }
-double ElectronFilter::GsfEleEffAreaPFIsoCut(reco::GsfElectronCollection::const_iterator ele,edm::Event& iEvent)
-{
-  //Compute the combined isolation with effective area correction
 
-
-  for(unsigned i=0;i<EA.size();i++)
-    {
-      if(ele->eta() > Etamin[i] && ele->eta() <Etamax[i])
-        {
-          effA=EA[i];
-        }
-    }
-  const reco::GsfElectron::PflowIsolationVariables& pfIso  = ele->pfIsolationVariables();
-  const float chad = pfIso.sumChargedHadronPt;
-  const float nhad = pfIso.sumNeutralHadronEt;
-  const float pho = pfIso.sumPhotonEt;
-  // float  eA = effA;
-  //float rho = (float)(*_rhoHandle); // std::max likes float arguments
-  edm::Handle<double>_rhoHandle;
-  iEvent.getByToken(rho_,_rhoHandle);
-  rhos = *(_rhoHandle.product());
-  float iso = chad + std::max(0.0f, nhad + pho-effA*rhos);
-
-  // Divide by pT if the relative isolation is requested
-  //if( _isRelativeIso )
-  iso /= ele->pt();
-
-  // Apply the cut and return the result
-  return iso;
-
-}
-bool ElectronFilter::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_iterator ele ,edm::Event& iEvent)
+bool ElectronFilter::GsfEleConversionVetoCut(pat::ElectronCollection::const_iterator ele ,edm::Event& iEvent)
 {
 
   edm::Handle<reco::ConversionCollection> convs;
@@ -211,7 +197,7 @@ bool ElectronFilter::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_
   edm::Handle<reco::BeamSpot> thebs;
   iEvent.getByToken(thebs_,thebs);
   if(thebs.isValid() && convs.isValid() ) {
-    return !ConversionTools::hasMatchedConversion(*ele,convs,
+    return !ConversionTools::hasMatchedConversion(*ele,*convs,
 						  thebs->position());
   } else {
     edm::LogWarning("GsfEleConversionVetoCut")
@@ -219,38 +205,26 @@ bool ElectronFilter::GsfEleConversionVetoCut(reco::GsfElectronCollection::const_
     return true;
   }
 }
-
 // ------------ method called on each new Event  ------------
 bool ElectronFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   using namespace reco;
    unsigned int EBpcount = 0;
    unsigned int EEpcount = 0;
- /*#ifdef THIS_IS_AN_EVENT_EXAMPLE
-  Handle<ExampleData> pIn;
-  iEvent.getByLabel("example",pIn);
-#endif
-
-#ifdef THIS_IS_AN_EVENTSETUP_EXAMPLE
-ESHandle<SetupData> pSetup;
-iSetup.get<SetupRecord>().get(pSetup);
-#endif*/
-  Handle<reco::GsfElectronCollection> electrons;
+ 
+  Handle<pat::ElectronCollection> electrons;
   iEvent.getByToken(electronSrc_,electrons);
-  //unique_ptr<reco::GsfElectronCollection> passedelectrons(new reco::GsfElectronCollection);
-  unique_ptr<reco::GsfElectronRefVector> passedelectronRef(new reco::GsfElectronRefVector);
-  unique_ptr<reco::GsfElectronRefVector> passedelectronRefFlat(new reco::GsfElectronRefVector);
+  unique_ptr<pat::ElectronCollection> passedelectrons(new pat::ElectronCollection);
+  unique_ptr<pat::ElectronRefVector> passedelectronRef(new pat::ElectronRefVector);
   Handle<reco::VertexCollection> Vertex;
   iEvent.getByToken(vtx_,Vertex);
-  //Handle<reco::GsfTrackCollection> trk;
-  //iEvent.getByToken(trk_,trk);
   
   edm::Handle<double>_rhoHandle;
   iEvent.getByToken(rho_,_rhoHandle);
 
-  for(reco::GsfElectronCollection::const_iterator iele = electrons->begin() ; iele !=electrons->end(); ++iele)
+  for(pat::ElectronCollection::const_iterator iele = electrons->begin() ; iele !=electrons->end(); ++iele)
     { ++Tcount;
-      reco::GsfElectronRef ERef(electrons,iele-electrons->begin()); 
+      pat::ElectronRef ERef(electrons,iele-electrons->begin()); 
 
       dEtaInSeedCut =abs(dEtaInSeed(iele));
       GsfEleEInverseMinusPInverseCut = GsfEleEInverseMinusPInverse(iele);
@@ -262,56 +236,55 @@ iSetup.get<SetupRecord>().get(pSetup);
       double HoE=iele->hadronicOverEm();
       double E_c = iele->superCluster()->energy();
       double rho = _rhoHandle.isValid() ? (*_rhoHandle) : 0; 
+      bool isPassConVeto = iele->passConversionVeto();
+      p1 = iele->trackPositionAtVtx();
+      for(unsigned j= 0;j< Vertex->size();j++)
+	{
+	  p2=(Vertex->at(0)).position();
+	}
+      dz = abs(p1.z()-p2.z());
+      dxy = sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()));
+      
       
       if( iele->isEB())	{++EBcount;
 	//cout << "EBloop" <<endl;
-
-	// 94x: HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)
-	// mod: HoE < 0.215
 	  
-	if( (iele->full5x5_sigmaIetaIeta()<0.0112) && (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.0884) && (GsfEleEInverseMinusPInverseCut < 0.193) && (dEtaInSeedCut < 0.00377) && (GsfEleMissingHitsCut(iele) <= 1 ) && (GsfEleConversionVetoCut(iele,iEvent)) && (iele->pt()>7)){
-	  if (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)){
-	      //passedelectrons->push_back(*iele);
-	    passedelectronRef->push_back(ERef);
+	if( (iele->full5x5_sigmaIetaIeta()<0.0112)  && (HoE < (0.05 + 1.16/E_c + 0.0324*rho/E_c)) && (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.0884) && (GsfEleEInverseMinusPInverseCut < 0.193) && (dEtaInSeedCut < 0.00377) && (GsfEleMissingHitsCut(iele) <= 1 ) && /*(GsfEleConversionVetoCut(iele,iEvent))*/ (isPassConVeto==true) && (iele->pt()>3))
+	    {
+	      passedelectrons->push_back(*iele);
+	      passedelectronRef->push_back(ERef);
 	      //cout<< "EBPushback" <<endl;
-	    ++EBpcount;
-	    ++EBpcount_c;
-	  }
-	  if (HoE < 0.215){
-	    passedelectronRefFlat->push_back(ERef);
-	  }
+	      ++EBpcount;
+	      ++EBpcount_c;
+	    }
+	  
 	}
-      }
-      
-      if(iele->isEE())	
+      if(iele->isEE())
+	
 	{++EEcount;
 	  //cout<<" EEloop " << endl;
-
-	  //94x: HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)
-	  //mod: HoE < 0.0984
-
-	  if((iele->full5x5_sigmaIetaIeta()<0.0425) && (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.169) && (GsfEleEInverseMinusPInverseCut < 0.111) &&(dEtaInSeedCut <0.00674) && (GsfEleMissingHitsCut(iele) <= 1 ) && (GsfEleConversionVetoCut(iele,iEvent)) && (iele->pt()>7) )
+	  if((iele->full5x5_sigmaIetaIeta()<0.0425) && (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)) && (abs(iele->deltaPhiSuperClusterTrackAtVtx()) <0.169) && (GsfEleEInverseMinusPInverseCut < 0.111) &&(dEtaInSeedCut <0.00674) && (GsfEleMissingHitsCut(iele) <= 1 ) && /*(GsfEleConversionVetoCut(iele,iEvent))*/ (isPassConVeto==true) && (iele->pt()>3))
 
 	    {
-	      if (HoE < (0.0441 + 2.54/E_c + 0.183*rho/E_c)){
-	      //passedelectrons->push_back(*iele);
+
+
+	      passedelectrons->push_back(*iele);
 	      passedelectronRef->push_back(ERef);
 	      //cout<< "EEPushback" <<endl;
 	      ++EEpcount;
 	      ++EEpcount_c;
 	    }
-	      if (HoE < 0.0984){
-		passedelectronRefFlat->push_back(ERef);
-	      }
-	    }
+
 	}
+
+
     }
 
 
-  //iEvent.put(move(passedelectrons), "LooseElectron");
+  iEvent.put(move(passedelectrons), "MiniLooseElectron");
   iEvent.put(move(passedelectronRef),"LooseElectronRef");
-  iEvent.put(move(passedelectronRefFlat),"LooseElectronRefFlat");
-  return false;
+  return true;
+  //else return false;
 }
 
 // ------------ method called once each stream before processing any runs, lumis or events  ------------
@@ -325,6 +298,38 @@ void
 ElectronFilter::endStream() {
 }
 
+// ------------ method called when starting to processes a run  ------------
+/*
+  void
+  ElectronFilter::beginRun(edm::Run const&, edm::EventSetup const&)
+{ 
+}
+*/
+ 
+// ------------ method called when ending the processing of a run  ------------
+/*
+void
+ElectronFilter::endRun(edm::Run const&, edm::EventSetup const&)
+{
+}
+*/
+ 
+// ------------ method called when starting to processes a luminosity block  ------------
+/*
+void
+ElectronFilter::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+{
+}
+*/
+ 
+// ------------ method called when ending the processing of a luminosity block  ------------
+/*
+void
+ElectronFilter::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+{
+}
+*/
+ 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
 ElectronFilter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {

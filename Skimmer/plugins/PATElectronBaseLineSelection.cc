@@ -23,13 +23,9 @@
 #include "TMath.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
 
-#include "DataFormats/EgammaCandidates/interface/Conversion.h"
-#include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
-
-#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
+#include "CommonTools/Egamma/interface/EffectiveAreas.h"
 #include "PhysicsTools/SelectorUtils/interface/CutApplicatorWithEventContentBase.h"
 
-#include "DataFormats/EgammaCandidates/interface/ConversionFwd.h"
 #include "DataFormats/TrackReco/interface/TrackBase.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
@@ -52,7 +48,6 @@ public:
   float dEtaInSeed(pat::ElectronCollection::const_iterator ele);
   float GsfEleEInverseMinusPInverse(pat::ElectronCollection::const_iterator ele);
   int GsfEleMissingHitsCut(pat::ElectronCollection::const_iterator ele);
-  bool GsfEleConversionVetoCut(pat::ElectronCollection::const_iterator ele,edm::Event& iEvent);
 
 private:
   bool isDebug_ ;
@@ -71,7 +66,6 @@ private:
   
   edm::EDGetTokenT<pat::ElectronCollection> electronSrc_;
   edm::EDGetTokenT<double> rho_;
-  edm::EDGetTokenT<reco::ConversionCollection> convs_;
   edm::EDGetTokenT<reco::BeamSpot> thebs_;
   edm::EDGetTokenT<reco::VertexCollection> vtx_;
 };
@@ -79,7 +73,6 @@ private:
 PATElectronBaseLineSelection::PATElectronBaseLineSelection(const edm::ParameterSet& iConfig):
   electronSrc_(consumes<pat::ElectronCollection>(iConfig.getParameter<edm::InputTag>("electrons"))),
   rho_(consumes<double>(iConfig.getParameter<edm::InputTag>("Rho"))),
-  convs_(consumes<reco::ConversionCollection>(iConfig.getParameter<edm::InputTag>("conv"))),
   thebs_(consumes<reco::BeamSpot>(iConfig.getParameter<edm::InputTag>("BM"))),
   vtx_ (consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("vertex")))
   //isDebug_ (iConfig.getUntrackedParameter<bool>("isDebug", false))
@@ -114,23 +107,6 @@ int PATElectronBaseLineSelection::GsfEleMissingHitsCut(pat::ElectronCollection::
     return mHits;
 }
 
-
-bool PATElectronBaseLineSelection::GsfEleConversionVetoCut(pat::ElectronCollection::const_iterator ele ,edm::Event& iEvent)
-{
-
-  edm::Handle<reco::ConversionCollection> convs;
-  iEvent.getByToken(convs_,convs);
-  edm::Handle<reco::BeamSpot> thebs;
-  iEvent.getByToken(thebs_,thebs);
-  if(thebs.isValid() && convs.isValid() ) {
-    return !ConversionTools::hasMatchedConversion(*ele,convs,
-						  thebs->position());
-  } else {
-    edm::LogWarning("GsfEleConversionVetoCut")
-      << "Couldn't find a necessary collection, returning true!";
-    return true;
-  }
-}
 
 // ------------ method called on each new Event  ------------
 bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
@@ -170,7 +146,7 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 	    (GsfEleEInverseMinusPInverseCut < 0.193) &&
 	    (dEtaInSeedCut < 0.00377) &&
 	    (GsfEleMissingHitsCut(iele) <= 1 ) &&
-	    (GsfEleConversionVetoCut(iele,iEvent)) ) {
+	    (iele->passConversionVeto()) ) {
 	  passedelectrons->push_back(*iele);
 	  //if (iele -> pt() > 10 && iele -> pt() < 11 && isDebug_) {
 	  if (isDebug_) {
@@ -178,14 +154,13 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 			<< iele->pt() << " | "
 			<< dxy << " | "
 			<< dz << " | "
-			<< GsfEleConversionVetoCut(iele,iEvent) << " | "
 			<< dEtaInSeedCut << "|"
 			<< GsfEleEInverseMinusPInverseCut << " | "
 			<< abs(iele->deltaPhiSuperClusterTrackAtVtx()) << " | "
 			<< iele->full5x5_sigmaIetaIeta() << " | "
 	      		<< HoE << " | "
 	       		<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
-			<< GsfEleConversionVetoCut(iele,iEvent) << "\n";
+			<< iele->passConversionVeto() << "\n";
 	  }
 	}
       }
@@ -196,7 +171,7 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 	    (GsfEleEInverseMinusPInverseCut < 0.111) &&
 	    (dEtaInSeedCut <0.00674) &&
 	    (GsfEleMissingHitsCut(iele) <= 1 ) &&
-	    (GsfEleConversionVetoCut(iele,iEvent)) ) {
+	    (iele->passConversionVeto()) ) {
 	  passedelectrons->push_back(*iele);
 	  //if (iele -> pt() > 10 && iele -> pt() < 11 && and isDebug_) {
 	  if (isDebug_) {
@@ -204,14 +179,13 @@ bool PATElectronBaseLineSelection::filter(edm::Event& iEvent, const edm::EventSe
 			<< iele->pt() << " | "
 			<< dxy << " | "
 			<< dz << " | "
-			<< GsfEleConversionVetoCut(iele,iEvent) << " | "
 			<< dEtaInSeedCut << "|"
 			<< GsfEleEInverseMinusPInverseCut << " | "
 			<< abs(iele->deltaPhiSuperClusterTrackAtVtx()) << " | "
 			<< iele->full5x5_sigmaIetaIeta() << " | "
 	           	<< HoE << " | "
        			<< (0.05 + 1.16/E_c + 0.0324*rho/E_c) << " | "
-			<< GsfEleConversionVetoCut(iele,iEvent) << "\n";
+			<< iele->passConversionVeto() << "\n";
 	  }
 	}
       }
