@@ -201,6 +201,20 @@ process.recoTauAK4Jets08RegionPAT.minJetPt = minJetPt
 process.ak4PFJetsRecoTauChargedHadrons.minJetPt = minJetPt
 process.selectedPatTaus.cut = cms.string('pt > 8.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5')
 ##########################################
+#### Lower Tau Pt Boosted Taus###########
+
+print ('Step : 5 - Lower Pt Boosted Taus')
+
+jetPt=5
+tauPt=8
+
+getattr(process,'selectedPatTausBoosted').cut = cms.string("pt > {} && abs(eta) < 2.3 && tauID(\'decayModeFinding\')> 0.5".format(tauPt))
+process.ak4PFJetsLegacyHPSPiZerosBoosted.minJetPt = jetPt
+process.combinatoricRecoTausBoosted.minJetPt = jetPt
+process.recoTauAK4Jets08RegionPATBoosted.minJetPt = jetPt
+process.ak4PFJetsRecoTauChargedHadronsBoosted.minJetPt = jetPt
+
+##########################################
 #### Lower Tau Pt ElectronCleaned Taus###########
 
 print ('Step : 5 - Lower Pt ElectronCleaned Taus')

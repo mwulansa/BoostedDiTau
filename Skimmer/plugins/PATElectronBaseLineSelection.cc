@@ -23,7 +23,7 @@
 #include "TMath.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectronCore.h"
 
-#include "RecoEgamma/EgammaTools/interface/EffectiveAreas.h"
+#include "CommonTools/Egamma/interface/EffectiveAreas.h"
 #include "PhysicsTools/SelectorUtils/interface/CutApplicatorWithEventContentBase.h"
 
 #include "DataFormats/TrackReco/interface/TrackBase.h"
