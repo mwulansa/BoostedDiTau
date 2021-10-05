@@ -827,13 +827,21 @@ def addFurtherSkimming(process):
     #doMM =kwargs.pop('doMM',False)
     #doMT = kwargs.pop('doMT',False)
     
+    
     #########################
     ### Skim Path MiniAOD ###
     #########################
     process.main_path = cms.Path()
     process.main_path_et = cms.Path()
     process.main_path_mt = cms.Path()
+
+    ## First store summed weights before skimming
+    process.limiSummary = cms.EDAnalyzer("LumiAnalyzer",
+                                         genEventInfo = cms.InputTag("generator")
+    )
     
+    process.main_path *= process.limiSummary
+     
 
     ###### Will only use main-skim so these won't be associated to schedule ######
     process.z_path = cms.Path()
@@ -851,7 +859,7 @@ def addFurtherSkimming(process):
                               andOr = cms.bool(True), #----- True = OR, False = AND between the HLTPaths
                               throw = cms.bool(False) # throw exception on unknown path names
                     )
-    process.main_path *= process.HLT
+    #process.main_path *= process.HLT
     process.main_path_et *= process.HLT
     process.main_path_mt *= process.HLT
     
@@ -882,8 +890,8 @@ def addFurtherSkimming(process):
         src = cms.InputTag('analysisMuonsIso'),
     )
         
-    process.main_path *= process.analysisMuonsNoIso
-    process.main_path *= process.analysisMuonsNoIsoCount
+    #process.main_path *= process.analysisMuonsNoIso
+    #process.main_path *= process.analysisMuonsNoIsoCount
     process.main_path_et *= process.analysisMuonsNoIso
     process.main_path_et *= process.analysisMuonsNoIsoCount
     process.main_path_mt *= process.analysisMuonsNoIso
@@ -901,8 +909,8 @@ def addFurtherSkimming(process):
                                             maxNumber = cms.uint32(999),
                                             src = cms.InputTag('triggerMuon'),
                                         )
-    process.main_path *= process.triggerMuon
-    process.main_path *= process.triggerMuonCount
+    #process.main_path *= process.triggerMuon
+    #process.main_path *= process.triggerMuonCount
     process.main_path_et *= process.triggerMuon
     process.main_path_et *= process.triggerMuonCount
     process.main_path_mt *= process.triggerMuon
@@ -990,8 +998,8 @@ def addFurtherSkimming(process):
     #################
     
     process.schedule.append(process.main_path)
-    process.schedule.append(process.main_path_et)
-    process.schedule.append(process.main_path_mt)
+    #process.schedule.append(process.main_path_et)
+    #process.schedule.append(process.main_path_mt)
     #process.schedule.append(process.z_path)
     #process.schedule.append(process.z_tau_eff_path)
     
@@ -1023,9 +1031,27 @@ def addTCPNtuples(process):
                                         BoostedTauCollection = cms.InputTag('slimmedTausBoosted'),
                                         
     )
-    process.tcpNtuplesMaker = cms.Path(process.tcpNtuples)
+    process.tcpNtupleMaker = cms.Path(process.tcpNtuples)
 
-    process.schedule.append(process.tcpNtuplesMaker)
+    process.tcpGenNtuples = cms.EDAnalyzer("GenAnalyzer",
+                                        GenParticleCollection = cms.InputTag("prunedGenParticles"),
+                                        GenJetCollection = cms.InputTag("slimmedGenJets"),
+                                        genEventInfo = cms.InputTag("generator"),
+                                        pileupSummaryInfo = cms.InputTag("slimmedAddPileupInfo"),
+                                        puDataFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root"),
+                                        puMCFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupMC2017.root")
+    )
+    process.tcpGenNtupleMaker = cms.Path(process.tcpGenNtuples)
+
+    process.tcpTrigNtuples = cms.EDAnalyzer("TCPTrigNtuples",
+                                            TriggerResults = cms.InputTag("TriggerResults", "", "HLT")
+    )
+    process.tcpTrigNtupleMaker = cms.Path(process.tcpTrigNtuples)
+
+    
+    process.schedule.append(process.tcpTrigNtupleMaker)
+    process.schedule.append(process.tcpGenNtupleMaker)
+    process.schedule.append(process.tcpNtupleMaker)
 
     process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string('TCPNtuple.root'),

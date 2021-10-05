@@ -26,4 +26,5 @@
 <use name="CommonTools/UtilAlgos"/>
 <use name="PhysicsTools/PatUtils"/>
 <use name="PhysicsTools/PatAlgos"/>
+<use name="PhysicsTools/TensorFlow" />
 <flags EDM_PLUGIN="1"/>

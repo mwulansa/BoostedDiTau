@@ -31,8 +31,6 @@ void TCPNtuples::beginJob() {
   tree->Branch("run", &run_, "run/I");
   tree->Branch("lumiblock", &lumiblock_, "lumiblock/I");
   tree->Branch("event", &event_, "event/I");
-  tree->Branch("weight1", &weight1_, "weight1/F");
-  tree->Branch("weight2", &weight2_, "weight2/F");
   tree->Branch("met", &met_, "met/F");
   tree->Branch("metphi", &metphi_, "metphi/F");
   
@@ -65,8 +63,6 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   lumiblock_ = LumiBlock;
   event_ = Event;
 
-  weight1_ = 0.;
-  weight2_ = 0.;
 
   edm::Handle< std::vector<pat::MET> > METHandle;
   iEvent.getByToken(MET_, METHandle);
@@ -311,6 +307,7 @@ void TCPNtuples::fillTauInfoDS(const std::vector<pat::Tau>& Taus, int whichColl)
     for (unsigned int i = 0; i < Taus.size(); ++i) {
       auto tau = Taus[i];
       if (tau.pt() < 10 || tau.eta() > 2.3) continue; //decayModeFinding > 0.5 by default
+      if (!tau.tauID("byVVLooseIsolationMVArun2017v2DBoldDMwLT2017") and !tau.tauID("byVVVLooseDeepTau2017v2p1VSjet")) continue;
       TauInfo t;
       t.pt = tau.pt();
       t.eta = tau.eta();

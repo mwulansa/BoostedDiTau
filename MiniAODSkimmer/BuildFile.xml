@@ -17,6 +17,7 @@
 <use name="HLTrigger/HLTcore"/>
 <use name="DataFormats/BTauReco"/>
 <use name="DataFormats/PatCandidates"/>
+<use name="PhysicsTools/TensorFlow" />
 <use name="root"/>
 <export>
   <lib name="1"/>

@@ -49,8 +49,6 @@ public:
     lumiblock_ = -9999;
     met_ = -9999.;
     metphi_ = -9999;
-    weight1_ = -9999;
-    weight2_ = -9999;
     jetInfoData->clear();
     muonInfoData->clear();
     electronInfoData->clear();
@@ -92,8 +90,6 @@ private:
   int event_;
   int run_;
   int lumiblock_;
-  float weight1_;  // gen weight
-  float weight2_;  // pu weight
   float met_;
   float metphi_;
 

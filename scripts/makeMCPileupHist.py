@@ -59,7 +59,7 @@ if __name__ == "__main__":
 			ind = bins.index(hTI.GetBinLowEdge(i))
 			hTI.SetBinContent(i, values[ind])
 		except ValueError as e:
-			print "Nothing for bin", i
+			print("Nothing for bin", i)
 			hTI.SetBinContent(i, 0)
 
 	f = ROOT.TFile(args.outputFilename, "RECREATE")
