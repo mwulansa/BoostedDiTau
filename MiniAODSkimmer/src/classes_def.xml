@@ -7,4 +7,6 @@
   <class name="ElectronInfoDS"/>
   <class name="TauInfo"/>
   <class name="TauInfoDS"/>
+  <class name="GenParticleInfo"/>
+  <class name="GenParticleInfoDS"/>
 </lcgdict>

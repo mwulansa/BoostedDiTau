@@ -213,6 +213,9 @@ process.ak4PFJetsLegacyHPSPiZerosBoosted.minJetPt = jetPt
 process.combinatoricRecoTausBoosted.minJetPt = jetPt
 process.recoTauAK4Jets08RegionPATBoosted.minJetPt = jetPt
 process.ak4PFJetsRecoTauChargedHadronsBoosted.minJetPt = jetPt
+## for boosted taus, also change min jet value in CA8 jet and it's subjets
+process.ca8PFJetsCHSprunedForBoostedTausPAT.subjetPtMin = jetPt
+process.ca8PFJetsCHSprunedForBoostedTausPAT.jetPtMin = 10
 
 ##########################################
 #### Lower Tau Pt ElectronCleaned Taus###########
@@ -240,7 +243,7 @@ process.recoTauAK4Jets08RegionPATMuonCleaned.minJetPt = jetPt
 process.ak4PFJetsRecoTauChargedHadronsMuonCleaned.minJetPt = jetPt
 
 
-#tauAtMiniToolsCustom.addFurtherSkimming(process)
+tauAtMiniToolsCustom.addFurtherSkimming(process)
 tauAtMiniToolsCustom.addTCPNtuples(process)
 
 #process.out = cms.EndPath(process.output)
@@ -266,13 +269,14 @@ if process.maxEvents.input.value() > 10000 or process.maxEvents.input.value() < 
 #    wantSummary=cms.untracked.bool(True)
 #)
 
-process.options = dict( numberOfThreads = 4,
-                      # numberOfThreads = 1,
-                        numberOfStreams = 0,
-                        wantSummary = True
+process.options = dict( # numberOfThreads = 4,
+    numberOfThreads = 1,
+                      #  numberOfStreams = 0,
+    wantSummary = True
 )
 print('\t No. of threads:', process.options.numberOfThreads.value(), ', no. of streams:', process.options.numberOfStreams.value())
 
 dump_file = open('dump_rerunMiniAODClean.py','w')
 dump_file.write(process.dumpPython())
 
+SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",ignoreTotal = cms.untracked.int32(1) )
