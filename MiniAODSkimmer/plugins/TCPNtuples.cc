@@ -5,11 +5,14 @@ TCPNtuples::TCPNtuples(const edm::ParameterSet& iConfig) :
   Jets_(consumes< vector<pat::Jet> > (iConfig.getParameter<edm::InputTag>("JetCollection"))),
   Muons_(consumes< vector<pat::Muon> > (iConfig.getParameter<edm::InputTag>("MuonCollection"))),
   Electrons_(consumes< vector<pat::Electron> > (iConfig.getParameter<edm::InputTag>("ElectronCollection"))),
+  LowPtElectrons_(consumes< vector<pat::Electron> > (iConfig.getParameter<edm::InputTag>("LowPtElectronCollection"))),
+  idScoreCut_(iConfig.getParameter<string>("LowPtEIdScoreCut")),
   Vertices_(consumes< vector<reco::Vertex> > (iConfig.getParameter<edm::InputTag>("VertexCollection"))),
   rhoTag_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoTag"))),
   effectiveAreas_((iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
   TausUnCleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("UnCleanedTauCollection"))),
   TausECleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("ECleanedTauCollection"))),
+  TausLowPtECleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("LowPtECleanedTauCollection"))),
   TausMCleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("MCleanedTauCollection"))),
   TausBoosted_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("BoostedTauCollection"))) {
   usesResource(TFileService::kSharedResource);
@@ -31,24 +34,27 @@ void TCPNtuples::beginJob() {
   tree->Branch("run", &run_, "run/I");
   tree->Branch("lumiblock", &lumiblock_, "lumiblock/I");
   tree->Branch("event", &event_, "event/I");
-  tree->Branch("met", &met_, "met/F");
-  tree->Branch("metphi", &metphi_, "metphi/F");
   
   jetInfoData = new JetInfoDS();
   muonInfoData = new MuonInfoDS();
   electronInfoData = new ElectronInfoDS();
+  lowPtElectronInfoData = new ElectronInfoDS();
   tauInfoDataUnCleaned = new TauInfoDS();
   tauInfoDataECleaned = new TauInfoDS();
+  tauInfoDataLowPtECleaned = new TauInfoDS();
   tauInfoDataMCleaned = new TauInfoDS();
   tauInfoDataBoosted = new TauInfoDS();
   
   tree->Branch("Jets", "JetInfoDS", &jetInfoData);
   tree->Branch("Muons", "MuonInfoDS", &muonInfoData);
   tree->Branch("Electrons", "ElectronInfoDS", &electronInfoData);
+  tree->Branch("LowPtElectrons", "ElectronInfoDS", &lowPtElectronInfoData);
   tree->Branch("TausUnCleaned", "TauInfoDS", &tauInfoDataUnCleaned);
   tree->Branch("TausECleaned", "TauInfoDS", &tauInfoDataECleaned);
+  tree->Branch("TausLowPtECleaned", "TauInfoDS", &tauInfoDataLowPtECleaned);
   tree->Branch("TausMCleaned", "TauInfoDS", &tauInfoDataMCleaned);
   tree->Branch("TausBoosted", "TauInfoDS", &tauInfoDataBoosted);
+  tree->Branch("Mets", &metInfo_, "pt/F:phi/F:ptUncor/F:phiUncor/F:ptJECUp/F:phiJECUp/F:ptJERUp/F:phiJERUp/F:ptUncUp/F:phiUncUp/F:ptJECDown/F:phiJECDown/F:ptJERDown/F:phiJERDown/F:ptUncDown/F:phiUncDown/F");
 }
 
 void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
@@ -62,14 +68,6 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   run_ = Run;
   lumiblock_ = LumiBlock;
   event_ = Event;
-
-
-  edm::Handle< std::vector<pat::MET> > METHandle;
-  iEvent.getByToken(MET_, METHandle);
-  auto MET = *METHandle;
-
-  met_ = MET[0].pt();
-  metphi_ = MET[0].phi();
 
   edm::Handle< std::vector<pat::Jet> > JetsHandle;
   iEvent.getByToken(Jets_, JetsHandle);
@@ -96,9 +94,14 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 	j.phi = jet.phi();
 	j.mass = jet.mass();
 	j.ptuncor = jet.correctedP4(0).Pt();
-	j.csvv2 = jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags");
+	j.deepcsv = jet.bDiscriminator("pfDeepCSVJetTags:probb") + jet.bDiscriminator("pfDeepCSVJetTags:probbb");
 	if (jetIDLepVeto) j.id = 2;
 	else j.id = 1;
+	if (jet.pt() > 50) j.puid = 3;
+	else if (jet.userInt("pileupJetIdUpdated:fullId") == 7) j.puid = 3;
+	else if (jet.userInt("pileupJetIdUpdated:fullId") == 6) j.puid = 2;
+	else if (jet.userInt("pileupJetIdUpdated:fullId") == 4) j.puid = 1;
+	else j.puid = 0;
 	jetInfoData->push_back(j);
       }
     }
@@ -268,6 +271,7 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
       } else {
 	e.iso = 0;
       }
+      e.lowptid = -9999;
       //std::cout << e.iso << '\n';
       math::XYZPointF p1 = electron.trackPositionAtVtx();
       math::XYZPoint p2 = PrimaryVertex.position();
@@ -276,6 +280,34 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
       e.dxy = dxy;
       e.dz = dz;
       electronInfoData->push_back(e);
+    }
+  }
+
+  edm::Handle< std::vector<pat::Electron> > LowPtElectronsHandle;
+  iEvent.getByToken(LowPtElectrons_, LowPtElectronsHandle);
+  auto LowPtElectrons = *LowPtElectronsHandle;
+
+  if (LowPtElectrons.size() > 0) {
+    for (unsigned int i = 0; i < LowPtElectrons.size(); ++i) {
+      auto electron = LowPtElectrons[i];
+      
+      if ( electron.pt() < 1 || electron.eta() > 2.5 || electron.electronID("ID") < std::stof(idScoreCut_) ) continue;
+      ElectronInfo e;
+      e.pt = electron.pt();
+      e.eta = electron.eta();
+      e.phi = electron.phi();
+      e.mass = electron.mass();
+      e.charge = electron.charge();
+      e.id = -9999;
+      e.lowptid = electron.electronID("ID");
+      //std::cout << e.iso << '\n';
+      math::XYZPointF p1 = electron.trackPositionAtVtx();
+      math::XYZPoint p2 = PrimaryVertex.position();
+      float dz = abs(p1.z()-p2.z());
+      float dxy = sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()));
+      e.dxy = dxy;
+      e.dz = dz;
+      lowPtElectronInfoData->push_back(e);
     }
   }
 
@@ -298,6 +330,32 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   iEvent.getByToken(TausBoosted_, TausBoostedHandle);
   auto TausBoosted = *TausBoostedHandle;
   fillTauInfoDS(TausBoosted, 4);
+
+  edm::Handle< std::vector<pat::Tau> > TausLowPtECleanedHandle;
+  iEvent.getByToken(TausLowPtECleaned_, TausLowPtECleanedHandle);
+  auto TausLowPtECleaned = *TausLowPtECleanedHandle;
+  fillTauInfoDS(TausLowPtECleaned, 5);
+
+  edm::Handle< std::vector<pat::MET> > METHandle;
+  iEvent.getByToken(MET_, METHandle);
+  auto met = METHandle->front();
+
+  metInfo_.pt = met.pt();
+  metInfo_.phi = met.phi();
+  metInfo_.ptUncor = met.uncorPt();
+  metInfo_.phiUncor = met.uncorPhi();
+  metInfo_.ptJECUp = met.shiftedPt(pat::MET::JetEnUp);
+  metInfo_.phiJECUp = met.shiftedPhi(pat::MET::JetEnUp);
+  metInfo_.ptJERUp = met.shiftedPt(pat::MET::JetResUp);
+  metInfo_.phiJERUp = met.shiftedPhi(pat::MET::JetResUp);
+  metInfo_.ptUncUp = met.shiftedPt(pat::MET::UnclusteredEnUp);
+  metInfo_.phiUncUp = met.shiftedPhi(pat::MET::UnclusteredEnUp);
+  metInfo_.ptJECDown = met.shiftedPt(pat::MET::JetEnDown);
+  metInfo_.phiJECDown = met.shiftedPhi(pat::MET::JetEnDown);
+  metInfo_.ptJERDown = met.shiftedPt(pat::MET::JetResDown);
+  metInfo_.phiJERDown = met.shiftedPhi(pat::MET::JetResDown);
+  metInfo_.ptUncDown = met.shiftedPt(pat::MET::UnclusteredEnDown);
+  metInfo_.phiUncDown = met.shiftedPhi(pat::MET::UnclusteredEnDown);
 
   tree->Fill();
 }
@@ -339,10 +397,10 @@ void TCPNtuples::fillTauInfoDS(const std::vector<pat::Tau>& Taus, int whichColl)
       if (whichColl == 2) tauInfoDataECleaned->push_back(t);
       if (whichColl == 3) tauInfoDataMCleaned->push_back(t);
       if (whichColl == 4) tauInfoDataBoosted->push_back(t);
+      if (whichColl == 5) tauInfoDataLowPtECleaned->push_back(t);
     }
   }
 }
-
 
 float TCPNtuples::deltaR(float phi1, float phi2, float eta1, float eta2) {
   

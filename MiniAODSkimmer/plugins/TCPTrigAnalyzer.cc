@@ -49,6 +49,7 @@ private:
   bool isIsoMu_;
   bool isIsoMuTau_;
   bool isMu_;
+  bool isIsoEle_;
   bool isEle_;
   bool isEleTau_;
   bool isDoubleMu_;
@@ -73,7 +74,6 @@ void TCPTrigNtuples::fillDescriptions(edm::ConfigurationDescriptions& descriptio
 }
 
 void TCPTrigNtuples::beginJob() {
-  //std::cout << "debug1" << "\n";
   
   edm::Service<TFileService> fs;
   fs->mkdir( "trigger" );
@@ -88,6 +88,7 @@ void TCPTrigNtuples::beginJob() {
   tree->Branch("isIsoMu", &isIsoMu_, "isIsoMu/O");
   tree->Branch("isIsoMuTau", &isIsoMuTau_, "isIsoMuTau/O");
   tree->Branch("isMu", &isMu_, "isMu/O");
+  tree->Branch("isIsoEle", &isIsoEle_, "isIsoEle/O");
   tree->Branch("isEle", &isEle_, "isEle/O");
   tree->Branch("isEleTau", &isEleTau_, "isEleTau/O");
   tree->Branch("isDoubleMu", &isDoubleMu_, "isDoubleMu/O");
@@ -97,7 +98,6 @@ void TCPTrigNtuples::beginJob() {
   tree->Branch("isDoubleTauMedium", &isDoubleTauMedium_, "isDoubleTauMedium/O");
   tree->Branch("isDoubleTauTight", &isDoubleTauTight_, "isDoubleTauTight/O");
   tree->Branch("isSingleTauMET", &isSingleTauMET_, "isSingleTauMET/O");
-  //std::cout << "debug2" << "\n";
 }
 
 void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
@@ -118,7 +118,8 @@ void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   isIsoMu_ = 0;
   isIsoMuTau_ = 0;
   isMu_ = 0;
-  isEle_ = 0;
+  isIsoEle_ = 0;
+  isEle_ = 0;    // for 2018 data, non-iso electron trigger is available for all runs
   isEleTau_ = 0;
   isDoubleMu_ = 0;
   isDoubleIsoEG_ = 0;
@@ -141,7 +142,8 @@ void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
   if ( triggerResults.accept(names.triggerIndex("HLT_Mu50_v11")) ) isMu_ = 1;
 
-  if ( triggerResults.accept(names.triggerIndex("HLT_Ele35_WPTight_Gsf_v7")) ) isEle_ = 1;
+  if ( triggerResults.accept(names.triggerIndex("HLT_Ele35_WPTight_Gsf_v7")) ||
+       triggerResults.accept(names.triggerIndex("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v7")) ) isIsoEle_ = 1;
 
   if ( triggerResults.accept(names.triggerIndex("HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v9")) ) isEleTau_ = 1;
 
@@ -151,18 +153,17 @@ void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
 
   if ( triggerResults.accept(names.triggerIndex("HLT_DoubleEle33_CaloIdL_MW_v15")) ) isDoubleEG_ = 1;
 
-  if ( triggerResults.accept(names.triggerIndex("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10")) || triggerResults.accept(names.triggerIndex("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12")) ) isMuonEG_ = 1;
+  if ( triggerResults.accept(names.triggerIndex("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10")) ||
+       triggerResults.accept(names.triggerIndex("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12")) ) isMuonEG_ = 1;
 
   if ( triggerResults.accept(names.triggerIndex("HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v8")) ) isDoubleTauMedium_ = 1;
 
-  if ( triggerResults.accept(names.triggerIndex("HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v8")) || triggerResults.accept(names.triggerIndex("HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v8")) ) isDoubleTauTight_ = 1;
+  if ( triggerResults.accept(names.triggerIndex("HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v8")) ||
+       triggerResults.accept(names.triggerIndex("HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v8")) ) isDoubleTauTight_ = 1;
 
   if ( triggerResults.accept(names.triggerIndex("HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET90_v8")) ) isSingleTauMET_ = 1;
 
-  //std::cout << "debug5" << "\n";
-  
   tree->Fill();
-  //std::cout << "debug6" << "\n";
 }
 
 DEFINE_FWK_MODULE(TCPTrigNtuples);
