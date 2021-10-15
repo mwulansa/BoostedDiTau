@@ -8,7 +8,8 @@ struct ElectronInfo {
   int id; // cut base ID without rel iso: 1 loose, 2 medium, 3 tight
   int iso; // reliso: 0 non iso, 1 loose, 2 medium, 3 tight
   float dxy, dz;
-
+  float lowptid;   // MVA score for low pt electrons
+  
   bool operator<(const ElectronInfo& e) const { return pt < e.pt; }
   
 };

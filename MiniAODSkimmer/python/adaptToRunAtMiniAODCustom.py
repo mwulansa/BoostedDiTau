@@ -175,7 +175,54 @@ def addTauReRecoCustom(process):
         #print " old label: ", label_old
         #print "new label: ", label_new
         massSearchReplaceAnyInputTag(process.miniAODTausSequenceMuonCleaned,label_old,label_new)    
-        massSearchReplaceAnyInputTag(process.miniAODTausSequenceMuonCleaned,cms.InputTag(label_old,"category"),cms.InputTag(label_new,"category"))    
+        massSearchReplaceAnyInputTag(process.miniAODTausSequenceMuonCleaned,cms.InputTag(label_old,"category"),cms.InputTag(label_new,"category"))
+
+    #######LowPtElectronCleaned#########
+    transfermods=[]
+    transferlabels=[]
+    for mods in process.miniAODTausTask.moduleNames():
+        transfermods.append(mods)
+    transfermodsnew=[]
+    process.miniAODTausTaskLowPtElectronCleaned=cms.Task()
+    #loop over the modules, rename and remake the task by hand
+    for mod in transfermods:
+        module=getattr(process,mod)
+        transferlabels.append(module.label())
+        newmod=module.clone()
+        namepostfix='LowPtElectronCleaned'
+        newname=mod+namepostfix
+        setattr(process,newname,newmod)
+        process.miniAODTausTaskLowPtElectronCleaned.add(getattr(process,newname))
+    for names in process.miniAODTausTaskLowPtElectronCleaned.moduleNames():
+        if 'ak4PFJetTracksAssociatorAtVertexLowPtElectronCleaned' in names or 'pfRecoTauTagInfoProducerLowPtElectronCleaned' in names or 'recoTauAK4PFJets08RegionLowPtElectronCleaned' in names:
+            process.miniAODTausTaskLowPtElectronCleaned.remove(getattr(process, names))
+    
+        
+    process.LowPtFilter = cms.EDFilter("LowPtElectronFilter",
+                                       electrons = cms.InputTag("slimmedLowPtElectrons"),
+                                       LowPtEIdScoreCut = cms.string("4")
+    )    
+    process.PackedCandsLowPtElectronCleaned =cms.EDProducer(
+        'LowPtElectronCleanedPackedCandidateProducer',
+        electronSrc = cms.InputTag("LowPtFilter","LowPtElectronRef"),
+        packedCandSrc = cms.InputTag("packedPFCandidates"),
+    )
+    
+    process.lowPtElectronCleanedPackedCandidateTask=cms.Task(process.LowPtFilter,process.PackedCandsLowPtElectronCleaned)
+    process.miniAODTausTaskLowPtElectronCleaned.add(process.lowPtElectronCleanedPackedCandidateTask)
+    
+    labelpostfix='LowPtElectronCleaned'
+    renamedict={}
+    for label in transferlabels:
+        renamedict[label]=label+labelpostfix
+        #print renamedict
+    
+    process.miniAODTausSequenceLowPtElectronCleaned =  cms.Sequence(process.miniAODTausTaskLowPtElectronCleaned)
+    for label_old,label_new in renamedict.items():
+        #print(" old label: ", label_old)
+        #print("new label: ", label_new)
+        massSearchReplaceAnyInputTag(process.miniAODTausSequenceLowPtElectronCleaned,label_old,label_new)    
+        massSearchReplaceAnyInputTag(process.miniAODTausSequenceLowPtElectronCleaned,cms.InputTag(label_old,"category"),cms.InputTag(label_new,"category"))
     
 
     ######## Tau-Reco Path ####### 
@@ -183,7 +230,8 @@ def addTauReRecoCustom(process):
     process.TauRecoElectronCleaned = cms.Path(process.miniAODTausSequenceElectronCleaned)
     process.TauRecoMuonCleaned = cms.Path(process.miniAODTausSequenceMuonCleaned)
     process.TauRecoBoosted = cms.Path(process.miniAODTausSequenceBoosted)
-    process.schedule = cms.Schedule(process.TauReco,process.TauRecoElectronCleaned,process.TauRecoMuonCleaned, process.TauRecoBoosted) 
+    process.TauRecoLowPtElectronCleaned = cms.Path(process.miniAODTausSequenceLowPtElectronCleaned)
+    process.schedule = cms.Schedule(process.TauReco,process.TauRecoElectronCleaned,process.TauRecoMuonCleaned, process.TauRecoBoosted, process.TauRecoLowPtElectronCleaned) 
     
     
 def convertModuleToMiniAODInput(process, name):
@@ -191,6 +239,8 @@ def convertModuleToMiniAODInput(process, name):
     if hasattr(module, 'particleFlowSrc'):
         if "ElectronCleanedPackedCandidateProducer" in name or "MuonCleanedPackeCandidateProducer" in name:
             module.particleFlowSrc = cms.InputTag("packedPFCandidates", "", "")
+        elif "LowPtElectronCleaned" in name:
+            module.particleFlowSrc = cms.InputTag('PackedCandsLowPtElectronCleaned','packedPFCandidatesLowPtElectronCleaned')
         elif "ElectronCleaned" in name:
             module.particleFlowSrc = cms.InputTag('PackedCandsElectronCleaned','packedPFCandidatesElectronCleaned')
         elif "MuonCleaned" in name:
@@ -232,10 +282,14 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
         )
         process.miniAODTausTask.add(process.ak4PFJetsPAT)
         process.miniAODTausTask.add(process.patJetsPAT)
-        ###################### ElectronCleaned ######################
+        
+        ###################### ElectronCleaned MuonCleaned Boosted LowPtElectronCleaned ######################
         jetCollectionElectronCleaned = 'patJetsPATElectronCleaned'
+        jetCollectionLowPtElectronCleaned = 'patJetsPATLowPtElectronCleaned'
         jetCollectionMuonCleaned = 'patJetsPATMuonCleaned'
         from RecoJets.JetProducers.ak4PFJets_cfi import ak4PFJets
+
+        ### ElectronCleaned
         process.ak4PFJetsPATElectronCleaned = ak4PFJets.clone(
             src=cms.InputTag('PackedCandsElectronCleaned','packedPFCandidatesElectronCleaned')
 
@@ -259,8 +313,8 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
        
         process.miniAODTausTaskElectronCleaned.add(process.ak4PFJetsPATElectronCleaned)
         process.miniAODTausTaskElectronCleaned.add(process.patJetsPATElectronCleaned)
-        
-        from RecoJets.JetProducers.ak4PFJets_cfi import ak4PFJets
+
+        ### MuonCleaned
         process.ak4PFJetsPATMuonCleaned = ak4PFJets.clone(
             src=cms.InputTag('PackedCandsMuonCleaned','packedPFCandidatesMuonCleaned')
 
@@ -284,9 +338,31 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
        
         process.miniAODTausTaskMuonCleaned.add(process.ak4PFJetsPATMuonCleaned)
         process.miniAODTausTaskMuonCleaned.add(process.patJetsPATMuonCleaned)
+
+        ### LowPtElectronCleaned
+        process.ak4PFJetsPATLowPtElectronCleaned = ak4PFJets.clone(
+            src=cms.InputTag('PackedCandsLowPtElectronCleaned','packedPFCandidatesLowPtElectronCleaned')
+
+        )
+        from PhysicsTools.PatAlgos.producersLayer1.jetProducer_cfi import _patJets
+        process.patJetsPATLowPtElectronCleaned = _patJets.clone(
+            jetSource            = cms.InputTag("ak4PFJetsPATLowPtElectronCleaned"),
+            addJetCorrFactors    = cms.bool(False),
+            jetCorrFactorsSource = cms.VInputTag(),
+            addBTagInfo          = cms.bool(False),
+            addDiscriminators    = cms.bool(False),
+            discriminatorSources = cms.VInputTag(),
+            addAssociatedTracks  = cms.bool(False),
+            addJetCharge         = cms.bool(False),
+            addGenPartonMatch    = cms.bool(False),
+            embedGenPartonMatch  = cms.bool(False),
+            addGenJetMatch       = cms.bool(False),
+            getJetMCFlavour      = cms.bool(False),
+            addJetFlavourInfo    = cms.bool(False),
+        )
         
-        
-    
+        process.miniAODTausTaskLowPtElectronCleaned.add(process.ak4PFJetsPATLowPtElectronCleaned)
+        process.miniAODTausTaskLowPtElectronCleaned.add(process.patJetsPATLowPtElectronCleaned)
 
     process.recoTauAK4Jets08RegionPAT = cms.EDProducer("RecoTauPatJetRegionProducer",
                                                        deltaR = process.recoTauAK4PFJets08Region.deltaR,
@@ -305,6 +381,7 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
         process.recoTauPileUpVertices
     )
 
+    # Redefine recoTauCommonTask-Boosted
     process.recoTauAK4Jets08RegionPATBoosted = cms.EDProducer("RecoTauPatJetRegionProducer",
                                                        deltaR = process.recoTauAK4PFJets08Region.deltaR,
                                                        maxJetAbsEta = process.recoTauAK4PFJets08Region.maxJetAbsEta,
@@ -314,12 +391,11 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
                                                        src = cms.InputTag("boostedTauSeedsPAT")
                                                        )
 
-    # Redefine recoTauCommonTask-ElectronCleaned 
     process.miniAODTausTaskBoosted.add(process.recoTauAK4Jets08RegionPATBoosted)
     process.miniAODTausTaskBoosted.add(process.recoTauPileUpVerticesBoosted)
 
    
-    
+    # Redefine recoTauCommonTask-ElectronCleaned 
     process.recoTauAK4Jets08RegionPATElectronCleaned = cms.EDProducer("RecoTauPatJetRegionProducer",
                                                                       deltaR = process.recoTauAK4PFJets08RegionElectronCleaned.deltaR,
                                                                       maxJetAbsEta = process.recoTauAK4PFJets08RegionElectronCleaned.maxJetAbsEta,
@@ -331,11 +407,10 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
 
     process.recoTauPileUpVerticesElectronCleaned.src = cms.InputTag("offlineSlimmedPrimaryVertices")
     
-    
-    # Redefine recoTauCommonTask-ElectronCleaned 
     process.miniAODTausTaskElectronCleaned.add(process.recoTauAK4Jets08RegionPATElectronCleaned)
     process.miniAODTausTaskElectronCleaned.add(process.recoTauPileUpVerticesElectronCleaned)
-    
+
+    # Redefine recoTauCommonTask-MuonCleaned 
     process.recoTauAK4Jets08RegionPATMuonCleaned = cms.EDProducer("RecoTauPatJetRegionProducer",
                                                                       deltaR = process.recoTauAK4PFJets08RegionMuonCleaned.deltaR,
                                                                       maxJetAbsEta = process.recoTauAK4PFJets08RegionMuonCleaned.maxJetAbsEta,
@@ -347,14 +422,31 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
 
     process.recoTauPileUpVerticesMuonCleaned.src = cms.InputTag("offlineSlimmedPrimaryVertices")
     
-    # Redefine recoTauCommonTask-MuonCleaned 
     process.miniAODTausTaskMuonCleaned.add(process.recoTauAK4Jets08RegionPATMuonCleaned)
     process.miniAODTausTaskMuonCleaned.add(process.recoTauPileUpVerticesMuonCleaned)
+
+    # Redefine recoTauCommonTask-LowPtElectronCleaned 
+    process.recoTauAK4Jets08RegionPATLowPtElectronCleaned = cms.EDProducer("RecoTauPatJetRegionProducer",
+                                                                      deltaR = process.recoTauAK4PFJets08RegionLowPtElectronCleaned.deltaR,
+                                                                      maxJetAbsEta = process.recoTauAK4PFJets08RegionLowPtElectronCleaned.maxJetAbsEta,
+                                                                      minJetPt = process.recoTauAK4PFJets08RegionLowPtElectronCleaned.minJetPt,
+                                                                      pfCandAssocMapSrc = cms.InputTag(""),
+                                                                      pfCandSrc = cms.InputTag('PackedCandsLowPtElectronCleaned','packedPFCandidatesLowPtElectronCleaned'),
+                                                                      src = cms.InputTag(jetCollectionLowPtElectronCleaned)
+                                                                  )
+
+    process.recoTauPileUpVerticesLowPtElectronCleaned.src = cms.InputTag("offlineSlimmedPrimaryVertices")
+    
+    process.miniAODTausTaskLowPtElectronCleaned.add(process.recoTauAK4Jets08RegionPATLowPtElectronCleaned)
+    process.miniAODTausTaskLowPtElectronCleaned.add(process.recoTauPileUpVerticesLowPtElectronCleaned)
     
     for moduleName in process.TauReco.moduleNames(): 
         convertModuleToMiniAODInput(process, moduleName)
         
     for moduleName in process.TauRecoElectronCleaned.moduleNames(): 
+        convertModuleToMiniAODInput(process, moduleName)
+
+    for moduleName in process.TauRecoLowPtElectronCleaned.moduleNames(): 
         convertModuleToMiniAODInput(process, moduleName)
         
     for moduleName in process.TauRecoMuonCleaned.moduleNames(): 
@@ -372,6 +464,10 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     process.ak4PFJetsLegacyHPSPiZerosMuonCleaned.builders[0].qualityCuts.primaryVertexSrc = cms.InputTag("offlineSlimmedPrimaryVertices")
     process.ak4PFJetsLegacyHPSPiZerosMuonCleaned.jetSrc = cms.InputTag(jetCollectionMuonCleaned)
 
+    # Adapt TauPiZeros producer-LowPtElectronCleaned
+    process.ak4PFJetsLegacyHPSPiZerosLowPtElectronCleaned.builders[0].qualityCuts.primaryVertexSrc = cms.InputTag("offlineSlimmedPrimaryVertices")
+    process.ak4PFJetsLegacyHPSPiZerosLowPtElectronCleaned.jetSrc = cms.InputTag(jetCollectionLowPtElectronCleaned)
+
      
 
     # Adapt TauChargedHadrons producer
@@ -383,7 +479,7 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
             builder.srcTracks = cms.InputTag("lostTracks")
     process.ak4PFJetsRecoTauChargedHadrons.jetSrc = cms.InputTag(jetCollection)
 
-    # Adapt TauChargedHadrons producer
+    # Adapt TauChargedHadrons producer-boosted
     for builder in process.ak4PFJetsRecoTauChargedHadronsBoosted.builders:
         if builder.name.value() == 'tracks': #replace plugin based on generalTracks by one based on lostTracks
             builder.name = 'lostTracks'
@@ -407,6 +503,15 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
             builder.plugin = 'PFRecoTauChargedHadronFromLostTrackPlugin'
             builder.srcTracks = cms.InputTag("lostTracks")
     process.ak4PFJetsRecoTauChargedHadronsMuonCleaned.jetSrc = cms.InputTag(jetCollectionMuonCleaned)
+
+    # Adapt TauChargedHadrons producer-LowPtElectronCleaned
+    for builder in process.ak4PFJetsRecoTauChargedHadronsLowPtElectronCleaned.builders:
+        builder.qualityCuts.primaryVertexSrc = cms.InputTag("offlineSlimmedPrimaryVertices")
+        if builder.name.value() == 'tracks': #replace plugin based on generalTracks by one based on lostTracks
+            builder.name = 'lostTracks'
+            builder.plugin = 'PFRecoTauChargedHadronFromLostTrackPlugin'
+            builder.srcTracks = cms.InputTag("lostTracks")
+    process.ak4PFJetsRecoTauChargedHadronsLowPtElectronCleaned.jetSrc = cms.InputTag(jetCollectionLowPtElectronCleaned)
     
     
     # Adapt combinatoricRecoTau producer
@@ -444,6 +549,17 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
                 builder.qualityCuts.primaryVertexSrc = 'offlineSlimmedPrimaryVertices'
             elif name == 'pfCandSrc':
                 builder.pfCandSrc =cms.InputTag('PackedCandsMuonCleaned','packedPFCandidatesMuonCleaned')
+
+    # Adapt combinatoricRecoTau producer - LowPtElectronCleaned
+    process.combinatoricRecoTausLowPtElectronCleaned.jetRegionSrc = 'recoTauAK4Jets08RegionPATLowPtElectronCleaned'
+    process.combinatoricRecoTausLowPtElectronCleaned.jetSrc = jetCollectionLowPtElectronCleaned
+    # Adapt builders - LowPtElectronCleaned                                                                                                                 
+    for builder in process.combinatoricRecoTausLowPtElectronCleaned.builders:
+        for name,value in six.iteritems(builder.parameters_()):
+            if name == 'qualityCuts':
+                builder.qualityCuts.primaryVertexSrc = 'offlineSlimmedPrimaryVertices'
+            elif name == 'pfCandSrc':
+                builder.pfCandSrc =cms.InputTag('PackedCandsLowPtElectronCleaned','packedPFCandidatesLowPtElectronCleaned')
     
     # Adapt supported modifiers and remove unsupported ones 
     modifiersToRemove_ = cms.VPSet()
@@ -506,6 +622,21 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     for mod in modifiersToRemoveMuonCleaned_:
         process.combinatoricRecoTausMuonCleaned.modifiers.remove(mod)
 
+    modifiersToRemoveLowPtElectronCleaned_ = cms.VPSet()  
+    
+    for mod in process.combinatoricRecoTausLowPtElectronCleaned.modifiers:
+        if mod.name.value() == 'elec_rej':
+            modifiersToRemoveLowPtElectronCleaned_.append(mod)
+            continue
+        elif mod.name.value() == 'TTIworkaround':
+            modifiersToRemoveLowPtElectronCleaned_.append(mod)
+            continue
+        for name,value in six.iteritems(mod.parameters_()):
+            if name == 'qualityCuts':
+                mod.qualityCuts.primaryVertexSrc = 'offlineSlimmedPrimaryVertices'
+    for mod in modifiersToRemoveLowPtElectronCleaned_:
+        process.combinatoricRecoTausLowPtElectronCleaned.modifiers.remove(mod)
+
     
     # Redefine tau PV producer
     process.hpsPFTauPrimaryVertexProducer.__dict__['_TypedParameterizable__type'] = 'PFTauMiniAODPrimaryVertexProducer'
@@ -524,6 +655,12 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     process.hpsPFTauPrimaryVertexProducerMuonCleaned.PVTag = 'offlineSlimmedPrimaryVertices'
     process.hpsPFTauPrimaryVertexProducerMuonCleaned.packedCandidatesTag = cms.InputTag('PackedCandsMuonCleaned','packedPFCandidatesMuonCleaned')
     process.hpsPFTauPrimaryVertexProducerMuonCleaned.lostCandidatesTag = cms.InputTag("lostTracks")
+
+    # Redefine tau PV producer-LowPtElectronCleaned
+    process.hpsPFTauPrimaryVertexProducerLowPtElectronCleaned.__dict__['_TypedParameterizable__type'] = 'PFTauMiniAODPrimaryVertexProducer'
+    process.hpsPFTauPrimaryVertexProducerLowPtElectronCleaned.PVTag = 'offlineSlimmedPrimaryVertices'
+    process.hpsPFTauPrimaryVertexProducerLowPtElectronCleaned.packedCandidatesTag = cms.InputTag('PackedCandsLowPtElectronCleaned','packedPFCandidatesLowPtElectronCleaned')
+    process.hpsPFTauPrimaryVertexProducerLowPtElectronCleaned.lostCandidatesTag = cms.InputTag("lostTracks")
     
     
     # Redefine tau SV producer
@@ -531,6 +668,7 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
                                                              PFTauTag = cms.InputTag("hpsPFTauProducer")
     )
 
+    # Redefine tau SV producer-Boosted
     process.hpsPFTauSecondaryVertexProducerBoosted = cms.EDProducer("PFTauSecondaryVertexProducer",
                                                              PFTauTag = cms.InputTag("hpsPFTauProducerBoosted")
     )
@@ -543,14 +681,20 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     # Redefine tau SV producer-MuonCleaned
     process.hpsPFTauSecondaryVertexProducerMuonCleaned = cms.EDProducer("PFTauSecondaryVertexProducer",
                                                              PFTauTag = cms.InputTag("hpsPFTauProducerMuonCleaned")
-    
     )
+
+    # Redefine tau SV producer-LowPtElectronCleaned
+    process.hpsPFTauSecondaryVertexProducerLowPtElectronCleaned = cms.EDProducer("PFTauSecondaryVertexProducer",
+                                                             PFTauTag = cms.InputTag("hpsPFTauProducerLowPtElectronCleaned")
+    )
+    
     # Remove RecoTau producers which are not supported (yet?), i.e. against-e/mu discriminats
     for moduleName in process.TauReco.moduleNames(): 
         if 'ElectronRejection' in moduleName or 'MuonRejection' in moduleName:
             if 'ByDeadECALElectronRejection' in moduleName: continue
             process.miniAODTausTask.remove(getattr(process, moduleName))
 
+    # Remove RecoTau producers which are not supported (yet?), i.e. against-e/mu discriminats
     for moduleName in process.TauRecoBoosted.moduleNames(): 
         if 'ElectronRejection' in moduleName or 'MuonRejection' in moduleName:
             if 'ByDeadECALElectronRejection' in moduleName: continue
@@ -569,38 +713,34 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
         if 'ElectronRejection' in moduleName or 'MuonRejection' in moduleName:
             if 'ByDeadECALElectronRejection' in moduleName: continue
             process.miniAODTausTaskMuonCleaned.remove(getattr(process, moduleName))
-            
-            
-    
+
+    # Remove RecoTau producers which are not supported (yet?), i.e. against-e/mu discriminats
+    for moduleName in process.TauRecoLowPtElectronCleaned.moduleNames(): 
+        if 'ElectronRejection' in moduleName or 'MuonRejection' in moduleName:
+            if 'ByDeadECALElectronRejection' in moduleName: continue
+            process.miniAODTausTaskLowPtElectronCleaned.remove(getattr(process, moduleName))
     
     # Instead add against-mu discriminants which are MiniAOD compatible
-    #from RecoTauTag.RecoTau.hpsPFTauDiscriminationByAMuonRejectionSimple_cff import hpsPFTauDiscriminationByLooseMuonRejectionSimple, hpsPFTauDiscriminationByTightMuonRejectionSimple
     from RecoTauTag.RecoTau.hpsPFTauDiscriminationByMuonRejectionSimple_cff import hpsPFTauDiscriminationByMuonRejectionSimple
     
     process.hpsPFTauDiscriminationByMuonRejectionSimple = hpsPFTauDiscriminationByMuonRejectionSimple
-    #process.hpsPFTauDiscriminationByTightMuonRejectionSimple = hpsPFTauDiscriminationByTightMuonRejectionSimple
     process.miniAODTausTask.add(process.hpsPFTauDiscriminationByMuonRejectionSimple)
-    #process.miniAODTausTask.add(process.hpsPFTauDiscriminationByTightMuonRejectionSimple)
 
     process.hpsPFTauDiscriminationByMuonRejectionSimpleBoosted = hpsPFTauDiscriminationByMuonRejectionSimple.clone(PFTauProducer = cms.InputTag("hpsPFTauProducerBoosted"))
-    #process.hpsPFTauDiscriminationByTightMuonRejectionSimple = hpsPFTauDiscriminationByTightMuonRejectionSimple
     process.miniAODTausTask.add(process.hpsPFTauDiscriminationByMuonRejectionSimpleBoosted)
-    #process.miniAODTausTask.add(process.hpsPFTauDiscriminationByTightMuonRejectionSimple)
 
     process.hpsPFTauDiscriminationByMuonRejectionSimpleElectronCleaned = process.hpsPFTauDiscriminationByMuonRejectionSimple.clone(PFTauProducer = cms.InputTag("hpsPFTauProducerElectronCleaned"))
-    #process.hpsPFTauDiscriminationByTightMuonRejectionSimpleElectronCleaned = hpsPFTauDiscriminationByTightMuonRejectionSimple.clone(PFTauProducer = cms.InputTag("hpsPFTauProducerElectronCleaned"))
     process.miniAODTausTaskElectronCleaned.add(process.hpsPFTauDiscriminationByMuonRejectionSimpleElectronCleaned)
-    #process.miniAODTausTaskElectronCleaned.add(process.hpsPFTauDiscriminationByTightMuonRejectionSimpleElectronCleaned)
     
     process.hpsPFTauDiscriminationByMuonRejectionSimpleMuonCleaned = process.hpsPFTauDiscriminationByMuonRejectionSimple.clone(PFTauProducer = cms.InputTag("hpsPFTauProducerMuonCleaned"))
-    #process.hpsPFTauDiscriminationByTightMuonRejectionSimpleMuonCleaned = hpsPFTauDiscriminationByTightMuonRejectionSimple.clone(PFTauProducer = cms.InputTag("hpsPFTauProducerMuonCleaned"))
     process.miniAODTausTaskMuonCleaned.add(process.hpsPFTauDiscriminationByMuonRejectionSimpleMuonCleaned)
-    #process.miniAODTausTaskMuonCleaned.add(process.hpsPFTauDiscriminationByTightMuonRejectionSimpleMuonCleaned)
+
+    process.hpsPFTauDiscriminationByMuonRejectionSimpleLowPtElectronCleaned = process.hpsPFTauDiscriminationByMuonRejectionSimple.clone(PFTauProducer = cms.InputTag("hpsPFTauProducerLowPtElectronCleaned"))
+    process.miniAODTausTaskLowPtElectronCleaned.add(process.hpsPFTauDiscriminationByMuonRejectionSimpleLowPtElectronCleaned)
+
 
     #####
     # PAT part in the following
-
-    
     if runType=='signal' or runType=='background':
         print(runType,': Identified')
     
@@ -612,6 +752,9 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
    
         process.tauGenJetsMuonCleaned.GenParticles = cms.InputTag("prunedGenParticles")
         process.tauMatchMuonCleaned.matched = cms.InputTag("prunedGenParticles")
+
+        process.tauGenJetsLowPtElectronCleaned.GenParticles = cms.InputTag("prunedGenParticles")
+        process.tauMatchLowPtElectronCleaned.matched = cms.InputTag("prunedGenParticles")
     
     else:
         print (runType, ': Identified, No MC Matching')
@@ -619,6 +762,7 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
         runOnData(process, names = ['Taus'], outputModules = [])
         runOnData(process, names = ['Taus'],outputModules = [],postfix='MuonCleaned')
         runOnData(process, names = ['Taus'],outputModules = [],postfix='ElectronCleaned')
+        runOnData(process, names = ['Taus'],outputModules = [],postfix='LowPtElectronCleaned')
         
     # Remove unsupported tauIDs
     for name, src in six.iteritems(process.patTaus.tauIDSources.parameters_()):
@@ -638,6 +782,7 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
                      idLabel = cms.string('ByTightMuonRejectionSimple')
                  ))
 
+    # Remove unsupported tauIDs-Boosted
     for name, src in six.iteritems(process.patTausBoosted.tauIDSources.parameters_()):
         if name.find('againstElectron') > -1 or name.find('againstMuon') > -1:
             if name.find('againstElectronDeadECAL') > -1 : continue #and name.find('Boosted') > -1: continue
@@ -654,7 +799,8 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
                      provenanceConfigLabel = cms.string('IDWPdefinitions'),
                      idLabel = cms.string('ByTightMuonRejectionSimple')
                  ))
-    
+
+    # Remove unsupported tauIDs-ElectronCleaned
     for name, src in six.iteritems(process.patTausElectronCleaned.tauIDSources.parameters_()):
         if name.find('againstElectron') > -1 or name.find('againstMuon') > -1:
             if name.find('againstElectronDeadECAL') > -1 : continue #and name.find('ElectronCleaned') > -1: continue
@@ -672,7 +818,7 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
                      idLabel = cms.string('ByTightMuonRejectionSimple')
                  ))
     
-    
+    # Remove unsupported tauIDs-MuonCleaned
     for name, src in six.iteritems(process.patTausMuonCleaned.tauIDSources.parameters_()):
         if name.find('againstElectron') > -1 or name.find('againstMuon') > -1:
             if name.find('againstElectronDeadECAL') > -1 : continue #and name.find('MuonCleaned'): continue
@@ -688,6 +834,25 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
                      provenanceConfigLabel = cms.string('IDWPdefinitions'),
                      idLabel = cms.string('ByTightMuonRejectionSimple')
                  ))
+
+    # Remove unsupported tauIDs-LowPtElectronCleaned
+    for name, src in six.iteritems(process.patTausLowPtElectronCleaned.tauIDSources.parameters_()):
+        if name.find('againstElectron') > -1 or name.find('againstMuon') > -1:
+            if name.find('againstElectronDeadECAL') > -1 : continue #and name.find('LowPtElectronCleaned') > -1: continue
+            delattr(process.patTausLowPtElectronCleaned.tauIDSources,name)
+    # Add MiniAOD specific ones
+    setattr(process.patTausLowPtElectronCleaned.tauIDSources,'againstMuonLooseSimple',
+            cms.PSet(inputTag = cms.InputTag('hpsPFTauDiscriminationByMuonRejectionSimpleLowPtElectronCleaned'),
+                     provenanceConfigLabel = cms.string('IDWPdefinitions'),
+                     idLabel = cms.string('ByLooseMuonRejectionSimple')
+                 ))
+    
+    setattr(process.patTausLowPtElectronCleaned.tauIDSources,'againstMuonTightSimple',
+            cms.PSet(inputTag = cms.InputTag('hpsPFTauDiscriminationByMuonRejectionSimpleLowPtElectronCleaned'),
+                     provenanceConfigLabel = cms.string('IDWPdefinitions'),
+                     idLabel = cms.string('ByTightMuonRejectionSimple')
+                 ))
+    
     print('New ID')
     # Run TauIDs (anti-e && deepTau) on top of selectedPatTaus
     _updatedTauName = 'selectedPatTausNewIDs'
@@ -716,6 +881,7 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     )
     process.miniAODTausTask.add(process.newTauIDsTask)
     print('New ID Done')
+    
     print('New ID ElectronCleaned')
     # Run TauIDs (anti-e && deepTau) on top of selectedPatTaus-ElectronCleaned
     _updatedTauNameElectronCleaned = 'selectedPatTausNewIDsElectronCleaned'
@@ -746,6 +912,7 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     )
     process.miniAODTausTaskElectronCleaned.add(process.newTauIDsTaskElectronCleaned)
     print('New ID ElectronCleaned - Done ')
+    
     print('New ID MuonCleaned')
     # Run TauIDs (anti-e && deepTau) on top of selectedPatTaus-MuonCleaned
     _updatedTauNameMuonCleaned = 'selectedPatTausNewIDsMuonCleaned'
@@ -776,6 +943,38 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     )
     process.miniAODTausTaskMuonCleaned.add(process.newTauIDsTaskMuonCleaned)
     print('New ID MuonCleaned - Done ')
+
+    print('New ID LowPtElectronCleaned')
+    # Run TauIDs (anti-e && deepTau) on top of selectedPatTaus-LowPtElectronCleaned
+    _updatedTauNameLowPtElectronCleaned = 'selectedPatTausNewIDsLowPtElectronCleaned'
+    _noUpdatedTauNameLowPtElectronCleaned = 'selectedPatTausNoNewIDsLowPtElectronCleaned'
+    
+    import BoostedDiTau.MiniAODSkimmer.tools.runTauIdMVA_LowPtElectronCleaned as tauIdConfigLowPtElectronCleaned
+    tauIdEmbedderLowPtElectronCleaned = tauIdConfigLowPtElectronCleaned.TauIDEmbedder(
+        process, debug = False,
+        updatedTauName = _updatedTauNameLowPtElectronCleaned,
+        postfix="LowPtElectronCleaned",
+        toKeep = ['againstEle2018','deepTau2017v2p1','2017v2']
+    )
+    tauIdEmbedderLowPtElectronCleaned.runTauID()
+    setattr(process, _noUpdatedTauNameLowPtElectronCleaned, process.selectedPatTausLowPtElectronCleaned.clone(cut = cms.string('pt > 8.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5')))
+    process.miniAODTausTaskLowPtElectronCleaned.add(getattr(process,_noUpdatedTauNameLowPtElectronCleaned))
+    delattr(process,'selectedPatTausLowPtElectronCleaned')
+    process.deepTau2017v2p1LowPtElectronCleaned.taus = _noUpdatedTauNameLowPtElectronCleaned
+    process.patTauDiscriminationByElectronRejectionMVA62018RawLowPtElectronCleaned.PATTauProducer = _noUpdatedTauNameLowPtElectronCleaned
+    process.patTauDiscriminationByElectronRejectionMVA62018LowPtElectronCleaned.PATTauProducer = _noUpdatedTauNameLowPtElectronCleaned
+    process.rerunDiscriminationByIsolationOldDMMVArun2017v2rawLowPtElectronCleaned.PATTauProducer = _noUpdatedTauNameLowPtElectronCleaned
+    process.rerunDiscriminationByIsolationOldDMMVArun2017v2LowPtElectronCleaned.PATTauProducer = _noUpdatedTauNameLowPtElectronCleaned
+    process.selectedPatTausLowPtElectronCleaned = getattr(process, _updatedTauNameLowPtElectronCleaned).clone(
+        src = _noUpdatedTauNameLowPtElectronCleaned
+    )
+    process.newTauIDsTaskLowPtElectronCleaned = cms.Task(
+        process.rerunMvaIsolationTaskLowPtElectronCleaned,
+        process.selectedPatTausLowPtElectronCleaned
+    )
+    process.miniAODTausTaskLowPtElectronCleaned.add(process.newTauIDsTaskLowPtElectronCleaned)
+    print('New ID LowPtElectronCleaned - Done ')
+    
     print('New ID Boosted')
     # Run TauIDs (anti-e && deepTau) on top of selectedPatTaus-Boosted
     _updatedTauNameBoosted = 'selectedPatTausNewIDsBoosted'
@@ -815,218 +1014,96 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     process.slimmedTausBoosted = slimmedTaus.clone(src = cms.InputTag('selectedPatTausBoosted'))
     process.slimmedTausElectronCleaned = slimmedTaus.clone(src = cms.InputTag('selectedPatTausElectronCleaned'), packedPFCandidates = cms.InputTag('PackedCandsElectronCleaned','packedPFCandidatesElectronCleaned'))
     process.slimmedTausMuonCleaned = slimmedTaus.clone(src = cms.InputTag('selectedPatTausMuonCleaned'), packedPFCandidates = cms.InputTag('PackedCandsMuonCleaned','packedPFCandidatesMuonCleaned'))
+    process.slimmedTausLowPtElectronCleaned = slimmedTaus.clone(src = cms.InputTag('selectedPatTausLowPtElectronCleaned'), packedPFCandidates = cms.InputTag('PackedCandsLowPtElectronCleaned','packedPFCandidatesLowPtElectronCleaned'))
     process.slimpath *=process.slimmedTausUnCleaned
     process.slimpath *=process.slimmedTausBoosted
     process.slimpath  *=process.slimmedTausElectronCleaned
     process.slimpath  *=process.slimmedTausMuonCleaned
+    process.slimpath  *=process.slimmedTausLowPtElectronCleaned
     process.schedule.append(process.slimpath)
     print('Slimming Done')
-   
+
+    print('Adding PU ID for jets')
+    ## implementation based on: https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupJetID
+    from RecoJets.JetProducers.PileupJetID_cfi import pileupJetId, _chsalgos_106X_UL17
+    process.pileupJetIdUpdated = pileupJetId.clone( 
+        jets=cms.InputTag("slimmedJets"),
+        inputIsCorrected=True,
+        applyJec=False,
+        vertexes=cms.InputTag("offlineSlimmedPrimaryVertices"),
+        algos = cms.VPSet(_chsalgos_106X_UL17),
+    )
+
+    process.load("PhysicsTools.PatAlgos.producersLayer1.jetUpdater_cff")
+    process.patJetCorrFactorsReapplyJEC = process.updatedPatJetCorrFactors.clone(
+        src = cms.InputTag("slimmedJets"),
+        levels = ['L1FastJet', 'L2Relative', 'L3Absolute']
+    )
+    process.updatedJets = process.updatedPatJets.clone(
+        jetSource = cms.InputTag("slimmedJets"),
+        jetCorrFactorsSource = cms.VInputTag(cms.InputTag("patJetCorrFactorsReapplyJEC"))
+    )
+    process.updatedJets.userData.userInts.src += ['pileupJetIdUpdated:fullId']
+    process.updatedJets.userData.userFloats.src += ['pileupJetIdUpdated:fullDiscriminant']
+
+    process.pileupjetidpath = cms.Path( process.pileupJetIdUpdated + process.patJetCorrFactorsReapplyJEC + process.updatedJets )
+
+    process.schedule.append(process.pileupjetidpath)
     
 def addFurtherSkimming(process):
-    #doMM =kwargs.pop('doMM',False)
-    #doMT = kwargs.pop('doMT',False)
-    
     
     #########################
     ### Skim Path MiniAOD ###
     #########################
     process.main_path = cms.Path()
-    process.main_path_et = cms.Path()
-    process.main_path_mt = cms.Path()
-
+    
     ## First store summed weights before skimming
-    process.limiSummary = cms.EDAnalyzer("LumiAnalyzer",
+    process.lumiSummary = cms.EDAnalyzer("LumiAnalyzer",
                                          genEventInfo = cms.InputTag("generator")
     )
     
-    process.main_path *= process.limiSummary
+    process.main_path *= process.lumiSummary
      
 
-    ###### Will only use main-skim so these won't be associated to schedule ######
-    process.z_path = cms.Path()
-    process.z_tau_eff_path = cms.Path()
-
-    
     ###############
     ### Trigger ###
     ###############
     process.HLT =cms.EDFilter("HLTHighLevel",
                               TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
-                              HLTPaths = cms.vstring("HLT_IsoMu24_v*", "HLT_IsoTkMu24_v*", "HLT_IsoMu27_v*", "HLT_IsoTkMu27_v*"), #2017
+                              HLTPaths = cms.vstring("HLT_PFJet450_v*", "HLT_PFHT1050_v*", "HLT_PFHT500_PFMET100_PFMHT100_IDTight_v*", "HLT_IsoMu27_v*", "HLT_Mu50_v", "HLT_Ele35_WPTight_Gsf_v", "HLT_Ele32_WPTight_Gsf_L1DoubleEG_v", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v", "HLT_DoubleEle33_CaloIdL_MW_v", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v", "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v", "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v", "HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET90_v"), #2017
                               #HLTPaths = cms.vstring("HLT_IsoMu24_v*"), #2018  
                               eventSetupPathsKey = cms.string(''),
                               andOr = cms.bool(True), #----- True = OR, False = AND between the HLTPaths
                               throw = cms.bool(False) # throw exception on unknown path names
                     )
     #process.main_path *= process.HLT
-    process.main_path_et *= process.HLT
-    process.main_path_mt *= process.HLT
-    
-    ###############
-    ### Muon ID ###
-    ###############
-    process.analysisMuonsNoIso = cms.EDFilter('PATMuonSelector',
-                                              src = cms.InputTag('slimmedMuons'),
-                                              cut = cms.string('pt > 3.0 && abs(eta)<2.4 && isPFMuon && (isGlobalMuon || isTrackerMuon)'),
-                )
-    process.analysisMuonsIso = cms.EDFilter('PATMuonSelector',
-                                            src = cms.InputTag('analysisMuonsNoIso'),
-                                            cut = cms.string('(pfIsolationR04().sumChargedHadronPt'
-                                                             '+ max(0., pfIsolationR04().sumNeutralHadronEt'
-                                                             '+ pfIsolationR04().sumPhotonEt'
-                                                             '- 0.5*pfIsolationR04().sumPUPt))'
-                                                             '/pt()<0.25'),
-                                        )
-    process.analysisMuonsNoIsoCount = cms.EDFilter("PATCandViewCountFilter",
-        minNumber = cms.uint32(1),
-        maxNumber = cms.uint32(999),
-        src = cms.InputTag('analysisMuonsNoIso'),
-    )
-    
-    process.analysisMuonsIsoCount = cms.EDFilter("PATCandViewCountFilter",
-        minNumber = cms.uint32(1),
-        maxNumber = cms.uint32(999),
-        src = cms.InputTag('analysisMuonsIso'),
-    )
-        
-    #process.main_path *= process.analysisMuonsNoIso
-    #process.main_path *= process.analysisMuonsNoIsoCount
-    process.main_path_et *= process.analysisMuonsNoIso
-    process.main_path_et *= process.analysisMuonsNoIsoCount
-    process.main_path_mt *= process.analysisMuonsNoIso
-    process.main_path_mt *= process.analysisMuonsNoIsoCount
-    
-    #########################
-    ### Trigger Threshold ###
-    #########################
-    process.triggerMuon = cms.EDFilter('PATMuonSelector',
-                                       src = cms.InputTag('analysisMuonsNoIso'),
-                                       cut = cms.string('pt > 24.0'),
-                                   )
-    process.triggerMuonCount = cms.EDFilter("PATCandViewCountFilter",
-                                            minNumber = cms.uint32(1),
-                                            maxNumber = cms.uint32(999),
-                                            src = cms.InputTag('triggerMuon'),
-                                        )
-    #process.main_path *= process.triggerMuon
-    #process.main_path *= process.triggerMuonCount
-    process.main_path_et *= process.triggerMuon
-    process.main_path_et *= process.triggerMuonCount
-    process.main_path_mt *= process.triggerMuon
-    process.main_path_mt *= process.triggerMuonCount
-    
-    ############################
-    ### Require two OS muons ### -> Dropped as we don't want to separate out skims
-    ############################
-    
-    process.mumuZ = cms.EDProducer("CandViewShallowCloneCombiner",
-                                   decay = cms.string("{0}@+ {0}@-".format('slimmedMuons')),
-                                   cut   = cms.string("60<mass<120"),
-                               )
-    process.mumuZCount = cms.EDFilter("PATCandViewCountFilter",
-                                      minNumber = cms.uint32(1),
-                                      maxNumber = cms.uint32(999),
-                                      src = cms.InputTag('mumuZ'),
-                                  )
-    process.z_path *= process.mumuZ
-    process.z_path *= process.mumuZCount
-    
-    ########################
-    ### Tau requirements ###
-    ########################
-    
-    process.analysisTaus = cms.EDFilter('PATTauSelector',
-                                        src = cms.InputTag('slimmedTausUnCleaned'),
-                                        cut = cms.string('pt > 8.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5'),
-                                     )
-    process.analysisTausCount = cms.EDFilter("PATCandViewCountFilter",
-                                             minNumber = cms.uint32(1),
-                                             maxNumber = cms.uint32(999),
-                                             src = cms.InputTag('analysisTaus'),
-                                          )
-    process.analysisTausMuonCleaned = cms.EDFilter('PATTauSelector',
-                                                   src = cms.InputTag('slimmedTausMuonCleaned'),
-                                                   cut = cms.string('pt > 8.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5'),
-                                               )
-    process.analysisTausMuonCleanedCount = cms.EDFilter("PATCandViewCountFilter",
-                                                        minNumber = cms.uint32(1),
-                                                        maxNumber = cms.uint32(999),
-                                                        src = cms.InputTag('analysisTausMuonCleaned'),
-                                                     )
-    process.analysisMuonsNoIsoMTCount = cms.EDFilter("PATCandViewCountFilter",
-                                                     minNumber = cms.uint32(3),
-                                                     maxNumber = cms.uint32(999),
-                                                     src = cms.InputTag('analysisMuonsNoIso'),
-                                                 )
-    process.analysisTausElectronCleaned = cms.EDFilter('PATTauSelector',
-                                                       src = cms.InputTag('slimmedTausElectronCleaned'),
-                                                       cut = cms.string('pt > 8.0 && abs(eta)<2.3 && tauID(\'decayModeFinding\')> 0.5'),
-                                                       )
-    process.analysisTausElectronCleanedCount = cms.EDFilter("PATCandViewCountFilter",
-                                                            minNumber = cms.uint32(1),
-                                                            maxNumber = cms.uint32(999),
-                                                            src = cms.InputTag('analysisTausElectronCleaned'),
-                                                        )
-    
-    process.main_path_mt *= process.analysisMuonsNoIsoMTCount
-    process.main_path_mt *= process.analysisTausMuonCleaned
-    process.main_path_mt *= process.analysisTausMuonCleanedCount
-    process.main_path_et *= process.analysisTausElectronCleaned
-    process.main_path_et *= process.analysisTausElectronCleanedCount
-    process.z_tau_eff_path *= process.analysisTaus
-    process.z_tau_eff_path *= process.analysisTausCount 
-    ############################
-    ### Tau Eff requirements ###
-    ############################
-    
-    process.mumuZTauEff = cms.EDProducer("CandViewShallowCloneCombiner",
-                                         decay = cms.string("{0} {1}".format('slimmedMuons','analysisTaus')),
-                                         checkCharge = cms.bool(False),
-                                         cut   = cms.string("30<mass<210 && deltaR(daughter(0).eta,daughter(0).phi,daughter(1).eta,daughter(1).phi)>0.5"),
-                                     )
-    process.mumuZCountTauEff = cms.EDFilter("PATCandViewCountFilter",
-                                            minNumber = cms.uint32(1),
-                                            maxNumber = cms.uint32(999),
-                                            src = cms.InputTag('mumuZTauEff'),
-                                        )
-    process.z_tau_eff_path *= process.mumuZTauEff
-    process.z_tau_eff_path *= process.mumuZCountTauEff
-     
-    #################
-    ### Finish up ###
-    #################
-    
-    process.schedule.append(process.main_path)
-    #process.schedule.append(process.main_path_et)
-    #process.schedule.append(process.main_path_mt)
-    #process.schedule.append(process.z_path)
-    #process.schedule.append(process.z_tau_eff_path)
-    
-    ###################
-    ### Lumi Summary ##
-    ###################
-    # lumi summary
-    
-    process.lumiSummary = cms.EDProducer("LumiSummaryProducer",
-                                         genEventInfo = cms.InputTag("generator"),
-                                         lheEventProduct = cms.InputTag("externalLHEProducer"),
-                                    )
-    process.lumiSummary_step = cms.Path(process.lumiSummary)
-    process.schedule.append(process.lumiSummary_step)
-    
 
+    process.schedule.append(process.main_path)
+
+    
+    ### this is not needed unless you want to save EDM format files
+##     process.lumiSummary = cms.EDProducer("LumiSummaryProducer",
+##                                          genEventInfo = cms.InputTag("generator"),
+##                                          lheEventProduct = cms.InputTag("externalLHEProducer"),
+##     )
+##     process.lumiSummary_step = cms.Path(process.lumiSummary)
+##     process.schedule.append(process.lumiSummary_step)
+    
+    
 def addTCPNtuples(process):
     process.tcpNtuples = cms.EDAnalyzer("TCPNtuples",
                                         METCollection = cms.InputTag("slimmedMETs"),
-                                        JetCollection = cms.InputTag("slimmedJets"),
+                                        JetCollection = cms.InputTag("updatedJets"),
                                         MuonCollection = cms.InputTag("slimmedMuons"),
                                         ElectronCollection = cms.InputTag("slimmedElectrons"),
+                                        LowPtElectronCollection = cms.InputTag("slimmedLowPtElectrons"),
+                                        LowPtEIdScoreCut = cms.string("4"),
                                         VertexCollection = cms.InputTag("offlineSlimmedPrimaryVertices"),
                                         rhoTag = cms.InputTag("fixedGridRhoFastjetAll"),
                                         effAreasConfigFile = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt"),
                                         UnCleanedTauCollection = cms.InputTag('slimmedTausUnCleaned'),
                                         ECleanedTauCollection = cms.InputTag('slimmedTausElectronCleaned'),
+                                        LowPtECleanedTauCollection = cms.InputTag('slimmedTausLowPtElectronCleaned'),
                                         MCleanedTauCollection = cms.InputTag('slimmedTausMuonCleaned'),
                                         BoostedTauCollection = cms.InputTag('slimmedTausBoosted'),
                                         
@@ -1059,7 +1136,7 @@ def addTCPNtuples(process):
     )
 
 
-    
+### this is not needed unless you want to save EDM format files
 def setOutputModule(mode=0):
     #mode = 0: store original MiniAOD and new selectedPatTaus 
     #mode = 1: store original MiniAOD, new selectedPatTaus, and all PFTau products as in AOD (except of unsuported ones), plus a few additional collections (charged hadrons, pi zeros, combinatoric reco taus)

@@ -6,10 +6,11 @@
 struct JetInfo {
   float pt, eta, phi, mass;
   float ptuncor; 
-  float csvv2; 
-  int id; //jetID 1, jetID + lept-veto 2 
+  float deepcsv; 
+  int id; //jetID 1, jetID + lept-veto 2
+  int puid; // fail 0, loose 1, medium 2, tight 3
 
-  bool operator<(const JetInfo& e) const { return pt < e.pt; }
+  bool operator<(const JetInfo& j) const { return pt < j.pt; }
   
 };
 
