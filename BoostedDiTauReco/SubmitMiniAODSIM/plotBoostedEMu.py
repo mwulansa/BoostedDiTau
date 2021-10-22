@@ -18,7 +18,7 @@ if len(sys.argv)>2:
     outputFileDir=sys.argv[2]
 else:
     outputFileDir = "./plots/"
-outputFileName = outputFileDir+"h_EMu_OS_"+inputFileListName.split("/")[-1].replace(".txt",".root")
+outputFileName = outputFileDir+"h_EMu_"+inputFileListName.split("/")[-1].replace(".txt",".root")
 print outputFileName
 
 pi = math.pi
@@ -72,9 +72,10 @@ h = {}
 
 h['hNEvent'] = ROOT.TH1F ("hNEvent","Number of Events;;N_{events}", 2, 0, 2)
 h['hEMuBaseline_NbJets'] = ROOT.TH1F ("hEMu_Baseline_NbJets","", 10, 0, 10)
+h['bDiscriminator'] = ROOT.TH1F ("hEMu_bDiscriminator","", 100, 0, 1)
 
 #-----------------------EMu-----------------------                                                                                                                                                         
-#-----Require 2 muons                                                                                                                                                                                          
+#-----Require 2 leptons                                                                                                                                                                                          
 h['hEMuBaseline_M'] = ROOT.TH1F ("hEMu_Baseline_M", "e - #mu mass;M_{e#mu};", 1000, 0, 200)
 h['hEMuBaseline_muPt'] = ROOT.TH1F ("hEMu_Baseline_muPt", "#mu P_t; P_t;", 500, 0, 500)
 h['hEMuBaseline_ePt'] = ROOT.TH1F ("hEMu_Baseline_ePt", "e P_t; P_t;", 500, 0, 500)
@@ -84,6 +85,13 @@ h['hEMuBaseline_dRlj'] = ROOT.TH1F ("hEMu_Baseline_dRlj", ";#Delta R;", 100, 0, 
 h['hEMuBaseline_METPt'] = ROOT.TH1F ("hEMu_Baseline_METPt", ";p_{T};", 500, 0, 500)
 h['hEMuBaseline_dPhiMj'] = ROOT.TH1F ("hEMu_Baseline_dPhiMj", ";#delta#phi_{jet};", 100, -pi, pi)
 h['hEMuBaseline_dPhiMmu'] = ROOT.TH1F ("hEMu_Baseline_dPhiMmu", ";#delta#phi_{#mu};", 100, -pi, pi)
+h['hEMuBaseline_dPhiMe'] = ROOT.TH1F ("hEMu_Baseline_dPhiMe", ";#delta#phi_{e};", 100, -pi, pi)
+
+h['hEMuBaseline_M_dR'] = ROOT.TH2F ("hEMu_Baseline_M_dR",";M_{e#mu};#Delta R (e#mu)", 1000, 0, 200, 100, 0, 5)
+h['hEMuBaseline_M_dRlj'] = ROOT.TH2F ("hEMu_Baseline_M_dRlj",";M_{e#mu};#Delta R (lj)", 1000, 0, 200, 100, 0, 5)
+h['hEMuBaseline_M_METPt'] = ROOT.TH2F ("hEMu_Baseline_M_METPt",";M_{e#mu};P_t", 1000, 0, 200, 500, 0, 500)
+h['hEMuBaseline_dPhiMj_dPhiMe'] = ROOT.TH2F ("hEMu_Baseline_dPhiMj_dPhiMe",";#delta#phi_{jet};#delta#phi_{e}", 100, -pi, pi, 100, -pi, pi)
+h['hEMuBaseline_dPhiMe_dPhiMmu'] = ROOT.TH2F ("hEMu_Baseline_dPhiMe_dPhiMmu",";#delta#phi_{e};#delta#phi_{#mu}", 100, -pi, pi, 100, -pi, pi)
 
 #-----Passing Triggers                                                                                                                                                                       
 h['hEMuTrig_M'] = ROOT.TH1F ("hEMu_Trig_M", "e - #mu mass;M_{e#mu};", 1000, 0, 200)
@@ -95,6 +103,13 @@ h['hEMuTrig_dRlj'] = ROOT.TH1F ("hEMu_Trig_dRlj", ";#Delta R;", 100, 0, 5)
 h['hEMuTrig_METPt'] = ROOT.TH1F ("hEMu_Trig_METPt", ";p_{T};", 500, 0, 500)
 h['hEMuTrig_dPhiMj'] = ROOT.TH1F ("hEMu_Trig_dPhiMj", ";#delta#phi_{jet};", 100, -pi, pi)
 h['hEMuTrig_dPhiMmu'] = ROOT.TH1F ("hEMu_Trig_dPhiMmu", ";#delta#phi_{#mu};", 100, -pi, pi)
+h['hEMuTrig_dPhiMe'] = ROOT.TH1F ("hEMu_Trig_dPhiMe", ";#delta#phi_{e};", 100, -pi, pi)
+
+h['hEMuTrig_M_dR'] = ROOT.TH2F ("hEMu_Trig_M_dR",";M_{e#mu};#Delta R (e#mu)", 1000, 0, 200, 100, 0, 5)
+h['hEMuTrig_M_dRlj'] = ROOT.TH2F ("hEMu_Trig_M_dRlj",";M_{e#mu};#Delta R (lj)", 1000, 0, 200, 100, 0, 5)
+h['hEMuTrig_M_METPt'] = ROOT.TH2F ("hEMu_Trig_M_METPt",";M_{e#mu};P_t", 1000, 0, 200, 500, 0, 500)
+h['hEMuTrig_dPhiMj_dPhiMe'] = ROOT.TH2F ("hEMu_Trig_dPhiMj_dPhiMe",";#delta#phi_{jet};#delta#phi_{e}", 100, -pi, pi, 100, -pi, pi)
+h['hEMuTrig_dPhiMe_dPhiMmu'] = ROOT.TH2F ("hEMu_Trig_dPhiMe_dPhiMmu",";#delta#phi_{e};#delta#phi_{#mu}", 100, -pi, pi, 100, -pi, pi)
 
 #-----dR cuts                                                                                                                                                                                 
 h['hEMudR_M'] = ROOT.TH1F ("hEMu_dR_M", "e - #mu mass;M_{e#mu};", 1000, 0, 200)
@@ -106,6 +121,13 @@ h['hEMudR_dRlj'] = ROOT.TH1F ("hEMu_dR_dRlj", ";#Delta R;", 100, 0, 5)
 h['hEMudR_METPt'] = ROOT.TH1F ("hEMu_dR_METPt", ";p_{T};", 500, 0, 500)
 h['hEMudR_dPhiMj'] = ROOT.TH1F ("hEMu_dR_dPhiMj", ";#delta#phi_{jet};", 100, -pi, pi)
 h['hEMudR_dPhiMmu'] = ROOT.TH1F ("hEMu_dR_dPhiMmu", ";#delta#phi_{#mu};", 100, -pi, pi)
+h['hEMudR_dPhiMe'] = ROOT.TH1F ("hEMu_dR_dPhiMe", ";#delta#phi_{e};", 100, -pi, pi)
+
+h['hEMudR_M_dR'] = ROOT.TH2F ("hEMu_dR_M_dR",";M_{e#mu};#Delta R (e#mu)", 1000, 0, 200, 100, 0, 5)
+h['hEMudR_M_dRlj'] = ROOT.TH2F ("hEMu_dR_M_dRlj",";M_{e#mu};#Delta R (lj)", 1000, 0, 200, 100, 0, 5)
+h['hEMudR_M_METPt'] = ROOT.TH2F ("hEMu_dR_M_METPt",";M_{e#mu};P_t", 1000, 0, 200, 500, 0, 500)
+h['hEMudR_dPhiMj_dPhiMe'] = ROOT.TH2F ("hEMu_dR_dPhiMj_dPhiMe",";#delta#phi_{jet};#delta#phi_{e}", 100, -pi, pi, 100, -pi, pi)
+h['hEMudR_dPhiMe_dPhiMmu'] = ROOT.TH2F ("hEMu_dR_dPhiMe_dPhiMmu",";#delta#phi_{e};#delta#phi_{#mu}", 100, -pi, pi, 100, -pi, pi)
 
 #-----MET cuts                                                                                                                                                                                               
 h['hEMuMetcut_M'] = ROOT.TH1F ("hEMu_Metcut_M", "e - #mu mass;M_{e#mu};", 1000, 0, 200)
@@ -117,6 +139,13 @@ h['hEMuMetcut_dRlj'] = ROOT.TH1F ("hEMu_Metcut_dRlj", ";#Delta R;", 100, 0, 5)
 h['hEMuMetcut_METPt'] = ROOT.TH1F ("hEMu_Metcut_METPt", ";p_{T};", 500, 0, 500)
 h['hEMuMetcut_dPhiMj'] = ROOT.TH1F ("hEMu_Metcut_dPhiMj", ";#delta#phi_{jet};", 100, -pi, pi)
 h['hEMuMetcut_dPhiMmu'] = ROOT.TH1F ("hEMu_Metcut_dPhiMmu", ";#delta#phi_{#mu};", 100, -pi, pi)
+h['hEMuMetcut_dPhiMe'] = ROOT.TH1F ("hEMu_Metcut_dPhiMe", ";#delta#phi_{e};", 100, -pi, pi)
+
+h['hEMuMetcut_M_dR'] = ROOT.TH2F ("hEMu_Metcut_M_dR",";M_{e#mu};#Delta R (e#mu)", 1000, 0, 200, 100, 0, 5)
+h['hEMuMetcut_M_dRlj'] = ROOT.TH2F ("hEMu_Metcut_M_dRlj",";M_{e#mu};#Delta R (lj)", 1000, 0, 200, 100, 0, 5)
+h['hEMuMetcut_M_METPt'] = ROOT.TH2F ("hEMu_Metcut_M_METPt",";M_{e#mu};P_t", 1000, 0, 200, 500, 0, 500)
+h['hEMuMetcut_dPhiMj_dPhiMe'] = ROOT.TH2F ("hEMu_Metcut_dPhiMj_dPhiMe",";#delta#phi_{jet};#delta#phi_{e}", 100, -pi, pi, 100, -pi, pi)
+h['hEMuMetcut_dPhiMe_dPhiMmu'] = ROOT.TH2F ("hEMu_Metcut_dPhiMe_dPhiMmu",";#delta#phi_{e};#delta#phi_{#mu}", 100, -pi, pi, 100, -pi, pi)
 
 #-----dPhi cuts           
 h['hEMudPhi_M'] = ROOT.TH1F ("hEMu_dPhi_M", "e - #mu mass;M_{e#mu};", 1000, 0, 200)
@@ -128,18 +157,34 @@ h['hEMudPhi_dRlj'] = ROOT.TH1F ("hEMu_dPhi_dRlj", ";#Delta R;", 100, 0, 5)
 h['hEMudPhi_METPt'] = ROOT.TH1F ("hEMu_dPhi_METPt", ";p_{T};", 500, 0, 500)
 h['hEMudPhi_dPhiMj'] = ROOT.TH1F ("hEMu_dPhi_dPhiMj", ";#delta#phi_{jet};", 100, -pi, pi)
 h['hEMudPhi_dPhiMmu'] = ROOT.TH1F ("hEMu_dPhi_dPhiMmu", ";#delta#phi_{#mu};", 100, -pi, pi)
+h['hEMudPhi_dPhiMe'] = ROOT.TH1F ("hEMu_dPhi_dPhiMe", ";#delta#phi_{e};", 100, -pi, pi)
+
+h['hEMudPhi_M_dR'] = ROOT.TH2F ("hEMu_dPhi_M_dR",";M_{e#mu};#Delta R (e#mu)", 1000, 0, 200, 100, 0, 5)
+h['hEMudPhi_M_dRlj'] = ROOT.TH2F ("hEMu_dPhi_M_dRlj",";M_{e#mu};#Delta R (lj)", 1000, 0, 200, 100, 0, 5)
+h['hEMudPhi_M_METPt'] = ROOT.TH2F ("hEMu_dPhi_M_METPt",";M_{e#mu};P_t", 1000, 0, 200, 500, 0, 500)
+h['hEMudPhi_dPhiMj_dPhiMe'] = ROOT.TH2F ("hEMu_dPhi_dPhiMj_dPhiMe",";#delta#phi_{jet};#delta#phi_{e}", 100, -pi, pi, 100, -pi, pi)
+h['hEMudPhi_dPhiMe_dPhiMmu'] = ROOT.TH2F ("hEMu_dPhi_dPhiMe_dPhiMmu",";#delta#phi_{e};#delta#phi_{#mu}", 100, -pi, pi, 100, -pi, pi)
+
 
 #-----genMatching
 h['hEMuGen_M'] = ROOT.TH1F ("hEMu_Gen_M", "e - #mu mass;M_{e#mu};", 1000, 0, 200)
 h['hEMuGen_ePt'] = ROOT.TH1F ("hEMu_Gen_ePt", "e P_t;P_{t};", 500, 0, 500)
 h['hEMuGen_muPt'] = ROOT.TH1F ("hEMu_Gen_muPt", "#mu P_t;P_{t};", 500, 0, 500)
 
+for key in h.keys():
+    h[key].Sumw2()
+
 #</histograms>
 
 inputFileNames=open(inputFileList, 'r')
+
+prefix = "root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/"
+
 for inputFileName in inputFileNames:
     print inputFileName.replace("\n","")
-    inputFileName=inputFileName.replace("\n","")
+
+    inputFileName = prefix+inputFileName.replace("\n","")
+
     f=ROOT.TFile.Open(inputFileName)
 
     if not f.IsZombie():
@@ -173,7 +218,10 @@ for inputFileName in inputFileNames:
         convs=handleConv.product()
 
         event.getByLabel(labelRho, handleRho)
-        rho=handleRho.product()[0]
+        if len(handleRho.product())>0:
+            rho=handleRho.product()[0]
+        else:
+            rho = 0
 
         event.getByLabel(labelGenParticle, handleGenParticle)
         particles=handleGenParticle.product()
@@ -229,10 +277,11 @@ for inputFileName in inputFileNames:
         selected_muons=[]
         for muon in muons:
             if not muon.isLooseMuon(): continue
-            if abs(muon.innerTrack().dxy(vertex[0].position()))>0.2 or abs(muon.innerTrack().dz(vertex[0].position()))>0.5: continue 
-            if muon.pt()<3 or muon.eta()>2.4: continue
-            if muonIsoCut(muon)<0.25:
+#            if abs(muon.innerTrack().dxy(vertex[0].position()))>0.2 or abs(muon.innerTrack().dz(vertex[0].position()))>0.5: continue 
+            if muon.pt()>3 or muon.eta()<2.4:
                 selected_muons+=[muon]
+#            if muonIsoCut(muon)<0.25:
+#selected_muons+=[muon]
 
         selected_muons.sort(key=lambda x: x.pt(), reverse=True) 
         #<\muonSelection>
@@ -242,29 +291,26 @@ for inputFileName in inputFileNames:
         for electron in electrons:
             if electron.pt()<7: continue 
             if abs(electron.eta())>2.5: continue
+            E_c = electron.superCluster().energy()
             if electron.isEB(): 
-                if electron.full5x5_sigmaIetaIeta()<0.011 \
-                and electron.hadronicOverEm()<0.298 \
-                and abs(electron.deltaPhiSuperClusterTrackAtVtx())<0.222 \
-                and GsfEleEInverseMinusPInverse(electron)<0.241 \
-                and abs(dEtaInSeed(electron))<0.00477 \
+                if electron.full5x5_sigmaIetaIeta()<0.0112 \
+                and electron.hadronicOverEm()<(0.05 + 1.16/E_c + 0.0324*rho/E_c) \
+                and abs(electron.deltaPhiSuperClusterTrackAtVtx())<0.0884 \
+                and GsfEleEInverseMinusPInverse(electron)<0.193 \
+                and abs(dEtaInSeed(electron))<0.00377 \
                 and GsfEleMissingHitsCut(electron)<=1 \
                 and electron.passConversionVeto() \
-                and GsfEleEffAreaPFIsoCut(electron, rho)<0.0994 \
-                and abs(electron.gsfTrack().dz(vertex[0].position()))<0.1 \
-                and abs(electron.gsfTrack().dxy(vertex[0].position()))<0.05:
+                and GsfEleEffAreaPFIsoCut(electron, rho) < 0.112+0.506/electron.pt():
                     selected_electrons+=[electron]
             if electron.isEE():
-                if electron.full5x5_sigmaIetaIeta()<0.0314 \
-                and electron.hadronicOverEm()<0.101 \
-                and abs(electron.deltaPhiSuperClusterTrackAtVtx())<0.213 \
-                and GsfEleEInverseMinusPInverse(electron)<0.14 \
-                and abs(dEtaInSeed(electron))<0.00868 \
+                if electron.full5x5_sigmaIetaIeta()<0.0425 \
+                and electron.hadronicOverEm()<(0.0441 + 2.54/E_c + 0.183*rho/E_c) \
+                and abs(electron.deltaPhiSuperClusterTrackAtVtx())<0.169 \
+                and GsfEleEInverseMinusPInverse(electron)<0.111 \
+                and abs(dEtaInSeed(electron))<0.00674 \
                 and GsfEleMissingHitsCut(electron)<=1 \
                 and electron.passConversionVeto() \
-                and GsfEleEffAreaPFIsoCut(electron, rho)<0.107 \
-                and abs(electron.gsfTrack().dz(vertex[0].position()))<0.2 \
-                and abs(electron.gsfTrack().dxy(vertex[0].position()))<0.1:
+                and GsfEleEffAreaPFIsoCut(electron, rho)<0.108+0.963/electron.pt():
                     selected_electrons+=[electron]
 
         selected_electrons.sort(key=lambda x: x.pt(), reverse=True) 
@@ -274,7 +320,7 @@ for inputFileName in inputFileNames:
         selected_jets=[]
         selected_bjets=[]
         for jet in jets:
-            if jet.pt()<20 or abs(jet.eta())>2.5: continue
+            if jet.pt()<20 or abs(jet.eta())>=5: continue
             NHF  = jet.neutralHadronEnergyFraction() 
             NEMF = jet.neutralEmEnergyFraction() 
             CHF  = jet.chargedHadronEnergyFraction() 
@@ -282,13 +328,32 @@ for inputFileName in inputFileNames:
             CEMF = jet.chargedEmEnergyFraction()
             NumConst = jet.chargedMultiplicity()+jet.neutralMultiplicity()
             NumNeutralParticles =jet.neutralMultiplicity()
+            NumChargedMult = jet.chargedMultiplicity()
             CHM      = jet.chargedMultiplicity()
-            if MUF > 0.8: continue
-            if CEMF > 0.9: continue
-            if (NHF<0.90 and NEMF<0.90 and NumConst>1) and ((abs(jet.eta())<=2.4 and CHF>0 and CHM>0 and CEMF<0.99) or abs(jet.eta())>2.4) and abs(jet.eta())<=2.7:
-                selected_jets+=[jet] 
-                if jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags")>0.9535:
-                    selected_bjets+=[jet]
+
+            if abs(jet.eta())<=2.4:
+                if NHF < 0.9 and NEMF < 0.9 and NumConst > 1.0 and MUF < 0.8 and CHM > 0.0 and NumChargedMult > 0.0 and CEMF < 0.8: 
+                    selected_jets+=[jet]
+                    h['bDiscriminator'].Fill(jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"), genweight)
+                    if jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags")>0.9535: selected_bjets+=[jet]
+
+            if abs(jet.eta())>2.4 and abs(jet.eta())<=2.7:
+                if NHF < 0.9 and NEMF < 0.99:
+                    selected_jets+=[jet]
+                    h['bDiscriminator'].Fill(jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"), genweight)
+                    if jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags")>0.9535: selected_bjets+=[jet]
+
+            if abs(jet.eta())>2.7 and abs(jet.eta())<=3 :
+                if NHF < 0.9 and NEMF > 0.0 and NEMF < 0.99 and NumNeutralParticles > 1.0:
+                    selected_jets+=[jet]
+                    h['bDiscriminator'].Fill(jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"), genweight)
+                    if jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags")>0.9535: selected_bjets+=[jet]
+
+            if abs(jet.eta())>3 and abs(jet.eta())<=5: 
+                if NHF > 0.2 and NEMF < 0.9 and NumNeutralParticles > 10:
+                    selected_jets+=[jet]
+                    h['bDiscriminator'].Fill(jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"), genweight)
+                    if jet.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags")>0.9535: selected_bjets+=[jet]
                 
         selected_jets.sort(key=lambda x: x.pt(), reverse=True)       
         selected_bjets.sort(key=lambda x: x.pt(), reverse=True)
@@ -318,6 +383,13 @@ for inputFileName in inputFileNames:
             h['hEMuBaseline_METPt'].Fill(m.Pt(), genweight)
             h['hEMuBaseline_dPhiMj'].Fill(m.DeltaPhi(j), genweight)
             h['hEMuBaseline_dPhiMmu'].Fill(m.DeltaPhi(mu), genweight)
+            h['hEMuBaseline_dPhiMe'].Fill(m.DeltaPhi(e), genweight)
+
+            h['hEMuBaseline_M_dR'].Fill((mu+e).M(), mu.DeltaR(e), genweight)
+            h['hEMuBaseline_M_dRlj'].Fill((mu+e).M(), (mu+e).DeltaR(j), genweight)
+            h['hEMuBaseline_M_METPt'].Fill((mu+e).M(), m.Pt(), genweight)
+            h['hEMuBaseline_dPhiMj_dPhiMe'].Fill(m.DeltaPhi(j), m.DeltaPhi(e), genweight)
+            h['hEMuBaseline_dPhiMe_dPhiMmu'].Fill(m.DeltaPhi(e), m.DeltaPhi(mu), genweight)
                 
             if mu.DeltaR(e)<0.4 and mu.DeltaR(j)>0.8 and e.DeltaR(j)>0.8:
 
@@ -330,6 +402,14 @@ for inputFileName in inputFileNames:
                 h['hEMudR_METPt'].Fill(m.Pt(), genweight)
                 h['hEMudR_dPhiMj'].Fill(m.DeltaPhi(j), genweight)
                 h['hEMudR_dPhiMmu'].Fill(m.DeltaPhi(mu), genweight)
+                h['hEMudR_dPhiMe'].Fill(m.DeltaPhi(e), genweight)
+
+
+                h['hEMudR_M_dR'].Fill((mu+e).M(), mu.DeltaR(e), genweight)
+                h['hEMudR_M_dRlj'].Fill((mu+e).M(), (mu+e).DeltaR(j), genweight)
+                h['hEMudR_M_METPt'].Fill((mu+e).M(), m.Pt(), genweight)
+                h['hEMudR_dPhiMj_dPhiMe'].Fill(m.DeltaPhi(j), m.DeltaPhi(e), genweight)
+                h['hEMudR_dPhiMe_dPhiMmu'].Fill(m.DeltaPhi(e), m.DeltaPhi(mu), genweight)
 
                 if m.Pt()>100:
 
@@ -342,6 +422,13 @@ for inputFileName in inputFileNames:
                     h['hEMuMetcut_METPt'].Fill(m.Pt(), genweight)
                     h['hEMuMetcut_dPhiMj'].Fill(m.DeltaPhi(j), genweight)
                     h['hEMuMetcut_dPhiMmu'].Fill(m.DeltaPhi(mu), genweight)
+                    h['hEMuMetcut_dPhiMe'].Fill(m.DeltaPhi(e), genweight)
+
+                    h['hEMuMetcut_M_dR'].Fill((mu+e).M(), mu.DeltaR(e), genweight)
+                    h['hEMuMetcut_M_dRlj'].Fill((mu+e).M(), (mu+e).DeltaR(j), genweight)
+                    h['hEMuMetcut_M_METPt'].Fill((mu+e).M(), m.Pt(), genweight)
+                    h['hEMuMetcut_dPhiMj_dPhiMe'].Fill(m.DeltaPhi(j), m.DeltaPhi(e), genweight)
+                    h['hEMuMetcut_dPhiMe_dPhiMmu'].Fill(m.DeltaPhi(e), m.DeltaPhi(mu), genweight)
 
                     if abs(m.DeltaPhi(mu))<1 and abs(m.DeltaPhi(j))>2:
                         h['hEMudPhi_M'].Fill((mu+e).M(), genweight)
@@ -353,6 +440,13 @@ for inputFileName in inputFileNames:
                         h['hEMudPhi_METPt'].Fill(m.Pt(), genweight)
                         h['hEMudPhi_dPhiMj'].Fill(m.DeltaPhi(j), genweight)
                         h['hEMudPhi_dPhiMmu'].Fill(m.DeltaPhi(mu), genweight)
+                        h['hEMudPhi_dPhiMe'].Fill(m.DeltaPhi(e), genweight)
+
+                        h['hEMudPhi_M_dR'].Fill((mu+e).M(), mu.DeltaR(e), genweight)
+                        h['hEMudPhi_M_dRlj'].Fill((mu+e).M(), (mu+e).DeltaR(j), genweight)
+                        h['hEMudPhi_M_METPt'].Fill((mu+e).M(), m.Pt(), genweight)
+                        h['hEMudPhi_dPhiMj_dPhiMe'].Fill(m.DeltaPhi(j), m.DeltaPhi(e), genweight)
+                        h['hEMudPhi_dPhiMe_dPhiMmu'].Fill(m.DeltaPhi(e), m.DeltaPhi(mu), genweight)
 
                         if len(genMuons)==1 and len(genJets)>=1 and len(genElectrons)==1:
                             genMu=ROOT.TLorentzVector()
@@ -366,9 +460,8 @@ for inputFileName in inputFileNames:
                                 h['hEMuGen_ePt'].Fill(mu.Pt(), genweight)
                                 h['hEMuGen_muPt'].Fill(e.Pt(), genweight)
 
-                        if (mu.Pt()>26 and (triggerResults.accept(names.triggerIndex("HLT_IsoTkMu24_v4")) or triggerResults.accept(names.triggerIndex("HLT_IsoMu24_v4")))) \
-        or (mu.Pt()>50 and (triggerResults.accept(names.triggerIndex("HLT_TkMu50_v3")) or triggerResults.accept(names.triggerIndex("HLT_Mu50_v5")))) \
-        or (j.Pt()>500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
+                        if triggerResults.accept(names.triggerIndex("HLT_PFJet450_v17")) or triggerResults.accept(names.triggerIndex("HLT_PFHT1050_v14")) or triggerResults.accept(names.triggerIndex("HLT_Mu50_v11")) or triggerResults.accept(names.triggerIndex("HLT_IsoMu27_v13")) or triggerResults.accept(names.triggerIndex("HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1_v8")) or triggerResults.accept(names.triggerIndex("HLT_Ele35_WPTight_Gsf_v7")) or triggerResults.accept(names.triggerIndex("HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v9")) or triggerResults.accept(names.triggerIndex("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10")) or triggerResults.accept(names.triggerIndex("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12")):
+
 
                             h['hEMuTrig_M'].Fill((mu+e).M(), genweight)
                             h['hEMuTrig_muPt'].Fill(mu.Pt(), genweight)
@@ -379,7 +472,20 @@ for inputFileName in inputFileNames:
                             h['hEMuTrig_METPt'].Fill(m.Pt(), genweight)
                             h['hEMuTrig_dPhiMj'].Fill(m.DeltaPhi(j), genweight)
                             h['hEMuTrig_dPhiMmu'].Fill(m.DeltaPhi(mu), genweight)
+                            h['hEMuTrig_dPhiMe'].Fill(m.DeltaPhi(e), genweight)
 
+                            h['hEMuTrig_M_dR'].Fill((mu+e).M(), mu.DeltaR(e), genweight)
+                            h['hEMuTrig_M_dRlj'].Fill((mu+e).M(), (mu+e).DeltaR(j), genweight)
+                            h['hEMuTrig_M_METPt'].Fill((mu+e).M(), m.Pt(), genweight)
+                            h['hEMuTrig_dPhiMj_dPhiMe'].Fill(m.DeltaPhi(j), m.DeltaPhi(e), genweight)
+                            h['hEMuTrig_dPhiMe_dPhiMmu'].Fill(m.DeltaPhi(e), m.DeltaPhi(mu), genweight)
+
+                        # if triggerResults.accept(names.triggerIndex("HLT_PFJet450_v17")) or triggerResults.accept(names.triggerIndex("HLT_PFHT1050_v14")) or triggerResults.accept(names.triggerIndex("HLT_Mu50_v11")) or triggerResults.accept(names.triggerIndex("HLT_IsoMu27_v13")) or triggerResults.accept(names.triggerIndex("HLT_IsoMu24_eta2p1_LooseChargedIsoPFTau35_Trk1_eta2p1_Reg_CrossL1_v8")) or triggerResults.accept(names.triggerIndex("HLT_Ele35_WPTgith_Gsf_v7")) or triggerResults.accept(names.triggerIndex("HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v9")) or triggerResults.accept(names.triggerIndex("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v10")) or triggerResults.accept(names.triggerIndex("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v12")):
+
+
+        #                 if (mu.Pt()>26 and (triggerResults.accept(names.triggerIndex("HLT_IsoTkMu24_v4")) or triggerResults.accept(names.triggerIndex("HLT_IsoMu24_v4")))) \
+        # or (mu.Pt()>50 and (triggerResults.accept(names.triggerIndex("HLT_TkMu50_v3")) or triggerResults.accept(names.triggerIndex("HLT_Mu50_v5")))) \
+        # or (j.Pt()>500 and (triggerResults.accept(names.triggerIndex("HLT_PFJet450_v9")) or triggerResults.accept(names.triggerIndex("HLT_PFHT900_v6")) or triggerResults.accept(names.triggerIndex("HLT_CaloJet500_NoJetID_v5")))):
 
                         
 out.cd()
