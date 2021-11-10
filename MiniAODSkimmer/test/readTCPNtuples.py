@@ -10,9 +10,11 @@ fchain = ROOT.TChain('tcpNtuples/analysisTree')
 fchain.Add(inputFile)
 
 fchain.SetBranchAddress("Jets", ROOT.AddressOf(jets))
+met = fchain.GetBranch("Mets")
+#fchain.SetBranchAddress("Mets")
 
 print(fchain.GetEntries())
 
 for iev in range(fchain.GetEntries()): # Be careful!!!
     fchain.GetEntry(iev)
-    print(iev, jets.at(0).pt)
+    print(iev, met.GetLeaf('pt').GetValue(), jets.at(0).pt)

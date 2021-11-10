@@ -4,11 +4,12 @@ from Configuration.StandardSequences.Eras import eras
 
 inputFiles = "root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/17Jul2018_ver2-v1/00000/0AB088EE-EA8A-E811-8636-0CC47A4C8E96.root"
 outputFile = "outMuonSelection.root"
-maxEvents = -1
+maxEvents = 100
 
 process = cms.Process('reMINIAOD',eras.Run2_2017,eras.run2_miniAOD_94XFall17)
 
 # import of standard configurations
+process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
@@ -88,16 +89,25 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
 )
 
 process.load('BoostedDiTau.TauEmbedding.SelectingProcedure_cff')
-process.p = cms.Path(process.makePatMuonsZmumuSelection)
+process.selection = cms.Path(process.makePatMuonsZmumuSelection)
 
 process.MINIAODEventContent.outputCommands += [
     'keep *_patMuonsAfterID_*_*',
     #'keep *_ZmumuCandidates_*_*',
     'keep *_selectedMuonsForEmbedding_*_*',
-    'keep *_selectedBoostedMuonsForEmbedding_*_*',
+    #'keep *_selectedBoostedMuonsForEmbedding_*_*',
+    'keep *_externalLHEProducer_*_*',
     ]
 
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.MINIAODoutput_step = cms.EndPath(process.MINIAODoutput)
 
+process.load('BoostedDiTau.TauEmbedding.EmbeddingLHEProducer_cfi')
+process.lheproduction = cms.Path(process.makeexternalLHEProducer)
+
+process.p = cms.Path(process.makePatMuonsZmumuSelection + process.makeexternalLHEProducer)
+
 process.schedule = cms.Schedule(process.p, process.endjob_step, process.MINIAODoutput_step)
+
+# Customisation from command line
+process.RandomNumberGeneratorService.externalLHEProducer.initialSeed=int(1552064665%100)

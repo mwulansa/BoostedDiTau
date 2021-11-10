@@ -152,20 +152,20 @@ ZmumuCandidatesLooseIsoDB = cms.EDProducer("CandViewShallowCloneCombiner",
 
 ZmumuCandidatesFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag("ZmumuCandidates"),
-    minNumber = cms.uint32(1),
-    filter = cms.bool(True)
+    minNumber = cms.uint32(1)
+    #filter = cms.bool(True)
 )
 
 ZmumuCandidatesFilterLooseIso = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag("ZmumuCandidatesLooseIso"),
-    minNumber = cms.uint32(1),
-    filter = cms.bool(True)
+    minNumber = cms.uint32(1)
+    #filter = cms.bool(True)
 )
 
 ZmumuCandidatesFilterLooseIsoDB = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag("ZmumuCandidatesLooseIsoDB"),
     minNumber = cms.uint32(1),
-    filter = cms.bool(True)
+    #filter = cms.bool(True)
 )
 
 ## ZmumuCandidatesMCDoubleMu = cms.EDProducer("CandViewShallowCloneCombiner",
@@ -208,9 +208,9 @@ ZmumuCandidatesFilterLooseIsoDB = cms.EDFilter("CandViewCountFilter",
 ## )
 
 
-## selectedMuonsForEmbedding = cms.EDProducer("MuMuForEmbeddingSelector",
-##     ZmumuCandidatesCollection = cms.InputTag("ZmumuCandidates")
-## )
+selectedMuonsForEmbedding = cms.EDProducer("MuMuForEmbeddingSelector",
+    ZmumuCandidatesCollection = cms.InputTag("ZmumuCandidates")
+)
 ## 
 ## selectedBoostedMuonsForEmbedding = cms.EDProducer("MuMuForEmbeddingBoostedSelector",
 ##     ZmumuCandidatesCollection = cms.InputTag("ZmumuCandidates")
@@ -320,7 +320,7 @@ makePatMuonsZmumuSelection = cms.Sequence(
     + patMuonsAfterLooseIDDoubleMu
     + ZmumuCandidates
     + ZmumuCandidatesFilter
-    #+ selectedMuonsForEmbedding
+    + selectedMuonsForEmbedding
 )
 
 studyPatMuonsZmumuSelectionDoubleMu = cms.Sequence(
