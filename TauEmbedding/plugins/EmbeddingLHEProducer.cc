@@ -226,7 +226,7 @@ EmbeddingLHEProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     // Saving vertex position
     std::unique_ptr<math::XYZTLorentzVectorD> vertex_position (new math::XYZTLorentzVectorD(coll_vertices->at(0).x(),coll_vertices->at(0).y(),coll_vertices->at(0).z(),0.0));
     iEvent.put(std::move(vertex_position), "vertexPosition");
-
+    //std::cout << "----------debug\n";
 }
 
 // ------------ method called once each job just before starting event loop  ------------

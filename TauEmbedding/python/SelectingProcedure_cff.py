@@ -132,7 +132,7 @@ patMuonsAfterLooseIDJetHT = cms.EDFilter("PATMuonSelector",
 ZmumuCandidates = cms.EDProducer("CandViewShallowCloneCombiner",
     checkCharge = cms.bool(True),
     # require one of the muons with pT > 17 GeV, and an invariant mass > 1 GeV
-    cut = cms.string('charge = 0 & max(daughter(0).pt, daughter(1).pt) > 17 & mass > 1 & daughter(0).isGlobalMuon & daughter(1).isGlobalMuon'),
+    cut = cms.string('charge = 0 & max(daughter(0).pt, daughter(1).pt) > 17 & mass > 70 & daughter(0).isGlobalMuon & daughter(1).isGlobalMuon'),
     decay = cms.string("patMuonsAfterLooseIDDoubleMu@+ patMuonsAfterLooseIDDoubleMu@-")
 )
 

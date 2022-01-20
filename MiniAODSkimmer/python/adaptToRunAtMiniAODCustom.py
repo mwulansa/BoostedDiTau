@@ -1062,7 +1062,7 @@ def addFurtherSkimming(process):
                                          genEventInfo = cms.InputTag("generator")
     )
     
-    process.main_path *= process.lumiSummary
+    #process.main_path *= process.lumiSummary
      
 
     ###############
@@ -1126,8 +1126,8 @@ def addTCPNtuples(process):
     process.tcpTrigNtupleMaker = cms.Path(process.tcpTrigNtuples)
 
     
-    process.schedule.append(process.tcpTrigNtupleMaker)
-    process.schedule.append(process.tcpGenNtupleMaker)
+    #process.schedule.append(process.tcpTrigNtupleMaker)
+    #process.schedule.append(process.tcpGenNtupleMaker)
     process.schedule.append(process.tcpNtupleMaker)
 
     process.TFileService = cms.Service("TFileService",

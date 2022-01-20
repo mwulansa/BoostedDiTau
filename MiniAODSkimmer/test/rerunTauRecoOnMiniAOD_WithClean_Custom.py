@@ -17,7 +17,8 @@ from FWCore.ParameterSet.MassReplace import massSearchReplaceParam
 
 
 import sys
-inputfile = sys.argv[2]
+#inputfile = sys.argv[2]
+inputfile = ''
 #runSignal = True
 #runSignal=False
 ###########
@@ -245,10 +246,10 @@ process.ak4PFJetsRecoTauChargedHadronsMuonCleaned.minJetPt = jetPt
 
 
 tauAtMiniToolsCustom.addFurtherSkimming(process)
-tauAtMiniToolsCustom.addTCPNtuples(process)
+#tauAtMiniToolsCustom.addTCPNtuples(process)
 
-#process.out = cms.EndPath(process.output)
-#process.schedule.append(process.out)
+process.out = cms.EndPath(process.output)
+process.schedule.append(process.out)
 
 ###########################################
 process.load('FWCore.MessageService.MessageLogger_cfi')

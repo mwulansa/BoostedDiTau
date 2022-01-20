@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 
 externalLHEProducer = cms.EDProducer("EmbeddingLHEProducer",
-    src = cms.InputTag("selectedMuonsForEmbedding","",""),
+    src = cms.InputTag("selectedMuonsForEmbedding","","SELECT"),
     vertices = cms.InputTag("offlineSlimmedPrimaryVertices", "", ""),
     particleToEmbed = cms.int32(15),
     rotate180 = cms.bool(False),

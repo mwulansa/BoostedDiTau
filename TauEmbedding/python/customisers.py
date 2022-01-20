@@ -278,8 +278,8 @@ def customiseGenerator(process, changeProcessname=True, reselect=False):
     if reselect:
         dataTier = "RESELECT"
     else:
-        #dataTier = "SELECT"
-        dataTier = "reMINIAOD"
+        dataTier = "SELECT"
+        #dataTier = "reMINIAOD"
     if changeProcessname:
         process._Process__name = "SIMembedding"
 
@@ -293,7 +293,7 @@ def customiseGenerator(process, changeProcessname=True, reselect=False):
     print("Setting online beam spot in HLTSchedule to the one from input data. Replaced 'hltOnlineBeamSpot' with the offline beam spot.")
 
     # Remove BeamSpot Production, use the one from selected data instead.
-    #process.reconstruction.remove(process.offlineBeamSpot)
+    process.reconstruction.remove(process.offlineBeamSpot)
 
     # Disable noise simulation
     process.mix.digitizers.castor.doNoise = cms.bool(False)
@@ -316,7 +316,7 @@ def customiseGenerator(process, changeProcessname=True, reselect=False):
     #from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
     #massSearchReplaceAnyInputTag(process.generation_step,cms.InputTag("externalLHEProducer", "", ""),cms.InputTag("externalLHEProducer", "", "reMINIAOD"))
 
-    return modify_outputModules(process, [keepSelected(dataTier), keepCleaned(dataTier), keepSimulated()], ["AODSIMoutput"])
+    return modify_outputModules(process, [keepSelected(dataTier), keepCleaned(dataTier), keepSimulated()], ["MINIAODSIMoutput"])
 
 
 def customiseGenerator_Reselect(process):
