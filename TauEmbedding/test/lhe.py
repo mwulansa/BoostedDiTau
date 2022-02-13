@@ -3,8 +3,9 @@ import FWCore.ParameterSet.Config as cms
 from Configuration.StandardSequences.Eras import eras
 
 inputFile = "file:outMuonSelection.root"
+#inputFile = "file:outMuonSelection_DYToLL_v1.root"
 outputFile = "outLHE.root"
-maxEvents = 100
+#maxEvents = 100
 
 process = cms.Process('LHE',eras.Run2_2017)
 

@@ -3,6 +3,7 @@ import FWCore.ParameterSet.Config as cms
 from Configuration.StandardSequences.Eras import eras
 
 inputFiles = "root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/17Jul2018_ver2-v1/00000/0AB088EE-EA8A-E811-8636-0CC47A4C8E96.root"
+#inputFiles = "root://xrootd.unl.edu//store/mc/RunIISummer20UL17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v2/120000/00E40252-D346-A54B-B1B7-1A73AD1230DC.root"
 outputFile = "outMuonSelection.root"
 maxEvents = -1
 

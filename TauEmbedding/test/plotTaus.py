@@ -7,11 +7,18 @@ events=Events('embedded.root')
 
 out=ROOT.TFile('h_embedded.root','recreate')
 
+h0 = ROOT.TH1F ("genTauPt", "", 500, 0, 500)
 h1 = ROOT.TH1F ("mmumu", "", 50, 0, 500)
 h2 = ROOT.TH1F ("mtautau", "", 50, 0, 500)
 h3 = ROOT.TH1F ("mtautauEmbed", "", 50, 0, 500)
+h4 = ROOT.TH1F ("Weights", "", 20, 0, 2)
+h6 = ROOT.TH1F ("MET", "", 50, 0, 500)
+h7 = ROOT.TH1F ("METEmbed", "", 50, 0, 500)
+h8 = ROOT.TH1F ("genTauDR", "", 70, 0, 7)
 
 
+handleGenParticle = Handle ('vector<reco::GenParticle>')
+labelGenParticle = ('prunedGenParticles', '', 'SIMembedding')
 
 handleTaus = Handle ('vector<pat::Tau>')
 labelTaus = ('slimmedTausNewID','','SELECT')
@@ -34,6 +41,15 @@ labelCands = ('packedPFCandidates','','DQM')
 
 handleCandsEmbed = Handle ('vector<pat::PackedCandidate>')
 labelCandsEmbed = ('embeddedPFCandidates','packedPFCandidatesEmbedded','Embed')
+
+handleMet = Handle ('vector<pat::MET>')
+labelMet = ('slimmedMETs','','DQM')
+
+handleMetEmbed = Handle ('vector<pat::MET>')
+labelMetEmbed = ('slimmedMETsTEST','','Embed')
+
+handleGenInfo = Handle('GenEventInfoProduct')
+labelGenInfo = ( 'generator', '', 'SIMembedding' )
 
 for event in events:
     #print('-----')
@@ -58,8 +74,41 @@ for event in events:
  
     event.getByLabel(labelCandsEmbed, handleCandsEmbed)
     candsEmbed=handleCandsEmbed.product()
+
+    event.getByLabel(labelMet, handleMet)
+    met=handleMet.product()
  
+    event.getByLabel(labelMetEmbed, handleMetEmbed)
+    metEmbed=handleMetEmbed.product()
+
+    event.getByLabel(labelGenInfo, handleGenInfo)
+    geninfo=handleGenInfo.product()
+    genweight=geninfo.weight()
+
+    event.getByLabel(labelGenParticles, handleGenParticles)
+    genParticles=handleGenParticles.product()
+    
     #print(taus.size(), tausEmbed.size(), tausMC.size())
+
+    h6.Fill(met[0].pt())
+    h7.Fill(metEmbed[0].pt(), genweight)
+    h4.Fill(genweight)
+
+    selected_gentaus = []
+    for particle in genParticles:
+        if abs(particle.pdgId()) == 15 and particle.isHardProcess():
+            selected_gentaus += [particle]
+    if len(selected_gentaus) > 1:
+        if selected_gentaus[0].pt() > selected_gentaus[1].pt(): h0.Fill(selected_gentaus[0].pt())
+        else: h0.Fill(selected_gentaus[1].pt())
+
+        t1=ROOT.TLorentzVector()
+        t1.SetPtEtaPhiM(selected_gentaus[0].pt(), selected_gentaus[0].eta(), selected_gentaus[0].phi(), selected_gentaus[0].mass()) 
+    
+        t2=ROOT.TLorentzVector()
+        t2.SetPtEtaPhiM(selected_gentaus[1].pt(), selected_gentaus[1].eta(), selected_gentaus[1].phi(), selected_gentaus[1].mass())
+            
+        h8.Fill(t1.DeltaR(t2))
 
     selected_muons=[]
     for muon in muons:
@@ -77,7 +126,8 @@ for event in events:
     selected_taus_embed=[]
     for tau in tausEmbed:
         #print("embed:",tau.pt())
-        if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFindingNewDMs") and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFindingNewDMs") and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
             selected_taus_embed+=[tau]
 
     if len(selected_muons) > 1:
@@ -105,7 +155,7 @@ for event in events:
         mu2=ROOT.TLorentzVector()
         mu2.SetPtEtaPhiM(selected_taus_embed[1].pt(), selected_taus_embed[1].eta(), selected_taus_embed[1].phi(), selected_taus_embed[1].mass())
 
-        h3.Fill((mu1+mu2).M())
+        h3.Fill((mu1+mu2).M(), genweight)
 
         
 
@@ -118,6 +168,11 @@ for event in events:
 
 
 out.cd()
+h0.Write()
 h1.Write()
 h2.Write()
 h3.Write()
+h4.Write()
+h6.Write()
+h7.Write()
+h8.Write()

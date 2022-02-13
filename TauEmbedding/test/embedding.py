@@ -110,7 +110,9 @@ process.MINIAODSIMoutput.outputCommands += [
     #'drop *_*_*_Embed',
     'keep *_*_*_SELECT',
     'keep *_selectedPatTausEmbed_*_*',
-    'keep *_embeddedPFCandidates_*_*'
+    'keep *_embeddedPFCandidates_*_*',
+    'keep *_selectedPatJetsAK4PFchs__*',
+    'keep *_slimmedMETsTEST_*_*'
     ]
 
 process.endjob_step = cms.EndPath(process.endOfProcess)
@@ -135,8 +137,17 @@ process.p= cms.Path(process.makeEmbeddedPFCandidates)
 #associatePatAlgosToolsTask(process)
 
 
-#from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
-#jetToolbox( process, 'ak4', 'jetSequence', 'out', PUMethod='CHS', newPFCollection=True, nameNewPFCollection='embeddedPFCandidates', dataTier='miniaod')
+from JMEAnalysis.JetToolbox.jetToolbox_cff import jetToolbox
+jetToolbox( process, 'ak4', 'dummy', 'out', PUMethod='chs', dataTier="miniAOD", bTagDiscriminators=["pfDeepCSVJetTags:probb","pfDeepCSVJetTags:probbb"], newPFCollection=True, nameNewPFCollection="embeddedPFCandidates")
+
+process.ak4PFJets.src = cms.InputTag("embeddedPFCandidates","packedPFCandidatesEmbedded")
+#process.ak4PFJets.srcPVs = cms.InputTag("")
+
+process.pfInclusiveSecondaryVertexFinderTagInfosAK4PFchs.extSVCollection = cms.InputTag("slimmedSecondaryVertices","", "DQM")
+
+#process.candidateVertexArbitratorCvsL.tracks = cms.InputTag("embeddedPFCandidates","lostTracksEmbedded")
+#process.inclusiveCandidateVertexFinderCvsL.tracks = cms.InputTag("embeddedPFCandidates","lostTracksEmbedded")
+process.pfImpactParameterTagInfosAK4PFchs.candidates = cms.InputTag("embeddedPFCandidates","packedPFCandidatesEmbedded")
 
 #####
 from RecoTauTag.Configuration.tools.adaptToRunAtMiniAOD import adaptToRunAtMiniAOD
@@ -151,6 +162,39 @@ tauAtMiniTools.adaptTauToMiniAODReReco()
 process.p1 = cms.Path(
         getattr(process,("miniAODTausSequence"+postfix if not runBoosted else "miniAODTausSequenceBoosted"+postfix))
 )
+
+
+#######
+from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
+
+runMetCorAndUncFromMiniAOD(process,
+                           isData=False,
+                           pfCandColl=cms.InputTag("embeddedPFCandidates","packedPFCandidatesEmbedded"),
+                           recoMetFromPFCs=True,
+                           CHS = True, #This is an important step and determines what type of jets to be reclustered
+                           reclusterJets = True,
+                           postfix="TEST"
+                           )
+
+process.packedPrimaryVertexAssociationJME.jets = cms.InputTag("selectedPatJetsAK4PFchs","","Embed")
+process.packedPrimaryVertexAssociationJME.particles = cms.InputTag("embeddedPFCandidates","packedPFCandidatesEmbedded")
+process.packedPrimaryVertexAssociationJME.vertices = cms.InputTag("offlineSlimmedPrimaryVertices", "", "DQM")
+
+process.pfCHS.candidates = cms.InputTag("embeddedPFCandidates","packedPFCandidatesEmbedded")
+#process.pfCHS.vertexAssociation = cms.InputTag("packedPrimaryVertexAssociationJME","","Embed")
+
+process.basicJetsForMetTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.basicJetsForMetNoHFTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.basicJetsForMetPuppiTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+
+process.patPFMetT1T2CorrTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT1T2CorrNoHFTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT1T2CorrPuppiTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+
+process.patPFMetT1T2SmearCorrTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT1T2SmearCorrNoHFTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+#process.patPFMetT1T2SmearCorrPuppiTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
+
 
 #process.ak4PFJetsLegacyHPSPiZeros.builders.verbosity = cms.int32(1)
 

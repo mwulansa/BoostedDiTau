@@ -202,28 +202,29 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
 ##                 'MuHad',
 ##                 'MuMu'
 ##             ),
-##             HadHadCut = cms.string('Had1.Pt > 35 && Had2.Pt > 30'),
+##             #HadHadCut = cms.string('Had1.Pt > 35 && Had2.Pt > 30'),
+##             HadHadCut = cms.string('Had1.Pt > 10 && Had2.Pt > 10'),
 ##             MuHadCut = cms.string('Mu.Pt > 18 && Had.Pt > 25 && Mu.Eta < 2.1'),
 ##             MuMuCut = cms.string('Mu1.Pt > 17 && Mu2.Pt > 8')
 ##         )
-        filterName = cms.string('EmbeddingHepMCFilter'),
-        filterParameters = cms.PSet(
-            BosonPDGID = cms.int32(23),
-            ElElCut = cms.string('El1.Pt > 100 && El2.Pt > 100'),
-            ElHadCut = cms.string('El.Pt > 100 && Had.Pt > 100'),
-            ElMuCut = cms.string('El.Pt > 100 && Mu.Pt > 100'),
-            Final_States = cms.vstring(
-                #'ElEl',
-                #'ElHad',
-                #'ElMu',
-                'HadHad'
-                #'MuHad',
-                #'MuMu'
-            ),
-            HadHadCut = cms.string('Had1.Pt > 10 && Had2.Pt > 10'),
-            MuHadCut = cms.string('Mu.Pt > 100 && Had.Pt > 100 && Mu.Eta < 2.4'),
-            MuMuCut = cms.string('Mu1.Pt > 100 && Mu2.Pt > 100')
-        )
+     filterName = cms.string('EmbeddingHepMCFilter'),
+     filterParameters = cms.PSet(
+         BosonPDGID = cms.int32(23),
+         ElElCut = cms.string('El1.Pt > 0 && El2.Pt > 0'),
+         ElHadCut = cms.string('El.Pt > 0 && Had.Pt > 0'),
+         ElMuCut = cms.string('El.Pt > 0 && Mu.Pt > 0'),
+         Final_States = cms.vstring(
+             'ElEl',
+             'ElHad',
+             'ElMu',
+             'HadHad',
+             'MuHad',
+             'MuMu'
+         ),
+         HadHadCut = cms.string('Had1.Pt > 10 && Had2.Pt > 10'),
+         MuHadCut = cms.string('Mu.Pt > 0 && Had.Pt > 0'),
+         MuMuCut = cms.string('Mu1.Pt > 0 && Mu2.Pt > 0')
+     )
     ),
     PythiaParameters = cms.PSet(
         parameterSets = cms.vstring(
