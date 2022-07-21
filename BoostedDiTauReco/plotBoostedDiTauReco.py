@@ -13,9 +13,9 @@ else:
     mass='10'
     print "Use default signal mass: 10 GeV."
 
-prefix="root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCP/OutputMiniAODSIM/"
+prefix="root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer19UL17RECO/"
 
-out=ROOT.TFile("h_plotBoostedDiTauReco_m"+mass+"_v3.root",'recreate')
+out=ROOT.TFile("h_plotBoostedDiTauReco_m"+mass+"_v1.root",'recreate')
 
 handleMuon = Handle ('vector<pat::Muon>')
 labelMuon = ('slimmedMuons')

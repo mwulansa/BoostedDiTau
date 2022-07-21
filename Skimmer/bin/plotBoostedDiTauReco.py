@@ -49,22 +49,23 @@ hNmTaus = ROOT.TH1F ("hNmTaus","",4,0,4)
 
 
 handleMuon = Handle ('vector<pat::Muon>')
-labelMuon = ('slimmedMuons')
+labelMuon = ('selectedPATMuons', 'myMuons', 'reMINIAOD')
 
 handleElectron = Handle ('vector<pat::Electron>')
-labelElectron = ('slimmedElectrons')
+labelElectron = ('selectedPATElectrons', 'myElectrons', 'reMINIAOD')
 
 handleJet = Handle ('vector<pat::Jet>')
-labelJet = ('slimmedJets')
+labelJet = ('selectedPATJets')
 
 handleTaus = Handle ('vector<pat::Tau>')
-labelTaus = ('slimmedTaus')
+#labelTaus = ('slimmedTaus')
+labelTaus = ('selectedPATTaus')
 
 handleElectronCleanedTaus = Handle ('vector<pat::Tau>')
-labelElectronCleanedTaus = ('slimmedTausElectronCleaned', '', 'PAT')
+labelElectronCleanedTaus = ('selectedPATTausElectronCleaned')
 
 handleMuonCleanedTaus = Handle ('vector<pat::Tau>')
-labelMuonCleanedTaus = ('slimmedTausMuonCleaned', '', 'PAT')
+labelMuonCleanedTaus = ('selectedPATTausMuonCleaned')
 
 handleVertex = Handle ('vector<reco::Vertex>')
 labelVertex = ('offlineSlimmedPrimaryVertices')
@@ -89,25 +90,28 @@ labelGenParticle = ('prunedGenParticles')
 
 
 #prefix=""
-prefix="root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer17DR94Premix/"
+#prefix="root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer17DR94Premix/"
+prefix="root://cmsxrootd.fnal.gov/"
 
-mass="50"
+mass="10"
 
-out=ROOT.TFile("h_plotBoostedDiTauReco_m"+mass+"_v4_94X_3.root",'recreate')
+out=ROOT.TFile("h_miniaod_slimmed.root",'recreate')
 
 #jobs=np.linspace(100, 61, 40)
 #jobs=np.linspace(50, 1, 50)
-jobs=np.linspace(60, 51, 10)
-print jobs
+#jobs=np.linspace(60, 51, 10)
+#print jobs
 #sys.exit()
-#jobs=[16]
+jobs=[16]
 
 #out=ROOT.TFile(filename.replace("MINIAODSIM","hists"),'recreate')
 
 for job in jobs:
-    filename = "ALP_m"+mass+"_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_Cleaned_"+str(int(job))+".root"
+    #filename = "ALP_m"+mass+"_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_Cleaned_"+str(int(job))+".root"
     #filename = "ALP_m"+mass+"_w1_htjmin400_RunIISummer17DR94Premix_MINIAODSIM_test.root"
     #filename = "mumutautau_MultipleID_1.root"
+    #filename = "miniaod_slimmed.root"
+    filename = "/store/user/zhangj/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/DYJetsToLL_M-4to50_HT-100to200_RunIIFall17MiniAODv2_v1/201007_162727/0000/miniaod_slimmed_1.root"
     print(prefix+filename)
 
     #if int(job)==16: continue
@@ -131,6 +135,7 @@ for job in jobs:
         event.getByLabel(labelVertex, handleVertex)
         vertex=handleVertex.product()
         pv = vertex[0].position()
+        #print(pv)
     
         #slimmedMuons=None
         event.getByLabel(labelMuon, handleMuon)
@@ -424,10 +429,12 @@ for job in jobs:
                 if tau.DeltaR(j1)>0.3: 
                     j=j1
                 else:
-                    j=j2 
+                    j=j2
+
+            hETau_M.Fill((e+tau).M())
             
             if e.DeltaR(tau)<0.4 and e.DeltaR(j)>0.8 and tau.DeltaR(j)>0.8: 
-                hETau_M.Fill((e+tau).M())
+                
                 hETau_ePt_eCleaned.Fill(tau.Pt())
                 
     
@@ -452,10 +459,12 @@ for job in jobs:
                 if tau.DeltaR(j1)>0.3: 
                     j=j1
                 else:
-                    j=j2 
+                    j=j2
+
+            hMuTau_M_muCleaned.Fill((mu+tau).M()) 
     
             if mu.DeltaR(tau)<0.4 and mu.DeltaR(j)>0.8 and tau.DeltaR(j)>0.8: 
-                hMuTau_M_muCleaned.Fill((mu+tau).M()) 
+                #hMuTau_M_muCleaned.Fill((mu+tau).M()) 
                 hMuTau_dR_muCleaned.Fill(tau.DeltaR(mu))
     
                 # gen match
@@ -503,9 +512,11 @@ for job in jobs:
                      j=j1
                  else:
                      j=j2
+
+             hETau_M_eCleaned.Fill((e+tau).M())
     
              if e.DeltaR(tau)<0.4 and e.DeltaR(j)>0.8 and tau.DeltaR(j)>0.8:
-                 hETau_M_eCleaned.Fill((e+tau).M())
+                 
                  hETau_dR_eCleaned.Fill(tau.DeltaR(e))
     
                  # gen match

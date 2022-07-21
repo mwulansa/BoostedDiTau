@@ -1,0 +1,12 @@
+<lcgdict>
+  <class name="JetInfo"/>
+  <class name="JetInfoDS"/>
+  <class name="MuonInfo"/>
+  <class name="MuonInfoDS"/>
+  <class name="ElectronInfo"/>
+  <class name="ElectronInfoDS"/>
+  <class name="TauInfo"/>
+  <class name="TauInfoDS"/>
+  <class name="GenParticleInfo"/>
+  <class name="GenParticleInfoDS"/>
+</lcgdict>

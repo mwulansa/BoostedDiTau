@@ -11,14 +11,61 @@ Sample = 'QCD'
 #Sample = 'ZJetsToQQ'
 #Sample = 'WJetsToQQ'
 
+#Sample = 'DYJetsToLL_M-1to4_HT-600toInf'
+#Sample = 'DYJetsToLL_M-4to50_HT-600toInf'
+
+#Sample = "TCP"
+Sample = 'DYJetsToLL'
+#Sample = 'QCD_Pt'
+#Sample = "Diboson"
+#Sample = "WJetsToLNu"
+
+
+
 isHad = False
 isCopy = True
-version = "v1"
+
+version = "v2"
+
 isGen = False
 
 if Sample == 'TCP':
     masses=['m10', 'm30', 'm50']
-    prefix="root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCP/OutputMiniAODSIM/"
+    #prefix="root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCP/OutputMiniAODSIM/"
+    prefix = "root://cmseos.fnal.gov//store/user/zhangj/events/ALP/RunIISummer17DR94Premix/"
+
+
+elif Sample == 'DYJetsToLL':
+    prefix="root://cmsxrootd.fnal.gov/"
+    preSearchString = "/DYJetsToLL_REPLACEME_TuneCP5_13TeV-madgraphMLM-pythia8/zhangj-DYJetsToLL_REPLACEME_RunIIFall17MiniAODv2_v1-547050f89421e80c43b97ce4c8917c0a/USER"
+    #TSample = 'DYJetsToLL'
+    masses = ["M-1to4_HT-600toInf", "M-4to50_HT-600toInf", "M-50_HT-600to800", "M-50_HT-800to1200", "M-50_HT-1200to2500"]
+
+elif Sample == 'QCD_Pt':
+    prefix="root://cmsxrootd.fnal.gov/"
+    preSearchString = "/QCD_Pt_REPLACEME_TuneCP5_13TeV_pythia8/zhangj-QCD_Pt_REPLACEME_RunIIFall17MiniAODv2_v1-547050f89421e80c43b97ce4c8917c0a/USER"
+    #TSample = 'DYJetsToLL'
+    masses = ["300to470", "470to600", "600to800", "800to1000", "1000to1400", "1400to1800", "1800to2400", "2400to3200", "3200toInf"]
+
+elif Sample == 'WJetsToLNu':
+    prefix="root://cmsxrootd.fnal.gov/"
+    preSearchString = "/WJetsToLNu_REPLACEME_TuneCP5_13TeV-madgraphMLM-pythia8/zhangj-WJetsToLNu_REPLACEME_RunIIFall17MiniAODv2_v1-547050f89421e80c43b97ce4c8917c0a/USER"
+    #TSample = 'DYJetsToLL'
+    masses = ["HT-600To800", "HT-800To1200", "HT-1200To2500", "HT-2500ToInf"]
+    
+    
+##elif Sample == 'DYJetsToLL_M-1to4_HT-600toInf':
+##    #SampleText = 'DYJetsToLL_M-4to50_HT-400to600'
+##    prefix="root://cmsxrootd.fnal.gov/"
+##    preSearchString = "/DYJetsToLL_M-1to4_HT-600toInf_TuneCP5_13TeV-madgraphMLM-pythia8/zhangj-DYJetsToLL_M-1to4_HT-600toInf_RunIIFall17MiniAODv2_v1-547050f89421e80c43b97ce4c8917c0a/USER"
+##    TSample = 'DYJetsToLL'
+##    TMass = "M-1to4_HT-600toInf"
+##
+##elif Sample == "DYJetsToLL_M-4to50_HT-600toInf":
+##    prefix="root://cmsxrootd.fnal.gov/"
+##    preSearchString = "/DYJetsToLL_M-4to50_HT-600toInf_TuneCP5_13TeV-madgraphMLM-pythia8/zhangj-DYJetsToLL_M-4to50_HT-600toInf_RunIIFall17MiniAODv2_v1-547050f89421e80c43b97ce4c8917c0a/USER"
+##    TSample = 'DYJetsToLL'
+##    TMass = "M-4to50_HT-600toInf"
 
 elif Sample == 'DYJetsToLL_mini':
     SampleText = 'DYJetsToLL'
@@ -26,10 +73,10 @@ elif Sample == 'DYJetsToLL_mini':
     preSearchString="/"+SampleText+"_REPLACEME_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X*/MINIAODSIM"
     prefix="root://xrootd.unl.edu/"
     
-elif Sample == 'DYJetsToLL':
-    masses=['M-1to4_HT-100to200', 'M-1to4_HT-200to400', 'M-1to4_HT-400to600', 'M-1to4_HT-600toInf', 'M-4to50_HT-100to200', 'M-4to50_HT-400to600','M-50_HT-70to100', 'M-50_HT-100to200', 'M-50_HT-200to400', 'M-50_HT-400to600', 'M-50_HT-600to800', 'M-50_HT-800to1200', 'M-50_HT-1200to2500', 'M-50_HT-2500toInf']
-    preSearchString="/"+Sample+"_REPLACEME_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17DRPremix*94X*v11-v*/AODSIM"
-    prefix="root://xrootd.unl.edu/"
+#elif Sample == 'DYJetsToLL':
+#    masses=['M-1to4_HT-100to200', 'M-1to4_HT-200to400', 'M-1to4_HT-400to600', 'M-1to4_HT-600toIn#f', 'M-4to50_HT-100to200', 'M-4to50_HT-400to600','M-50_HT-70to100', 'M-50_HT-100to200', 'M-50_HT-200to400', 'M-50_HT-400to600', 'M-50_HT-600to800', 'M-50_HT-800to1200', 'M-50_HT-1200to2500', 'M-50_HT-2500toInf']
+#    preSearchString="/"+Sample+"_REPLACEME_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIFall17DRPremix#*94X*v11-v*/AODSIM"
+#    prefix="root://xrootd.unl.edu/"
 
 # elif Sample == 'DYJetsToLL':
 #     masses=['M-4to50_HT-200to400']
@@ -52,9 +99,10 @@ elif Sample == 'ST':
     prefix="root://xrootd.unl.edu/"
 
 elif Sample == 'Diboson':
-    masses=['WZ', 'WW'] #ZZ is on tape
-    preSearchString="/REPLACEME_TuneCP5_13TeV-pythia8*/RunIIFall17DRPremix*94X*v11*/AODSIM"
-    prefix="root://xrootd.unl.edu/"
+    masses=['WZ', 'WW', 'ZZ'] #ZZ is on tape
+    preSearchString="/REPLACEME_TuneCP5_13TeV-pythia8/zhangj-REPLACEME_RunIIFall17MiniAODv2_v1-547050f89421e80c43b97ce4c8917c0a/USER"
+    #preSearchString="/REPLACEME_TuneCP5_13TeV-pythia8*/RunIIFall17DRPremix*94X*v11*/AODSIM"
+    prefix="root://cmsxrootd.fnal.gov/"
 
 elif Sample == 'QCD':
     masses = ['Pt-15to7000']

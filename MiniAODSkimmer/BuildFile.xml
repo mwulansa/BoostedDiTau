@@ -1,0 +1,24 @@
+<use name="FWCore/Framework"/>
+<use name="FWCore/Common"/>
+<use name="FWCore/Utilities"/>
+<use name="FWCore/PluginManager"/>
+<use name="FWCore/ParameterSet"/>
+<use name="DataFormats/MuonReco"/>
+<use name="DataFormats/EgammaCandidates"/>
+<use name="RecoEgamma/EgammaTools" />
+<use name="RecoEgamma/ElectronIdentification" />
+<use name="RecoEgamma/EgammaElectronAlgos"/>
+<use name="RecoEgamma/EgammaIsolationAlgos"/>
+<use name="DataFormats/TauReco"/>
+<use name="DataFormats/METReco"/>
+<use name="DataFormats/HLTReco"/>
+<use name="DataFormats/Common"/>
+<use name="PhysicsTools/Utilities"/>
+<use name="HLTrigger/HLTcore"/>
+<use name="DataFormats/BTauReco"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="PhysicsTools/TensorFlow" />
+<use name="root"/>
+<export>
+  <lib name="1"/>
+</export>

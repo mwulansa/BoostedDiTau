@@ -5,6 +5,7 @@ configDir="./configs/"
 
 #os.mkdir(configDir)
 
+
 if len(sys.argv) == 2:
     inputFileListName = sys.argv[1]
     inputFileList = inputFileListName
@@ -21,27 +22,31 @@ OutputDir = 'root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/Backgro
 cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "w")
 cfg.writelines("""
 
+
 import FWCore.ParameterSet.Config as cms
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
 
+
 options.maxEvents = -1
 options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Events to skip")
 options.register('reportEvery', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Report every")
 options.register('isMC', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Sample is MC")
-options.register('doSlimming', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
+options.register('doSlimming', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
 options.register('isStandard', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
-options.register('isReMINIAOD', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
+#options.register('isReMINIAOD', 1, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Output content is reduced")
 options.register('numThreads', 8, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Set number of threads")
 
 if options.isStandard:
     options.doSlimming = 0
+
     outputFile = '"""+OutputDir+"""standard_"""+inputSampleName.replace(".txt",".root")+"""'
 elif options.doSlimming:
     outputFile = '"""+OutputDir+"""slimmed_"""+inputSampleName.replace(".txt",".root")+"""'
 else:
     outputFile = '"""+OutputDir+"""cleaned_"""+inputSampleName.replace(".txt",".root")+"""'
+
 
 options.parseArguments()
 
@@ -98,18 +103,17 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('step1 nevts:4800'),
+    annotation = cms.untracked.string('step2 nevts:4800'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
 
 # Output definition
-
-process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
+process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
     compressionLevel = cms.untracked.int32(4),
     dataset = cms.untracked.PSet(
-        dataTier = cms.untracked.string('MINIAODSIM' if options.isMC else 'MINIAOD'),
+        dataTier = cms.untracked.string('MINIAODSIM'),
         filterName = cms.untracked.string('')
     ),
     dropMetaData = cms.untracked.string('ALL'),
@@ -117,10 +121,11 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
     fastCloning = cms.untracked.bool(False),
     fileName = cms.untracked.string(outputFile),
     outputCommands = process.MINIAODSIMEventContent.outputCommands,
-    overrideBranchesSplitLevel = cms.untracked.VPSet(cms.untracked.PSet(
-        branch = cms.untracked.string('patPackedCandidates_packedPFCandidates__*'),
-        splitLevel = cms.untracked.int32(99)
-    ), 
+    overrideBranchesSplitLevel = cms.untracked.VPSet(
+        cms.untracked.PSet(
+            branch = cms.untracked.string('patPackedCandidates_packedPFCandidates__*'),
+            splitLevel = cms.untracked.int32(99)
+        ), 
         cms.untracked.PSet(
             branch = cms.untracked.string('recoGenParticles_prunedGenParticles__*'),
             splitLevel = cms.untracked.int32(99)
@@ -164,7 +169,8 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
         cms.untracked.PSet(
             branch = cms.untracked.string('EcalRecHitsSorted_reducedEgamma_reducedESRecHits_*'),
             splitLevel = cms.untracked.int32(99)
-        )),
+        )
+    ),
     overrideInputFileSplitLevels = cms.untracked.bool(True),
     splitLevel = cms.untracked.int32(0)
 )
@@ -174,6 +180,7 @@ process.MINIAODoutput = cms.OutputModule("PoolOutputModule",
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v6', '')
+
 
 # Path and EndPath definitions
 process.Flag_trackingFailureFilter = cms.Path(process.goodVertices+process.trackingFailureFilter)
@@ -226,13 +233,10 @@ process=convertToUnscheduled(process)
 # customisation of the process.
 
 # Automatic addition of the customisation function from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC
+
 
 #call to customisation function miniAOD_customizeAllMC imported from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-if options.isMC:
-    process = miniAOD_customizeAllMC(process)
-else:
-    process = miniAOD_customizeAllData(process)
+process = miniAOD_customizeAllMC(process)
 
 # End of customisation functions
 
@@ -277,8 +281,8 @@ process.MINIAODSIMEventContent.outputCommands += [
     'keep *_slimmedTausNewID_*_*',
 ]
 
-
 dump_file = open('dump_config.py','w')
 dump_file.write(process.dumpPython())
 
 """)
+

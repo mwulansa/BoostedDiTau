@@ -7,12 +7,16 @@ xrdcp root://cmseos.fnal.gov//eos/uscms/store/user/mwulansa/DIS/TCPAnalysis/CMSS
 tar -xf CMSSW.tgz
 rm CMSSW.tgz
 
+
 setenv SCRAM_ARCH slc6_amd64_gcc630
 cd CMSSW_10_6_16/src/
+
 scramv1 b ProjectRename
 eval `scramv1 runtime -csh` # cmsenv is an alias not on the workers
 cd BoostedDiTau/Skimmer/bin/SubmitAOD
 echo "Arguments passed to this script are: for 1: $1"
 cmsRun ${1}
 cd ${_CONDOR_SCRATCH_DIR}
+
 rm -rf CMSSW_10_6_16
+

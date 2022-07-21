@@ -1,11 +1,20 @@
 #!/bin/tcsh
 
+
 setenv MAKETARBALL 1
 setenv SIGNAL 0
 setenv BKG 1
 
+
 #setenv SAMPLE DYJetsToLL
 setenv SAMPLE QCD
+
+
+setenv CMSSW_BASE /uscms/home/jingyu/nobackup/TCP/boostedDiTauReco/CMSSW_9_4_15
+
+cd $CMSSW_BASE/src
+
+tar -zcvf ../../CMSSW.tgz ../../CMSSW_9_4_15/ --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.log" --exclude="*stderr" --exclude="*stdout"
 
 
 setenv CMSSW_BASE /uscms/home/mwulansa/nobackup/TCP/boostedDiTauReco/CMSSW_10_6_16
@@ -13,6 +22,7 @@ setenv CMSSW_BASE /uscms/home/mwulansa/nobackup/TCP/boostedDiTauReco/CMSSW_10_6_
 if ($MAKETARBALL == 1) then
 
     cd $CMSSW_BASE/src
+
 
     tar -zcvf ../../CMSSW.tgz ../../CMSSW_10_6_16/ --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.log" --exclude="*stderr" --exclude="*stdout" --exclude="*.txt"
 
@@ -46,6 +56,7 @@ if ($BKG == 1) then
 	setenv NQueue `ls filelists/$SAMPLE/$MASS | wc -l`
 	echo $NQueue
 	echo ./configs/${SAMPLE}_${MASS}_Process.py
+
 	condor_submit condor.jdl
     end
 endif
