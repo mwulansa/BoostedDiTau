@@ -6,7 +6,7 @@ import sys
 #Sample = 'TTJets'
 #Sample = 'ST'
 #Sample = 'Diboson'
-#Sample = 'QCD'
+Sample = 'QCD'
 #Sample = 'DYJetsToQQ'
 #Sample = 'ZJetsToQQ'
 #Sample = 'WJetsToQQ'
@@ -24,7 +24,9 @@ Sample = 'DYJetsToLL'
 
 isHad = False
 isCopy = True
+
 version = "v2"
+
 isGen = False
 
 if Sample == 'TCP':
@@ -103,9 +105,14 @@ elif Sample == 'Diboson':
     prefix="root://cmsxrootd.fnal.gov/"
 
 elif Sample == 'QCD':
-    masses=['HT50to100','HT100to200','HT200to300','HT300to500','HT500to700','HT700to1000','HT1000to1500','HT1500to2000','HT2000toInf']
-    preSearchString="/"+Sample+"_REPLACEME_TuneCP5*/RunIIFall17DRPremix*_94X*v11*/AODSIM"
-    prefix="root://xrootd.unl.edu/"
+    masses = ['Pt-15to7000']
+    preSearchString = "/"+Sample+"_REPLACEME_TuneCP5_Flat2018_13TeV_pythia8/RunIISummer19UL17RECO-106X_mc2017_realistic_v6-v2/AODSIM"
+    prefix = "root://xrootd.unl.edu/"
+
+# elif Sample == 'QCD':
+#     masses=['HT50to100','HT100to200','HT200to300','HT300to500','HT500to700','HT700to1000','HT1000to1500','HT1500to2000','HT2000toInf']
+#     preSearchString="/"+Sample+"_REPLACEME_TuneCP5*/RunIIFall17DRPremix*_94X*v11*/AODSIM"
+#     prefix="root://xrootd.unl.edu/"
 
 elif Sample == 'DYJetsToQQ':
     masses = ['HT180']
