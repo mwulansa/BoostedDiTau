@@ -13,8 +13,8 @@ plotJetHT = 0
 plotSingleMuon = 0
 plotHTTrig = 0
 
-plot2DforTau = 1
-isAltered = 0
+plot2DforTau = 0
+isAltered = 1
 
 print("isAltered = ", isAltered)
 print("plot2DforTau = ", plot2DforTau)
@@ -145,7 +145,21 @@ def book2DHist(region):
          h[region+"_MuonPtdRgenMu"] = ROOT.TH2F(region+"_MuonPtdRgenMu",region+"_MuonPtdRgenMu; MuonPt(GeV) ; dR(#mu,Gen #mu)", 260, 0, 260, 100, 0, 5)
 
 
+def book1DHist(region):
+
+    h[region+"_Mass"] = ROOT.TH1F (region+"_Mass", region+"_Mass ; M_{vis.} (GeV) ; Events ", 100, 0, 100)
+    h[region+"_TauPt"] = ROOT.TH1F (region+"_TauPt", region+"_TauPt ; TauP_{T} (GeV) ; Events ", 500, 0, 500)
+    h[region+"_MuonPt"] = ROOT.TH1F (region+"_MuonPt", region+"_MuonPt ; MuonP_{T} (GeV) ; Events ", 500, 0, 500)
+    h[region+"_JetPt"] = ROOT.TH1F (region+"_JetPt", region+"_JetPt ; JetP_{T} (GeV) ; Events ", 2000, 0, 2000)
+    h[region+"_Mt"] = ROOT.TH1F (region+"_Mt", region+"_Mt ; M_{T} (GeV) ; Events ", 150, 0, 150)
+    h[region+"_MetPt"] = ROOT.TH1F (region+"_MetPt", region+"_MetPt ; MET (GeV) ; Events ", 500, 0, 500)
+    h[region+"_Nj"] = ROOT.TH1F (region+"_Nj", region+"_Nj ; N_{j} ; Events ", 10, 0, 10)
+
+
 h = {}
+
+h['isSingleJet'] = ROOT.TH1F("isSingleJet", "isSingleJet ; isSingleJet ; N", 4,-1.5,2.5)
+h['isHT'] = ROOT.TH1F("isHT", "isHT ; isHT ; N", 4,-1.5,2.5)
 
 h['hEvents'] = ROOT.TH1F ("NEvents", "Number of Events; ;N", 2, 0, 2)
 h['hTauEvents'] = ROOT.TH1F ("hTauEvents", "Number of each decay modes;;a.u.",7,0,7)
@@ -156,6 +170,14 @@ h['hMuTau_Events'] = ROOT.TH1F ("hMuTau_Events", "hMuTau_Events;;N", 6, 1, 7)
 h['hMuTau_2DPlot_Events'] = ROOT.TH1F ("hMuTau_2DPlot_Events", "hMuTau_2DPlot_Events;;N", 6, 1, 7)
 h['hMuTau_SR_Events'] = ROOT.TH1F ("hMuTau_SR_Events", "hMuTau_SR_Events;;N", 6, 1, 7)
 h['hMuTau_SR_2DPlot_Events'] = ROOT.TH1F ("hMuTau_SR_2DPlot_Events", "hMuTau_SR_2DPlot_Events;;N", 6, 1, 7)
+
+h['hMuTau_DR1_Events'] = ROOT.TH1F ("hMuTau_DR1_Events", "hMuTau_DR1_Events;;N", 4, 0, 4)
+h['hMuTau_DR2_Events'] = ROOT.TH1F ("hMuTau_DR2_Events", "hMuTau_DR2_Events;;N", 4, 0, 4)
+h['hMuTau_DR3_Events'] = ROOT.TH1F ("hMuTau_DR3_Events", "hMuTau_DR3_Events;;N", 4, 0, 4)
+h['hMuTau_DR4_Events'] = ROOT.TH1F ("hMuTau_DR4_Events", "hMuTau_DR4_Events;;N", 4, 0, 4)
+h['hMuTau_DR5_Events'] = ROOT.TH1F ("hMuTau_DR5_Events", "hMuTau_DR5_Events;;N", 4, 0, 4)
+h['hMuTau_DR6_Events'] = ROOT.TH1F ("hMuTau_DR6_Events", "hMuTau_DR6_Events;;N", 4, 0, 4)
+h['hMuTau_DR7_Events'] = ROOT.TH1F ("hMuTau_DR7_Events", "hMuTau_DR7_Events;;N", 4, 0, 4)
 
 h['hMuMu_Trigger'] = ROOT.TH1F ("hMuMu_Trigger", "hMuMu_Trigger;;N", 7, 1, 8)
 h['hEMu_Trigger'] = ROOT.TH1F ("hEMu_Trigger", "hEMu_Trigger;;N", 7, 1, 8)
@@ -244,106 +266,27 @@ if plotSemiLeptonic == 1:
 
 if plot2DforTau == 0:
 
-    h['hMuTau_lowMET'] = ROOT.TH1F ("hMuTau_lowMET", "hMuTau_lowMET; ;N", 100, 0, 100)
     h['hMuTau_lowMET_dRl'] = ROOT.TH1F ("hMuTau_lowMET_dRl", "hMuTau_lowMET_dRl;;N", 100, 0, 5)
     h['hMuTau_lowMET_dRj'] = ROOT.TH1F ("hMuTau_lowMET_dRj", "hMuTau_lowMET_dRj;;N", 100, 0, 5)
-    h['hMuTau_lowMET_TauPt'] = ROOT.TH1F ("hMuTau_lowMET_TauPt", "hMuTau_lowMET_TauPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_MuonPt'] = ROOT.TH1F ("hMuTau_lowMET_MuonPt", "hMuTau_lowMET_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_MetPt'] = ROOT.TH1F ("hMuTau_lowMET_MetPt", "hMuTau_lowMET_MetPt;;N", 100, 0, 100)
-    h['hMuTau_lowMET_JetPt'] = ROOT.TH1F ("hMuTau_lowMET_JetPt", "hMuTau_lowMET_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_lowMET_Nj'] = ROOT.TH1F ("hMuTau_lowMET_Nj", "hMuTau_lowMET_Nj;;N", 10,0,10)
-    h['hMuTau_lowMET_Nbj'] = ROOT.TH1F ("hMuTau_lowMET_Nbj", "hMuTau_lowMET_Nbj;;N", 5,0,5)
-    h['hMuTau_lowMET_Mt'] = ROOT.TH1F ("hMuTau_lowMET_Mt", "hMuTau_lowMET_Mt;;N", 500, 0, 500)
 
-    h['hMuTau_lowMET_highMt'] = ROOT.TH1F ("hMuTau_lowMET_highMt", "hMuTau_lowMET_highMt; ;N", 100, 0, 100)
     h['hMuTau_lowMET_highMt_dRl'] = ROOT.TH1F ("hMuTau_lowMET_highMt_dRl", "hMuTau_lowMET_highMt_dRl;;N", 100, 0, 5)
     h['hMuTau_lowMET_highMt_dRj'] = ROOT.TH1F ("hMuTau_lowMET_highMt_dRj", "hMuTau_lowMET_highMt_dRj;;N", 100, 0, 5)
-    h['hMuTau_lowMET_highMt_TauPt'] = ROOT.TH1F ("hMuTau_lowMET_highMt_TauPt", "hMuTau_lowMET_highMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_highMt_MuonPt'] = ROOT.TH1F ("hMuTau_lowMET_highMt_MuonPt", "hMuTau_lowMET_highMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_highMt_MetPt'] = ROOT.TH1F ("hMuTau_lowMET_highMt_MetPt", "hMuTau_lowMET_highMt_MetPt;;N", 100, 0, 100)
-    h['hMuTau_lowMET_highMt_JetPt'] = ROOT.TH1F ("hMuTau_lowMET_highMt_JetPt", "hMuTau_lowMET_highMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_lowMET_highMt_Nj'] = ROOT.TH1F ("hMuTau_lowMET_highMt_Nj", "hMuTau_lowMET_highMt_Nj;;N", 10,0,10)
-    h['hMuTau_lowMET_highMt_Nbj'] = ROOT.TH1F ("hMuTau_lowMET_highMt_Nbj", "hMuTau_lowMET_highMt_Nbj;;N", 5,0,5)
-    h['hMuTau_lowMET_highMt_Mt'] = ROOT.TH1F ("hMuTau_lowMET_highMt_Mt", "hMuTau_lowMET_highMt_Mt;;N", 500, 0, 500)
 
-    h['hMuTau_lowMET_lowMt'] = ROOT.TH1F ("hMuTau_lowMET_lowMt", "hMuTau_lowMET_lowMt; ;N", 100, 0, 100)
     h['hMuTau_lowMET_lowMt_dRl'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_dRl", "hMuTau_lowMET_lowMt_dRl;;N", 100, 0, 5)
     h['hMuTau_lowMET_lowMt_dRj'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_dRj", "hMuTau_lowMET_lowMt_dRj;;N", 100, 0, 5)
-    h['hMuTau_lowMET_lowMt_TauPt'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_TauPt", "hMuTau_lowMET_lowMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_lowMt_MuonPt'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_MuonPt", "hMuTau_lowMET_lowMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_lowMt_MetPt'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_MetPt", "hMuTau_lowMET_lowMt_MetPt;;N", 100, 0, 100)
-    h['hMuTau_lowMET_lowMt_JetPt'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_JetPt", "hMuTau_lowMET_lowMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_lowMET_lowMt_Nj'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_Nj", "hMuTau_lowMET_lowMt_Nj;;N", 10,0,10)
-    h['hMuTau_lowMET_lowMt_Nbj'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_Nbj", "hMuTau_lowMET_lowMt_Nbj;;N", 5,0,5)
-    h['hMuTau_lowMET_lowMt_Mt'] = ROOT.TH1F ("hMuTau_lowMET_lowMt_Mt", "hMuTau_lowMET_lowMt_Mt;;N", 500, 0, 500)
-
-    h['hMuTau_lowMET_dRcut_MuonPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_MuonPt", "hMuTau_lowMET_dRcut_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_dRcut_TauPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_TauPt", "hMuTau_lowMET_dRcut_TauPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_dRcut'] = ROOT.TH1F ("hMuTau_lowMET_dRcut", "hMuTau_lowMET_dRcut;;N", 100, 0, 100)
-    h['hMuTau_lowMET_dRcut_Nj'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_Nj", "hMuTau_lowMET_dRcut_Nj;;N", 10,0,10)
-    h['hMuTau_lowMET_dRcut_MetPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_MetPt", "hMuTau_lowMET_dRcut_MetPt;;N", 100, 0, 100)
-    h['hMuTau_lowMET_dRcut_JetPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_JetPt", "hMuTau_lowMET_dRcut_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_lowMET_dRcut_Nbj'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_Nbj", "hMuTau_lowMET_dRcut_Nbj;;N", 5,0,5)
-    h['hMuTau_lowMET_dRcut_Mt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_Mt", "hMuTau_lowMET_dRcut_Mt;;N", 500, 0, 500)
-
-    h['hMuTau_lowMET_dRcut_lowMt_TauPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_TauPt", "hMuTau_lowMET_dRcut_lowMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_dRcut_lowMt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt", "hMuTau_lowMET_dRcut_lowMt;;N", 100, 0, 100)
-    h['hMuTau_lowMET_dRcut_lowMt_MuonPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_MuonPt", "hMuTau_lowMET_dRcut_lowMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_dRcut_lowMt_MetPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_MetPt", "hMuTau_lowMET_dRcut_lowMt_MetPt;;N", 100, 0, 100)
-    h['hMuTau_lowMET_dRcut_lowMt_JetPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_JetPt", "hMuTau_lowMET_dRcut_lowMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_lowMET_dRcut_lowMt_Nj'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_Nj", "hMuTau_lowMET_dRcut_lowMt_Nj;;N", 10,0,10)
-    h['hMuTau_lowMET_dRcut_lowMt_Nbj'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_Nbj", "hMuTau_lowMET_dRcut_lowMt_Nbj;;N", 5,0,5)
 
     h['hMuTau_lowMET_dRcut_lowMt_TauPt0'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_TauPt0", "hMuTau_lowMET_dRcut_lowMt_TauPt0;;N", 500, 0, 500)
     h['hMuTau_lowMET_dRcut_lowMt_TauPt1'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_TauPt1", "hMuTau_lowMET_dRcut_lowMt_TauPt1;;N", 500, 0, 500)
     h['hMuTau_lowMET_dRcut_lowMt_TauPt10'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_lowMt_TauPt10", "hMuTau_lowMET_dRcut_lowMt_TauPt10;;N", 500, 0, 500)
 
-    h['hMuTau_lowMET_dRcut_highMt_TauPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_TauPt", "hMuTau_lowMET_dRcut_highMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_dRcut_highMt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt", "hMuTau_lowMET_dRcut_highMt;;N", 100, 0, 100)
-    h['hMuTau_lowMET_dRcut_highMt_MuonPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_MuonPt", "hMuTau_lowMET_dRcut_highMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_lowMET_dRcut_highMt_MetPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_MetPt", "hMuTau_lowMET_dRcut_highMt_MetPt;;N", 100, 0, 100)
-    h['hMuTau_lowMET_dRcut_highMt_JetPt'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_JetPt", "hMuTau_lowMET_dRcut_highMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_lowMET_dRcut_highMt_Nj'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_Nj", "hMuTau_lowMET_dRcut_highMt_Nj;;N", 10,0,10)
-    h['hMuTau_lowMET_dRcut_highMt_Nbj'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_Nbj", "hMuTau_lowMET_dRcut_highMt_Nbj;;N", 5,0,5)
-
     h['hMuTau_lowMET_dRcut_highMt_TauPt0'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_TauPt0", "hMuTau_lowMET_dRcut_highMt_TauPt0;;N", 500, 0, 500)
     h['hMuTau_lowMET_dRcut_highMt_TauPt1'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_TauPt1", "hMuTau_lowMET_dRcut_highMt_TauPt1;;N", 500, 0, 500)
     h['hMuTau_lowMET_dRcut_highMt_TauPt10'] = ROOT.TH1F ("hMuTau_lowMET_dRcut_highMt_TauPt10", "hMuTau_lowMET_dRcut_highMt_TauPt10;;N", 500, 0, 500)
 
-    h['hMuTau_highMt'] = ROOT.TH1F ("hMuTau_highMt", "hMuTau_highMt;;N", 100, 0, 100)
     h['hMuTau_highMt_dRl'] = ROOT.TH1F ("hMuTau_highMt_dRl", "hMuTau_highMt_dRl;;N", 100, 0, 5)
     h['hMuTau_highMt_dRj'] = ROOT.TH1F ("hMuTau_highMt_dRj", "hMuTau_highMt_dRj;;N", 100, 0, 5)
-    h['hMuTau_highMt_TauPt'] = ROOT.TH1F ("hMuTau_highMt_TauPt", "hMuTau_highMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_highMt_MetPt'] = ROOT.TH1F ("hMuTau_highMt_MetPt", "hMuTau_highMt_MetPt;;N", 500, 0, 500)
-    h['hMuTau_highMt_JetPt'] = ROOT.TH1F ("hMuTau_highMt_JetPt", "hMuTau_highMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_highMt_MuonPt'] = ROOT.TH1F ("hMuTau_highMt_MuonPt", "hMuTau_highMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_highMt_Nj'] = ROOT.TH1F ("hMuTau_highMt_Nj", "hMuTau_highMt_Nj;;N", 10, 0, 10)
-    h['hMuTau_highMt_Nbj'] = ROOT.TH1F ("hMuTau_highMt_Nbj", "hMuTau_highMt_Nbj;;N", 5, 0, 5)
-
-    h['hMuTau_highMt_highMET'] = ROOT.TH1F ("hMuTau_highMt_highMET", "hMuTau_highMt_highMET;;N", 100, 0, 100)
     h['hMuTau_highMt_highMET_dRl'] = ROOT.TH1F ("hMuTau_highMt_highMET_dRl", "hMuTau_highMt_highMET_dRl;;N", 100, 0, 5)
     h['hMuTau_highMt_highMET_dRj'] = ROOT.TH1F ("hMuTau_highMt_highMET_dRj", "hMuTau_highMt_highMET_dRj;;N", 100, 0, 5)
-    h['hMuTau_highMt_highMET_TauPt'] = ROOT.TH1F ("hMuTau_highMt_highMET_TauPt", "hMuTau_highMt_highMET_TauPt;;N", 500, 0, 500)
-    h['hMuTau_highMt_highMET_MetPt'] = ROOT.TH1F ("hMuTau_highMt_highMET_MetPt", "hMuTau_highMt_highMET_MetPt;;N", 500, 0, 500)
-    h['hMuTau_highMt_highMET_JetPt'] = ROOT.TH1F ("hMuTau_highMt_highMET_JetPt", "hMuTau_highMt_highMET_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_highMt_highMET_MuonPt'] = ROOT.TH1F ("hMuTau_highMt_highMET_MuonPt", "hMuTau_highMt_highMET_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_highMt_highMET_Nj'] = ROOT.TH1F ("hMuTau_highMt_highMET_Nj", "hMuTau_highMt_highMET_Nj;;N", 10, 0, 10)
-    h['hMuTau_highMt_highMET_Nbj'] = ROOT.TH1F ("hMuTau_highMt_highMET_Nbj", "hMuTau_highMt_highMET_Nbj;;N", 5, 0, 5)
-
-    h['hMuTau_highMt_dRcut_TauPt'] = ROOT.TH1F ("hMuTau_highMt_dRcut_TauPt", "hMuTau_highMt_dRcut_TauPt;;N", 500, 0, 500)
-    h['hMuTau_highMt_dRcut'] = ROOT.TH1F ("hMuTau_highMt_dRcut", "hMuTau_highMt_dRcut;;N", 100, 0, 100)
-    h['hMuTau_highMt_dRcut_Nj'] = ROOT.TH1F ("hMuTau_highMt_dRcut_Nj", "hMuTau_highMt_dRcut_Nj;;N", 10, 0, 10)
-    h['hMuTau_highMt_dRcut_Nbj'] = ROOT.TH1F ("hMuTau_highMt_dRcut_Nbj", "hMuTau_highMt_dRcut_Nbj;;N", 5, 0, 5)
-    h['hMuTau_highMt_dRcut_MetPt'] = ROOT.TH1F ("hMuTau_highMt_dRcut_MetPt", "hMuTau_highMt_dRcut_MetPt;;N", 500, 0, 500)
-    h['hMuTau_highMt_dRcut_JetPt'] = ROOT.TH1F ("hMuTau_highMt_dRcut_JetPt", "hMuTau_highMt_dRcut_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_highMt_dRcut_MuonPt'] = ROOT.TH1F ("hMuTau_highMt_dRcut_MuonPt", "hMuTau_highMt_dRcut_MuonPt;;N", 500, 0, 500)
-
-    h['hMuTau_highMt_dRcut_highMET_TauPt'] = ROOT.TH1F ("hMuTau_highMt_dRcut_highMET_TauPt", "hMuTau_highMt_dRcut_highMET_TauPt;;N", 500, 0,500)
-    h['hMuTau_highMt_dRcut_highMET_JetPt'] = ROOT.TH1F ("hMuTau_highMt_dRcut_highMET_JetPt", "hMuTau_highMt_dRcut_highMET_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_highMt_dRcut_highMET'] = ROOT.TH1F ("hMuTau_highMt_dRcut_highMET", "hMuTau_highMt_dRcut_highMET;;N", 100, 0, 100)
-    h['hMuTau_highMt_dRcut_highMET_Nj'] = ROOT.TH1F ("hMuTau_highMt_dRcut_highMET_Nj", "hMuTau_highMt_dRcut_highMET_Nj;;N", 10, 0, 10)
-    h['hMuTau_highMt_dRcut_highMET_Nbj'] = ROOT.TH1F ("hMuTau_highMt_dRcut_highMET_Nbj", "hMuTau_highMt_dRcut_highMET_Nbj;;N", 5, 0, 5)
-    h['hMuTau_highMt_dRcut_highMET_MuonPt'] = ROOT.TH1F ("hMuTau_highMt_dRcut_highMET_MuonPt", "hMuTau_highMt_dRcut_highMET_MuonPt;;N", 500, 0,500)
 
     h['hMuTau_highMt_dRcut_highMET_TauPt0'] = ROOT.TH1F ("hMuTau_highMt_dRcut_highMET_TauPt0", "hMuTau_highMt_dRcut_highMET_TauPt0;;N", 500, 0, 500)
     h['hMuTau_highMt_dRcut_highMET_TauPt1'] = ROOT.TH1F ("hMuTau_highMt_dRcut_highMET_TauPt1", "hMuTau_highMt_dRcut_highMET_TauPt1;;N", 500, 0, 500)
@@ -353,170 +296,46 @@ if plot2DforTau == 0:
     h['hMuTau_OS'] = ROOT.TH1F ("hMuTau_OS", "hMuTau_OS;;N", 100, 0, 100)
     h['hMuTau_OS_Nj'] = ROOT.TH1F ("hMuTau_OS_Nj", "hMuTau_OS_Nj;;N", 10, 0, 10)
 
-    h['hMuTau_SS_TauPt'] = ROOT.TH1F ("hMuTau_SS_TauPt", "hMuTau_SS_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_MuonPt'] = ROOT.TH1F ("hMuTau_SS_MuonPt", "hMuTau_SS_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_MetPt'] = ROOT.TH1F ("hMuTau_SS_MetPt", "hMuTau_SS_MetPt;;N", 500, 0, 500)
-    h['hMuTau_SS_JetPt'] = ROOT.TH1F ("hMuTau_SS_JetPt", "hMuTau_SS_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS'] = ROOT.TH1F ("hMuTau_SS", "hMuTau_SS;;N", 100, 0, 100)
-    h['hMuTau_SS_Nj'] = ROOT.TH1F ("hMuTau_SS_Nj", "hMuTau_SS_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_Mt'] = ROOT.TH1F ("hMuTau_SS_Mt", "hMuTau_SS_Mt;;N", 500, 0, 500)
     h['hMuTau_SS_dRl'] = ROOT.TH1F ("hMuTau_SS_dRl", "hMuTau_SS_dRl;;N", 100, 0, 5)
     h['hMuTau_SS_dRj'] = ROOT.TH1F ("hMuTau_SS_dRj", "hMuTau_SS_dRj;;N", 100, 0, 5)
 
-    h['hMuTau_SS_lowMET_TauPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_TauPt", "hMuTau_SS_lowMET_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_MuonPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_MuonPt", "hMuTau_SS_lowMET_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_MetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_MetPt", "hMuTau_SS_lowMET_MetPt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_JetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_JetPt", "hMuTau_SS_lowMET_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_lowMET'] = ROOT.TH1F ("hMuTau_SS_lowMET", "hMuTau_SS_lowMET;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_Nj'] = ROOT.TH1F ("hMuTau_SS_lowMET_Nj", "hMuTau_SS_lowMET_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_lowMET_Nbj'] = ROOT.TH1F ("hMuTau_SS_lowMET_Nbj", "hMuTau_SS_lowMET_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_lowMET_Mt'] = ROOT.TH1F ("hMuTau_SS_lowMET_Mt", "hMuTau_SS_lowMET_Mt;;N", 500, 0, 500)
     h['hMuTau_SS_lowMET_dRl'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRl", "hMuTau_SS_lowMET_dRl;;N", 100, 0, 5)
     h['hMuTau_SS_lowMET_dRj'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRj", "hMuTau_SS_lowMET_dRj;;N", 100, 0, 5)
 
-    h['hMuTau_SS_lowMET_highMt_TauPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_TauPt", "hMuTau_SS_lowMET_highMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_highMt_MuonPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_MuonPt", "hMuTau_SS_lowMET_highMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_highMt_MetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_MetPt", "hMuTau_SS_lowMET_highMt_MetPt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_highMt_JetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_JetPt", "hMuTau_SS_lowMET_highMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_lowMET_highMt'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt", "hMuTau_SS_lowMET_highMt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_highMt_Nj'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_Nj", "hMuTau_SS_lowMET_highMt_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_lowMET_highMt_Nbj'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_Nbj", "hMuTau_SS_lowMET_highMt_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_lowMET_highMt_Mt'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_Mt", "hMuTau_SS_lowMET_highMt_Mt;;N", 500, 0, 500)
     h['hMuTau_SS_lowMET_highMt_dRl'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_dRl", "hMuTau_SS_lowMET_highMt_dRl;;N", 100, 0, 5)
     h['hMuTau_SS_lowMET_highMt_dRj'] = ROOT.TH1F ("hMuTau_SS_lowMET_highMt_dRj", "hMuTau_SS_lowMET_highMt_dRj;;N", 100, 0, 5)
 
-    h['hMuTau_SS_lowMET_lowMt_TauPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_TauPt", "hMuTau_SS_lowMET_lowMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_lowMt_MuonPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_MuonPt", "hMuTau_SS_lowMET_lowMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_lowMt_MetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_MetPt", "hMuTau_SS_lowMET_lowMt_MetPt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_lowMt_JetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_JetPt", "hMuTau_SS_lowMET_lowMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_lowMET_lowMt'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt", "hMuTau_SS_lowMET_lowMt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_lowMt_Nj'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_Nj", "hMuTau_SS_lowMET_lowMt_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_lowMET_lowMt_Nbj'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_Nbj", "hMuTau_SS_lowMET_lowMt_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_lowMET_lowMt_Mt'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_Mt", "hMuTau_SS_lowMET_lowMt_Mt;;N", 500, 0, 500)
     h['hMuTau_SS_lowMET_lowMt_dRl'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_dRl", "hMuTau_SS_lowMET_lowMt_dRl;;N", 100, 0, 5)
     h['hMuTau_SS_lowMET_lowMt_dRj'] = ROOT.TH1F ("hMuTau_SS_lowMET_lowMt_dRj", "hMuTau_SS_lowMET_lowMt_dRj;;N", 100, 0, 5)
-
-    h['hMuTau_SS_lowMET_dRcut_TauPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_TauPt", "hMuTau_SS_lowMET_dRcut_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_dRcut_MuonPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_MuonPt", "hMuTau_SS_lowMET_dRcut_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_dRcut_MetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_MetPt", "hMuTau_SS_lowMET_dRcut_MetPt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_dRcut_JetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_JetPt", "hMuTau_SS_lowMET_dRcut_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_lowMET_dRcut'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut", "hMuTau_SS_lowMET_dRcut;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_dRcut_Nj'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_Nj", "hMuTau_SS_lowMET_dRcut_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_lowMET_dRcut_Nbj'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_Nbj", "hMuTau_SS_lowMET_dRcut_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_lowMET_dRcut_Mt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_Mt", "hMuTau_SS_lowMET_dRcut_Mt;;N", 500, 0, 500)
-
-    h['hMuTau_SS_lowMET_dRcut_highMt_TauPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_TauPt", "hMuTau_SS_lowMET_dRcut_highMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_dRcut_highMt_MuonPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_MuonPt", "hMuTau_SS_lowMET_dRcut_highMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_dRcut_highMt_MetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_MetPt", "hMuTau_SS_lowMET_dRcut_highMt_MetPt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_dRcut_highMt_JetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_JetPt", "hMuTau_SS_lowMET_dRcut_highMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_lowMET_dRcut_highMt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt", "hMuTau_SS_lowMET_dRcut_highMt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_dRcut_highMt_Nj'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_Nj", "hMuTau_SS_lowMET_dRcut_highMt_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_lowMET_dRcut_highMt_Nbj'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_Nbj", "hMuTau_SS_lowMET_dRcut_highMt_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_lowMET_dRcut_highMt_Mt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_Mt", "hMuTau_SS_lowMET_dRcut_highMt_Mt;;N", 500, 0, 500)
 
     h['hMuTau_SS_lowMET_dRcut_highMt_TauPt0'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_TauPt0", "hMuTau_SS_lowMET_dRcut_highMt_TauPt0;;N", 500, 0, 500)
     h['hMuTau_SS_lowMET_dRcut_highMt_TauPt1'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_TauPt1", "hMuTau_SS_lowMET_dRcut_highMt_TauPt1;;N", 500, 0, 500)
     h['hMuTau_SS_lowMET_dRcut_highMt_TauPt10'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_highMt_TauPt10", "hMuTau_SS_lowMET_dRcut_highMt_TauPt10;;N", 500, 0, 500)
 
-    h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_TauPt", "hMuTau_SS_lowMET_dRcut_lowMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_dRcut_lowMt_MuonPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_MuonPt", "hMuTau_SS_lowMET_dRcut_lowMt_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_lowMET_dRcut_lowMt_MetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_MetPt", "hMuTau_SS_lowMET_dRcut_lowMt_MetPt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_dRcut_lowMt_JetPt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_JetPt", "hMuTau_SS_lowMET_dRcut_lowMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_lowMET_dRcut_lowMt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt", "hMuTau_SS_lowMET_dRcut_lowMt;;N", 100, 0, 100)
-    h['hMuTau_SS_lowMET_dRcut_lowMt_Nj'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_Nj", "hMuTau_SS_lowMET_dRcut_lowMt_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_lowMET_dRcut_lowMt_Nbj'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_Nbj", "hMuTau_SS_lowMET_dRcut_lowMt_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_lowMET_dRcut_lowMt_Mt'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_Mt", "hMuTau_SS_lowMET_dRcut_lowMt_Mt;;N", 500, 0, 500)
-
     h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt0'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_TauPt0", "hMuTau_SS_lowMET_dRcut_lowMt_TauPt0;;N", 500, 0, 500)
     h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt1'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_TauPt1", "hMuTau_SS_lowMET_dRcut_lowMt_TauPt1;;N", 500, 0, 500)
     h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt10'] = ROOT.TH1F ("hMuTau_SS_lowMET_dRcut_lowMt_TauPt10", "hMuTau_SS_lowMET_dRcut_lowMt_TauPt10;;N", 500, 0, 500)
 
-    h['hMuTau_SS_dRcut_TauPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_TauPt", "hMuTau_SS_dRcut_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut'] = ROOT.TH1F ("hMuTau_SS_dRcut", "hMuTau_SS_dRcut;;N", 100, 0, 100)
-    h['hMuTau_SS_dRcut_Nj'] = ROOT.TH1F ("hMuTau_SS_dRcut_Nj", "hMuTau_SS_dRcut_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_dRcut_Nbj'] = ROOT.TH1F ("hMuTau_SS_dRcut_Nbj", "hMuTau_SS_dRcut_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_dRcut_MetPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_MetPt", "hMuTau_SS_dRcut_MetPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_JetPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_JetPt", "hMuTau_SS_dRcut_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_dRcut_MuonPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_MuonPt", "hMuTau_SS_dRcut_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_Mt'] = ROOT.TH1F ("hMuTau_SS_dRcut_Mt", "hMuTau_SS_dRcut_Mt;;N", 500, 0, 500)
-
-    h['hMuTau_SS_dRcut_highMET_TauPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_TauPt", "hMuTau_SS_dRcut_highMET_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_highMET'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET", "hMuTau_SS_dRcut_highMET;;N", 100, 0, 100)
-    h['hMuTau_SS_dRcut_highMET_Nj'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_Nj", "hMuTau_SS_dRcut_highMET_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_dRcut_highMET_Nbj'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_Nbj", "hMuTau_SS_dRcut_highMET_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_dRcut_highMET_MetPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_MetPt", "hMuTau_SS_dRcut_highMET_MetPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_highMET_JetPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_JetPt", "hMuTau_SS_dRcut_highMET_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_dRcut_highMET_MuonPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_MuonPt", "hMuTau_SS_dRcut_highMET_MuonPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_highMET_Mt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_Mt", "hMuTau_SS_dRcut_highMET_Mt;;N", 500, 0, 500)
-
-    h['hMuTau_SS_dRcut_highMET_highMt_TauPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_TauPt", "hMuTau_SS_dRcut_highMET_highMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_highMET_highMt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt", "hMuTau_SS_dRcut_highMET_highMt;;N", 100, 0, 100)
-    h['hMuTau_SS_dRcut_highMET_highMt_Nj'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_Nj", "hMuTau_SS_dRcut_highMET_highMt_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_dRcut_highMET_highMt_Nbj'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_Nbj", "hMuTau_SS_dRcut_highMET_highMt_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_dRcut_highMET_highMt_MetPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_MetPt", "hMuTau_SS_dRcut_highMET_highMt_MetPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_highMET_highMt_JetPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_JetPt", "hMuTau_SS_dRcut_highMET_highMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_dRcut_highMET_highMt_MuonPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_MuonPt", "hMuTau_SS_dRcut_highMET_highMt_MuonPt;;N", 500, 0, 500)
-
     h['hMuTau_SS_dRcut_highMET_highMt_TauPt0'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_TauPt0", "hMuTau_SS_dRcut_highMET_highMt_TauPt0;;N", 500, 0, 500)
     h['hMuTau_SS_dRcut_highMET_highMt_TauPt1'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_TauPt1", "hMuTau_SS_dRcut_highMET_highMt_TauPt1;;N", 500, 0, 500)
     h['hMuTau_SS_dRcut_highMET_highMt_TauPt10'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_highMt_TauPt10", "hMuTau_SS_dRcut_highMET_highMt_TauPt10;;N", 500, 0, 500)
-
-    h['hMuTau_SS_dRcut_highMET_lowMt_TauPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_TauPt", "hMuTau_SS_dRcut_highMET_lowMt_TauPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_highMET_lowMt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt", "hMuTau_SS_dRcut_highMET_lowMt;;N", 100, 0, 100)
-    h['hMuTau_SS_dRcut_highMET_lowMt_Nj'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_Nj", "hMuTau_SS_dRcut_highMET_lowMt_Nj;;N", 10, 0, 10)
-    h['hMuTau_SS_dRcut_highMET_lowMt_Nbj'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_Nbj", "hMuTau_SS_dRcut_highMET_lowMt_Nbj;;N", 5, 0, 5)
-    h['hMuTau_SS_dRcut_highMET_lowMt_MetPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_MetPt", "hMuTau_SS_dRcut_highMET_lowMt_MetPt;;N", 500, 0, 500)
-    h['hMuTau_SS_dRcut_highMET_lowMt_JetPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_JetPt", "hMuTau_SS_dRcut_highMET_lowMt_JetPt;;N", 2000, 0, 2000)
-    h['hMuTau_SS_dRcut_highMET_lowMt_MuonPt'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_MuonPt", "hMuTau_SS_dRcut_highMET_lowMt_MuonPt;;N", 500, 0, 500)
 
     h['hMuTau_SS_dRcut_highMET_lowMt_TauPt0'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_TauPt0", "hMuTau_SS_dRcut_highMET_lowMt_TauPt0;;N", 500, 0, 500)
     h['hMuTau_SS_dRcut_highMET_lowMt_TauPt1'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_TauPt1", "hMuTau_SS_dRcut_highMET_lowMt_TauPt1;;N", 500, 0, 500)
     h['hMuTau_SS_dRcut_highMET_lowMt_TauPt10'] = ROOT.TH1F ("hMuTau_SS_dRcut_highMET_lowMt_TauPt10", "hMuTau_SS_dRcut_highMET_lowMt_TauPt10;;N", 500, 0, 500)
 
     if isData == 0 or isAltered == 1:
-        h['hMuTau_SR'] = ROOT.TH1F ("hMuTau_SR", "hMuTau_SR; ;N", 100, 0, 100)
         h['hMuTau_SR_dRl'] = ROOT.TH1F ("hMuTau_SR_dRl", "hMuTau_SR_dRl;;N", 100, 0, 5)
         h['hMuTau_SR_dRj'] = ROOT.TH1F ("hMuTau_SR_dRj", "hMuTau_SR_dRj;;N", 100, 0, 5)
-        h['hMuTau_SR_TauPt'] = ROOT.TH1F ("hMuTau_SR_TauPt", "hMuTau_SR_TauPt;;N", 500, 0, 500)
-        h['hMuTau_SR_MuonPt'] = ROOT.TH1F ("hMuTau_SR_MuonPt", "hMuTau_SR_MuonPt;;N", 500, 0, 500)
-        h['hMuTau_SR_MetPt'] = ROOT.TH1F ("hMuTau_SR_MetPt", "hMuTau_SR_MetPt;;N", 500, 0, 500)
-        h['hMuTau_SR_JetPt'] = ROOT.TH1F ("hMuTau_SR_JetPt", "hMuTau_SR_JetPt;;N", 2000, 0, 2000)
-        h['hMuTau_SR_Nj'] = ROOT.TH1F ("hMuTau_SR_Nj", "hMuTau_SR_Nj;;N", 10,0,10)
-        h['hMuTau_SR_Nbj'] = ROOT.TH1F ("hMuTau_SR_Nbj", "hMuTau_SR_Nbj;;N", 5,0,5)
-        h['hMuTau_SR_Mt'] = ROOT.TH1F ("hMuTau_SR_Mt", "hMuTau_SR_Mt;;N", 500, 0, 500)
 
-        h['hMuTau_SR_dRcut'] = ROOT.TH1F ("hMuTau_SR_dRcut", "hMuTau_SR_dRcut; ;N", 100, 0, 100)
         h['hMuTau_SR_dRcut_dRl'] = ROOT.TH1F ("hMuTau_SR_dRcut_dRl", "hMuTau_SR_dRcut_dRl;;N", 100, 0, 5)
         h['hMuTau_SR_dRcut_dRj'] = ROOT.TH1F ("hMuTau_SR_dRcut_dRj", "hMuTau_SR_dRcut_dRj;;N", 100, 0, 5)
-        h['hMuTau_SR_dRcut_TauPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_TauPt", "hMuTau_SR_dRcut_TauPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_MuonPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_MuonPt", "hMuTau_SR_dRcut_MuonPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_MetPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_MetPt", "hMuTau_SR_dRcut_MetPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_JetPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_JetPt", "hMuTau_SR_dRcut_JetPt;;N", 2000, 0, 2000)
-        h['hMuTau_SR_dRcut_Nj'] = ROOT.TH1F ("hMuTau_SR_dRcut_Nj", "hMuTau_SR_dRcut_Nj;;N", 10,0,10)
-        h['hMuTau_SR_dRcut_Nbj'] = ROOT.TH1F ("hMuTau_SR_dRcut_Nbj", "hMuTau_SR_dRcut_Nbj;;N", 5,0,5)
-        h['hMuTau_SR_dRcut_Mt'] = ROOT.TH1F ("hMuTau_SR_dRcut_Mt", "hMuTau_SR_dRcut_Mt;;N", 500, 0, 500)
 
-        h['hMuTau_SR_dRcut_highMET'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET", "hMuTau_SR_dRcut_highMET; ;N", 100, 0, 100)
         h['hMuTau_SR_dRcut_highMET_dRl'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_dRl", "hMuTau_SR_dRcut_highMET_dRl;;N", 100, 0, 5)
         h['hMuTau_SR_dRcut_highMET_dRj'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_dRj", "hMuTau_SR_dRcut_highMET_dRj;;N", 100, 0, 5)
-        h['hMuTau_SR_dRcut_highMET_TauPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_TauPt", "hMuTau_SR_dRcut_highMET_TauPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_highMET_MuonPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_MuonPt", "hMuTau_SR_dRcut_highMET_MuonPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_highMET_MetPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_MetPt", "hMuTau_SR_dRcut_highMET_MetPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_highMET_JetPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_JetPt", "hMuTau_SR_dRcut_highMET_JetPt;;N", 2000, 0, 2000)
-        h['hMuTau_SR_dRcut_highMET_Nj'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_Nj", "hMuTau_SR_dRcut_highMET_Nj;;N", 10,0,10)
-        h['hMuTau_SR_dRcut_highMET_Nbj'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_Nbj", "hMuTau_SR_dRcut_highMET_Nbj;;N", 5,0,5)
-        h['hMuTau_SR_dRcut_highMET_Mt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_Mt", "hMuTau_SR_dRcut_highMET_Mt;;N", 500, 0, 500)
 
-        h['hMuTau_SR_dRcut_highMET_lowMt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt", "hMuTau_SR_dRcut_highMET_lowMt; ;N", 100, 0, 100)
         h['hMuTau_SR_dRcut_highMET_lowMt_dRl'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_dRl", "hMuTau_SR_dRcut_highMET_lowMt_dRl;;N", 100, 0, 5)
         h['hMuTau_SR_dRcut_highMET_lowMt_dRj'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_dRj", "hMuTau_SR_dRcut_highMET_lowMt_dRj;;N", 100, 0, 5)
-        h['hMuTau_SR_dRcut_highMET_lowMt_TauPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_TauPt", "hMuTau_SR_dRcut_highMET_lowMt_TauPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_highMET_lowMt_MuonPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_MuonPt", "hMuTau_SR_dRcut_highMET_lowMt_MuonPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_highMET_lowMt_MetPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_MetPt", "hMuTau_SR_dRcut_highMET_lowMt_MetPt;;N", 500, 0, 500)
-        h['hMuTau_SR_dRcut_highMET_lowMt_JetPt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_JetPt", "hMuTau_SR_dRcut_highMET_lowMt_JetPt;;N", 2000, 0, 2000)
-        h['hMuTau_SR_dRcut_highMET_lowMt_Nj'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_Nj", "hMuTau_SR_dRcut_highMET_lowMt_Nj;;N", 10,0,10)
-        h['hMuTau_SR_dRcut_highMET_lowMt_Nbj'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_Nbj", "hMuTau_SR_dRcut_highMET_lowMt_Nbj;;N", 5,0,5)
-        h['hMuTau_SR_dRcut_highMET_lowMt_Mt'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_Mt", "hMuTau_SR_dRcut_highMET_lowMt_Mt;;N", 500, 0, 500)
 
         h['hMuTau_SR_dRcut_highMET_lowMt_TauPt0'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_TauPt0", "hMuTau_SR_dRcut_highMET_lowMt_TauPt0;;N", 500, 0, 500)
         h['hMuTau_SR_dRcut_highMET_lowMt_TauPt1'] = ROOT.TH1F ("hMuTau_SR_dRcut_highMET_lowMt_TauPt1", "hMuTau_SR_dRcut_highMET_lowMt_TauPt1;;N", 500, 0, 500)
@@ -541,8 +360,55 @@ h['hMuTau_SR_highMET_lowMt_dRcut_TauPtMass'] = ROOT.TH2F("hMuTau_SR_highMET_lowM
 h['hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass","hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass; TauPt(GeV) - DM0 ; Vis. Mass (GeV)", 500, 0, 500, 100, 0, 100)
 h['hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass","hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass; TauPt(GeV) - DM1; Vis. Mass (GeV)", 500, 0, 500, 100, 0, 100)
 h['hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass","hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass; TauPt(GeV) - DM10; Vis. Mass (GeV)", 500, 0, 500, 100, 0, 100)
-
 h['hMuTau_SR_highMET_lowMt_dRcut_NJetMass'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_NJetMass","hMuTau_SR_highMET_lowMt_dRcut_NJetMass; N-Jets ; Vis. Mass (GeV)", 10, 0, 10, 100, 0, 100)
+
+h['hMuTau_SR_highMET_lowMt_dRcut_TauPtMass_loosedR'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_TauPtMass_loosedR","hMuTau_SR_highMET_lowMt_dRcut_TauPtMass_loosedR; TauPt(GeV) ; Vis. Mass_loosedR (GeV)", 500, 0, 500, 100, 0, 100)
+h['hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass_loosedR'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass_loosedR","hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass_loosedR; TauPt(GeV) - DM0 ; Vis. Mass_loosedR (GeV)", 500, 0, 500, 100, 0, 100)
+h['hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass_loosedR'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass_loosedR","hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass_loosedR; TauPt(GeV) - DM1; Vis. Mass_loosedR (GeV)", 500, 0, 500, 100, 0, 100)
+h['hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass_loosedR'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass_loosedR","hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass_loosedR; TauPt(GeV) - DM10; Vis. Mass_loosedR (GeV)", 500, 0, 500, 100, 0, 100)
+h['hMuTau_SR_highMET_lowMt_dRcut_NJetMass_loosedR'] = ROOT.TH2F("hMuTau_SR_highMET_lowMt_dRcut_NJetMass_loosedR","hMuTau_SR_highMET_lowMt_dRcut_NJetMass_loosedR; N-Jets ; Vis. Mass_loosedR (GeV)", 10, 0, 10, 100, 0, 100)
+
+h['hMuTau_OS_MetPt_Mt'] = ROOT.TH2F ("hMuTau_OS_MetPt_Mt", "hMuTau_OS_MetPt_Mt ; MET (GeV) ; M_{T} (GeV)", 500, 0, 500, 150, 0, 150)
+h['hMuTau_OS_dRcut_MetPt_Mt'] = ROOT.TH2F ("hMuTau_OS_dRcut_MetPt_Mt", "hMuTau_OS_dRcut_MetPt_Mt ; MET (GeV) ; M_{T} (GeV)", 500, 0, 500, 150, 0, 150)
+h['hMuTau_SS_MetPt_Mt'] = ROOT.TH2F ("hMuTau_SS_MetPt_Mt", "hMuTau_SS_MetPt_Mt ; MET (GeV) ; M_{T} (GeV)", 500, 0, 500, 150, 0, 150)
+h['hMuTau_SS_dRcut_MetPt_Mt'] =ROOT.TH2F ("hMuTau_SS_dRcut_MetPt_Mt", "hMuTau_SS_dRcut_MetPt_Mt ; MET (GeV) ; M_{T} (GeV)", 500, 0, 500, 150, 0, 150)
+
+book1DHist("hMuTau_highMt_dRcut_highMET_110")
+book1DHist("hMuTau_highMt_dRcut_highMET_120")
+book1DHist("hMuTau_highMt_dRcut_highMET_140")
+book1DHist("hMuTau_highMt_dRcut_highMET_150")
+book1DHist("hMuTau_highMt_dRcut_highMET_160")
+
+book1DHist("hMuTau_SS_lowMET_dRcut_highMt")
+book1DHist("hMuTau_SS_lowMET_dRcut_lowMt")
+book1DHist("hMuTau_SS_lowMET_dRcut")
+book1DHist("hMuTau_SS_lowMET_lowMt")
+book1DHist("hMuTau_SS_lowMET_highMt")
+book1DHist("hMuTau_SS_lowMET")
+
+book1DHist("hMuTau_SS_dRcut_highMET_lowMt")
+book1DHist("hMuTau_SS_dRcut_highMET_highMt")
+book1DHist("hMuTau_SS_dRcut_highMET")
+book1DHist("hMuTau_SS_dRcut")
+book1DHist("hMuTau_SS")
+
+book1DHist("hMuTau_SR_dRcut_highMET_lowMt")
+book1DHist("hMuTau_SR_dRcut_highMET")
+book1DHist("hMuTau_SR_dRcut")
+book1DHist("hMuTau_SR")
+
+book1DHist("hMuTau_lowMET_dRcut_highMt")
+book1DHist("hMuTau_lowMET_dRcut_lowMt")
+book1DHist("hMuTau_lowMET_dRcut")
+book1DHist("hMuTau_lowMET_highMt")
+book1DHist("hMuTau_lowMET_lowMt")
+book1DHist("hMuTau_lowMET")
+
+book1DHist("hMuTau_highMt_highMET")
+book1DHist("hMuTau_highMt")
+
+book1DHist("hMuTau_highMt_dRcut_highMET") #DR1
+book1DHist("hMuTau_highMt_dRcut")
 
 
 if plot2DforTau == 1 :
@@ -969,7 +835,15 @@ def MuTau_Channel(mtau, lmuon):
                     h['hMuTau_OS_TauPt'].Fill(tau.Pt(), genweight)
                     h['hMuTau_OS'].Fill((mu+tau).M(), genweight)
                     h['hMuTau_OS_Nj'].Fill(len(s_j), genweight)
-                    # plot met pt
+
+                    h['hMuTau_DR1_Events'].Fill(0, genweight)
+                    h['hMuTau_DR2_Events'].Fill(0, genweight)
+                    h['hMuTau_DR4_Events'].Fill(0, genweight)
+
+                    h['hMuTau_OS_MetPt_Mt'].Fill(met_pt, Mt(m,mu), genweight)
+
+                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05:
+                        h['hMuTau_OS_dRcut_MetPt_Mt'].Fill(met_pt, Mt(m,mu), genweight)
 
                     if met_pt < 100 : #low MET
                         h['hMuTau_Events'].Fill(3, genweight)
@@ -977,243 +851,169 @@ def MuTau_Channel(mtau, lmuon):
                         h['hMuTau_Inclusive_Trigger'].Fill(5, genweight)
                         h['hMuTau_lowMET_dRl'].Fill(mu.DeltaR(tau), genweight)
                         h['hMuTau_lowMET_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                        h['hMuTau_lowMET_TauPt'].Fill(tau.Pt(), genweight)
-                        h['hMuTau_lowMET_MuonPt'].Fill(mu.Pt(), genweight)
-                        h['hMuTau_lowMET_MetPt'].Fill(met_pt, genweight)
-                        h['hMuTau_lowMET_JetPt'].Fill(j.Pt(), genweight)
-                        h['hMuTau_lowMET'].Fill((mu+tau).M(), genweight)
-                        h['hMuTau_lowMET_Nj'].Fill(len(s_j), genweight)
-                        h['hMuTau_lowMET_Nbj'].Fill(len(s_b), genweight)
-                        h['hMuTau_lowMET_Mt'].Fill(Mt(mu,m), genweight)
 
-                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 : #dR cut
+                        h['hMuTau_DR2_Events'].Fill(1, genweight)
+                        h['hMuTau_DR4_Events'].Fill(1, genweight)
 
+                        plot1Dhist("hMuTau_lowMET", tau, mu, j, m)
+
+                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05: #dR cut
                             h['hMuTau_Events'].Fill(4, genweight)
-                            h['hMuTau_lowMET_dRcut_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_lowMET_dRcut_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_lowMET_dRcut_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_lowMET_dRcut_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_lowMET_dRcut'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_lowMET_dRcut_Nj'].Fill(len(s_j), genweight)
-                            h['hMuTau_lowMET_dRcut_Nbj'].Fill(len(s_b), genweight)
-                            h['hMuTau_lowMET_dRcut_Mt'].Fill(Mt(mu,m), genweight)
+                            plot1Dhist("hMuTau_lowMET_dRcut", tau, mu, j, m)
 
-                            if Mt(mu,m) < 50 : #lowMET, dRcut, lowMt
+                            h['hMuTau_DR2_Events'].Fill(2, genweight)
+                            h['hMuTau_DR4_Events'].Fill(2, genweight)
+
+                            if Mt(mu,m) < 50 : #lowMET, dRcut, lowMt DR2
                                 h['hMuTau_Events'].Fill(5, genweight)
-                                h['hMuTau_lowMET_dRcut_lowMt_TauPt'].Fill(tau.Pt(), genweight)
-                                h['hMuTau_lowMET_dRcut_lowMt_MuonPt'].Fill(mu.Pt(), genweight)
-                                h['hMuTau_lowMET_dRcut_lowMt_MetPt'].Fill(met_pt, genweight)
-                                h['hMuTau_lowMET_dRcut_lowMt_JetPt'].Fill(j.Pt(), genweight)
-                                h['hMuTau_lowMET_dRcut_lowMt'].Fill((mu+tau).M(), genweight)
-                                h['hMuTau_lowMET_dRcut_lowMt_Nj'].Fill(len(s_j), genweight)
-                                h['hMuTau_lowMET_dRcut_lowMt_Nbj'].Fill(len(s_b), genweight)
+                                h['hMuTau_DR2_Events'].Fill(3, genweight)
+
+                                plot1Dhist("hMuTau_lowMET_dRcut_lowMt", tau, mu, j, m)
 
                                 if mtau[0].decaymode == 0 : h['hMuTau_lowMET_dRcut_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 1 : h['hMuTau_lowMET_dRcut_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 10 : h['hMuTau_lowMET_dRcut_lowMt_TauPt10'].Fill(tau.Pt(), genweight)
 
-                            if Mt(mu,m) > 50 : #lowMET, dRcut, highMt
-                                h['hMuTau_lowMET_dRcut_highMt_TauPt'].Fill(tau.Pt(), genweight)
-                                h['hMuTau_lowMET_dRcut_highMt_MuonPt'].Fill(mu.Pt(), genweight)
-                                h['hMuTau_lowMET_dRcut_highMt_MetPt'].Fill(met_pt, genweight)
-                                h['hMuTau_lowMET_dRcut_highMt_JetPt'].Fill(j.Pt(), genweight)
-                                h['hMuTau_lowMET_dRcut_highMt'].Fill((mu+tau).M(), genweight)
-                                h['hMuTau_lowMET_dRcut_highMt_Nj'].Fill(len(s_j), genweight)
-                                h['hMuTau_lowMET_dRcut_highMt_Nbj'].Fill(len(s_b), genweight)
+                            if Mt(mu,m) > 50 : #lowMET, dRcut, highMt DR4
+                                h['hMuTau_DR4_Events'].Fill(3, genweight)
+
+                                plot1Dhist("hMuTau_lowMET_dRcut_highMt", tau, mu, j, m)
 
                                 if mtau[0].decaymode == 0 : h['hMuTau_lowMET_dRcut_highMt_TauPt0'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 1 : h['hMuTau_lowMET_dRcut_highMt_TauPt1'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 10 : h['hMuTau_lowMET_dRcut_highMt_TauPt10'].Fill(tau.Pt(), genweight)
 
                         if Mt(mu,m) > 50 : #lowMET, highmT
-                            h['hMuTau_lowMET_highMt_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_lowMET_highMt_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_lowMET_highMt_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_lowMET_highMt_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_lowMET_highMt'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_lowMET_highMt_Nj'].Fill(len(s_j), genweight)
+                            plot1Dhist("hMuTau_lowMET_highMt", tau, mu, j, m)
                             h['hMuTau_lowMET_highMt_dRl'].Fill(mu.DeltaR(tau), genweight)
                             h['hMuTau_lowMET_highMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
 
-
                         if Mt(mu,m) < 50 : #lowMET, lowmT
-                            h['hMuTau_lowMET_lowMt_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_lowMET_lowMt_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_lowMET_lowMt_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_lowMET_lowMt_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_lowMET_lowMt'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_lowMET_lowMt_Nj'].Fill(len(s_j), genweight)
+                            plot1Dhist("hMuTau_lowMET_lowMt", tau, mu, j, m)
                             h['hMuTau_lowMET_lowMt_dRl'].Fill(mu.DeltaR(tau), genweight)
                             h['hMuTau_lowMET_lowMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
 
                     if Mt(mu,m) > 50 : #high mT
+                        plot1Dhist("hMuTau_highMt", tau, mu, j, m)
+
+                        h['hMuTau_DR1_Events'].Fill(1, genweight)
+
                         h['hMuTau_highMt_dRl'].Fill(mu.DeltaR(tau), genweight)
                         h['hMuTau_highMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                        h['hMuTau_highMt_TauPt'].Fill(tau.Pt(), genweight)
-                        h['hMuTau_highMt_MuonPt'].Fill(mu.Pt(), genweight)
-                        h['hMuTau_highMt_MetPt'].Fill(met_pt, genweight)
-                        h['hMuTau_highMt_JetPt'].Fill(j.Pt(), genweight)
-                        h['hMuTau_highMt'].Fill((mu+tau).M(), genweight)
-                        h['hMuTau_highMt_Nj'].Fill(len(s_j), genweight)
-                        h['hMuTau_highMt_Nbj'].Fill(len(s_b), genweight)
 
                         if met_pt > 100 : #highMt, highMET
+                            plot1Dhist("hMuTau_highMt_highMET", tau, mu, j, m)
                             h['hMuTau_highMt_highMET_dRl'].Fill(mu.DeltaR(tau), genweight)
                             h['hMuTau_highMt_highMET_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                            h['hMuTau_highMt_highMET_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_highMt_highMET_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_highMt_highMET_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_highMt_highMET_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_highMt_highMET'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_highMt_highMET_Nj'].Fill(len(s_j), genweight)
 
-                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 : #dR cut                               
-                            h['hMuTau_highMt_dRcut_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_highMt_dRcut_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_highMt_dRcut_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_highMt_dRcut_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_highMt_dRcut'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_highMt_dRcut_Nj'].Fill(len(s_j), genweight)
-                            h['hMuTau_highMt_dRcut_Nbj'].Fill(len(s_b), genweight)
+                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05: #dR cut                               
+                            plot1Dhist("hMuTau_highMt_dRcut", tau, mu, j, m)
+                            h['hMuTau_DR1_Events'].Fill(2, genweight)
 
-                            if met_pt > 100 : #MET cut
-                                h['hMuTau_highMt_dRcut_highMET_MuonPt'].Fill(mu.Pt(), genweight)
-                                h['hMuTau_highMt_dRcut_highMET_TauPt'].Fill(tau.Pt(), genweight)
-                                h['hMuTau_highMt_dRcut_highMET_JetPt'].Fill(j.Pt(), genweight)
-                                h['hMuTau_highMt_dRcut_highMET'].Fill((mu+tau).M(), genweight)
-                                h['hMuTau_highMt_dRcut_highMET_Nj'].Fill(len(s_j), genweight)
-                                h['hMuTau_highMt_dRcut_highMET_Nbj'].Fill(len(s_b), genweight)
+                            if met_pt > 100 : #highMt, dRcut, highMET DR1
+                                h['hMuTau_DR1_Events'].Fill(3, genweight)
+                                plot1Dhist("hMuTau_highMt_dRcut_highMET", tau, mu, j, m)
 
                                 if mtau[0].decaymode == 0 : h['hMuTau_highMt_dRcut_highMET_TauPt0'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 1 : h['hMuTau_highMt_dRcut_highMET_TauPt1'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 10 : h['hMuTau_highMt_dRcut_highMET_TauPt10'].Fill(tau.Pt(), genweight)
 
+                                if met_pt > 110 :
+                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_110", tau, mu, j, m)
+                                if met_pt > 120 : 
+                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_120", tau, mu, j, m)
+                                if met_pt > 140 :
+                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_140", tau, mu, j, m)
+                                if met_pt > 150 :
+                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_150", tau, mu, j, m)
+                                if met_pt > 160 :
+                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_160", tau, mu, j, m)
+
                 if lmuon[0].charge*mtau[0].charge > 0 :
                     h['hMuTau_SS_Nbj'].Fill(len(s_b), genweight)
 
                 if lmuon[0].charge*mtau[0].charge > 0 and len(s_b) == 0: #SS
-                    h['hMuTau_SS_TauPt'].Fill(tau.Pt(), genweight)
-                    h['hMuTau_SS_MuonPt'].Fill(mu.Pt(), genweight)
-                    h['hMuTau_SS_MetPt'].Fill(met_pt, genweight)
-                    h['hMuTau_SS_JetPt'].Fill(j.Pt(), genweight)
-                    h['hMuTau_SS'].Fill((mu+tau).M(), genweight)
-                    h['hMuTau_SS_Nj'].Fill(len(s_j), genweight)
-                    h['hMuTau_SS_Nbj'].Fill(len(s_b), genweight)
-                    h['hMuTau_SS_Mt'].Fill(Mt(mu,m), genweight)
+                    plot1Dhist("hMuTau_SS", tau, mu, j, m)
                     h['hMuTau_SS_dRl'].Fill(mu.DeltaR(tau), genweight)
                     h['hMuTau_SS_dRj'].Fill(j.DeltaR(mu+tau), genweight)
 
+                    h['hMuTau_DR3_Events'].Fill(0, genweight)
+                    h['hMuTau_DR5_Events'].Fill(0, genweight)
+                    h['hMuTau_DR6_Events'].Fill(0, genweight)
+                    h['hMuTau_DR7_Events'].Fill(0, genweight)
+
+                    h['hMuTau_SS_MetPt_Mt'].Fill(met_pt, Mt(m,mu), genweight)
+
+                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05:
+                        h['hMuTau_SS_dRcut_MetPt_Mt'].Fill(met_pt, Mt(m,mu), genweight)
+
                     if met_pt < 100 :
-                        h['hMuTau_SS_lowMET_TauPt'].Fill(tau.Pt(), genweight)
-                        h['hMuTau_SS_lowMET_MuonPt'].Fill(mu.Pt(), genweight)
-                        h['hMuTau_SS_lowMET_MetPt'].Fill(met_pt, genweight)
-                        h['hMuTau_SS_lowMET_JetPt'].Fill(j.Pt(), genweight)
-                        h['hMuTau_SS_lowMET'].Fill((mu+tau).M(), genweight)
-                        h['hMuTau_SS_lowMET_Nj'].Fill(len(s_j), genweight)
-                        h['hMuTau_SS_lowMET_Nbj'].Fill(len(s_b), genweight)
-                        h['hMuTau_SS_lowMET_Mt'].Fill(Mt(mu,m), genweight)
+                        plot1Dhist("hMuTau_SS_lowMET", tau, mu, j, m)
                         h['hMuTau_SS_lowMET_dRl'].Fill(mu.DeltaR(tau), genweight)
                         h['hMuTau_SS_lowMET_dRj'].Fill(j.DeltaR(mu+tau), genweight)
 
+                        h['hMuTau_DR6_Events'].Fill(1, genweight)
+                        h['hMuTau_DR7_Events'].Fill(1, genweight)
+
                         if Mt(mu,m) > 50 : #highMt          
-                            h['hMuTau_SS_lowMET_highMt_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_highMt_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_highMt_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_SS_lowMET_highMt_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_highMt'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_SS_lowMET_highMt_Nj'].Fill(len(s_j), genweight)
-                            h['hMuTau_SS_lowMET_highMt_Nbj'].Fill(len(s_b), genweight)
+                            plot1Dhist("hMuTau_SS_lowMET_highMt", tau, mu, j, m)
                             h['hMuTau_SS_lowMET_highMt_dRl'].Fill(mu.DeltaR(tau), genweight)
                             h['hMuTau_SS_lowMET_highMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
 
-                        if Mt(mu,m) < 50 : #lowMt   
-                            h['hMuTau_SS_lowMET_lowMt_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_lowMt_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_lowMt_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_SS_lowMET_lowMt_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_lowMt'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_SS_lowMET_lowMt_Nj'].Fill(len(s_j), genweight)
-                            h['hMuTau_SS_lowMET_lowMt_Nbj'].Fill(len(s_b), genweight)
+                        if Mt(mu,m) < 50 : #lowMt
+                            plot1Dhist("hMuTau_SS_lowMET_lowMt", tau, mu, j, m)   
                             h['hMuTau_SS_lowMET_lowMt_dRl'].Fill(mu.DeltaR(tau), genweight)
                             h['hMuTau_SS_lowMET_lowMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
 
-                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
-                            h['hMuTau_SS_lowMET_dRcut_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_dRcut_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_dRcut_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_SS_lowMET_dRcut_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_SS_lowMET_dRcut'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_SS_lowMET_dRcut_Nj'].Fill(len(s_j), genweight)
-                            h['hMuTau_SS_lowMET_dRcut_Nbj'].Fill(len(s_b), genweight)
-                            h['hMuTau_SS_lowMET_dRcut_Mt'].Fill(Mt(mu,m), genweight)
+                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05:
+                            plot1Dhist("hMuTau_SS_lowMET_dRcut", tau, mu, j, m)
 
-                            if Mt(mu,m) > 50 : #highMt
-                                h['hMuTau_SS_lowMET_dRcut_highMt_TauPt'].Fill(tau.Pt(), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_highMt_MuonPt'].Fill(mu.Pt(), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_highMt_MetPt'].Fill(met_pt, genweight)
-                                h['hMuTau_SS_lowMET_dRcut_highMt_JetPt'].Fill(j.Pt(), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_highMt'].Fill((mu+tau).M(), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_highMt_Nj'].Fill(len(s_j), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_highMt_Nbj'].Fill(len(s_b), genweight)
+                            h['hMuTau_DR6_Events'].Fill(2, genweight)
+                            h['hMuTau_DR7_Events'].Fill(2, genweight)
+
+                            if Mt(mu,m) > 50 : #SS, lowMET, dRcut, highMt DR7
+                                plot1Dhist("hMuTau_SS_lowMET_dRcut_highMt", tau, mu, j, m)
+
+                                h['hMuTau_DR7_Events'].Fill(3, genweight)
 
                                 if mtau[0].decaymode == 0 : h['hMuTau_SS_lowMET_dRcut_highMt_TauPt0'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 1 : h['hMuTau_SS_lowMET_dRcut_highMt_TauPt1'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 10 : h['hMuTau_SS_lowMET_dRcut_highMt_TauPt10'].Fill(tau.Pt(), genweight)
 
-                            if Mt(mu,m) < 50 : #lowMt
-                                h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt'].Fill(tau.Pt(), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_lowMt_MuonPt'].Fill(mu.Pt(), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_lowMt_MetPt'].Fill(met_pt, genweight)
-                                h['hMuTau_SS_lowMET_dRcut_lowMt_JetPt'].Fill(j.Pt(), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_lowMt'].Fill((mu+tau).M(), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_lowMt_Nj'].Fill(len(s_j), genweight)
-                                h['hMuTau_SS_lowMET_dRcut_lowMt_Nbj'].Fill(len(s_b), genweight)
+                            if Mt(mu,m) < 50 : #SS, lowMET dRcut, lowMt DR6
+                                plot1Dhist("hMuTau_SS_lowMET_dRcut_lowMt", tau, mu, j, m)
+
+                                h['hMuTau_DR6_Events'].Fill(3, genweight)
 
                                 if mtau[0].decaymode == 0 : h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 1 : h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 10 : h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt10'].Fill(tau.Pt(), genweight)
 
-                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 : #dR cut
-                        h['hMuTau_SS_dRcut_TauPt'].Fill(tau.Pt(), genweight)
-                        h['hMuTau_SS_dRcut_MuonPt'].Fill(mu.Pt(), genweight)
-                        h['hMuTau_SS_dRcut_MetPt'].Fill(met_pt, genweight)
-                        h['hMuTau_SS_dRcut_JetPt'].Fill(j.Pt(), genweight)
-                        h['hMuTau_SS_dRcut'].Fill((mu+tau).M(), genweight)
-                        h['hMuTau_SS_dRcut_Nj'].Fill(len(s_j), genweight)
-                        h['hMuTau_SS_dRcut_Nbj'].Fill(len(s_b), genweight)
-                        h['hMuTau_SS_dRcut_Mt'].Fill(Mt(mu,m), genweight)
+                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05: #dR cut
+                        plot1Dhist("hMuTau_SS_dRcut", tau, mu, j, m)
+
+                        h['hMuTau_DR3_Events'].Fill(1, genweight)
+                        h['hMuTau_DR5_Events'].Fill(1, genweight)
 
                         if met_pt > 100 : #Met cut
-                            h['hMuTau_SS_dRcut_highMET_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_SS_dRcut_highMET_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_SS_dRcut_highMET_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_SS_dRcut_highMET_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_SS_dRcut_highMET'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_SS_dRcut_highMET_Nj'].Fill(len(s_j), genweight)
-                            h['hMuTau_SS_dRcut_highMET_Nbj'].Fill(len(s_b), genweight)
-                            h['hMuTau_SS_dRcut_highMET_Mt'].Fill(Mt(mu,m), genweight)
+                            plot1Dhist("hMuTau_SS_dRcut_highMET", tau, mu, j, m)
 
-                            if Mt(mu,m) > 50 : #high mT
-                                h['hMuTau_SS_dRcut_highMET_highMt_TauPt'].Fill(tau.Pt(), genweight)
-                                h['hMuTau_SS_dRcut_highMET_highMt_MuonPt'].Fill(mu.Pt(), genweight)
-                                h['hMuTau_SS_dRcut_highMET_highMt_MetPt'].Fill(met_pt, genweight)
-                                h['hMuTau_SS_dRcut_highMET_highMt_JetPt'].Fill(j.Pt(), genweight)
-                                h['hMuTau_SS_dRcut_highMET_highMt'].Fill((mu+tau).M(), genweight)
-                                h['hMuTau_SS_dRcut_highMET_highMt_Nj'].Fill(len(s_j), genweight)
-                                h['hMuTau_SS_dRcut_highMET_highMt_Nbj'].Fill(len(s_b), genweight)
+                            h['hMuTau_DR3_Events'].Fill(2, genweight)
+                            h['hMuTau_DR5_Events'].Fill(2, genweight)
+
+                            if Mt(mu,m) > 50 : #high mT #DR5
+
+                                h['hMuTau_DR5_Events'].Fill(3, genweight)
+                                plot1Dhist("hMuTau_SS_dRcut_highMET_highMt", tau, mu, j, m)
 
                                 if mtau[0].decaymode == 0 : h['hMuTau_SS_dRcut_highMET_highMt_TauPt0'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 1 : h['hMuTau_SS_dRcut_highMET_highMt_TauPt1'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 10 : h['hMuTau_SS_dRcut_highMET_highMt_TauPt10'].Fill(tau.Pt(), genweight)
 
                             if Mt(mu,m) < 50 : #mT cut #DR3
-                                h['hMuTau_SS_dRcut_highMET_lowMt_TauPt'].Fill(tau.Pt(), genweight)
-                                h['hMuTau_SS_dRcut_highMET_lowMt_MuonPt'].Fill(mu.Pt(), genweight)
-                                h['hMuTau_SS_dRcut_highMET_lowMt_MetPt'].Fill(met_pt, genweight)
-                                h['hMuTau_SS_dRcut_highMET_lowMt_JetPt'].Fill(j.Pt(), genweight)
-                                h['hMuTau_SS_dRcut_highMET_lowMt'].Fill((mu+tau).M(), genweight)
-                                h['hMuTau_SS_dRcut_highMET_lowMt_Nj'].Fill(len(s_j), genweight)
-                                h['hMuTau_SS_dRcut_highMET_lowMt_Nbj'].Fill(len(s_b), genweight)
+
+                                h['hMuTau_DR3_Events'].Fill(3, genweight)
+                                plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt", tau, mu, j, m)
 
                                 if mtau[0].decaymode == 0 : h['hMuTau_SS_dRcut_highMET_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 1 : h['hMuTau_SS_dRcut_highMET_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
@@ -1226,53 +1026,25 @@ def MuTau_Channel(mtau, lmuon):
                         h['hMuTau_SR_Events'].Fill(1, genweight)
                         h['hMuTau_SR_dRl'].Fill(mu.DeltaR(tau), genweight)
                         h['hMuTau_SR_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                        h['hMuTau_SR_TauPt'].Fill(tau.Pt(), genweight)
-                        h['hMuTau_SR_MuonPt'].Fill(mu.Pt(), genweight)
-                        h['hMuTau_SR_MetPt'].Fill(met_pt, genweight)
-                        h['hMuTau_SR_JetPt'].Fill(j.Pt(), genweight)
-                        h['hMuTau_SR'].Fill((mu+tau).M(), genweight)
-                        h['hMuTau_SR_Nj'].Fill(len(s_j), genweight)
-                        h['hMuTau_SR_Nbj'].Fill(len(s_b), genweight)
-                        h['hMuTau_SR_Mt'].Fill(Mt(mu,m), genweight)
+                        plot1Dhist("hMuTau_SR", tau, mu, j, m)
 
                         if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
                             h['hMuTau_SR_Events'].Fill(2, genweight)
                             h['hMuTau_SR_dRcut_dRl'].Fill(mu.DeltaR(tau), genweight)
                             h['hMuTau_SR_dRcut_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                            h['hMuTau_SR_dRcut_TauPt'].Fill(tau.Pt(), genweight)
-                            h['hMuTau_SR_dRcut_MuonPt'].Fill(mu.Pt(), genweight)
-                            h['hMuTau_SR_dRcut_MetPt'].Fill(met_pt, genweight)
-                            h['hMuTau_SR_dRcut_JetPt'].Fill(j.Pt(), genweight)
-                            h['hMuTau_SR_dRcut'].Fill((mu+tau).M(), genweight)
-                            h['hMuTau_SR_dRcut_Nj'].Fill(len(s_j), genweight)
-                            h['hMuTau_SR_dRcut_Nbj'].Fill(len(s_b), genweight)
-                            h['hMuTau_SR_dRcut_Mt'].Fill(Mt(mu,m), genweight)
+                            plot1Dhist("hMuTau_SR_dRcut", tau, mu, j, m)
 
                             if met_pt > 100 :
                                 h['hMuTau_SR_Events'].Fill(3, genweight)
                                 h['hMuTau_SR_dRcut_highMET_dRl'].Fill(mu.DeltaR(tau), genweight)
                                 h['hMuTau_SR_dRcut_highMET_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                                h['hMuTau_SR_dRcut_highMET_TauPt'].Fill(tau.Pt(), genweight)
-                                h['hMuTau_SR_dRcut_highMET_MuonPt'].Fill(mu.Pt(), genweight)
-                                h['hMuTau_SR_dRcut_highMET_MetPt'].Fill(met_pt, genweight)
-                                h['hMuTau_SR_dRcut_highMET_JetPt'].Fill(j.Pt(), genweight)
-                                h['hMuTau_SR_dRcut_highMET'].Fill((mu+tau).M(), genweight)
-                                h['hMuTau_SR_dRcut_highMET_Nj'].Fill(len(s_j), genweight)
-                                h['hMuTau_SR_dRcut_highMET_Nbj'].Fill(len(s_b), genweight)
-                                h['hMuTau_SR_dRcut_highMET_Mt'].Fill(Mt(mu,m), genweight)
+                                plot1Dhist("hMuTau_SR_dRcut_highMET", tau, mu, j, m)
 
                                 if Mt(mu,m) < 50 :
                                     h['hMuTau_SR_Events'].Fill(4, genweight)
                                     h['hMuTau_SR_dRcut_highMET_lowMt_dRl'].Fill(mu.DeltaR(tau), genweight)
                                     h['hMuTau_SR_dRcut_highMET_lowMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_TauPt'].Fill(tau.Pt(), genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_MuonPt'].Fill(mu.Pt(), genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_MetPt'].Fill(met_pt, genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_JetPt'].Fill(j.Pt(), genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt'].Fill((mu+tau).M(), genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_Nj'].Fill(len(s_j), genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_Nbj'].Fill(len(s_b), genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_Mt'].Fill(Mt(mu,m), genweight)
+                                    plot1Dhist("hMuTau_SR_dRcut_highMET_lowMt", tau, mu, j, m)
 
                                     if mtau[0].decaymode == 0 : h['hMuTau_SR_dRcut_highMET_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
                                     if mtau[0].decaymode == 1 : h['hMuTau_SR_dRcut_highMET_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
@@ -1281,9 +1053,26 @@ def MuTau_Channel(mtau, lmuon):
                                     if isJetHTEvent == 1 : h['hMuTau_SR_Trigger'].Fill(7, genweight)
                                     h['hMuTau_SR_Inclusive_Trigger'].Fill(7, genweight)
 
+                                    h["hMuTau_SR_highMET_lowMt_dRcut_TauPtMass_loosedR"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+                                    h["hMuTau_SR_highMET_lowMt_dRcut_NJetMass_loosedR"].Fill(len(s_j), (mu+tau).M(), genweight)
+
+                                    if mtau[0].decaymode == 0 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass_loosedR"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+                                    if mtau[0].decaymode == 1 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass_loosedR"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+                                    if mtau[0].decaymode == 10 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass_loosedR"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+
+                                    if mu.DeltaR(tau) > 0.05:
+
+                                        h["hMuTau_SR_highMET_lowMt_dRcut_TauPtMass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+                                        h["hMuTau_SR_highMET_lowMt_dRcut_NJetMass"].Fill(len(s_j), (mu+tau).M(), genweight)
+                                    
+                                        if mtau[0].decaymode == 0 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+                                        if mtau[0].decaymode == 1 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+                                        if mtau[0].decaymode == 10 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+
+
            if j.Pt() > 100 and (mu+tau).M() > 1:
                 if lmuon[0].charge*mtau[0].charge < 0 and len(s_b) == 0 :
-                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
+                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05:
                         if met_pt > 100 :
                             if Mt(mu,m) < 50 :
                                 if ( j.Pt() > 500 and isSingleJet == 1 ) or isSingleMuonEvent == 1 :
@@ -1320,6 +1109,17 @@ def MuTau_Channel(mtau, lmuon):
 
 
        return isMuTau
+
+
+def plot1Dhist(region,tau,mu,j,m):
+
+    h[region+"_TauPt"].Fill(tau.Pt(), genweight)
+    h[region+"_Mass"].Fill((mu+tau).M(), genweight)
+    h[region+"_MuonPt"].Fill(mu.Pt(), genweight)
+    h[region+"_JetPt"].Fill(j.Pt(), genweight)
+    h[region+"_Mt"].Fill(Mt(mu,m), genweight)
+    h[region+"_MetPt"].Fill(m.Pt(), genweight)
+    h[region+"_Nj"].Fill(len(s_j), genweight)
 
 
 def plot2DTauPt(mtau, lmuon):
@@ -1399,15 +1199,15 @@ def plot2DTauPt(mtau, lmuon):
                     if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
                         plot2DHists("hMuTau_OS_highMET_dRcut",tau,mu,j,j2,genMu,mu2)
 
-                    # if Mt(mu,m) > 50 : #OS highMET highMt DR1 
-                    #     if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
-                    #         plot2DHists("hMuTau_OS_highMET_highMt_dRcut",tau,mu,j,j2,genMu,mu2)
-                    #     if mu.DeltaR(tau) < 0.4 :
-                    #         plot2DHists("hMuTau_OS_highMET_highMt_dRcutl",tau,mu,j,j2,genMu,mu2)
-                    #     if j.DeltaR(tau) > 0.8 :
-                    #         plot2DHists("hMuTau_OS_highMET_highMt_dRcutjt",tau,mu,j,j2,genMu,mu2)
-                    #     if j.DeltaR(mu) > 0.8 :
-                    #         plot2DHists("hMuTau_OS_highMET_highMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
+                    if Mt(mu,m) > 50 : #OS highMET highMt DR1 
+                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
+                            plot2DHists("hMuTau_OS_highMET_highMt_dRcut",tau,mu,j,j2,genMu,mu2)
+                        if mu.DeltaR(tau) < 0.4 :
+                            plot2DHists("hMuTau_OS_highMET_highMt_dRcutl",tau,mu,j,j2,genMu,mu2)
+                        if j.DeltaR(tau) > 0.8 :
+                            plot2DHists("hMuTau_OS_highMET_highMt_dRcutjt",tau,mu,j,j2,genMu,mu2)
+                        if j.DeltaR(mu) > 0.8 :
+                            plot2DHists("hMuTau_OS_highMET_highMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
 
                 if met_pt < 100: #OS lowMET    
                     plot2DHists("hMuTau_OS_lowMET",tau,mu,j,j2,genMu,mu2)
@@ -1464,17 +1264,17 @@ def plot2DTauPt(mtau, lmuon):
                         if j.DeltaR(mu) > 0.8 :
                             plot2DHists("hMuTau_SS_lowMET_lowMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
 
-                    # if Mt(mu,m) > 50 : #SS lowMET highMt DR7
-                    #     plot2DHists("hMuTau_SS_lowMET_highMt",tau,mu,j,j2,genMu,mu2)
+                    if Mt(mu,m) > 50 : #SS lowMET highMt DR7
+                        plot2DHists("hMuTau_SS_lowMET_highMt",tau,mu,j,j2,genMu,mu2)
 
-                    #     if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
-                    #         plot2DHists("hMuTau_SS_lowMET_highMt_dRcut",tau,mu,j,j2,genMu,mu2)
-                    #     if mu.DeltaR(tau) < 0.4 :
-                    #         plot2DHists("hMuTau_SS_lowMET_highMt_dRcutl",tau,mu,j,j2,genMu,mu2)
-                    #     if j.DeltaR(tau) > 0.8 :
-                    #         plot2DHists("hMuTau_SS_lowMET_highMt_dRcutjt",tau,mu,j,j2,genMu,mu2)
-                    #     if j.DeltaR(mu) > 0.8 :
-                    #         plot2DHists("hMuTau_SS_lowMET_highMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
+                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
+                            plot2DHists("hMuTau_SS_lowMET_highMt_dRcut",tau,mu,j,j2,genMu,mu2)
+                        if mu.DeltaR(tau) < 0.4 :
+                            plot2DHists("hMuTau_SS_lowMET_highMt_dRcutl",tau,mu,j,j2,genMu,mu2)
+                        if j.DeltaR(tau) > 0.8 :
+                            plot2DHists("hMuTau_SS_lowMET_highMt_dRcutjt",tau,mu,j,j2,genMu,mu2)
+                        if j.DeltaR(mu) > 0.8 :
+                            plot2DHists("hMuTau_SS_lowMET_highMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
 
                 if met_pt > 100: #SS highMET
                     plot2DHists("hMuTau_SS_highMET",tau,mu,j,j2,genMu,mu2)
@@ -1494,17 +1294,17 @@ def plot2DTauPt(mtau, lmuon):
                         if j.DeltaR(mu) > 0.8 :
                             plot2DHists("hMuTau_SS_highMET_lowMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
 
-                    # if Mt(mu,m) > 50 : #SS highMET highMt DR5
-                    #     plot2DHists("hMuTau_SS_highMET_highMt",tau,mu,j,j2,genMu,mu2)
+                    if Mt(mu,m) > 50 : #SS highMET highMt DR5
+                        plot2DHists("hMuTau_SS_highMET_highMt",tau,mu,j,j2,genMu,mu2)
 
-                    #     if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
-                    #         plot2DHists("hMuTau_SS_highMET_highMt_dRcut",tau,mu,j,j2,genMu,mu2)
-                    #     if mu.DeltaR(tau) < 0.4 :
-                    #         plot2DHists("hMuTau_SS_highMET_highMt_dRcutl",tau,mu,j,j2,genMu,mu2)
-                    #     if j.DeltaR(tau) > 0.8 :
-                    #         plot2DHists("hMuTau_SS_highMET_highMt_dRcutjt",tau,mu,j,j2,genMu,mu2)
-                    #     if j.DeltaR(mu) > 0.8 :
-                    #         plot2DHists("hMuTau_SS_highMET_highMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
+                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
+                            plot2DHists("hMuTau_SS_highMET_highMt_dRcut",tau,mu,j,j2,genMu,mu2)
+                        if mu.DeltaR(tau) < 0.4 :
+                            plot2DHists("hMuTau_SS_highMET_highMt_dRcutl",tau,mu,j,j2,genMu,mu2)
+                        if j.DeltaR(tau) > 0.8 :
+                            plot2DHists("hMuTau_SS_highMET_highMt_dRcutjt",tau,mu,j,j2,genMu,mu2)
+                        if j.DeltaR(mu) > 0.8 :
+                            plot2DHists("hMuTau_SS_highMET_highMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
 
             if isData == 0 or isAltered == 1:
                 if mtau[0].charge*lmuon[0].charge < 0 and len(s_b) == 0: #OS                                                                                                   
@@ -1522,12 +1322,6 @@ def plot2DTauPt(mtau, lmuon):
                             if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
                                 h['hMuTau_SR_2DPlot_Events'].Fill(4, genweight)
                                 plot2DHists("hMuTau_SR_highMET_lowMt_dRcut",tau,mu,j,j2,genMu,mu2)
-                            if mu.DeltaR(tau) < 0.4 :
-                                plot2DHists("hMuTau_SR_highMET_lowMt_dRcutl",tau,mu,j,j2,genMu,mu2)
-                            if j.DeltaR(tau) > 0.8 :
-                                plot2DHists("hMuTau_SR_highMET_lowMt_dRcutjt",tau,mu,j,j2,genMu,mu2)
-                            if j.DeltaR(mu) > 0.8 :
-                                plot2DHists("hMuTau_SR_highMET_lowMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
 
                                 h["hMuTau_SR_highMET_lowMt_dRcut_TauPtMass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
                                 h["hMuTau_SR_highMET_lowMt_dRcut_NJetMass"].Fill(len(s_j), (mu+tau).M(), genweight) 
@@ -1535,6 +1329,13 @@ def plot2DTauPt(mtau, lmuon):
                                 if mtau[0].decaymode == 0 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
                                 if mtau[0].decaymode == 1 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
                                 if mtau[0].decaymode == 10 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
+
+                            if mu.DeltaR(tau) < 0.4 :
+                                plot2DHists("hMuTau_SR_highMET_lowMt_dRcutl",tau,mu,j,j2,genMu,mu2)
+                            if j.DeltaR(tau) > 0.8 :
+                                plot2DHists("hMuTau_SR_highMET_lowMt_dRcutjt",tau,mu,j,j2,genMu,mu2)
+                            if j.DeltaR(mu) > 0.8 :
+                                plot2DHists("hMuTau_SR_highMET_lowMt_dRcutjm",tau,mu,j,j2,genMu,mu2)
 
 
 def plot2DHists(region,tau,mu,j,j2,genMu,mu2):
@@ -1559,6 +1360,7 @@ def plot2DHists(region,tau,mu,j,j2,genMu,mu2):
         if ( ( s_mu[0].charge < 0 and s_genmu[0].pdgid == 13 ) or ( s_mu[0].charge > 0 and s_genmu[0].pdgid == -13 ) ) :
             h[region+"_TauPtdRgenMu"].Fill(tau.Pt(), tau.DeltaR(genMu), genweight)
             h[region+"_MuonPtdRgenMu"].Fill(mu.Pt(), mu.DeltaR(genMu), genweight)
+
 
 
 inputFileNames=open(inputFileList, 'r')
@@ -1636,6 +1438,9 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    isIsoEle = fchain.GetLeaf('isIsoEle').GetValue()
    isEleTau = fchain.GetLeaf('isEleTau').GetValue()
    isMuonEG = fchain.GetLeaf('isMuonEG').GetValue()
+
+   h["isSingleJet"].Fill(isSingleJet, genweight)
+   h["isHT"].Fill(isHT, genweight)
 
    s_j = []
    s_b = []
