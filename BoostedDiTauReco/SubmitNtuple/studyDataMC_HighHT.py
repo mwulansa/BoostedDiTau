@@ -379,6 +379,18 @@ book1DHist("hMuTau_highMt_dRcut_highMET_140")
 book1DHist("hMuTau_highMt_dRcut_highMET_150")
 book1DHist("hMuTau_highMt_dRcut_highMET_160")
 
+book1DHist("hMuTau_SS_dRcut_highMET_lowMt_110")
+book1DHist("hMuTau_SS_dRcut_highMET_lowMt_120")
+book1DHist("hMuTau_SS_dRcut_highMET_lowMt_140")
+book1DHist("hMuTau_SS_dRcut_highMET_lowMt_150")
+book1DHist("hMuTau_SS_dRcut_highMET_lowMt_160")
+
+book1DHist("hMuTau_SS_dRcut_highMET_highMt_110")
+book1DHist("hMuTau_SS_dRcut_highMET_highMt_120")
+book1DHist("hMuTau_SS_dRcut_highMET_highMt_140")
+book1DHist("hMuTau_SS_dRcut_highMET_highMt_150")
+book1DHist("hMuTau_SS_dRcut_highMET_highMt_160")
+
 book1DHist("hMuTau_SS_lowMET_dRcut_highMt")
 book1DHist("hMuTau_SS_lowMET_dRcut_lowMt")
 book1DHist("hMuTau_SS_lowMET_dRcut")
@@ -1010,6 +1022,17 @@ def MuTau_Channel(mtau, lmuon):
                                 if mtau[0].decaymode == 1 : h['hMuTau_SS_dRcut_highMET_highMt_TauPt1'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 10 : h['hMuTau_SS_dRcut_highMET_highMt_TauPt10'].Fill(tau.Pt(), genweight)
 
+                                if met_pt > 110 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_110", tau, mu, j, m)
+                                if met_pt > 120 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_120", tau, mu, j, m)
+                                if met_pt > 140 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_140", tau, mu, j, m)
+                                if met_pt > 150 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_150", tau, mu, j, m)
+                                if met_pt > 160 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_160", tau, mu, j, m)
+
                             if Mt(mu,m) < 50 : #mT cut #DR3
 
                                 h['hMuTau_DR3_Events'].Fill(3, genweight)
@@ -1018,6 +1041,17 @@ def MuTau_Channel(mtau, lmuon):
                                 if mtau[0].decaymode == 0 : h['hMuTau_SS_dRcut_highMET_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 1 : h['hMuTau_SS_dRcut_highMET_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
                                 if mtau[0].decaymode == 10 : h['hMuTau_SS_dRcut_highMET_lowMt_TauPt10'].Fill(tau.Pt(), genweight)
+
+                                if met_pt > 110 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_110", tau, mu, j, m)
+                                if met_pt > 120 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_120", tau, mu, j, m)
+                                if met_pt > 140 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_140", tau, mu, j, m)
+                                if met_pt > 150 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_150", tau, mu, j, m)
+                                if met_pt > 160 :
+                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_160", tau, mu, j, m)
 
 
            if isData == 0 or isAltered == 1:
