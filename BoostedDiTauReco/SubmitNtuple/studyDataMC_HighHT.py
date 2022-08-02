@@ -14,7 +14,7 @@ plotSingleMuon = 0
 plotHTTrig = 0
 
 plot2DforTau = 0
-isAltered = 1
+isAltered = 0
 
 print("isAltered = ", isAltered)
 print("plot2DforTau = ", plot2DforTau)
@@ -1062,7 +1062,7 @@ def MuTau_Channel(mtau, lmuon):
                         h['hMuTau_SR_dRj'].Fill(j.DeltaR(mu+tau), genweight)
                         plot1Dhist("hMuTau_SR", tau, mu, j, m)
 
-                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
+                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05 :
                             h['hMuTau_SR_Events'].Fill(2, genweight)
                             h['hMuTau_SR_dRcut_dRl'].Fill(mu.DeltaR(tau), genweight)
                             h['hMuTau_SR_dRcut_dRj'].Fill(j.DeltaR(mu+tau), genweight)
@@ -1493,26 +1493,29 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    if tausUnCleaned.size()>0:
        for i in range(tausUnCleaned.size()):
            tau = tausUnCleaned.at(i)
-           if tau.mvaid >= 4:
-               h['hTauUnCleanedPt'].Fill(tau.pt, genweight)
-               unclean+=[tau]
+           if abs(tau.eta) < 2.3 :
+               if tau.mvaid >= 4:
+                   h['hTauUnCleanedPt'].Fill(tau.pt, genweight)
+                   unclean+=[tau]
 
    if tausECleaned.size()>0:
        for i in range(tausECleaned.size()):
            tau = tausECleaned.at(i)
-           if tau.mvaid >= 4:
-               h['hECleanedPt'].Fill(tau.pt, genweight)
-               eclean+=[tau]
+           if abs(tau.eta) < 2.3 :
+               if tau.mvaid >= 4:
+                   h['hECleanedPt'].Fill(tau.pt, genweight)
+                   eclean+=[tau]
 
    if tausMCleaned.size()>0:
        for i in range(tausMCleaned.size()):
            tau = tausMCleaned.at(i)
-           if tau.mvaid >= 1 and tau.mvaid < 4 :
-               mclean_altered+=[tau]
-               h['hMuCleanedPt_altered'].Fill(tau.pt, genweight)
-           if tau.mvaid >= 4 :
-               h['hMuCleanedPt'].Fill(tau.pt, genweight)
-               mclean+=[tau]
+           if abs(tau.eta) < 2.3 :
+               if tau.mvaid >= 1 and tau.mvaid < 4 :
+                   mclean_altered+=[tau]
+                   h['hMuCleanedPt_altered'].Fill(tau.pt, genweight)
+               if tau.mvaid >= 4 :
+                   h['hMuCleanedPt'].Fill(tau.pt, genweight)
+                   mclean+=[tau]
 
    # if tausLowPtECleaned.size()>0:
    #     for i in range(tausLowPtECleaned.size()):
@@ -1523,9 +1526,10 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    if tausBoosted.size()>0:
        for i in range(tausBoosted.size()):
            tau = tausBoosted.at(i)
-           if tau.mvaid >= 1:
-               h['hTauBoostedPt'].Fill(tau.pt, genweight)
-               boosted+=[tau]
+           if abs(tau.eta) < 2.3 :
+               if tau.mvaid >= 1:
+                   h['hTauBoostedPt'].Fill(tau.pt, genweight)
+                   boosted+=[tau]
 
    if jets.size()>0:
       for i in range(jets.size()):
@@ -1541,22 +1545,24 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    if muons.size()>0:
       for i in range(muons.size()):
          muon = muons.at(i)
-         if muon.id >= 1:
-             h['hMuonPt'].Fill(muon.pt, genweight) 
-             s_mu+=[muon]
-             if muon.iso < 0.25:
-                 h['hIsoMuonPt'].Fill(muon.pt, genweight)
-                 s_isomu+=[muon]
+         if abs(muon.eta) < 2.4 : 
+             if muon.id >= 1:
+                 h['hMuonPt'].Fill(muon.pt, genweight) 
+                 s_mu+=[muon]
+                 if muon.iso < 0.25:
+                     h['hIsoMuonPt'].Fill(muon.pt, genweight)
+                     s_isomu+=[muon]
 
    if electrons.size()>0:
       for i in range(electrons.size()):
          electron = electrons.at(i)
-         if electron.id >= 1 :
-             h['hElectronPt'].Fill(electron.pt, genweight)
-             s_e+=[electron]
-             if electron.iso >= 1:
-                 h['hIsoElectronPt'].Fill(electron.pt, genweight)
-                 s_isoe+=[electron]
+         if electron.eta < 2.5 :
+             if electron.id >= 1 :
+                 h['hElectronPt'].Fill(electron.pt, genweight)
+                 s_e+=[electron]
+                 if electron.iso >= 1:
+                     h['hIsoElectronPt'].Fill(electron.pt, genweight)
+                     s_isoe+=[electron]
 
    s_j.sort(key=lambda x: x.pt, reverse=True)
    s_e.sort(key=lambda x: x.pt, reverse=True)
