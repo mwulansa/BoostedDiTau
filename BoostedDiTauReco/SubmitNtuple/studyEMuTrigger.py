@@ -9,7 +9,7 @@ opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 outputTitle = "h_studyEMuTrigger"
 
 if "-mc" in opts:
-    isData == 0
+    isData = 0
 
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/JetInfoDS.h"')
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/MuonInfoDS.h"')
@@ -39,6 +39,18 @@ pi = np.pi
 
 h = {}
 
+event_cut = {
+    'jetPt': 100,
+    'dRl': 0.4,
+    'dRltau': 0.05,
+    'dRlj': 0.8,
+    'metcut': 100,
+    'mtcut': 50,
+    'dPhiml': 1,
+    'dPhimj': 2,
+    'mass' : 1
+}
+
 def define_event_histogram(region):
 
     h[region+"_Mass"] = ROOT.TH1F (region+"_Mass", region+"_Mass ; M_{vis.} (GeV) ; Events ", 100, 0, 100)
@@ -48,8 +60,9 @@ def define_event_histogram(region):
     h[region+"_Mt"] = ROOT.TH1F (region+"_Mt", region+"_Mt ; M_{T} (GeV) ; Events ", 150, 0, 150)
     h[region+"_MetPt"] = ROOT.TH1F (region+"_MetPt", region+"_MetPt ; MET (GeV) ; Events ", 500, 0, 500)
     h[region+"_Nj"] = ROOT.TH1F (region+"_Nj", region+"_Nj ; N_{j} ; Events ", 10, 0, 10)
-    h[region+"_dRl"] = ROOT.TH1F (region+"_dRl", region+"_dRl; dR(leptons); Events", 100, 0, 5)
-    h[region+"_dRj"] = ROOT.TH1F (region+"_dRj", region+"t_dRj; dR(jet, ditau); Events", 100, 0, 5)
+    h[region+"_dR"] = ROOT.TH2F (region+"_dR", region+"_dR ; dR(leptons) ; dR(jet, ditau)", 100, 0, 5, 100, 0, 5)
+    h[region+"_dPhil"] = ROOT.TH2F (region+"_dPhil", region+"_dPhil ; dPhi(met,lepton) ; dPhi(met,lepton2)",  100, -pi, pi, 100, -pi, pi)
+    h[region+"_dPhi"] = ROOT.TH2F (region+"_dPhi", region+"_dPhi ; dPhi(met,ditau) ; dPhi(met,jet)",  100, -pi, pi, 100, -pi, pi)
 
 
 def define_general_histogram():
@@ -66,14 +79,8 @@ def define_general_histogram():
     h['hMuMu_Events'] = ROOT.TH1F ("hMuMu_Events", "hMuMu_Events;;N", 6, 1, 7)
     h['hEMu_Events'] = ROOT.TH1F ("hEMu_Events", "hEMu_Events;;N", 6, 1, 7)
 
-    h['hMuMu_Trigger'] = ROOT.TH1F ("hMuMu_Trigger", "hMuMu_Trigger;;N", 7, 1, 8)
-    h['hEMu_Trigger'] = ROOT.TH1F ("hEMu_Trigger", "hEMu_Trigger;;N", 7, 1, 8)
+    h['hEMu_Trigger_Event'] = ROOT.TH1F ("hEMu_Trigger_Event", "hEMu_Trigger_Events ; ; N", 5, 0, 5)
 
-    h['hMuMu_Inclusive_Trigger'] = ROOT.TH1F ("hMuMu_Inclusive_Trigger", "hMuMu_Inclusive_Trigger;;N", 5, 1, 6)
-    h['hEMu_Inclusive_Trigger'] = ROOT.TH1F ("hEMu_Inclusive_Trigger", "hEMu_Inclusive_Trigger;;N", 5, 1, 6)
-
-    h['hMuMu_SR_dRcut_highMET_dPhicut'] = ROOT.TH1F ("hMuMu_SR_dRcut_highMET_dPhicut", "hMuMu_SR_dRcut_highMET_dPhicut; ;N", 100, 0, 100)
-    h['hEMu_SR_dRcut_highMET_dPhicut'] = ROOT.TH1F ("hEMu_SR_dRcut_highMET_dPhicut", "hEMu_SR_dRcut_highMET_dPhicut; ;N", 100, 0, 100)
 
 #-----Objects-----
 
@@ -93,172 +100,164 @@ def define_general_histogram():
     h['hTauBoostedPt'] = ROOT.TH1F ("hTauBoostedPt", "Boosted Tau P_{T}; P_{T}; a.u.", 500, 0, 500)
 
 
+hist_regions = [
+    'hMuMu_SR_dRcut_highMET_dPhicut',
+    'hMuMu_dRcut_highMET',
+    'hMuMu_dRcut',
+    'hMuMu_Baseline',
+    'hEMu_Baseline',
+    'hEMu_dRcut',
+    'hEMu_JetHT+SingleMu+SingleE+MuonEG',
+    'hEMu_JetHT+SingleMu',
+    'hEMu_JetHT+SingleE',
+    'hEMu_JetHT+MuonEG',
+    'hEMu_JetHT+SingleMu+MuonEG',
+    'hEMu_JetHT+SingleE+MuonEG',
+    'hEMu_JetHT+MuonEG+SingleMu',
+    'hEMu_JetHT+MuonEG+SingleE'
+]
+
+for r in hist_regions:
+    define_event_histogram(r)
+
+define_general_histogram()
 
 for key in h.keys():
     h[key].Sumw2()
 
 
 
-def MuMu_Channel(mu):
+def get_TLorentzVector(l1, l2, js, met_pt, met_phi):
 
-   isMuMu = 0
-   h['hMuMu_Events'].Fill(1, genweight)
+    vl1 = ROOT.TLorentzVector()
+    vl1.SetPtEtaPhiM(l1.pt, l1.eta, l1.phi, l1.mass)
 
-   mu1 = ROOT.TLorentzVector()
-   mu1.SetPtEtaPhiM(mu[0].pt, mu[0].eta, mu[0].phi, mu[0].mass)
+    vl2 = ROOT.TLorentzVector()
+    vl2.SetPtEtaPhiM(l2.pt, l2.eta, l2.phi, l2.mass)
 
-   mu2 = ROOT.TLorentzVector()
-   mu2.SetPtEtaPhiM(mu[1].pt, mu[1].eta, mu[1].phi, mu[1].mass)
+    vj = ROOT.TLorentzVector()
+    vj.SetPtEtaPhiM(js.pt, js.eta, js.phi, js.mass)
 
-   j = ROOT.TLorentzVector()
-   j.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
+    vm = ROOT.TLorentzVector()
+    vm.SetPtEtaPhiM(met_pt, 0, met_phi, 0)
 
-   m = ROOT.TLorentzVector()
-   m.SetPtEtaPhiM(met_pt, 0, met_phi, 0)
-
-   if j.Pt() > 100 and (mu1+mu2).M() > 1:   
-
-       isJetHTEvent = 0
-       isSingleMuonEvent = 0
-
-       if met_pt < 100 and len(s_b) == 0:
-           if j.Pt() > 500 and isSingleJet == 1 :
-               h['hMuMu_Trigger'].Fill(1, genweight)
-           if j.Pt() > 500 and isHT == 1 :
-               h['hMuMu_Trigger'].Fill(2, genweight)
-           if j.Pt() > 600 and isSingleJet == 1 :
-               h['hMuMu_Trigger'].Fill(3, genweight)
-           if j.Pt() > 600 and isHT == 1 :
-               h['hMuMu_Trigger'].Fill(4, genweight)
-           if ( j.Pt() > 500 and ( isSingleJet == 1 or isHT == 1 ) ) :
-               h['hMuMu_Trigger'].Fill(5, genweight)
-           if ( j.Pt() > 600 and ( isSingleJet == 1 or isHT == 1 ) ) :
-               h['hMuMu_Trigger'].Fill(6, genweight)
-
-       if plotHTTrig == 1 :
-           if ( j.Pt() > 500 and isHT == 1 ) : isJetHTEvent = 1
-
-       if plotJetHT == 1 :
-           if ( j.Pt() > 600 and ( isSingleJet == 1 or isHT == 1 ) ) : isJetHTEvent = 1
-
-       if plotSingleMuon == 1 :
-           if ( mu1.Pt() > 50 and isMu == 1 ) or ( mu1.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
-
-       if met_pt < 100 and len(s_b) == 0:
-           if isJetHTEvent == 1 and isSingleMuonEvent == 1:
-               h['hMuMu_Inclusive_Trigger'].Fill(1, genweight)
-
-           if isJetHTEvent == 1 and isSingleMuonEvent == 0:
-               h['hMuMu_Inclusive_Trigger'].Fill(2, genweight)
-
-           if isJetHTEvent == 0 and isSingleMuonEvent == 1:
-               h['hMuMu_Inclusive_Trigger'].Fill(3, genweight)
-
-           if isJetHTEvent == 1 or isSingleMuonEvent == 1:
-               h['hMuMu_Inclusive_Trigger'].Fill(4, genweight)
-
-       if ( isData == 0 and ( ( plotHTTrig == 1 and isJetHTEvent == 1 ) or ( plotJetHT == 1 and isJetHTEvent == 1 ) or ( plotSingleMuon == 1 and isSingleMuonEvent == 1 ) ) ) or \
-          ( isData == 1 and ( isJetHTDataset == 1 and ( isJetHTEvent == 1 and isSingleMuonEvent == 0 ) ) ) or \
-          ( isData == 1 and ( isSingleMuonDataset == 1 and isSingleMuonEvent == 1 ) ):
-
-           # print("data? :", isData)
-           # print("isJetHTDataset, isJetHTEvent, isSingleMuonEvent :", isJetHTDataset, isJetHTEvent, isSingleMuonEvent)
-           # print("isSingleMuonDataset, isJetHTEvent, isSingleMuonEvent, ", isSingleMuonDataset, isJetHTEvent , isSingleMuonEvent)
-
-           h['hMuMu_Events'].Fill(2, genweight)
-
-           if len(s_b) == 0:
-                if mu1.DeltaR(mu2) < 0.4 and mu1.DeltaR(j) > 0.8  and mu2.DeltaR(j) > 0.8:
-                   if isData == 0 :
-                       plot1Dhist('hMuMu_SR_dRcut', mu1, mu2, j, m)
-                   if met_pt > 100:
-                       if isData == 0 :
-                           plot1Dhist('hMuMu_SR_dRcut_highMET', mu1, mu2, j, m)
-                       if abs(m.DeltaPhi(mu1)) < 1 and abs(m.DeltaPhi(j)) > 2:
-                           isMuMu = 1
-                           h['ChOverlap'].Fill(7,1)
-                           if isData == 0 :
-                               h['hTauEvents'].Fill(2,genweight)
-                               plot1Dhist('hMuMu_SR_dRcut_highMET_dPhicut', mu1, mu2, j, m)
-#                           h['hMuMu_SR_dRcut_highMET_dPhicut'].Fill((mu1+mu2).M(), genweight)
+    return vl1, vl2, vj, vm
 
 
-   return isMuMu
+def pass_deltaR(l1,l2,j, channel):
 
-def EMu_Channel(ele,mu_emu):
-
-   isEMu = 0
-   h['hEMu_Events'].Fill(1, genweight)
-
-   mu = ROOT.TLorentzVector()
-   mu.SetPtEtaPhiM(mu_emu[0].pt, mu_emu[0].eta, mu_emu[0].phi, mu_emu[0].mass)
-
-   e = ROOT.TLorentzVector()
-   e.SetPtEtaPhiM(ele[0].pt, ele[0].eta, ele[0].phi, ele[0].mass)
-
-   j = ROOT.TLorentzVector()
-   j.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-
-   m = ROOT.TLorentzVector()
-   m.SetPtEtaPhiM(met_pt, 0, met_phi, 0)
-
-   isJetHTEvent = 0
-   isSingleMuonEvent = 0
-
-   if met_pt < 100 and (e+mu).M() > 1:
-       if j.Pt() > 500 and isSingleJet == 1 :
-           h['hEMu_Trigger'].Fill(1, genweight)
-       if j.Pt() > 500 and isHT == 1 :
-           h['hEMu_Trigger'].Fill(2, genweight)
-       if j.Pt() > 600 and isSingleJet == 1 :
-           h['hEMu_Trigger'].Fill(3, genweight)
-       if j.Pt() > 600 and isHT == 1 :
-           h['hEMu_Trigger'].Fill(4, genweight)
-       if ( j.Pt() > 500 and ( isSingleJet == 1 or isHT == 1 ) ) :
-           h['hEMu_Trigger'].Fill(5, genweight)
-       if ( j.Pt() > 600 and ( isSingleJet == 1 or isHT == 1 ) ) :
-           h['hEMu_Trigger'].Fill(6, genweight)
-
-   if plotHTTrig == 1 and (e+mu).M() > 1 :
-       if ( j.Pt() > 500 and isHT == 1 ) : isJetHTEvent = 1
-
-   if plotJetHT == 1 and (e+mu).M() > 1:
-       if ( j.Pt() > 600 and ( isSingleJet == 1 or isHT == 1 ) ) : isJetHTEvent = 1
-
-   if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
-
-   if met_pt < 100 and len(s_b) == 0 and j.Pt() > 100 and (e+mu).M() > 1:
-       if isJetHTEvent == 1 and isSingleMuonEvent == 1:
-           h['hEMu_Inclusive_Trigger'].Fill(1, genweight)
-
-       if isJetHTEvent == 1 and isSingleMuonEvent == 0:
-           h['hEMu_Inclusive_Trigger'].Fill(2, genweight)
-
-       if isJetHTEvent == 0 and isSingleMuonEvent == 1:
-           h['hEMu_Inclusive_Trigger'].Fill(3, genweight)
-
-       if isJetHTEvent == 1 or isSingleMuonEvent == 1:
-           h['hEMu_Inclusive_Trigger'].Fill(4, genweight)
+    if channel == "muTau" or channel == "eTau":
+        if l1.DeltaR(l2) < event_cut["dRl"] and j.DeltaR(l1) > event_cut["dRlj"] and j.DeltaR(l2) > event_cut["dRlj"] and l1.DeltaR(l2) > event_cut["dRltau"]:
+            return 1
+        else:
+            return -9999
+    else:
+        if l1.DeltaR(l2) < event_cut["dRl"] and j.DeltaR(l1) > event_cut["dRlj"] and j.DeltaR(l2) > event_cut["dRlj"]:
+            return 1
+        else:
+            return -9999
 
 
-   if isData == 0 and j.Pt() > 100 :
+def pass_baseline(l1, l2, j):
 
-       if ( j.Pt() > 500 and ( isHT == 1 ) ) \
-          or ( isMuonEG == 1 and ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) ) \
-          or ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) \
-          or ( e.Pt() > 35 and (isIsoEle == 1) ) :
+    if j.Pt() > event_cut['jetPt'] and (l1+l2).M() > event_cut["mass"]:
+        return 1
+    else:
+        return -9999
 
-           if (e+mu).M() > 1.0 :
-               if mu.DeltaR(e) < 0.4 and mu.DeltaR(j)> 0.8  and e.DeltaR(j) > 0.8 :
-                   plot1Dhist('hEMu_SR_dRcut_allTrig',e,mu,j,m)
-                   if met_pt > 100.0 :
-                       plot1Dhist('hEMu_SR_dRcut_highMET_allTrig',e,mu,j,m)
-                       if abs(m.DeltaPhi(mu)) < 1.0 and abs( m.DeltaPhi(j) ) > 2.0 :
-                           plot1Dhist('hEMu_SR_dRcut_highMET_dPhicut_allTrig',e,mu,j,m)
-                           isEMu = 1
 
+def MuMu_Channel(mu, js, met_pt, met_phi):
+
+    isMuMu = 0
+    h['hMuMu_Events'].Fill(1, genweight)
+
+    mu1, mu2, j, m = get_TLorentzVector(mu[0], mu[1], js[0], met_pt, met_phi)
+
+    if pass_baseline(mu1, mu2, j):
+
+        isJetHTEvent = 0
+        isSingleMuonEvent = 0
+
+        if ( j.Pt() > 500 and isHT == 1 ) : isJetHTEvent = 1
+
+        if ( mu1.Pt() > 50 and isMu == 1 ) or ( mu1.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
+
+        if isJetHTEvent or isSingleMuonEvent :
+            plot_event_hist("hMuMu_Baseline", mu1, mu2, j, m)
+
+            if pass_deltaR(mu1, mu2, j, "MuMu"):
+                plot_event_hist('hMuMu_dRcut', mu1, mu2, j, m)
+
+                if m.Pt() > 100:
+                    plot_event_hist('hMuMu_dRcut_highMET', mu1, mu2, j, m)
+
+                    if abs(m.DeltaPhi(mu1)) < 1 and abs(m.DeltaPhi(j)) > 2:
+                        plot_event_hist('hMuMu_SR_dRcut_highMET_dPhicut', mu1, mu2, j, m)
+                        isMuMu = 1
+
+    return isMuMu
+
+def EMu_Channel(ele,mu_emu, js, met_pt, met_phi):
+
+    isEMu = 0
+    h['hEMu_Events'].Fill(1, genweight)
+
+    e, mu, j, m = get_TLorentzVector(ele[0], mu_emu[0], js[0], met_pt, met_phi)
+
+    isJetHTEvent = 0
+    isSingleMuonEvent = 0
+    isSingleEEvent = 0
+    isMuonEGEvent = 0
+
+    trigger = [0, 0, 0, 0]
+
+    if ( j.Pt() > 500 and isHT == 1 ) : trigger[0] = 1
+
+    if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) : trigger[1] = 1
+
+    if ( e.Pt() > 35 and isIsoEle == 1 ) : trigger[2] = 1
+
+    if ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) : trigger[3] = 1
+
+    if trigger[0] == 1 or trigger[1] == 1 or trigger[2] == 1 or trigger[3] == 1 :
+
+        if pass_baseline(e, mu, j) == 1:
+            plot_event_hist("hEMu_Baseline", e, mu, j ,m)
+
+            if pass_deltaR(e, mu, j, "EMu") == 1:
+                plot_event_hist("hEMu_dRcut", e, mu, j ,m)
+
+                if m.Pt() > 100.0 :
+                    plot_event_hist("hEMu_JetHT+SingleMu+SingleE+MuonEG", e, mu, j ,m)
+                    h["hEMu_Trigger_Event"].Fill(4, genweight)
+
+                    if trigger[0] == 1 and ( trigger[1] == trigger[2] == trigger[3] == 0 ):
+                        h["hEMu_Trigger_Event"].Fill(0, genweight)
+                    if trigger[1] == 1 and ( trigger[0]== trigger[2] == trigger[3] == 0 ):
+                        h["hEMu_Trigger_Event"].Fill(1,genweight)
+                    if trigger[2] == 1 and ( trigger[1]== trigger[0] == trigger[3] == 0 ):
+                        h["hEMu_Trigger_Event"].Fill(2,genweight)
+                    if trigger[3] == 1 and ( trigger[1]== trigger[2] == trigger[0] == 0 ):
+                        h["hEMu_Trigger_Event"].Fill(3,genweight)
+
+                    if trigger[0] == 1 or trigger[1] == 1:
+                        plot_event_hist("hEMu_JetHT+SingleMu", e, mu, j, m)
+                    if trigger[0] == 1 or trigger[1] == 1 or trigger[3] == 1:
+                        plot_event_hist("hEMu_JetHT+SingleMu+MuonEG", e, mu, j, m)
+
+                    if trigger[0] == 1 or trigger[2] == 1:
+                        plot_event_hist("hEMu_JetHT+SingleE", e, mu, j, m)
+                    if trigger[0] == 1 or trigger[2] == 1 or trigger[3] == 1:
+                        plot_event_hist("hEMu_JetHT+SingleE+MuonEG", e, mu, j, m)
+
+                    if trigger[0] == 1 or trigger[3] == 1:
+                        plot_event_hist("hEMu_JetHT+MuonEG", e, mu, j, m)
+                    if trigger[0] == 1 or trigger[3] == 1 or trigger[1] == 1:
+                        plot_event_hist("hEMu_JetHT+MuonEG+SingleMu", e, mu, j, m)
+                    if trigger[0] == 1 or trigger[3] == 1 or trigger[2] == 1: 
+                        plot_event_hist("hEMu_JetHT+MuonEG+SingleE", e, mu, j, m)
                     
-   return isEMu
+    return isEMu
 
 
 def Mt(lepton, met):
@@ -268,16 +267,18 @@ def Mt(lepton, met):
 
     return Mt
 
-def plot1Dhist(region,l1,l2,j,m):
-
-    h[region+"_Lepton1Pt"].Fill(l1.Pt(), genweight)
+def plot_event_hist(region, l1, l2, j, m):
+    
     h[region+"_Mass"].Fill((l1+l2).M(), genweight)
+    h[region+"_Lepton1Pt"].Fill(l1.Pt(), genweight)
     h[region+"_Lepton2Pt"].Fill(l2.Pt(), genweight)
     h[region+"_JetPt"].Fill(j.Pt(), genweight)
     h[region+"_Mt"].Fill(Mt(l2,m), genweight)
     h[region+"_MetPt"].Fill(m.Pt(), genweight)
     h[region+"_Nj"].Fill(len(s_j), genweight)
-
+    h[region+"_dR"].Fill(l1.DeltaR(l2), j.DeltaR(l1+l2), genweight)
+    h[region+"_dPhil"].Fill(m.DeltaPhi(l1), m.DeltaPhi(l2), genweight)
+    h[region+"_dPhi"].Fill(m.DeltaPhi(l1+l2), m.DeltaPhi(j), genweight)
 
 
 inputFileNames=open(inputFileList, 'r')
@@ -414,12 +415,11 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    isEMu = 0
    isMuMu = 0
 
-   if len(s_isomu) > 1 and len(s_j) > 0 and s_isomu[0].charge*s_isomu[1].charge < 0 : 
-       if MuMu_Channel(s_isomu) == 1: continue
+   if len(s_isomu) > 1 and len(s_j) > 0 and s_isomu[0].charge*s_isomu[1].charge < 0 and len(s_b) == 0: 
+       if MuMu_Channel(s_isomu, s_j, met_pt, met_phi) == 1: continue
 
    if len(s_isomu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and len(s_b) == 0 and s_isoe[0].charge*s_isomu[0].charge < 0 : 
-       if EMu_Channel(s_isoe,s_isomu) == 1: continue
-
+       EMu_Channel(s_isoe,s_isomu, s_j, met_pt, met_phi)
 
 
 out.cd()
