@@ -13,7 +13,7 @@ plotJetHT = 0
 plotSingleMuon = 0
 plotHTTrig = 0
 
-plot2DforTau = 0
+plot2DforTau = 1
 isAltered = 0
 
 print("isAltered = ", isAltered)
@@ -71,45 +71,18 @@ if len(sys.argv)>2 and not sys.argv[2].startswith("-"):
 else:
     outputFileDir = "./output/"
 
-if plotSingleMuon == 1:
-    outputFileName = outputFileDir+"h_debugMuTau_HighHT_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-
-if plotJetHT == 1:
-    outputFileName = outputFileDir+"h_debugMuTau_HighHT_JetHT_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-
-if plotSemiLeptonic == 1 and plotJetHT == 1 and isData == 0 :
-    outputFileName = outputFileDir+"h_debugMuTau_HighHT_FullyLeptonic_JetHT_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-
-if plotSemiLeptonic == 1 and plotHTTrig == 1 and isData == 0 :
-    outputFileName = outputFileDir+"h_debugMuTau_HighHT_FullyLeptonic_HTTrig_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-
-
 if isData == 1 :
-    outputFileName = outputFileDir+"h_debugMuTau_HighHT_Data_"+inputFileListName.split("/")[-1].replace(".txt",".root")
     if plot2DforTau == 1 :
         outputFileName = outputFileDir+"h_debugMuTau_HighHT_plot2DforTau_Data_"+inputFileListName.split("/")[-1].replace(".txt",".root")
     if isAltered == 1 :
-        outputFileName = outputFileDir+"h_debugMuTau_HighHT_Data_Altered_"+inputFileListName.split("/")[-1].replace(".txt",".root")
         if plot2DforTau == 1 :
             outputFileName = outputFileDir+"h_debugMuTau_HighHT_plot2DforTau_Data_Altered_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-    if plotSemiLeptonic == 1:
-        outputFileName = outputFileDir+"h_debugMuTau_HighHT_FullyLeptonic_Data_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-        if isAltered == 1 :
-            outputFileName = outputFileDir+"h_debugMuTau_HighHT_FullyLeptonic_Data_Altered_"+inputFileListName.split("/")[-1].replace(".txt",".root")
 
 if plotSingleMuonHTTrig == 1 and isData== 0 :
     if plot2DforTau == 1:
         outputFileName = outputFileDir+"h_debugMuTau_HighHT_plot2DforTau_Inclusive_"+inputFileListName.split("/")[-1].replace(".txt",".root")
         if isAltered == 1 :
             outputFileName = outputFileDir+"h_debugMuTau_HighHT_plot2DforTau_Inclusive_Altered_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-    elif plotSemiLeptonic == 1:
-        outputFileName = outputFileDir+"h_debugMuTau_HighHT_FullyLeptonic_Inclusive_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-        if isAltered == 1 :
-            outputFileName = outputFileDir+"h_debugMuTau_HighHT_FullyLeptonic_Inclusive_Altered_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-    elif plotSemiLeptonic == 0:
-        outputFileName = outputFileDir+"h_debugMuTau_HighHT_Inclusive_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-        if isAltered == 1 :
-            outputFileName = outputFileDir+"h_debugMuTau_HighHT_Inclusive_Altered_"+inputFileListName.split("/")[-1].replace(".txt",".root")
 
 
 out=ROOT.TFile.Open(outputFileName,'recreate')
@@ -377,65 +350,6 @@ h['hMuTau_SS_dRcut_MetPt_Mt'] =ROOT.TH2F ("hMuTau_SS_dRcut_MetPt_Mt", "hMuTau_SS
 
 h['hTauTau_SR_dRcut_highMET_dPhi'] = ROOT.TH2F ("hTauTau_SR_dRcut_highMET_dPhi", "hTauTau_SR_dRcut_highMET_dPhi; dPhi(l,m) ; dPhi(jet,m)", 100, -pi, pi, 100, -pi, pi)
 
-book1DHist("hMuTau_highMt_dRcut_highMET_110")
-book1DHist("hMuTau_highMt_dRcut_highMET_120")
-book1DHist("hMuTau_highMt_dRcut_highMET_140")
-book1DHist("hMuTau_highMt_dRcut_highMET_150")
-book1DHist("hMuTau_highMt_dRcut_highMET_160")
-
-book1DHist("hMuTau_SS_dRcut_highMET_lowMt_110")
-book1DHist("hMuTau_SS_dRcut_highMET_lowMt_120")
-book1DHist("hMuTau_SS_dRcut_highMET_lowMt_140")
-book1DHist("hMuTau_SS_dRcut_highMET_lowMt_150")
-book1DHist("hMuTau_SS_dRcut_highMET_lowMt_160")
-
-book1DHist("hMuTau_SS_dRcut_highMET_highMt_110")
-book1DHist("hMuTau_SS_dRcut_highMET_highMt_120")
-book1DHist("hMuTau_SS_dRcut_highMET_highMt_140")
-book1DHist("hMuTau_SS_dRcut_highMET_highMt_150")
-book1DHist("hMuTau_SS_dRcut_highMET_highMt_160")
-
-book1DHist("hMuTau_SS_lowMET_dRcut_highMt")
-book1DHist("hMuTau_SS_lowMET_dRcut_lowMt")
-book1DHist("hMuTau_SS_lowMET_dRcut")
-book1DHist("hMuTau_SS_lowMET_lowMt")
-book1DHist("hMuTau_SS_lowMET_highMt")
-book1DHist("hMuTau_SS_lowMET")
-
-book1DHist("hMuTau_SS_dRcut_highMET_lowMt")
-book1DHist("hMuTau_SS_dRcut_highMET_highMt")
-book1DHist("hMuTau_SS_dRcut_highMET")
-book1DHist("hMuTau_SS_dRcut")
-book1DHist("hMuTau_SS")
-
-book1DHist("hMuTau_SR_dRcut_highMET_lowMt")
-book1DHist("hMuTau_SR_dRcut_highMET")
-book1DHist("hMuTau_SR_dRcut")
-book1DHist("hMuTau_SR")
-
-book1DHist("hMuTau_lowMET_dRcut_highMt")
-book1DHist("hMuTau_lowMET_dRcut_lowMt")
-book1DHist("hMuTau_lowMET_dRcut")
-book1DHist("hMuTau_lowMET_highMt")
-book1DHist("hMuTau_lowMET_lowMt")
-book1DHist("hMuTau_lowMET")
-
-book1DHist("hMuTau_lowMET_dRcut_highMt_60")
-book1DHist("hMuTau_lowMET_dRcut_highMt_70")
-book1DHist("hMuTau_lowMET_dRcut_highMt_80")
-book1DHist("hMuTau_lowMET_dRcut_highMt_90")
-
-book1DHist("hMuTau_highMt_highMET")
-book1DHist("hMuTau_highMt")
-
-book1DHist("hMuTau_highMt_dRcut_highMET") #DR1
-book1DHist("hMuTau_highMt_dRcut")
-
-book1DHist("hMuTau_highMt_60_dRcut_highMET")
-book1DHist("hMuTau_highMt_70_dRcut_highMET")
-book1DHist("hMuTau_highMt_80_dRcut_highMET")
-book1DHist("hMuTau_highMt_90_dRcut_highMET")
-
 book1DHist("hMuMu_SR_dRcut_highMET_dPhicut")
 book1DHist("hMuMu_SR_dRcut_highMET")
 book1DHist("hMuMu_SR_dRcut")
@@ -445,21 +359,6 @@ book1DHist("hEMu_SR_dRcut_highMET_dPhicut")
 book1DHist("hEMu_SR_dRcut_highMET_dPhicut_allTrig")
 book1DHist("hEMu_SR_dRcut_highMET_allTrig")
 book1DHist("hEMu_SR_dRcut_allTrig")
-
-book1DHist("hETau_SR_dRcut_highMET_dPhicut")
-book1DHist("hETau_SR_dRcut_highMET")
-book1DHist("hETau_SR_dRcut")
-
-book1DHist("hTauTau_SR_dRcut_highMET")
-book1DHist("hTauTau_SR_dRcut")
-
-book1DHist("hTauTau_dRcut_lowMET")
-book1DHist("hTauTau_dRcut")
-
-book1DHist("hEE_SR_dRcut")
-book1DHist("hEE_SR_dRcut_highMET")
-book1DHist("hEE_SR_dRcut_highMET_dPhicut")
-
 
 if plot2DforTau == 1 :
 
@@ -529,40 +428,6 @@ for key in h.keys():
     h[key].Sumw2()
 
 
-def EE_Channel(ele):
-
-    isEE = 0 
-
-    e1 = ROOT.TLorentzVector()
-    e1.SetPtEtaPhiM(ele[0].pt, ele[0].eta, ele[0].phi, ele[0].mass)
-    e2 = ROOT.TLorentzVector()
-    e2.SetPtEtaPhiM(ele[1].pt, ele[1].eta, ele[1].phi, ele[1].mass)
-
-    j = ROOT.TLorentzVector()
-    j.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-
-    m = ROOT.TLorentzVector()
-    m.SetPtEtaPhiM(met_pt, 0, met_phi, 0)
-
-    if (e1+e2).M() > 1.0:
-        if e1.DeltaR(e2) < 0.4 and e1.DeltaR(j)> 0.8  and e2.DeltaR(j) > 0.8:
-            plot1Dhist('hEE_SR_dRcut', e1, e2, j, m)
-            if met_pt > 100:
-                plot1Dhist('hEE_SR_dRcut_highMET', e1, e2, j, m)
-                if abs(m.DeltaPhi(e1)) < 1.0 and abs(m.DeltaPhi(j)) > 2.0:
-#                    if ( j.Pt() > 500 and ( isSingleJet == 1 or isHT == 1 ) ):
-#                        isEE = 1
-#                        h['hTauEvents'].Fill(1,1)
-                    if ( j.Pt() > 500 and ( isHT == 1 ) ) \
-                       or ( e1.Pt() > 35 and isIsoEle == 1 ):
-                        isEE = 1
-                        plot1Dhist('hEE_SR_dRcut_highMET_dPhicut', e1, e2, j, m)
-                        h['hTauEvents'].Fill(1,1)
-                        h['ChOverlap'].Fill(9,1)
-                        if isEMu == 1 or isMuMu == 1: h['ChOverlap'].Fill(3,1)
-
-
-    return isEE
 
 def MuMu_Channel(mu):
 
@@ -761,7 +626,7 @@ def EMu_Channel(ele,mu_emu):
 
    if isData == 0:
 
-       if ( j.Pt() > 500 and ( isSingleJet == 1 or isHT == 1 ) ) \
+       if ( j.Pt() > 500 and ( isHT == 1 ) ) \
           or ( isMuonEG == 1 and ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) ) \
           or ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) \
           or ( e.Pt() > 35 and (isIsoEle == 1) ) :
@@ -812,17 +677,16 @@ def EMu_Channel(ele,mu_emu):
                        h['hEMu_dRcut_dPhil'].Fill(m.DeltaPhi(mu), genweight)
                        h['hEMu_dRcut_dPhij'].Fill(m.DeltaPhi(j), genweight)
 
-       if (e+mu).M() > 1 :
+       if (e+mu).M() > 1.0 :
            if mu.DeltaR(e) < 0.4 and mu.DeltaR(j)> 0.8  and e.DeltaR(j) > 0.8:
                if met_pt > 100.0:
-                   if abs(m.DeltaPhi(mu)) < 1 and abs( m.DeltaPhi(j) ) > 2:
-                       if j.Pt() > 100 :
+                   if abs(m.DeltaPhi(mu)) < 1.0 and abs( m.DeltaPhi(j) ) > 2.0:
+                       if j.Pt() > 100.0 :
                            isEMu = 1
+                           if isData == 0 : plot1Dhist('hEMu_SR_dRcut_highMET_dPhicut', e, mu, j, m)
                            h['ChOverlap'].Fill(8,1)
                            if isMuMu == 1 : h['ChOverlap'].Fill(2,1)
                            h['hTauEvents'].Fill(3,genweight)
-                           plot1Dhist('hEMu_SR_dRcut_highMET_dPhicut',e,mu,j,m)
-#                           h['hEMu_SR_dRcut_highMET_dPhicut'].Fill((mu+e).M(), genweight)
                     
    return isEMu
 
@@ -833,398 +697,6 @@ def Mt(lepton, met):
     Mt = np.sqrt(2*lepton.Pt()*met.Pt()*(1-cos))
 
     return Mt
-
-def MuTau_Channel(mtau, lmuon):
-
-       isMuTau = 0
-       h['hMuTau_Events'].Fill(1, genweight)
-
-       mu = ROOT.TLorentzVector()
-       mu.SetPtEtaPhiM(lmuon[0].pt, lmuon[0].eta, lmuon[0].phi, lmuon[0].mass)
-
-       tau = ROOT.TLorentzVector()
-       tau.SetPtEtaPhiM(mtau[0].pt, mtau[0].eta, mtau[0].phi, mtau[0].mass)
-
-       if len(s_mu) > 1:
-           mu2 = ROOT.TLorentzVector()
-           mu2.SetPtEtaPhiM(lmuon[1].pt, lmuon[1].eta, lmuon[1].phi, lmuon[1].mass)
-
-       if len(s_j) > 1 :
-           j0 = ROOT.TLorentzVector()
-           j0.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-           if tau.DeltaR(j0) < 0.2 :
-               j = ROOT.TLorentzVector()
-               j.SetPtEtaPhiM(s_j[1].pt, s_j[1].eta, s_j[1].phi, s_j[1].mass)
-               j2 = ROOT.TLorentzVector()
-               j2.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-           else:
-               j = j0
-               j2 = ROOT.TLorentzVector()
-               j2.SetPtEtaPhiM(s_j[1].pt, s_j[1].eta, s_j[1].phi, s_j[1].mass)
-       if len(s_j) == 1:
-           j = ROOT.TLorentzVector()
-           j.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-
-       m = ROOT.TLorentzVector()
-       m.SetPtEtaPhiM(met_pt, 0, met_phi, 0)
-
-       if lmuon[0].charge*mtau[0].charge < 0 and len(s_b) == 0 and met_pt < 100 and (mu+tau).M() > 1:
-           if j.Pt() > 500 and isSingleJet == 1 :
-               h['hMuTau_Trigger'].Fill(1, genweight)
-           if j.Pt() > 500 and isHT == 1 :
-               h['hMuTau_Trigger'].Fill(2, genweight)
-           if j.Pt() > 600 and isSingleJet == 1 :
-               h['hMuTau_Trigger'].Fill(3, genweight)
-           if j.Pt() > 600 and isHT == 1 :
-               h['hMuTau_Trigger'].Fill(4, genweight)
-           if ( j.Pt() > 500 and ( isSingleJet == 1 or isHT == 1 ) ) :
-               h['hMuTau_Trigger'].Fill(5, genweight)
-           if ( j.Pt() > 600 and ( isSingleJet == 1 or isHT == 1 ) ) :
-               h['hMuTau_Trigger'].Fill(6, genweight)
-
-       isJetHTEvent = 0
-       isSingleMuonEvent = 0
-
-       if plotHTTrig == 1 and (mu+tau).M() > 1:
-           if ( j.Pt() > 500 and isHT == 1 ) : isJetHTEvent = 1
-
-       if plotJetHT == 1 and (mu+tau).M() > 1:
-           if ( j.Pt() > 600 and ( isSingleJet == 1 or isHT == 1 ) ) : isJetHTEvent = 1
-
-       if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
-
-       if lmuon[0].charge*mtau[0].charge < 0 and len(s_b) == 0 and met_pt < 100 and j.Pt() > 100 and (mu+tau).M() > 1:
-           if isJetHTEvent == 1 and isSingleMuonEvent == 1:
-               h['hMuTau_Inclusive_Trigger'].Fill(1, genweight)
-           if isJetHTEvent == 1 and isSingleMuonEvent == 0:
-               h['hMuTau_Inclusive_Trigger'].Fill(2, genweight)
-           if isJetHTEvent == 0 and isSingleMuonEvent == 1:
-               h['hMuTau_Inclusive_Trigger'].Fill(3, genweight)
-           if isJetHTEvent == 1 or isSingleMuonEvent == 1:
-               h['hMuTau_Inclusive_Trigger'].Fill(4, genweight)
-
-       if ( isData == 0 and ( ( plotHTTrig == 1 and isJetHTEvent == 1 ) or ( plotJetHT == 1 and isJetHTEvent == 1 ) or ( plotSingleMuon == 1 and isSingleMuonEvent == 1 ) ) ) or \
-          ( isData == 1 and ( isJetHTDataset == 1 and ( isJetHTEvent == 1 and isSingleMuonEvent == 0 ) ) ) or \
-          ( isData == 1 and ( isSingleMuonDataset == 1 and isSingleMuonEvent == 1 ) ):
-
-           if j.Pt() > 100 and (mu+tau).M() > 5:
-                h['hMuTau_Events'].Fill(2, genweight)
-
-                if lmuon[0].charge*mtau[0].charge < 0 :
-                    h['hMuTau_OS_Nbj'].Fill(len(s_b), genweight)
-
-                if lmuon[0].charge*mtau[0].charge < 0 and len(s_b) == 0: #OS
-                    h['hMuTau_OS_TauPt'].Fill(tau.Pt(), genweight)
-                    h['hMuTau_OS'].Fill((mu+tau).M(), genweight)
-                    h['hMuTau_OS_Nj'].Fill(len(s_j), genweight)
-
-                    h['hMuTau_DR1_Events'].Fill(0, genweight)
-                    h['hMuTau_DR2_Events'].Fill(0, genweight)
-                    h['hMuTau_DR4_Events'].Fill(0, genweight)
-
-                    h['hMuTau_OS_MetPt_Mt'].Fill(met_pt, Mt(m,mu), genweight)
-
-                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05:
-                        h['hMuTau_OS_dRcut_MetPt_Mt'].Fill(met_pt, Mt(m,mu), genweight)
-
-                    if met_pt < 100 : #low MET
-                        h['hMuTau_Events'].Fill(3, genweight)
-                        if isJetHTEvent == 1 : h['hMuTau_Trigger'].Fill(7, genweight)
-                        h['hMuTau_Inclusive_Trigger'].Fill(5, genweight)
-                        h['hMuTau_lowMET_dRl'].Fill(mu.DeltaR(tau), genweight)
-                        h['hMuTau_lowMET_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                        h['hMuTau_DR2_Events'].Fill(1, genweight)
-                        h['hMuTau_DR4_Events'].Fill(1, genweight)
-
-                        plot1Dhist("hMuTau_lowMET", tau, mu, j, m)
-
-                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05: #lowMET, dRcut
-                            h['hMuTau_Events'].Fill(4, genweight)
-                            plot1Dhist("hMuTau_lowMET_dRcut", tau, mu, j, m)
-
-                            h['hMuTau_DR2_Events'].Fill(2, genweight)
-                            h['hMuTau_DR4_Events'].Fill(2, genweight)
-
-                            if Mt(mu,m) > 60 :
-                                plot1Dhist("hMuTau_lowMET_dRcut_highMt_60", tau, mu, j, m)
-                            if Mt(mu,m) > 70 :
-                                plot1Dhist("hMuTau_lowMET_dRcut_highMt_70", tau, mu, j, m)
-                            if Mt(mu,m) > 80 :
-                                plot1Dhist("hMuTau_lowMET_dRcut_highMt_80", tau, mu, j, m)
-                            if Mt(mu,m) > 90 :
-                                plot1Dhist("hMuTau_lowMET_dRcut_highMt_90", tau, mu, j, m)
-
-                            if Mt(mu,m) < 50 : #lowMET, dRcut, lowMt DR2
-                                h['hMuTau_Events'].Fill(5, genweight)
-                                h['hMuTau_DR2_Events'].Fill(3, genweight)
-
-                                plot1Dhist("hMuTau_lowMET_dRcut_lowMt", tau, mu, j, m)
-
-                                if mtau[0].decaymode == 0 : h['hMuTau_lowMET_dRcut_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 1 : h['hMuTau_lowMET_dRcut_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 10 : h['hMuTau_lowMET_dRcut_lowMt_TauPt10'].Fill(tau.Pt(), genweight)
-
-                            if Mt(mu,m) > 50 : #lowMET, dRcut, highMt DR4
-                                h['hMuTau_DR4_Events'].Fill(3, genweight)
-
-                                plot1Dhist("hMuTau_lowMET_dRcut_highMt", tau, mu, j, m)
-
-                                if mtau[0].decaymode == 0 : h['hMuTau_lowMET_dRcut_highMt_TauPt0'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 1 : h['hMuTau_lowMET_dRcut_highMt_TauPt1'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 10 : h['hMuTau_lowMET_dRcut_highMt_TauPt10'].Fill(tau.Pt(), genweight)
-
-                        if Mt(mu,m) > 50 : #lowMET, highmT
-                            plot1Dhist("hMuTau_lowMET_highMt", tau, mu, j, m)
-                            h['hMuTau_lowMET_highMt_dRl'].Fill(mu.DeltaR(tau), genweight)
-                            h['hMuTau_lowMET_highMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                        if Mt(mu,m) < 50 : #lowMET, lowmT
-                            plot1Dhist("hMuTau_lowMET_lowMt", tau, mu, j, m)
-                            h['hMuTau_lowMET_lowMt_dRl'].Fill(mu.DeltaR(tau), genweight)
-                            h['hMuTau_lowMET_lowMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                    if Mt(mu,m) > 50 : #high mT
-                        plot1Dhist("hMuTau_highMt", tau, mu, j, m)
-
-                        h['hMuTau_DR1_Events'].Fill(1, genweight)
-
-                        h['hMuTau_highMt_dRl'].Fill(mu.DeltaR(tau), genweight)
-                        h['hMuTau_highMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                        if met_pt > 100 : #highMt, highMET
-                            plot1Dhist("hMuTau_highMt_highMET", tau, mu, j, m)
-                            h['hMuTau_highMt_highMET_dRl'].Fill(mu.DeltaR(tau), genweight)
-                            h['hMuTau_highMt_highMET_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05: #dR cut                               
-                            plot1Dhist("hMuTau_highMt_dRcut", tau, mu, j, m)
-                            h['hMuTau_DR1_Events'].Fill(2, genweight)
-
-                            if met_pt > 100 : #highMt, dRcut, highMET DR1
-                                h['hMuTau_DR1_Events'].Fill(3, genweight)
-                                plot1Dhist("hMuTau_highMt_dRcut_highMET", tau, mu, j, m)
-
-                                if mtau[0].decaymode == 0 : h['hMuTau_highMt_dRcut_highMET_TauPt0'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 1 : h['hMuTau_highMt_dRcut_highMET_TauPt1'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 10 : h['hMuTau_highMt_dRcut_highMET_TauPt10'].Fill(tau.Pt(), genweight)
-                                
-                                if Mt(mu,m) > 60 :
-                                    plot1Dhist("hMuTau_highMt_60_dRcut_highMET", tau, mu, j, m)
-                                if Mt(mu,m) > 70 :
-                                    plot1Dhist("hMuTau_highMt_70_dRcut_highMET", tau, mu, j, m)
-                                if Mt(mu,m) > 80 :
-                                    plot1Dhist("hMuTau_highMt_80_dRcut_highMET", tau, mu, j, m)
-                                if Mt(mu,m) > 90 :
-                                    plot1Dhist("hMuTau_highMt_90_dRcut_highMET", tau, mu, j, m)
-
-                                if met_pt > 110 :
-                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_110", tau, mu, j, m)
-                                if met_pt > 120 : 
-                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_120", tau, mu, j, m)
-                                if met_pt > 140 :
-                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_140", tau, mu, j, m)
-                                if met_pt > 150 :
-                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_150", tau, mu, j, m)
-                                if met_pt > 160 :
-                                    plot1Dhist("hMuTau_highMt_dRcut_highMET_160", tau, mu, j, m)
-
-                if lmuon[0].charge*mtau[0].charge > 0 :
-                    h['hMuTau_SS_Nbj'].Fill(len(s_b), genweight)
-
-                if lmuon[0].charge*mtau[0].charge > 0 and len(s_b) == 0: #SS
-                    plot1Dhist("hMuTau_SS", tau, mu, j, m)
-                    h['hMuTau_SS_dRl'].Fill(mu.DeltaR(tau), genweight)
-                    h['hMuTau_SS_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                    h['hMuTau_DR3_Events'].Fill(0, genweight)
-                    h['hMuTau_DR5_Events'].Fill(0, genweight)
-                    h['hMuTau_DR6_Events'].Fill(0, genweight)
-                    h['hMuTau_DR7_Events'].Fill(0, genweight)
-
-                    h['hMuTau_SS_MetPt_Mt'].Fill(met_pt, Mt(m,mu), genweight)
-
-                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05:
-                        h['hMuTau_SS_dRcut_MetPt_Mt'].Fill(met_pt, Mt(m,mu), genweight)
-
-                    if met_pt < 100 :
-                        plot1Dhist("hMuTau_SS_lowMET", tau, mu, j, m)
-                        h['hMuTau_SS_lowMET_dRl'].Fill(mu.DeltaR(tau), genweight)
-                        h['hMuTau_SS_lowMET_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                        h['hMuTau_DR6_Events'].Fill(1, genweight)
-                        h['hMuTau_DR7_Events'].Fill(1, genweight)
-
-                        if Mt(mu,m) > 50 : #highMt          
-                            plot1Dhist("hMuTau_SS_lowMET_highMt", tau, mu, j, m)
-                            h['hMuTau_SS_lowMET_highMt_dRl'].Fill(mu.DeltaR(tau), genweight)
-                            h['hMuTau_SS_lowMET_highMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                        if Mt(mu,m) < 50 : #lowMt
-                            plot1Dhist("hMuTau_SS_lowMET_lowMt", tau, mu, j, m)   
-                            h['hMuTau_SS_lowMET_lowMt_dRl'].Fill(mu.DeltaR(tau), genweight)
-                            h['hMuTau_SS_lowMET_lowMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-
-                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05:
-                            plot1Dhist("hMuTau_SS_lowMET_dRcut", tau, mu, j, m)
-
-                            h['hMuTau_DR6_Events'].Fill(2, genweight)
-                            h['hMuTau_DR7_Events'].Fill(2, genweight)
-
-                            if Mt(mu,m) > 50 : #SS, lowMET, dRcut, highMt DR7
-                                plot1Dhist("hMuTau_SS_lowMET_dRcut_highMt", tau, mu, j, m)
-
-                                h['hMuTau_DR7_Events'].Fill(3, genweight)
-
-                                if mtau[0].decaymode == 0 : h['hMuTau_SS_lowMET_dRcut_highMt_TauPt0'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 1 : h['hMuTau_SS_lowMET_dRcut_highMt_TauPt1'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 10 : h['hMuTau_SS_lowMET_dRcut_highMt_TauPt10'].Fill(tau.Pt(), genweight)
-
-                            if Mt(mu,m) < 50 : #SS, lowMET dRcut, lowMt DR6
-                                plot1Dhist("hMuTau_SS_lowMET_dRcut_lowMt", tau, mu, j, m)
-
-                                h['hMuTau_DR6_Events'].Fill(3, genweight)
-
-                                if mtau[0].decaymode == 0 : h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 1 : h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 10 : h['hMuTau_SS_lowMET_dRcut_lowMt_TauPt10'].Fill(tau.Pt(), genweight)
-
-                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05: #dR cut
-                        plot1Dhist("hMuTau_SS_dRcut", tau, mu, j, m)
-
-                        h['hMuTau_DR3_Events'].Fill(1, genweight)
-                        h['hMuTau_DR5_Events'].Fill(1, genweight)
-
-                        if met_pt > 100 : #Met cut
-                            plot1Dhist("hMuTau_SS_dRcut_highMET", tau, mu, j, m)
-
-                            h['hMuTau_DR3_Events'].Fill(2, genweight)
-                            h['hMuTau_DR5_Events'].Fill(2, genweight)
-
-                            if Mt(mu,m) > 50 : #high mT #DR5
-
-                                h['hMuTau_DR5_Events'].Fill(3, genweight)
-                                plot1Dhist("hMuTau_SS_dRcut_highMET_highMt", tau, mu, j, m)
-
-                                if mtau[0].decaymode == 0 : h['hMuTau_SS_dRcut_highMET_highMt_TauPt0'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 1 : h['hMuTau_SS_dRcut_highMET_highMt_TauPt1'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 10 : h['hMuTau_SS_dRcut_highMET_highMt_TauPt10'].Fill(tau.Pt(), genweight)
-
-                                if met_pt > 110 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_110", tau, mu, j, m)
-                                if met_pt > 120 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_120", tau, mu, j, m)
-                                if met_pt > 140 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_140", tau, mu, j, m)
-                                if met_pt > 150 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_150", tau, mu, j, m)
-                                if met_pt > 160 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_highMt_160", tau, mu, j, m)
-
-                            if Mt(mu,m) < 50 : #mT cut #DR3
-
-                                h['hMuTau_DR3_Events'].Fill(3, genweight)
-                                plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt", tau, mu, j, m)
-
-                                if mtau[0].decaymode == 0 : h['hMuTau_SS_dRcut_highMET_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 1 : h['hMuTau_SS_dRcut_highMET_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
-                                if mtau[0].decaymode == 10 : h['hMuTau_SS_dRcut_highMET_lowMt_TauPt10'].Fill(tau.Pt(), genweight)
-
-                                if met_pt > 110 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_110", tau, mu, j, m)
-                                if met_pt > 120 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_120", tau, mu, j, m)
-                                if met_pt > 140 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_140", tau, mu, j, m)
-                                if met_pt > 150 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_150", tau, mu, j, m)
-                                if met_pt > 160 :
-                                    plot1Dhist("hMuTau_SS_dRcut_highMET_lowMt_160", tau, mu, j, m)
-
-
-           if isData == 0 or isAltered == 1:
-                if j.Pt() > 100 and (mu+tau).M() > 5:
-                    if lmuon[0].charge*mtau[0].charge < 0 and len(s_b) == 0 :
-                        h['hMuTau_SR_Events'].Fill(1, genweight)
-                        h['hMuTau_SR_dRl'].Fill(mu.DeltaR(tau), genweight)
-                        h['hMuTau_SR_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                        plot1Dhist("hMuTau_SR", tau, mu, j, m)
-
-                        if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05 :
-                            h['hMuTau_SR_Events'].Fill(2, genweight)
-                            h['hMuTau_SR_dRcut_dRl'].Fill(mu.DeltaR(tau), genweight)
-                            h['hMuTau_SR_dRcut_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                            plot1Dhist("hMuTau_SR_dRcut", tau, mu, j, m)
-
-                            if met_pt > 100 :
-                                h['hMuTau_SR_Events'].Fill(3, genweight)
-                                h['hMuTau_SR_dRcut_highMET_dRl'].Fill(mu.DeltaR(tau), genweight)
-                                h['hMuTau_SR_dRcut_highMET_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                                plot1Dhist("hMuTau_SR_dRcut_highMET", tau, mu, j, m)
-
-                                if Mt(mu,m) < 50 :
-                                    h['hMuTau_SR_Events'].Fill(4, genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_dRl'].Fill(mu.DeltaR(tau), genweight)
-                                    h['hMuTau_SR_dRcut_highMET_lowMt_dRj'].Fill(j.DeltaR(mu+tau), genweight)
-                                    plot1Dhist("hMuTau_SR_dRcut_highMET_lowMt", tau, mu, j, m)
-                                    isMuTau = 1
-                                    h['ChOverlap'].Fill(10,1)
-                                    if isEMu == 1 or isMuMu == 1 or isEE == 1: h['ChOverlap'].Fill(4,1)
-                                    h['hTauEvents'].Fill(4,genweight)
-
-                                    if mtau[0].decaymode == 0 : h['hMuTau_SR_dRcut_highMET_lowMt_TauPt0'].Fill(tau.Pt(), genweight)
-                                    if mtau[0].decaymode == 1 : h['hMuTau_SR_dRcut_highMET_lowMt_TauPt1'].Fill(tau.Pt(), genweight)
-                                    if mtau[0].decaymode == 10 : h['hMuTau_SR_dRcut_highMET_lowMt_TauPt10'].Fill(tau.Pt(), genweight)
-
-                                    if isJetHTEvent == 1 : h['hMuTau_SR_Trigger'].Fill(7, genweight)
-                                    h['hMuTau_SR_Inclusive_Trigger'].Fill(7, genweight)
-
-                                    h["hMuTau_SR_highMET_lowMt_dRcut_TauPtMass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
-                                    h["hMuTau_SR_highMET_lowMt_dRcut_NJetMass"].Fill(len(s_j), (mu+tau).M(), genweight)
-
-                                    if mtau[0].decaymode == 0 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt0Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
-                                    if mtau[0].decaymode == 1 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt1Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
-                                    if mtau[0].decaymode == 10 : h["hMuTau_SR_highMET_lowMt_dRcut_TauPt10Mass"].Fill(tau.Pt(), (mu+tau).M(), genweight)
-
-           if j.Pt() > 100 and (mu+tau).M() > 5:
-                if lmuon[0].charge*mtau[0].charge < 0 and len(s_b) == 0 :
-                    if mu.DeltaR(tau) < 0.4 and mu.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 and mu.DeltaR(tau) > 0.05:
-                        if met_pt > 100 :
-                            if Mt(mu,m) < 50 :
-                                if ( j.Pt() > 500 and isSingleJet == 1 ) or isSingleMuonEvent == 1 :
-                                    h['hMuTau_SR_Inclusive_Trigger'].Fill(1, genweight)
-                                if ( j.Pt() > 500 and isHT == 1 ) or isSingleMuonEvent == 1 :
-                                    h['hMuTau_SR_Inclusive_Trigger'].Fill(2, genweight)
-                                if ( j.Pt() > 600 and isSingleJet == 1 ) or isSingleMuonEvent == 1 :
-                                    h['hMuTau_SR_Inclusive_Trigger'].Fill(3, genweight)
-                                if ( j.Pt() > 600 and isHT == 1 ) or isSingleMuonEvent == 1 :
-                                    h['hMuTau_SR_Inclusive_Trigger'].Fill(4, genweight)
-                                if ( ( j.Pt() > 500 and ( isSingleJet == 1 or isHT == 1 ) ) ) or isSingleMuonEvent == 1 :
-                                    h['hMuTau_SR_Inclusive_Trigger'].Fill(5, genweight)
-                                if ( ( j.Pt() > 600 and ( isSingleJet == 1 or isHT == 1 ) ) ) or isSingleMuonEvent == 1 :
-                                    h['hMuTau_SR_Inclusive_Trigger'].Fill(6, genweight)
-
-                                if ( j.Pt() > 500 and isSingleJet == 1 ) : 
-                                    h['hMuTau_SR_Trigger'].Fill(1, genweight)
-                                if ( j.Pt() > 500 and isHT == 1 ) :
-                                    h['hMuTau_SR_Trigger'].Fill(2, genweight)
-                                if ( j.Pt() > 600 and isSingleJet == 1 ) :
-                                    h['hMuTau_SR_Trigger'].Fill(3, genweight)
-                                if ( j.Pt() > 600 and isHT == 1 ) :
-                                    h['hMuTau_SR_Trigger'].Fill(4, genweight)
-                                if ( ( j.Pt() > 500 and ( isSingleJet == 1 or isHT == 1 ) ) ) :
-                                    h['hMuTau_SR_Trigger'].Fill(5, genweight)
-                                if ( ( j.Pt() > 600 and ( isSingleJet == 1 or isHT == 1 ) ) ) :
-                                    h['hMuTau_SR_Trigger'].Fill(6, genweight)
-
-
-           # if plot2DforTau == 1:
-           #     if j.Pt() > 1 and (mu+tau).M() > 1:
-           #         if lmuon[0].charge*mtau[0].charge < 0 and len(s_b) == 0 :
-           #             plot2DTauPt("hMuTau_SS")
-
-
-       return isMuTau
 
 
 def plot1Dhist(region,l1,l2,j,m):
@@ -1455,103 +927,6 @@ def plot2DTauPt(mtau, lmuon):
 
 
 
-def ETau_Channel(etau, lelectron):
-
-   isETauTight = 0
-
-   e = ROOT.TLorentzVector()
-   e.SetPtEtaPhiM(lelectron[0].pt, lelectron[0].eta, lelectron[0].phi, lelectron[0].mass)
-
-   tau = ROOT.TLorentzVector()
-   tau.SetPtEtaPhiM(etau[0].pt, etau[0].eta, etau[0].phi, etau[0].mass)
-
-   if len(s_j) > 1 :
-       j0 = ROOT.TLorentzVector()
-       j0.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-       if tau.DeltaR(j0) < 0.2 :
-           j = ROOT.TLorentzVector()
-           j.SetPtEtaPhiM(s_j[1].pt, s_j[1].eta, s_j[1].phi, s_j[1].mass)
-       else:
-           j = j0
-   if len(s_j) == 1:
-       j = ROOT.TLorentzVector()
-       j.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-
-   m = ROOT.TLorentzVector()
-   m.SetPtEtaPhiM(met_pt, 0, met_phi, 0)
-
-   if len(s_b) == 0 and etau[0].charge*lelectron[0].charge < 0 and isData == 0:
-
-       if ( j.Pt() > 500 and ( isHT == 1 ) ) \
-          or ( e.Pt() > 35 and (isIsoEle == 1 ) ) \
-          or ( j.Pt() > 500 and met_pt > 200 and isHTMHT == 1 ) :
-           
-           if e.DeltaR(tau) < 0.4 and e.DeltaR(j) > 0.8 and tau.DeltaR(j) > 0.8 :
-               if e.DeltaR(tau) > 0.05 :
-                   plot1Dhist("hETau_SR_dRcut", tau, e, j, m)
-                   if met_pt > 100:
-                       plot1Dhist("hETau_SR_dRcut_highMET", tau, e, j, m)
-                       if abs(m.DeltaPhi(e)) < 1 and abs(m.DeltaPhi(j)) > 2:
-                           isETauTight = 1
-                           h['ChOverlap'].Fill(11,1)
-                           if isMuTau == 1 or isEMu == 1 or isMuMu == 1 or isEE == 1: h['ChOverlap'].Fill(5,1)
-                           h['hTauEvents'].Fill(5,genweight)
-                           plot1Dhist("hETau_SR_dRcut_highMET_dPhicut", tau, e, j, m)
-
-   return isETauTight
-
-
-def TauTau_Channel(boosted):
-
-   isTauTau = 0
-
-   tau1 = ROOT.TLorentzVector()
-   tau1.SetPtEtaPhiM(boosted[0].pt, boosted[0].eta, boosted[0].phi, boosted[0].mass)
-
-   tau2 = ROOT.TLorentzVector()
-   tau2.SetPtEtaPhiM(boosted[1].pt, boosted[1].eta, boosted[1].phi, boosted[1].mass)
-
-   if len(s_j) > 1:
-       j0 = ROOT.TLorentzVector()
-       j0.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-       if ( j0.DeltaR(tau1) < 0.2 ) or ( j0.DeltaR(tau2) < 0.2 ) :
-           j = ROOT.TLorentzVector()
-           j.SetPtEtaPhiM(s_j[1].pt, s_j[1].eta, s_j[1].phi, s_j[1].mass)
-       else :
-           j = j0
-
-   if len(s_j) == 1 :
-       j = ROOT.TLorentzVector()
-       j.SetPtEtaPhiM(s_j[0].pt, s_j[0].eta, s_j[0].phi, s_j[0].mass)
-
-   m = ROOT.TLorentzVector()
-   m.SetPtEtaPhiM(met_pt, 0, met_phi, 0)
-
-   isJetHTEvent = 0
-
-   if plotHTTrig == 1 and (tau1+tau2).M() > 1:
-       if ( j.Pt() > 500 and isHT == 1 ) : isJetHTEvent = 1
-
-   if isJetHTEvent == 1:
-       if tau1.DeltaR(tau2) < 0.4 and tau1.DeltaR(j) > 0.8 and tau2.DeltaR(j) > 0.8:
-           plot1Dhist("hTauTau_dRcut", tau1, tau2, j, m)
-           if met_pt < 100:
-               plot1Dhist("hTauTau_dRcut_lowMET", tau1, tau2, j, m)
-
-   if (tau1+tau2).M() > 1 and isData == 0:
-       if ( j.Pt() > 500 and isHT == 1 ) \
-          or ( j.Pt() > 500 and met_pt > 200 and isHTMHT == 1 ) :
-
-           if tau1.DeltaR(tau2) < 0.4 and tau1.DeltaR(j) > 0.8 and tau2.DeltaR(j) > 0.8:
-               plot1Dhist("hTauTau_SR_dRcut", tau1, tau2, j, m)
-               if met_pt > 100:
-                   plot1Dhist("hTauTau_SR_dRcut_highMET", tau1, tau2, j, m)
-                   h['ChOverlap'].Fill(12,1)
-                   if isETauTight == 1 or isMuMu == 1 or isEMu == 1 or isMuTau == 1 or isEE == 1 : h['ChOverlap'].Fill(6,1)
-                   h['hTauEvents'].Fill(6,genweight)
-                   h["hTauTau_SR_dRcut_highMET_dPhi"].Fill(tau1.DeltaPhi(m),j.DeltaPhi(m), genweight)
-
-
 def plot2DHists(region,tau,mu,j,j2,genMu,mu2):
 
     h[region+"_TauPtdRjmu"].Fill(tau.Pt(), j.DeltaR(mu), genweight)
@@ -1697,12 +1072,6 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                    h['hMuCleanedPt'].Fill(tau.pt, genweight)
                    mclean+=[tau]
 
-   # if tausLowPtECleaned.size()>0:
-   #     for i in range(tausLowPtECleaned.size()):
-   #         tau = tausLowPtECleaned.at(i)
-   #         if tau.mvaid >= 4:
-   #             lowclean+=[tau]
-
    if tausBoosted.size()>0:
        for i in range(tausBoosted.size()):
            tau = tausBoosted.at(i)
@@ -1768,35 +1137,13 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    if len(s_isomu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and len(s_b) == 0 and s_isoe[0].charge*s_isomu[0].charge < 0 : 
        if EMu_Channel(s_isoe,s_isomu) == 1: continue
 
-   if len(s_isoe) > 1 and len(s_j) > 0 and len(s_b) == 0 and s_isoe[0].charge*s_isoe[1].charge < 0 :                                                         
-       if EE_Channel(s_isoe) == 1: continue      
+   if isAltered == 1 and plot2DforTau == 1:
+       if len(s_mu) > 0 and len(mclean_altered) > 0 and len(s_j) > 0:
+           plot2DTauPt(mclean_altered, s_mu)
 
-   if isAltered == 1 and plot2DforTau == 0:
-       if len(s_mu) > 0 and len(mclean_altered) > 0 and len(s_j) > 0 : 
-           MuTau_Channel(mclean_altered, s_mu)
-
-   if isAltered == 0 and plot2DforTau == 0:
-       if len(s_mu) > 0 and len(mclean) > 0 and len(s_j) > 0 : 
-           if MuTau_Channel(mclean, s_mu) == 1 : continue
-
-       if len(s_e) > 0 and len(eclean) > 0 and len(s_j) > 0 and len(s_b) == 0 and eclean[0].charge*s_e[0].charge < 0:
-           if ETau_Channel(eclean, s_e) == 1 : continue
-           
-       if len(boosted) > 1 and len(s_j) > 0 and len(s_b) == 0 and boosted[0].charge*boosted[1].charge < 0 : 
-           TauTau_Channel(boosted)
-
-   # if isAltered == 1 and plot2DforTau == 1:
-   #     if len(s_mu) > 0 and len(mclean_altered) > 0 and len(s_j) > 0:
-   #         plot2DTauPt(mclean_altered, s_mu)
-
-   # if isAltered == 0 and plot2DforTau == 1:
-   #     if len(s_mu) > 0 and len(mclean) > 0 and len(s_j) > 0:
-   #         plot2DTauPt(mclean, s_mu)
-
-
-#   if len(s_isoe) > 1 and len(s_j) > 0 and len(s_b) == 0 and s_isoe[0].charge*s_isoe[1].charge < 0 : 
-#       if EE_Channel(s_isoe) == 1: continue
-
+   if isAltered == 0 and plot2DforTau == 1:
+       if len(s_mu) > 0 and len(mclean) > 0 and len(s_j) > 0:
+           plot2DTauPt(mclean, s_mu)
 
 
 out.cd()

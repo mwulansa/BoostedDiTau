@@ -195,12 +195,16 @@ def weightBackgroundHists(hists, files, version, study, var, Sample):
 ##                filename="h_debugMuTau_HighHT_FullyLeptonic_JetHT_"+sample+"_"+mass+"_"+version+".root"
 ##                filename="h_debugMuTau_HighHT_FullyLeptonic_HTTrig_"+sample+"_"+mass+"_"+version+".root"
                 if "-al" in opts:
-                    filename="h_debugMuTau_HighHT_FullyLeptonic_Inclusive_Altered_"+sample+"_"+mass+"_"+version+".root"
-#                    filename="h_debugMuTau_HighHT_Inclusive_Altered_"+sample+"_"+mass+"_"+version+".root"
+                    filename="h_debugMuTau_HighHT_Inclusive_Altered_"+sample+"_"+mass+"_"+version+".root"
+#                    filename="h_debugMuTau_HighHT_FullyLeptonic_Inclusive_Altered_"+sample+"_"+mass+"_"+version+".root"
+                    if "-2d" in opts:
+                        filename="h_debugMuTau_HighHT_plot2DforTau_Inclusive_Altered_"+sample+"_"+mass+"_"+version+".root"
                 if "-nm" in opts:
 #                    filename="h_debugMuTau_HighHT_FullyLeptonic_Inclusive_"+sample+"_"+mass+"_"+version+".root"
                     filename="h_debugMuTau_HighHT_Inclusive_"+sample+"_"+mass+"_"+version+".root"
-##                filename="h_debugMuTau_HighHT_"+sample+"_"+mass+"_"+version+".root"
+                    if "-2d" in opts:
+                        filename="h_debugMuTau_HighHT_plot2DforTau_Inclusive_"+sample+"_"+mass+"_"+version+".root"
+#                filename="h_debugMuTau_HighHT_"+sample+"_"+mass+"_"+version+".root"
 #                filename="h_TriggerStudy_TightPtcut_"+sample+"_"+mass+"_"+version+".root"          
 #                filename="h_TriggerStudy_HTMHTFirst_LooseJetPt_"+sample+"_"+mass+"_"+version+".root"          
 #                filename="h_TriggerStudy_HTMHTFirst_TightJetPt_"+sample+"_"+mass+"_"+version+".root"          
@@ -245,14 +249,22 @@ files = []
 #2D = v7,v1
 
 if "-nm" in opts:
-    version = 'v6'
-    iteration = 'v6'
+    version = 'v8'
+    iteration = 'v8'
     study ='Nominal'
+    if "-2d" in opts:
+        version = 'v5'
+        iteration = 'v5'
+        study ='2DNominal'
 
 if "-al" in opts:
-    version = 'v6'
-    iteration = 'v6'
+    version = 'v8'
+    iteration = 'v8'
     study ='AlteredID'
+    if "-2d" in opts:
+        version = 'v5'
+        iteration = 'v5'
+        study ='2DAltered'
 
 #study ='GenDY'
 #study = 'mT'
@@ -292,39 +304,119 @@ if "-q" in opts:
     Sample = ['HT-50to100','HT-100to200','HT-200to300','HT-300to500','HT-500to700','HT-700to1000','HT-1000to1500','HT-1500to2000','HT-2000toInf']
 
 
+#VARIABLE = ["TauPtJetPt","TauPtJet2Pt","TauPtMuonPt","TauPtdRl","TauPtdRj2tau","TauPtdRjtau","TauPtdRjmu","MuonPtdRl","TauPtdRgenMu","MuonPtdRgenMu"]
+#VARIABLE = ['TauPtdRjmu','TauPtdRjtau','TauPtdRl','MuonPtdRl','TauPtMuonPt','TauPtJetPt','TauPtJet2Pt','TauPtdRj2tau','DimuonMass','MuonPtMuon2Pt','TauPtdRl2','TauPtdRgenMu','MuonPtdRgenMu']
+#VARIABLE = ['TauPt','Nj','JetPt', 'MuonPt', 'MetPt']
+VARIABLE = ['MetPt']
+#VARIABLE = ['TauPt', 'TauPt0','TauPt1','TauPt10','Nj','JetPt', 'MuonPt']
+#VARIABLE = ['TauPtMass','TauPt0Mass','TauPt1Mass','TauPt10Mass','NJetMass']
 
-histlist = ['hMuTau_SS','hMuTau_SS_TauPt','hMuTau_SS_Nj']
-histlist = ['hMuMu_lowMET','hMuMu_lowMET_Muon1Pt','hMuMu_lowMET_Muon2Pt','hMuMu_lowMET_JetPt','hMuMu_lowMET_MetPt','hMuMu_lowMET_Nj','hMuTau_lowMET','hMuTau_lowMET_TauPt','hMuTau_lowMET_JetPt','hMuTau_lowMET_Nj','hMuTau_lowMET_MuonPt']
+if "-2dmass" in opts:
+    REGION = ['hMuTau_SR_highMET_lowMt_dRcut']
 
-#-------Tau Pt
-histlist = ['hMuTau_SS_TauPt','hMuTau_SS_lowMET_TauPt','hMuTau_SS_lowMET_highMt_TauPt','hMuTau_SS_lowMET_lowMt_TauPt','hMuTau_SS_lowMET_dRcut_TauPt','hMuTau_SS_lowMET_dRcut_highMt_TauPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPt','hMuTau_SS_dRcut_TauPt','hMuTau_SS_dRcut_highMET_TauPt','hMuTau_SS_dRcut_highMET_highMt_TauPt','hMuTau_SS_dRcut_highMET_lowMt_TauPt']
-
-#----------------DR1
-if "-dr1" in opts:
-    histlist = ['hMuTau_highMt_dRcut_highMET','hMuTau_highMt_dRcut_highMET_TauPt','hMuTau_highMt_dRcut_highMET_JetPt','hMuTau_highMt_dRcut_highMET_Nj','hMuTau_highMt_highMET','hMuTau_highMt_highMET_TauPt','hMuTau_highMt_highMET_JetPt','hMuTau_highMt_highMET_Nj','hMuTau_highMt_highMET_dRl','hMuTau_highMt_highMET_dRj','hMuTau_highMt_dRcut_highMET_TauPt0','hMuTau_highMt_dRcut_highMET_TauPt10','hMuTau_highMt_dRcut_highMET_TauPt1']
-#----------------DR2
-if "-dr2" in opts:
-    histlist = ['hMuTau_lowMET_dRcut_lowMt','hMuTau_lowMET_dRcut_lowMt_TauPt','hMuTau_lowMET_dRcut_lowMt_JetPt','hMuTau_lowMET_dRcut_lowMt_Nj','hMuTau_lowMET_lowMt','hMuTau_lowMET_lowMt_TauPt','hMuTau_lowMET_lowMt_JetPt','hMuTau_lowMET_lowMt_Nj','hMuTau_lowMET_lowMt_dRl','hMuTau_lowMET_lowMt_dRj','hMuTau_lowMET_dRcut_lowMt_MuonPt','hMuTau_lowMET_dRcut_lowMt_TauPt0','hMuTau_lowMET_dRcut_lowMt_TauPt1','hMuTau_lowMET_dRcut_lowMt_TauPt10']
-#----------------DR3
 if "-dr3" in opts:
-#    histlist = ['hMuTau_SS_dRcut_highMET_lowMt','hMuTau_SS_dRcut_highMET_lowMt_TauPt','hMuTau_SS_dRcut_highMET_lowMt_JetPt','hMuTau_SS_dRcut_highMET_lowMt_Nj','hMuTau_SS_dRcut_MetPt','hMuTau_SS_dRcut_highMET_Mt','hMuTau_SS_dRcut_highMET_lowMt_TauPt1','hMuTau_SS_dRcut_highMET_lowMt_TauPt10','hMuTau_SS_dRcut_highMET_lowMt_TauPt0','hMuTau_SS_dRcut_highMET_lowMt_MuonPt']
-    histlist = ['hMuTau_SS_dRcut_highMET_lowMt_TauPtJetPt','hMuTau_SS_dRcut_highMET_lowMt_TauPtMuonPt','hMuTau_SS_dRcut_highMET_lowMt_TauPtMetPt','hMuTau_SS_dRcut_highMET_lowMt_TauPtMuMuMass', 'hMuTau_SS_dRcut_highMET_lowMt_TauPtdRj','hMuTau_SS_dRcut_highMET_lowMt_TauPtdRj2']
-#----------------AR/SR
+    REGION = ["hMuTau_SS_dRcut_highMET_lowMt"]
+    if "-2d" in opts:
+        REGION = ["hMuTau_SS_highMET_lowMt_dRcut","hMuTau_SS_highMET_lowMt"]
+        if "-dRl" in opts:
+            REGION = ["hMuTau_SS_highMET_lowMt_dRcutl"]
+
 if "-sr" in opts:
-    histlist = ['hMuTau_SR_dRcut_highMET_lowMt','hMuTau_SR_dRcut_highMET_lowMt_TauPt','hMuTau_SR_dRcut_highMET_lowMt_JetPt','hMuTau_SR_dRcut_highMET_lowMt_Nj','hMuTau_SR_dRcut_highMET_lowMt_MuonPt','hMuTau_SR_dRcut_highMET_lowMt_MetPt','hMuTau_SR_dRcut_highMET_lowMt_Mt','hMuTau_SR_dRcut_highMET_lowMt_TauPt0','hMuTau_SR_dRcut_highMET_lowMt_TauPt10','hMuTau_SR_dRcut_highMET_lowMt_TauPt1']
-#----------------DR4
+    REGION = ["hMuTau_SR_dRcut_highMET_lowMt"]
+    if "-2d" in opts:
+        REGION = ["hMuTau_SR_highMET_lowMt_dRcut","hMuTau_SR_highMET_lowMt"]
+
+if "-dr1" in opts:
+#    REGION = ['hMuTau_highMt_dRcut_highMET', 'hMuTau_highMt_highMET']
+    REGION = ['hMuTau_highMt_dRcut']
+
+if "-dr2" in opts:
+    REGION = ["hMuTau_lowMET_dRcut_lowMt","hMuTau_lowMET_lowMt"]
+#    REGION = ["hMuTau_lowMET_dRcut_lowMt"]
+    if "-2d" in opts:
+        REGION = ["hMuTau_OS_lowMET_lowMt_dRcut","hMuTau_OS_lowMET_lowMt"]
+        if "-dRl" in opts:
+            REGION = ["hMuTau_OS_lowMET_lowMt_dRcutl"]
+        if "-dRjt" in opts:
+            REGION = ["hMuTau_OS_lowMET_lowMt_dRcutjt"]
+        if "-dRjm" in opts:
+            REGION = ["hMuTau_OS_lowMET_lowMt_dRcutjm"]
+
 if "-dr4" in opts:
-    histlist = ['hMuTau_lowMET_dRcut_highMt','hMuTau_lowMET_dRcut_highMt_TauPt','hMuTau_lowMET_dRcut_highMt_JetPt','hMuTau_lowMET_dRcut_highMt_Nj','hMuTau_lowMET_highMt','hMuTau_lowMET_highMt_TauPt','hMuTau_lowMET_highMt_JetPt','hMuTau_lowMET_highMt_Nj','hMuTau_lowMET_highMt_dRl','hMuTau_lowMET_highMt_dRj','hMuTau_lowMET_dRcut_highMt_TauPt0','hMuTau_lowMET_dRcut_highMt_TauPt10','hMuTau_lowMET_dRcut_highMt_TauPt1']
-#----------------DR5
+    REGION = ['hMuTau_lowMET_dRcut_highMt','hMuTau_lowMET_highMt']
+
 if "-dr5" in opts:
-    histlist = ['hMuTau_SS_dRcut_highMET_highMt','hMuTau_SS_dRcut_highMET_highMt_TauPt','hMuTau_SS_dRcut_highMET_highMt_JetPt','hMuTau_SS_dRcut_highMET_highMt_Nj','hMuTau_SS_dRcut_highMET_highMt_TauPt1','hMuTau_SS_dRcut_highMET_highMt_TauPt0','hMuTau_SS_dRcut_highMET_highMt_TauPt10']
-#----------------DR6
+    REGION = ['hMuTau_SS_dRcut_highMET_highMt']
+
 if "-dr6" in opts:
-    histlist = ['hMuTau_SS_lowMET_dRcut_lowMt','hMuTau_SS_lowMET_dRcut_lowMt_TauPt','hMuTau_SS_lowMET_dRcut_lowMt_JetPt','hMuTau_SS_lowMET_dRcut_lowMt_Nj','hMuTau_SS_lowMET_lowMt','hMuTau_SS_lowMET_lowMt_TauPt','hMuTau_SS_lowMET_lowMt_JetPt','hMuTau_SS_lowMET_lowMt_Nj','hMuTau_SS_lowMET_lowMt_dRj','hMuTau_SS_lowMET_lowMt_dRl','hMuTau_SS_lowMET_dRcut_lowMt_TauPt0','hMuTau_SS_lowMET_dRcut_lowMt_TauPt10','hMuTau_SS_lowMET_dRcut_lowMt_TauPt1','hMuTau_SS_lowMET_dRcut_lowMt_MuonPt','hMuTau_SS_lowMET_lowMt_MuonPt']
-#    histlist = ['hMuTau_SS_lowMET_dRcut_lowMt_TauPtJetPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMuonPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMetPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMuMuMass','hMuTau_SS_lowMET_dRcut_lowMt_TauPtdRj','hMuTau_SS_lowMET_dRcut_lowMt_TauPtdRj2']
-#----------------DR7
+#    REGION = ["hMuTau_SS_lowMET_dRcut_lowMt","hMuTau_SS_lowMET_lowMt"]
+    REGION = ["hMuTau_SS_lowMET_dRcut_lowMt"]
+    if "-2d" in opts:
+        REGION = ["hMuTau_SS_lowMET_lowMt_dRcut","hMuTau_SS_lowMET_lowMt"]
+        if "-dRl" in opts:
+            REGION = ["hMuTau_SS_lowMET_lowMt_dRcutl"]
+        if "-dRjt" in opts:
+            REGION = ["hMuTau_SS_lowMET_lowMt_dRcutjt"]
+        if "-dRjm" in opts:
+            REGION = ["hMuTau_SS_lowMET_lowMt_dRcutjm"]
+
 if "-dr7" in opts:
-    histlist = ['hMuTau_SS_lowMET_dRcut_highMt','hMuTau_SS_lowMET_dRcut_highMt_TauPt','hMuTau_SS_lowMET_dRcut_highMt_JetPt','hMuTau_SS_lowMET_dRcut_highMt_Nj','hMuTau_SS_lowMET_highMt','hMuTau_SS_lowMET_highMt_TauPt','hMuTau_SS_lowMET_highMt_JetPt','hMuTau_SS_lowMET_highMt_Nj','hMuTau_SS_lowMET_highMt_dRl','hMuTau_SS_lowMET_highMt_dRj','hMuTau_SS_lowMET_highMt_MuonPt','hMuTau_SS_lowMET_dRcut_highMt_MuonPt']
+    REGION = ['hMuTau_SS_lowMET_dRcut_highMt','hMuTau_SS_lowMET_highMt']
+
+histlist = []
+
+for region in REGION:
+    histlist.append(region)
+    if "-2d" not in opts: histlist.append(region)
+    for variable in VARIABLE:
+        histlist.append(region+"_"+variable)
+#        histlist.append(region+"_"+variable+"_loosedR")
+
+# histlist = ['hMuTau_SS','hMuTau_SS_TauPt','hMuTau_SS_Nj']
+# histlist = ['hMuMu_lowMET','hMuMu_lowMET_Muon1Pt','hMuMu_lowMET_Muon2Pt','hMuMu_lowMET_JetPt','hMuMu_lowMET_MetPt','hMuMu_lowMET_Nj','hMuTau_lowMET','hMuTau_lowMET_TauPt','hMuTau_lowMET_JetPt','hMuTau_lowMET_Nj','hMuTau_lowMET_MuonPt']
+
+# #-------Tau Pt
+# histlist = ['hMuTau_SS_TauPt','hMuTau_SS_lowMET_TauPt','hMuTau_SS_lowMET_highMt_TauPt','hMuTau_SS_lowMET_lowMt_TauPt','hMuTau_SS_lowMET_dRcut_TauPt','hMuTau_SS_lowMET_dRcut_highMt_TauPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPt','hMuTau_SS_dRcut_TauPt','hMuTau_SS_dRcut_highMET_TauPt','hMuTau_SS_dRcut_highMET_highMt_TauPt','hMuTau_SS_dRcut_highMET_lowMt_TauPt']
+
+# #----------------SS
+# if "-ss" in opts:
+#     histlist = ['hMuTau_SS_TauPtJetPt','hMuTau_SS_TauPtJet2Pt','hMuTau_SS_TauPtMuonPt']
+
+# #----------------DR1
+# if "-dr1" in opts:
+#     histlist = ['hMuTau_highMt_dRcut_highMET','hMuTau_highMt_dRcut_highMET_TauPt','hMuTau_highMt_dRcut_highMET_JetPt','hMuTau_highMt_dRcut_highMET_Nj','hMuTau_highMt_highMET','hMuTau_highMt_highMET_TauPt','hMuTau_highMt_highMET_JetPt','hMuTau_highMt_highMET_Nj','hMuTau_highMt_highMET_dRl','hMuTau_highMt_highMET_dRj','hMuTau_highMt_dRcut_highMET_TauPt0','hMuTau_highMt_dRcut_highMET_TauPt10','hMuTau_highMt_dRcut_highMET_TauPt1']
+# #----------------DR2
+# if "-dr2" in opts:
+#     histlist = ['hMuTau_lowMET_dRcut_lowMt','hMuTau_lowMET_dRcut_lowMt_TauPt','hMuTau_lowMET_dRcut_lowMt_JetPt','hMuTau_lowMET_dRcut_lowMt_Nj','hMuTau_lowMET_lowMt','hMuTau_lowMET_lowMt_TauPt','hMuTau_lowMET_lowMt_JetPt','hMuTau_lowMET_lowMt_Nj','hMuTau_lowMET_lowMt_dRl','hMuTau_lowMET_lowMt_dRj','hMuTau_lowMET_dRcut_lowMt_MuonPt','hMuTau_lowMET_dRcut_lowMt_TauPt0','hMuTau_lowMET_dRcut_lowMt_TauPt1','hMuTau_lowMET_dRcut_lowMt_TauPt10']
+# #----------------DR3
+# if "-dr3" in opts:
+#     histlist = ['hMuTau_SS_dRcut_highMET_lowMt','hMuTau_SS_dRcut_highMET_lowMt_TauPt','hMuTau_SS_dRcut_highMET_lowMt_JetPt','hMuTau_SS_dRcut_highMET_lowMt_Nj','hMuTau_SS_dRcut_MetPt','hMuTau_SS_dRcut_highMET_Mt','hMuTau_SS_dRcut_highMET_lowMt_TauPt1','hMuTau_SS_dRcut_highMET_lowMt_TauPt10','hMuTau_SS_dRcut_highMET_lowMt_TauPt0','hMuTau_SS_dRcut_highMET_lowMt_MuonPt','hMuTau_SS_dRcut_highMET_lowMt_MetPt']
+#     if "-2d" in opts:
+#         histlist = ['hMuTau_SS_highMET_lowMt_TauPtJetPt','hMuTau_SS_highMET_lowMt_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_TauPtdRl','hMuTau_SS_highMET_lowMt_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_TauPtdRjtau','hMuTau_SS_highMET_lowMt_TauPtdRjmu','hMuTau_SS_highMET_lowMt_dRcut_TauPtJetPt','hMuTau_SS_highMET_lowMt_dRcut_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_dRcut_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_dRcut_TauPtdRl','hMuTau_SS_highMET_lowMt_dRcut_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_dRcut_TauPtdRjtau','hMuTau_SS_highMET_lowMt_dRcut_TauPtdRjmu','hMuTau_SS_highMET_lowMt_dRcut_TauPtdRgenMu','hMuTau_SS_highMET_lowMt_TauPtdRgenMu','hMuTau_SS_highMET_lowMt_dRcut_MuonPtdRgenMu','hMuTau_SS_highMET_lowMt_MuonPtdRgenMu']
+#         if "-dRl" in opts:
+#             histlist = 'hMuTau_SS_highMET_lowMt_dRcutl_TauPtJetPt','hMuTau_SS_highMET_lowMt_dRcutl_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_dRcutl_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_dRcutl_TauPtdRl','hMuTau_SS_highMET_lowMt_dRcutl_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_dRcutl_TauPtdRjtau','hMuTau_SS_highMET_lowMt_dRcutl_TauPtdRjmu'
+#         if "-dRjt" in opts:
+#             histlist = 'hMuTau_SS_highMET_lowMt_dRcutjt_TauPtJetPt','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_dRcutjt_TauPtdRl','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtdRjtau','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtdRjmu'
+#         if "-dRjm" in opts:
+#             histlist = 'hMuTau_SS_highMET_lowMt_dRcutjm_TauPtJetPt','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_dRcutjm_TauPtdRl','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtdRjtau','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtdRjmu'
+# #----------------AR/SR
+# if "-sr" in opts:
+#     histlist = ['hMuTau_SR_dRcut_highMET_lowMt','hMuTau_SR_dRcut_highMET_lowMt_TauPt','hMuTau_SR_dRcut_highMET_lowMt_JetPt','hMuTau_SR_dRcut_highMET_lowMt_Nj','hMuTau_SR_dRcut_highMET_lowMt_MuonPt','hMuTau_SR_dRcut_highMET_lowMt_MetPt','hMuTau_SR_dRcut_highMET_lowMt_Mt','hMuTau_SR_dRcut_highMET_lowMt_TauPt0','hMuTau_SR_dRcut_highMET_lowMt_TauPt10','hMuTau_SR_dRcut_highMET_lowMt_TauPt1','hMuTau_SR_dRcut_highMET_lowMt_MetPt']
+#     if "-2d" in opts:
+#         histlist = ['hMuTau_SR_highMET_lowMt_dRcut_TauPtJetPt','hMuTau_SR_highMET_lowMt_dRcut_TauPtMuonPt','hMuTau_SR_highMET_lowMt_dRcut_TauPtdRjmu','hMuTau_SR_highMET_lowMt_dRcut_TauPtdRl','hMuTau_SR_highMET_lowMt_dRcut_TauPtdRjtau','hMuTau_SR_highMET_lowMt_TauPtJetPt','hMuTau_SR_highMET_lowMt_TauPtMuonPt','hMuTau_SR_highMET_lowMt_TauPtdRjmu','hMuTau_SR_highMET_lowMt_TauPtdRl','hMuTau_SR_highMET_lowMt_TauPtdRjtau','hMuTau_SR_highMET_lowMt_dRcut_TauPtJet2Pt','hMuTau_SR_highMET_lowMt_TauPtJet2Pt']
+# #----------------DR4
+# if "-dr4" in opts:
+#     histlist = ['hMuTau_lowMET_dRcut_highMt','hMuTau_lowMET_dRcut_highMt_TauPt','hMuTau_lowMET_dRcut_highMt_JetPt','hMuTau_lowMET_dRcut_highMt_Nj','hMuTau_lowMET_highMt','hMuTau_lowMET_highMt_TauPt','hMuTau_lowMET_highMt_JetPt','hMuTau_lowMET_highMt_Nj','hMuTau_lowMET_highMt_dRl','hMuTau_lowMET_highMt_dRj','hMuTau_lowMET_dRcut_highMt_TauPt0','hMuTau_lowMET_dRcut_highMt_TauPt10','hMuTau_lowMET_dRcut_highMt_TauPt1']
+# #----------------DR5
+# if "-dr5" in opts:
+#     histlist = ['hMuTau_SS_dRcut_highMET_highMt','hMuTau_SS_dRcut_highMET_highMt_TauPt','hMuTau_SS_dRcut_highMET_highMt_JetPt','hMuTau_SS_dRcut_highMET_highMt_Nj','hMuTau_SS_dRcut_highMET_highMt_TauPt1','hMuTau_SS_dRcut_highMET_highMt_TauPt0','hMuTau_SS_dRcut_highMET_highMt_TauPt10']
+# #----------------DR6
+# if "-dr6" in opts:
+#     histlist = ['hMuTau_SS_lowMET_dRcut_lowMt','hMuTau_SS_lowMET_dRcut_lowMt_TauPt','hMuTau_SS_lowMET_dRcut_lowMt_JetPt','hMuTau_SS_lowMET_dRcut_lowMt_Nj','hMuTau_SS_lowMET_lowMt','hMuTau_SS_lowMET_lowMt_TauPt','hMuTau_SS_lowMET_lowMt_JetPt','hMuTau_SS_lowMET_lowMt_Nj','hMuTau_SS_lowMET_lowMt_dRj','hMuTau_SS_lowMET_lowMt_dRl','hMuTau_SS_lowMET_dRcut_lowMt_TauPt0','hMuTau_SS_lowMET_dRcut_lowMt_TauPt10','hMuTau_SS_lowMET_dRcut_lowMt_TauPt1','hMuTau_SS_lowMET_dRcut_lowMt_MuonPt','hMuTau_SS_lowMET_lowMt_MuonPt','hMuTau_SS_lowMET_dRcut_lowMt_MetPt']
+# #    histlist = ['hMuTau_SS_lowMET_dRcut_lowMt_TauPtJetPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMuonPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMetPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMuMuMass','hMuTau_SS_lowMET_dRcut_lowMt_TauPtdRj','hMuTau_SS_lowMET_dRcut_lowMt_TauPtdRj2']
+# #----------------DR7
+# if "-dr7" in opts:
+#     histlist = ['hMuTau_SS_lowMET_dRcut_highMt','hMuTau_SS_lowMET_dRcut_highMt_TauPt','hMuTau_SS_lowMET_dRcut_highMt_JetPt','hMuTau_SS_lowMET_dRcut_highMt_Nj','hMuTau_SS_lowMET_highMt','hMuTau_SS_lowMET_highMt_TauPt','hMuTau_SS_lowMET_highMt_JetPt','hMuTau_SS_lowMET_highMt_Nj','hMuTau_SS_lowMET_highMt_dRl','hMuTau_SS_lowMET_highMt_dRj','hMuTau_SS_lowMET_highMt_MuonPt','hMuTau_SS_lowMET_dRcut_highMt_MuonPt']
 
 
 for var in histlist:
@@ -375,4 +467,5 @@ for var in histlist:
 
     out.Close()
 
+print(VARIABLE)
 print(histlist)
