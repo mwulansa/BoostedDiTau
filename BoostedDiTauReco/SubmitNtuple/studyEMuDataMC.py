@@ -6,7 +6,7 @@ start_time = time.time()
 
 opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
-outputTitle = "h_studyEMuTrigger"
+outputTitle = "h_studyEMuDataMC"
 
 isMuonEGDataset = 0
 isSingleMuonDataset = 0
@@ -53,7 +53,7 @@ pi = np.pi
 h = {}
 
 event_cut = {
-    'jetPt': 100,
+    'jetPt': 70,
     'dRl': 0.4,
     'dRltau': 0.05,
     'dRlj': 0.8,
@@ -66,6 +66,8 @@ event_cut = {
 
 
 def define_event_histogram(region):
+
+    h[region+"_Count"] = ROOT.TH1F (region+"_Count", region+"_Count ; Events ; Events ", 1, 0, 1)
 
     h[region+"_Mass"] = ROOT.TH1F (region+"_Mass", region+"_Mass ; M_{vis.} (GeV) ; Events ", 100, 0, 100)
     h[region+"_Lepton1Pt"] = ROOT.TH1F (region+"_Lepton1Pt", region+"_Lepton1Pt ; P_{T} (GeV) ; Events ", 500, 0, 500)
@@ -131,7 +133,14 @@ hist_regions = [
     "hEMu_dRcut_lowMET",
     "hEMu_dRcut_bjet",
     "hEMu_dRcut_highMET_bjet",
-    "hEMu_dRcut_lowMET_bjet"
+    "hEMu_dRcut_lowMET_bjet",
+    "hEMu_lowMET",
+    "hEMu_bjet",
+    "hEMu_lowMET_SingleMuon",
+    "hEMu_lowMET_MuonEG",
+    "hEMu_lowMET_Both",
+    "hEMu_SR_dPhicut",
+    "hEMu_SR_mTcut"
 ]
 
 
@@ -229,12 +238,36 @@ def EMu_Channel(ele,mu_emu, js, met_pt, met_phi):
     
     if ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) : trigger[1] = 1
 
+    if ( isData == 0 and ( trigger[0] == 1 and trigger[1] == 0 ) ) or \
+       ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 and trigger[1] == 0 ) ) :
+        if pass_baseline(e, mu, j) == 1 :
+            if m.Pt() < 100.0 : #lowMET SingleMuon                                                                                          
+                plot_event_hist("hEMu_lowMET_SingleMuon", e, mu, j, m)
+
+    if ( isData == 0 and ( trigger[0] == 0 and trigger[1] == 1 ) ) or \
+       ( isData == 1 and ( isMuonEGDataset == 1 and trigger[0] == 0 and trigger[1] == 1 ) ) :
+        if pass_baseline(e, mu, j) == 1 :
+            if m.Pt() < 100.0 :#lowMET MuonEG                                                                                                            
+                plot_event_hist("hEMu_lowMET_MuonEG", e, mu, j, m)
+
+    if ( isData == 0 and ( trigger[0] == 1 and trigger[1] == 1 ) ) or \
+       ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 and trigger[1] == 1 ) ):
+        if pass_baseline(e, mu, j) == 1 :
+            if m.Pt() < 100.0 :#lowMET Both                                                                                                         
+                plot_event_hist("hEMu_lowMET_Both", e, mu, j, m)
+
     if ( isData == 0 and ( trigger[0] == 1 or trigger[1] == 1 ) ) or \
        ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 ) ) or \
        ( isData == 1 and ( isMuonEGDataset == 1 and ( trigger[0] == 1 and trigger[0] == 0 ) ) ) :
 
         if pass_baseline(e, mu, j) == 1 :
             if len(s_b) == 0 : h['hEMu_Events'].Fill(2, genweight)
+
+            if m.Pt() < 100.0 : #lowMET
+                plot_event_hist("hEMu_lowMET", e, mu, j, m)
+
+            if len(s_b) > 0 : #non-zero b-jet
+                plot_event_hist("hEMu_bjet", e, mu, j, m)
 
             if pass_deltaR(e, mu, j, "EMu") == 1:
                 h['hEMu_Nbjet'].Fill(len(s_b), genweight)
@@ -243,9 +276,17 @@ def EMu_Channel(ele,mu_emu, js, met_pt, met_phi):
                     h['hEMu_Events'].Fill(3, genweight)
                     plot_event_hist("hEMu_dRcut", e, mu, j ,m)
 
-                    if m.Pt() > 100.0 : #SR
+                    if m.Pt() > 100.0 and isData == 0: #SR
                         h['hEMu_Events'].Fill(4, genweight)
                         plot_event_hist("hEMu_SR", e, mu, j, m)
+
+                        if abs(m.DeltaPhi(mu)) < 1.0 and abs( m.DeltaPhi(j) ) > 2.0 : #SR dPhicut
+                            h['hEMu_Events'].Fill(5, genweight)
+                            plot_event_hist("hEMu_SR_dPhicut", e, mu, j, m)
+
+                        if Mt((e+mu),m) < 40 :
+                            h['hEMu_Events'].Fill(6, genweight)
+                            plot_event_hist("hEMu_SR_mTcut", e, mu, j, m)
                     
                     if m.Pt() < 100.0 : #lowMET
                         plot_event_hist("hEMu_dRcut_lowMET", e, mu, j, m)
@@ -270,6 +311,8 @@ def Mt(lepton, met):
 
 def plot_event_hist(region, l1, l2, j, m):
     
+    h[region+"_Count"].Fill(0, genweight)
+
     h[region+"_Mass"].Fill((l1+l2).M(), genweight)
     h[region+"_Lepton1Pt"].Fill(l1.Pt(), genweight)
     h[region+"_Lepton2Pt"].Fill(l2.Pt(), genweight)
@@ -338,7 +381,7 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
    h['hMetPt'].Fill(met_pt)
 
-   genweight = 1
+   if isData == 1: genweight = 1
 
    if isData == 0:
        weight = fchain.GetBranch("lumiInfo")
