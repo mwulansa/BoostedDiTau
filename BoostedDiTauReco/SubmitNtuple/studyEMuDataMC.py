@@ -8,6 +8,9 @@ opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
 outputTitle = "h_studyEMuDataMC"
 
+isNonIso = False
+triggerStudy = False
+
 isMuonEGDataset = 0
 isSingleMuonDataset = 0
 
@@ -37,7 +40,10 @@ if len(sys.argv)>2 and not sys.argv[2].startswith("-"):
 else:
     outputFileDir = "./output/"
 
-outputFileName = outputFileDir+outputTitle+"_"+inputFileListName.split("/")[-1].replace(".txt",".root")
+if isNonIso == False:
+    outputFileName = outputFileDir+outputTitle+"_Isolated_"+inputFileListName.split("/")[-1].replace(".txt",".root")
+if isNonIso == True:
+    outputFileName = outputFileDir+outputTitle+"_Non-Isolated_"+inputFileListName.split("/")[-1].replace(".txt",".root")
 
 out=ROOT.TFile.Open(outputFileName,'recreate')
 print(outputFileName)
@@ -61,7 +67,7 @@ event_cut = {
     'mtcut': 50,
     'dPhiml': 1,
     'dPhimj': 2,
-    'mass' : 1
+    'mass' : 5
 }
 
 
@@ -87,6 +93,9 @@ def define_event_histogram(region):
     h[region+"_cosMl2"] = ROOT.TH1F (region+"_cosMl2", region+"_cosMl2 ; cos(met, l2) ; Events ", 100, -1, 1)
     h[region+"_cosl"] = ROOT.TH1F (region+"_cosl", region+"_cosl ; cos(l1, l2) ; Events ", 100, -1, 1)
 
+    if region in isoPlotRegions:
+        h[region+"_muIso"] = ROOT.TH1F (region+"_muIso", region+"_muIso ; muIso ; Events ", 100, 0, 1)
+
 
 def define_general_histogram():
 
@@ -101,8 +110,21 @@ def define_general_histogram():
 
     h['hMuMu_Events'] = ROOT.TH1F ("hMuMu_Events", "hMuMu_Events;;N", 6, 1, 7)
     h['hEMu_Events'] = ROOT.TH1F ("hEMu_Events", "hEMu_Events;;N", 6, 1, 7)
+    h['hEMu_nonIsoMu_Events'] = ROOT.TH1F ("hEMu_nonIsoMu_Events", "hEMu_Events;;N", 6, 1, 7)
+    h['hEMu_nonIsoE_Events'] = ROOT.TH1F ("hEMu_nonIsoE_Events", "hEMu_Events;;N", 6, 1, 7)
+    h['hEMu_nonIso_Events'] = ROOT.TH1F ("hEMu_nonIso_Events", "hEMu_Events;;N", 6, 1, 7)
 
     h["hEMu_Nbjet"] = ROOT.TH1F ("hEMu_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_dRcut_Nbjet"] = ROOT.TH1F ("hEMu_dRcut_Nbjet", "hEMu_dRcut_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_lowMET_Nbjet"] = ROOT.TH1F ("hEMu_lowMET_Nbjet", "hEMu_lowMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_highMET_Nbjet"] = ROOT.TH1F ("hEMu_highMET_Nbjet", "hEMu_highMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_dRcut_lowMET_dPhicut_Nbjet"] = ROOT.TH1F ("hEMu_dRcut_lowMET_dPhicut_Nbjet", "hEMu_dRcut_lowMET_dPhicut_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_dRcut_lowMET_Nbjet"] = ROOT.TH1F ("hEMu_dRcut_lowMET_Nbjet", "hEMu_dRcut_lowMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_dRcut_highMET_Nbjet"] = ROOT.TH1F ("hEMu_dRcut_highMET_Nbjet", "hEMu_dRcut_highMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+
+    h["hEMu_nonIsoMu_Nbjet"] = ROOT.TH1F ("hEMu_nonIsoMu_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_nonIsoE_Nbjet"] = ROOT.TH1F ("hEMu_nonIsoE_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_nonIso_Nbjet"] = ROOT.TH1F ("hEMu_nonIso_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
 
 
 #-----Objects-----
@@ -112,8 +134,10 @@ def define_general_histogram():
     h['hBJetPt'] = ROOT.TH1F ("hBJetPt", "B-tagged Jet P_{T} ; P_{T} ; N", 1000, 0, 1000)
     h['hMuonPt'] = ROOT.TH1F ("hMuPt", "Muon P_{T} ; P_{T} ; N", 500, 0, 500)
     h['hIsoMuonPt'] = ROOT.TH1F ("hIsoMuPt", "Isolated Muon P_{T} ; P_{T} ; N", 500, 0, 500)
+    h['hNonIsoMuonPt'] = ROOT.TH1F ("hNonIsoMuPt", "Non-Isolated Muon P_{T} ; P_{T} ; N", 500, 0, 500)
     h['hElectronPt'] = ROOT.TH1F ("hEPt", "Electron P_{T} ; P_{T} ; N", 500, 0, 500)
     h['hIsoElectronPt'] = ROOT.TH1F ("hIsoEPt", "Isolated Electron P_{T} ; P_{T} ; N", 500, 0, 500)
+    h['hNonIsoElectronPt'] = ROOT.TH1F ("hNonIsoEPt", "Non-Isolated Electron P_{T} ; P_{T} ; N", 500, 0, 500)
     h['hMetPt'] = ROOT.TH1F ("hMetPt", "MET P_{T} ; P_{T} ; N", 500, 0, 500)
 
     h['hTauUnCleanedPt'] = ROOT.TH1F ("hTauUnCleanedPt", "Uncleaned Tau P_{T}; P_{T}; a.u.", 500, 0, 500)
@@ -123,26 +147,68 @@ def define_general_histogram():
     h['hTauBoostedPt'] = ROOT.TH1F ("hTauBoostedPt", "Boosted Tau P_{T}; P_{T}; a.u.", 500, 0, 500)
 
 
-hist_regions = [
+hist_regions = []
+
+trigger_regions = [
+    "_lowMET_SingleMuon",
+    "_bjet_SingleMuon",
+    "_lowMET_MuonEG",
+    "_bjet_MuonEG",
+    "_lowMET_Both_SingleMuon",
+    "_bjet_Both_SingleMuon",
+    "_lowMET_Both_MuonEG",
+    "_bjet_Both_MuonEG"
+]
+
+Regions = [
+    "_dRcut",
+    "_SR",
+    "_dRcut_lowMET",
+    "_dRcut_dPhicut_lowMET",
+    "_dRcut_bjet",
+    "_dRcut_highMET_bjet",
+    "_dRcut_highMET_bjet1",
+    "_dRcut_highMET_bjet2",
+    "_dRcut_highMET_bjet3",
+    "_dRcut_lowMET_bjet",
+    "_dRcut_highMET_dPhicut_bjet",
+    "_dRcut_highMET_dPhicut_bjet1",
+    "_dRcut_highMET_dPhicut_bjet2",
+    "_dRcut_highMET_dPhicut_bjet3",
+    "_dRcut_lowMET_dPhicut_bjet",
+    "_lowMET",
+    "_bjet",
+    "_SR_dPhicut",
+    "_SR_mTcut"
+]
+
+if triggerStudy == True:
+    Regions.extend(trigger_regions)
+
+isoRegions = ["hEMu",
+             "hEMu_nonIsoMu",
+             "hEMu_nonIsoE",
+             "hEMu_nonIso"
+]
+
+isoPlotRegions = []
+
+for isoR in isoRegions :
+    for r in Regions:
+        hist_regions.append(isoR+r)
+        if r == "_SR" or r == "_SR_dPhicut" or r == "_dRcut_highMET_bjet" or r == "_dRcut_highMET_dPhicut_bjet" :
+            isoPlotRegions.append(isoR+r)
+
+mumu_regions = [
     "hMuMu_Baseline",
     "hMuMu_dRcut",
     "hMuMu_dRcut_highMET",
-    "hMuMu_SR_dRcut_highMET_dPhicut",
-    "hEMu_dRcut",
-    "hEMu_SR",
-    "hEMu_dRcut_lowMET",
-    "hEMu_dRcut_bjet",
-    "hEMu_dRcut_highMET_bjet",
-    "hEMu_dRcut_lowMET_bjet",
-    "hEMu_lowMET",
-    "hEMu_bjet",
-    "hEMu_lowMET_SingleMuon",
-    "hEMu_lowMET_MuonEG",
-    "hEMu_lowMET_Both",
-    "hEMu_SR_dPhicut",
-    "hEMu_SR_mTcut"
+    "hMuMu_SR_dRcut_highMET_dPhicut"
 ]
 
+hist_regions.extend(mumu_regions)
+
+print(hist_regions)
 
 for r in hist_regions:
     define_event_histogram(r)
@@ -209,7 +275,9 @@ def MuMu_Channel(mu, js, met_pt, met_phi):
 
         if ( mu1.Pt() > 50 and isMu == 1 ) or ( mu1.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
 
-        if isJetHTEvent or isSingleMuonEvent :
+        if ( isData == 0 and isSingleMuonEvent == 1 ) or \
+           ( isData == 1 and isSingleMuonDataset == 1 and isSingleMuonEvent == 1 ) :
+
             plot_event_hist("hMuMu_Baseline", mu1, mu2, j, m)
 
             if pass_deltaR(mu1, mu2, j, "MuMu"):
@@ -225,10 +293,10 @@ def MuMu_Channel(mu, js, met_pt, met_phi):
     return isMuMu
 
 
-def EMu_Channel(ele,mu_emu, js, met_pt, met_phi):
+def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
 
     isEMu = 0
-    h['hEMu_Events'].Fill(1, genweight)
+    h[isolation+'_Events'].Fill(1, genweight)
 
     e, mu, j, m = get_TLorentzVector(ele[0], mu_emu[0], js[0], met_pt, met_phi)
 
@@ -238,68 +306,147 @@ def EMu_Channel(ele,mu_emu, js, met_pt, met_phi):
     
     if ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) : trigger[1] = 1
 
+    if triggerStudy == True :
+
+        trigger_study(e, mu, j , m, trigger)
+
+    if ( isData == 0 and ( trigger[0] == 1 or trigger[1] == 1 ) ) or \
+       ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 ) ) or \
+       ( isData == 1 and ( isMuonEGDataset == 1 and ( trigger[0] == 0 and trigger[1] == 1 ) ) ) :
+
+        if pass_baseline(e, mu, j) == 1 :
+
+            check_Nbjet(e, mu, j, m, isolation)
+
+            if len(s_b) == 0 : h[isolation+'_Events'].Fill(2, genweight)
+
+            if m.Pt() < 100.0 : #lowMET
+                plot_event_hist(isolation+"_lowMET", e, mu, j, m)
+
+            if len(s_b) > 0 : #non-zero b-jet
+                plot_event_hist(isolation+"_bjet", e, mu, j, m)
+
+            if pass_deltaR(e, mu, j, "EMu") == 1: #dRcut
+                
+                if len(s_b) == 0 : 
+                    h[isolation+'_Events'].Fill(3, genweight)
+                    plot_event_hist(isolation+"_dRcut", e, mu, j ,m)
+
+                    if m.Pt() > 100.0 and ( isData == 0 or isNonIso == True ) : #SR
+                        h[isolation+'_Events'].Fill(4, genweight)
+                        plot_event_hist(isolation+"_SR", e, mu, j, m)
+
+                        h[isolation+"_SR_muIso"].Fill(mu_emu[0].iso, genweight)
+
+                        if np.cos(m.DeltaPhi(mu)) > 0.8 : #SR dPhicut
+                            h[isolation+'_Events'].Fill(5, genweight)
+                            plot_event_hist(isolation+"_SR_dPhicut", e, mu, j, m)
+
+                            h[isolation+"_SR_dPhicut_muIso"].Fill(mu_emu[0].iso, genweight)
+
+                        if Mt((e+mu),m) < 40 :
+                            h[isolation+'_Events'].Fill(6, genweight)
+                            plot_event_hist(isolation+"_SR_mTcut", e, mu, j, m)
+                    
+                    if m.Pt() < 100.0 : #dRcut lowMET
+                        plot_event_hist(isolation+"_dRcut_lowMET", e, mu, j, m)
+
+                        if np.cos(m.DeltaPhi(mu)) > 0.8 :
+                            plot_event_hist(isolation+"_dRcut_dPhicut_lowMET", e, mu, j, m)
+
+
+                if len(s_b) > 0 : #dRcut non-zero b-jet
+                    plot_event_hist(isolation+"_dRcut_bjet", e, mu, j, m)
+
+                    if m.Pt() > 100.0 : #high MET non-zero b-jet
+                        plot_event_hist(isolation+"_dRcut_highMET_bjet", e, mu, j, m)
+
+                        if len(s_b) == 1 : plot_event_hist(isolation+"_dRcut_highMET_bjet1", e, mu, j, m)
+                        if len(s_b) == 2 : plot_event_hist(isolation+"_dRcut_highMET_bjet2", e, mu, j, m)
+                        if len(s_b) > 1 : plot_event_hist(isolation+"_dRcut_highMET_bjet3", e, mu, j, m)
+
+                        h[isolation+"_dRcut_highMET_bjet_muIso"].Fill(mu_emu[0].iso, genweight)
+
+                        if np.cos(m.DeltaPhi(mu)) > 0.8 :
+                            plot_event_hist(isolation+"_dRcut_highMET_dPhicut_bjet", e, mu, j, m)
+
+                            if len(s_b) == 1 : plot_event_hist(isolation+"_dRcut_highMET_dPhicut_bjet1", e, mu, j, m)
+                            if len(s_b) == 2 : plot_event_hist(isolation+"_dRcut_highMET_dPhicut_bjet2", e, mu, j, m)
+                            if len(s_b) > 1 : plot_event_hist(isolation+"_dRcut_highMET_dPhicut_bjet3", e, mu, j, m)
+
+                            h[isolation+"_dRcut_highMET_dPhicut_bjet_muIso"].Fill(mu_emu[0].iso, genweight)
+
+                    if m.Pt() < 100.0 : #lowMET non-zero b-jet
+                        plot_event_hist(isolation+"_dRcut_lowMET_bjet", e, mu, j, m)
+
+                        if np.cos(m.DeltaPhi(mu)) > 0.8 :
+                            plot_event_hist(isolation+"_dRcut_lowMET_dPhicut_bjet", e, mu, j, m)
+
+
+
+
+def check_Nbjet(e, mu, j, m, isolation = "hEMu"):
+
+    h[isolation+'_Nbjet'].Fill(len(s_b), genweight)
+
+    if pass_deltaR(e, mu, j, "EMu") == 1:
+
+        h[isolation+'_dRcut_Nbjet'].Fill(len(s_b), genweight)
+        
+        if m.Pt() < 100.0 :
+
+            h[isolation+'_dRcut_lowMET_Nbjet'].Fill(len(s_b), genweight)
+
+            if np.cos(m.DeltaPhi(mu)) > 0.8 :
+
+                h[isolation+'_dRcut_lowMET_dPhicut_Nbjet'].Fill(len(s_b), genweight)
+
+        if m.Pt() > 100.0 :
+
+            h[isolation+'_dRcut_highMET_Nbjet'].Fill(len(s_b), genweight)
+
+    if m.Pt() < 100.0 :
+
+        h[isolation+'_lowMET_Nbjet'].Fill(len(s_b), genweight)
+
+    if m.Pt() > 100.0 :
+
+        h[isolation+'_highMET_Nbjet'].Fill(len(s_b), genweight)
+
+
+def trigger_study(e, mu, j , m, trigger):
+
     if ( isData == 0 and ( trigger[0] == 1 and trigger[1] == 0 ) ) or \
        ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 and trigger[1] == 0 ) ) :
         if pass_baseline(e, mu, j) == 1 :
             if m.Pt() < 100.0 : #lowMET SingleMuon                                                                                          
-                plot_event_hist("hEMu_lowMET_SingleMuon", e, mu, j, m)
+                plot_event_hist(isolation+"_lowMET_SingleMuon", e, mu, j, m)
+            if len(s_b) > 0 : #bjet SingleMuon
+                plot_event_hist(isolation+"_bjet_SingleMuon", e, mu, j, m)
 
     if ( isData == 0 and ( trigger[0] == 0 and trigger[1] == 1 ) ) or \
        ( isData == 1 and ( isMuonEGDataset == 1 and trigger[0] == 0 and trigger[1] == 1 ) ) :
         if pass_baseline(e, mu, j) == 1 :
             if m.Pt() < 100.0 :#lowMET MuonEG                                                                                                            
-                plot_event_hist("hEMu_lowMET_MuonEG", e, mu, j, m)
+                plot_event_hist(isolation+"_lowMET_MuonEG", e, mu, j, m)
+            if len(s_b) > 0 : #bjet MuonEG
+                plot_event_hist(isolation+"_bjet_MuonEG", e, mu, j, m)
 
     if ( isData == 0 and ( trigger[0] == 1 and trigger[1] == 1 ) ) or \
        ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 and trigger[1] == 1 ) ):
         if pass_baseline(e, mu, j) == 1 :
-            if m.Pt() < 100.0 :#lowMET Both                                                                                                         
-                plot_event_hist("hEMu_lowMET_Both", e, mu, j, m)
+            if m.Pt() < 100.0 :#lowMET Both - SingleMuon                                   
+                plot_event_hist(isolation+"_lowMET_Both_SingleMuon", e, mu, j, m)
+            if len(s_b) > 0 : #bjet Both - SingleMuon
+                plot_event_hist(isolation+"_bjet_Both_SingleMuon", e, mu, j, m)
 
-    if ( isData == 0 and ( trigger[0] == 1 or trigger[1] == 1 ) ) or \
-       ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 ) ) or \
-       ( isData == 1 and ( isMuonEGDataset == 1 and ( trigger[0] == 1 and trigger[0] == 0 ) ) ) :
-
+    if ( isData == 0 and ( trigger[0] == 1 and trigger[1] == 1 ) ) or \
+       ( isData == 1 and ( isMuonEGDataset == 1 and trigger[0] == 1 and trigger[1] == 1 ) ) :
         if pass_baseline(e, mu, j) == 1 :
-            if len(s_b) == 0 : h['hEMu_Events'].Fill(2, genweight)
-
-            if m.Pt() < 100.0 : #lowMET
-                plot_event_hist("hEMu_lowMET", e, mu, j, m)
-
-            if len(s_b) > 0 : #non-zero b-jet
-                plot_event_hist("hEMu_bjet", e, mu, j, m)
-
-            if pass_deltaR(e, mu, j, "EMu") == 1:
-                h['hEMu_Nbjet'].Fill(len(s_b), genweight)
-                
-                if len(s_b) == 0 : #dRcut
-                    h['hEMu_Events'].Fill(3, genweight)
-                    plot_event_hist("hEMu_dRcut", e, mu, j ,m)
-
-                    if m.Pt() > 100.0 and isData == 0: #SR
-                        h['hEMu_Events'].Fill(4, genweight)
-                        plot_event_hist("hEMu_SR", e, mu, j, m)
-
-                        if abs(m.DeltaPhi(mu)) < 1.0 and abs( m.DeltaPhi(j) ) > 2.0 : #SR dPhicut
-                            h['hEMu_Events'].Fill(5, genweight)
-                            plot_event_hist("hEMu_SR_dPhicut", e, mu, j, m)
-
-                        if Mt((e+mu),m) < 40 :
-                            h['hEMu_Events'].Fill(6, genweight)
-                            plot_event_hist("hEMu_SR_mTcut", e, mu, j, m)
-                    
-                    if m.Pt() < 100.0 : #lowMET
-                        plot_event_hist("hEMu_dRcut_lowMET", e, mu, j, m)
-
-                if len(s_b) > 0 : #dRcut non-zero b-jet
-                    plot_event_hist("hEMu_dRcut_bjet", e, mu, j, m)
-
-                    if m.Pt() > 100.0 : #high MET non-zero b-jet
-                        plot_event_hist("hEMu_dRcut_highMET_bjet", e, mu, j, m)
-
-                    if m.Pt() < 100.0 : #lowMET non-zero b-jet
-                        plot_event_hist("hEMu_dRcut_lowMET_bjet", e, mu, j, m)
-
+            if m.Pt() < 100.0 :#lowMET Both - MuonEG
+                plot_event_hist(isolation+"_lowMET_Both_MuonEG", e, mu, j, m)
+            if len(s_b) > 0 : #bjet Both - MuonEG                                                                                                         
+                plot_event_hist(isolation+"_bjet_Both_MuonEG", e, mu, j, m) 
 
 
 def Mt(lepton, met):
@@ -417,6 +564,9 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    s_isomu = []
    s_isoe = []
 
+   s_nonIsoMu = []
+   s_nonIsoE = []
+
    unclean = []
    eclean = []
    mclean = []
@@ -437,15 +587,18 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                  s_b+=[jet]
 
    if muons.size()>0:
-      for i in range(muons.size()):
-         muon = muons.at(i)
-         if abs(muon.eta) < 2.4 : 
-             if muon.id >= 1:
-                 h['hMuonPt'].Fill(muon.pt, genweight) 
-                 s_mu+=[muon]
-                 if muon.iso < 0.25:
-                     h['hIsoMuonPt'].Fill(muon.pt, genweight)
-                     s_isomu+=[muon]
+       for i in range(muons.size()):
+           muon = muons.at(i)
+           if abs(muon.eta) < 2.4 : 
+               if muon.id >= 1:
+                   h['hMuonPt'].Fill(muon.pt, genweight) 
+                   s_mu+=[muon]
+                   if muon.iso < 0.25:
+                       h['hIsoMuonPt'].Fill(muon.pt, genweight)
+                       s_isomu+=[muon]
+                   if muon.iso > 0.25:
+                       h['hNonIsoMuonPt'].Fill(muon.pt, genweight)
+                       s_nonIsoMu+=[muon]
 
    if electrons.size()>0:
       for i in range(electrons.size()):
@@ -457,12 +610,18 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                  if electron.iso >= 1:
                      h['hIsoElectronPt'].Fill(electron.pt, genweight)
                      s_isoe+=[electron]
+                 if electron.iso == 0:
+                     h['hNonIsoElectronPt'].Fill(electron.pt, genweight)
+                     s_nonIsoE+=[electron]
 
    s_j.sort(key=lambda x: x.pt, reverse=True)
    s_e.sort(key=lambda x: x.pt, reverse=True)
    s_isoe.sort(key=lambda x: x.pt, reverse=True)
    s_mu.sort(key=lambda x: x.pt, reverse=True)
    s_isomu.sort(key=lambda x: x.pt, reverse=True)
+
+   s_nonIsoMu.sort(key=lambda x: x.pt, reverse=True)
+   s_nonIsoE.sort(key=lambda x: x.pt, reverse=True)
 
    isEMu = 0
    isMuMu = 0
@@ -472,6 +631,16 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
    if len(s_isomu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and s_isoe[0].charge*s_isomu[0].charge < 0 :
        EMu_Channel(s_isoe,s_isomu, s_j, met_pt, met_phi)
+
+   if isNonIso == True :
+       if len(s_nonIsoMu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and s_nonIsoMu[0].charge*s_isoe[0].charge < 0 :
+           EMu_Channel(s_isoe, s_nonIsoMu, s_j, met_pt, met_phi, "hEMu_nonIsoMu")
+
+       if len(s_isomu) > 0 and len(s_nonIsoE) > 0 and len(s_j) > 0 and s_isomu[0].charge*s_nonIsoE[0].charge < 0 :
+           EMu_Channel(s_nonIsoE, s_isomu, s_j, met_pt, met_phi, "hEMu_nonIsoE")
+
+       if len(s_mu) > 0 and len(s_e) > 0 and len(s_j) > 0 and s_mu[0].charge*s_e[0].charge < 0 :
+           EMu_Channel(s_e, s_mu, s_j, met_pt, met_phi, "hEMu_nonIso")
 
 
 out.cd()
