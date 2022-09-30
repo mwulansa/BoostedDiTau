@@ -114,6 +114,9 @@ def define_general_histogram():
     h['hEMu_nonIsoE_Events'] = ROOT.TH1F ("hEMu_nonIsoE_Events", "hEMu_Events;;N", 6, 1, 7)
     h['hEMu_nonIso_Events'] = ROOT.TH1F ("hEMu_nonIso_Events", "hEMu_Events;;N", 6, 1, 7)
 
+
+#-----Bjets-----
+
     h["hEMu_Nbjet"] = ROOT.TH1F ("hEMu_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
     h["hEMu_dRcut_Nbjet"] = ROOT.TH1F ("hEMu_dRcut_Nbjet", "hEMu_dRcut_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
     h["hEMu_lowMET_Nbjet"] = ROOT.TH1F ("hEMu_lowMET_Nbjet", "hEMu_lowMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
@@ -122,10 +125,27 @@ def define_general_histogram():
     h["hEMu_dRcut_lowMET_Nbjet"] = ROOT.TH1F ("hEMu_dRcut_lowMET_Nbjet", "hEMu_dRcut_lowMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
     h["hEMu_dRcut_highMET_Nbjet"] = ROOT.TH1F ("hEMu_dRcut_highMET_Nbjet", "hEMu_dRcut_highMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
 
+    h["hEMu_deepjet"] = ROOT.TH1F ("hEMu_deepjet", "hEMu_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_dRcut_deepjet"] = ROOT.TH1F ("hEMu_dRcut_deepjet", "hEMu_dRcut_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_lowMET_deepjet"] = ROOT.TH1F ("hEMu_lowMET_deepjet", "hEMu_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_highMET_deepjet"] = ROOT.TH1F ("hEMu_highMET_deepjet", "hEMu_highMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_dRcut_lowMET_deepjet"] = ROOT.TH1F ("hEMu_dRcut_lowMET_deepjet", "hEMu_dRcut_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_dRcut_highMET_deepjet"] = ROOT.TH1F ("hEMu_dRcut_highMET_deepjet", "hEMu_dRcut_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_dRcut_lowMET_dPhicut_deepjet"] = ROOT.TH1F ("hEMu_dRcut_lowMET_dPhicut_deepjet", "hEMu_dRcut_lowMET_dPhicut_deepjet ; deepjet score ; Events ", 100, 0, 1)
+
     h["hEMu_nonIsoMu_Nbjet"] = ROOT.TH1F ("hEMu_nonIsoMu_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
     h["hEMu_nonIsoE_Nbjet"] = ROOT.TH1F ("hEMu_nonIsoE_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
     h["hEMu_nonIso_Nbjet"] = ROOT.TH1F ("hEMu_nonIso_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
 
+    h["hEMu_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_deepjet_dRlbj", "hEMu_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_dRcut_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_dRcut_deepjet_dRlbj", "hEMu_dRcut_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+
+    h["hEMu_lowMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_lowMET_deepjet_dRlbj", "hEMu_lowMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_highMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_highMET_deepjet_dRlbj", "hEMu_highMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_dRcut_lowMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_dRcut_lowMET_deepjet_dRlbj", "hEMu_dRcut_lowMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_dRcut_highMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_dRcut_highMET_deepjet_dRlbj", "hEMu_dRcut_highMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+
+    
 
 #-----Objects-----
 
@@ -170,13 +190,28 @@ Regions = [
     "_dRcut_highMET_bjet1",
     "_dRcut_highMET_bjet2",
     "_dRcut_highMET_bjet3",
+    "_dRcut_bjet1",
+    "_dRcut_bjet2",
+    "_dRcut_bjet3",
     "_dRcut_lowMET_bjet",
+    "_dRcut_lowMET_bjet1",
+    "_dRcut_lowMET_bjet2",
+    "_dRcut_lowMET_bjet3",
     "_dRcut_highMET_dPhicut_bjet",
     "_dRcut_highMET_dPhicut_bjet1",
     "_dRcut_highMET_dPhicut_bjet2",
     "_dRcut_highMET_dPhicut_bjet3",
     "_dRcut_lowMET_dPhicut_bjet",
+    "_lowMET_bjet0",
+    "_lowMET_bjet1",
+    "_lowMET_bjet2",
+    "_lowMET_bjet3",
+    "_highMET_bjet0",
+    "_highMET_bjet1",
+    "_highMET_bjet2",
+    "_highMET_bjet3",
     "_lowMET",
+    "_highMET",
     "_bjet",
     "_SR_dPhicut",
     "_SR_mTcut"
@@ -316,12 +351,25 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
 
         if pass_baseline(e, mu, j) == 1 :
 
-            check_Nbjet(e, mu, j, m, isolation)
+            check_Nbjet(e, mu, j, m, js, isolation)
 
             if len(s_b) == 0 : h[isolation+'_Events'].Fill(2, genweight)
 
             if m.Pt() < 100.0 : #lowMET
                 plot_event_hist(isolation+"_lowMET", e, mu, j, m)
+
+                if len(s_b) == 0 : plot_event_hist(isolation+"_lowMET_bjet0", e, mu, j, m)
+                if len(s_b) == 1 : plot_event_hist(isolation+"_lowMET_bjet1", e, mu, j, m)
+                if len(s_b) == 2 : plot_event_hist(isolation+"_lowMET_bjet2", e, mu, j, m)
+                if len(s_b) > 1 : plot_event_hist(isolation+"_lowMET_bjet3", e, mu, j, m)
+
+            if m.Pt() > 100.0 : #highMET                                                                                                                     
+                plot_event_hist(isolation+"_highMET", e, mu, j, m)
+
+                if len(s_b) == 0 : plot_event_hist(isolation+"_highMET_bjet0", e, mu, j, m)
+                if len(s_b) == 1 : plot_event_hist(isolation+"_highMET_bjet1", e, mu, j, m)
+                if len(s_b) == 2 : plot_event_hist(isolation+"_highMET_bjet2", e, mu, j, m)
+                if len(s_b) > 1 : plot_event_hist(isolation+"_highMET_bjet3", e, mu, j, m)
 
             if len(s_b) > 0 : #non-zero b-jet
                 plot_event_hist(isolation+"_bjet", e, mu, j, m)
@@ -358,6 +406,10 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
                 if len(s_b) > 0 : #dRcut non-zero b-jet
                     plot_event_hist(isolation+"_dRcut_bjet", e, mu, j, m)
 
+                    if len(s_b) == 1 : plot_event_hist(isolation+"_dRcut_bjet1", e, mu, j, m)
+                    if len(s_b) == 2 : plot_event_hist(isolation+"_dRcut_bjet2", e, mu, j, m)
+                    if len(s_b) > 1 : plot_event_hist(isolation+"_dRcut_bjet3", e, mu, j, m)
+
                     if m.Pt() > 100.0 : #high MET non-zero b-jet
                         plot_event_hist(isolation+"_dRcut_highMET_bjet", e, mu, j, m)
 
@@ -379,39 +431,78 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
                     if m.Pt() < 100.0 : #lowMET non-zero b-jet
                         plot_event_hist(isolation+"_dRcut_lowMET_bjet", e, mu, j, m)
 
+                        if len(s_b) == 1 : plot_event_hist(isolation+"_dRcut_lowMET_bjet1", e, mu, j, m)
+                        if len(s_b) == 2 : plot_event_hist(isolation+"_dRcut_lowMET_bjet2", e, mu, j, m)
+                        if len(s_b) > 1 : plot_event_hist(isolation+"_dRcut_lowMET_bjet3", e, mu, j, m)
+
                         if np.cos(m.DeltaPhi(mu)) > 0.8 :
                             plot_event_hist(isolation+"_dRcut_lowMET_dPhicut_bjet", e, mu, j, m)
 
 
 
 
-def check_Nbjet(e, mu, j, m, isolation = "hEMu"):
+def check_Nbjet(e, mu, jv, m, js, isolation = "hEMu"):
 
     h[isolation+'_Nbjet'].Fill(len(s_b), genweight)
+    for i in range(len(js)):
+        h[isolation+'_deepjet'].Fill(js[i].deepjet, genweight)
 
-    if pass_deltaR(e, mu, j, "EMu") == 1:
+    if len(s_b) > 0 :
+        bj = ROOT.TLorentzVector()
+        bj.SetPtEtaPhiM(s_b[0].pt, s_b[0].eta, s_b[0].phi, s_b[0].mass)
+
+        h[isolation+'_deepjet_dRlbj'].Fill(s_b[0].deepjet, mu.DeltaR(bj), genweight)
+    
+    if pass_deltaR(e, mu, jv, "EMu") == 1:
 
         h[isolation+'_dRcut_Nbjet'].Fill(len(s_b), genweight)
+        for i in range(len(js)):
+            h[isolation+'_dRcut_deepjet'].Fill(js[i].deepjet, genweight)
+
+        if len(s_b) > 0 :
+            h[isolation+'_dRcut_deepjet_dRlbj'].Fill(s_b[0].deepjet, mu.DeltaR(bj), genweight)
         
         if m.Pt() < 100.0 :
 
             h[isolation+'_dRcut_lowMET_Nbjet'].Fill(len(s_b), genweight)
+            for i in range(len(js)):
+                h[isolation+'_dRcut_lowMET_deepjet'].Fill(js[i].deepjet, genweight)
+
+            if len(s_b) > 0:
+                h[isolation+'_dRcut_lowMET_deepjet_dRlbj'].Fill(s_b[0].deepjet, mu.DeltaR(bj), genweight)
 
             if np.cos(m.DeltaPhi(mu)) > 0.8 :
 
                 h[isolation+'_dRcut_lowMET_dPhicut_Nbjet'].Fill(len(s_b), genweight)
+                for i in range(len(js)):
+                    h[isolation+'_dRcut_lowMET_dPhicut_deepjet'].Fill(js[i].deepjet, genweight)
 
-        if m.Pt() > 100.0 :
+        if m.Pt() > 100.0 and isData == 0:
 
             h[isolation+'_dRcut_highMET_Nbjet'].Fill(len(s_b), genweight)
+            for i in range(len(js)):
+                h[isolation+'_dRcut_highMET_deepjet'].Fill(js[i].deepjet, genweight)
+
+            if len(s_b) > 0:
+                h[isolation+'_dRcut_highMET_deepjet_dRlbj'].Fill(s_b[0].deepjet, mu.DeltaR(bj), genweight)
 
     if m.Pt() < 100.0 :
 
         h[isolation+'_lowMET_Nbjet'].Fill(len(s_b), genweight)
+        for i in range(len(js)):
+            h[isolation+'_lowMET_deepjet'].Fill(js[i].deepjet, genweight)
+
+        if len(s_b) > 0:
+            h[isolation+'_lowMET_deepjet_dRlbj'].Fill(s_b[0].deepjet, mu.DeltaR(bj), genweight)
 
     if m.Pt() > 100.0 :
 
         h[isolation+'_highMET_Nbjet'].Fill(len(s_b), genweight)
+        for i in range(len(js)):
+            h[isolation+'_highMET_deepjet'].Fill(js[i].deepjet, genweight)
+
+        if len(s_b) > 0:
+            h[isolation+'_highMET_deepjet_dRlbj'].Fill(s_b[0].deepjet, mu.DeltaR(bj), genweight)
 
 
 def trigger_study(e, mu, j , m, trigger):
