@@ -81,7 +81,8 @@ def define_event_histogram(region):
     h[region+"_JetPt"] = ROOT.TH1F (region+"_JetPt", region+"_JetPt ; JetP_{T} (GeV) ; Events ", 2000, 0, 2000)
     h[region+"_MetPt"] = ROOT.TH1F (region+"_MetPt", region+"_MetPt ; MET (GeV) ; Events ", 500, 0, 500)
     h[region+"_Nj"] = ROOT.TH1F (region+"_Nj", region+"_Nj ; N_{j} ; Events ", 10, 0, 10)
-    h[region+"_dR"] = ROOT.TH2F (region+"_dR", region+"_dR ; dR(leptons) ; dR(jet, ditau)", 100, 0, 5, 100, 0, 5)
+    h[region+"_dRl"] = ROOT.TH1F (region+"_dRl", region+"_dRl ; dR(leptons) ; Events", 100, 0, 5)
+    h[region+"_dRj"] = ROOT.TH1F (region+"_dRj", region+"_dRj ; dR(jet, ditau) ; Events", 100, 0, 5)
     h[region+"_dPhil"] = ROOT.TH2F (region+"_dPhil", region+"_dPhil ; dPhi(met,lepton1) ; dPhi(met,lepton2)",  100, -pi, pi, 100, -pi, pi)
     h[region+"_dPhi"] = ROOT.TH2F (region+"_dPhi", region+"_dPhi ; dPhi(met,ditau) ; dPhi(met,jet)",  100, -pi, pi, 100, -pi, pi)
 
@@ -113,6 +114,7 @@ def define_general_histogram():
     h['hEMu_nonIsoMu_Events'] = ROOT.TH1F ("hEMu_nonIsoMu_Events", "hEMu_Events;;N", 6, 1, 7)
     h['hEMu_nonIsoE_Events'] = ROOT.TH1F ("hEMu_nonIsoE_Events", "hEMu_Events;;N", 6, 1, 7)
     h['hEMu_nonIso_Events'] = ROOT.TH1F ("hEMu_nonIso_Events", "hEMu_Events;;N", 6, 1, 7)
+    h['hEMu_withoutMuMu_Events'] = ROOT.TH1F ("hEMu_withoutMuMu_Events", "hEMu_Events;;N", 6, 1, 7)
 
 
 #-----Bjets-----
@@ -133,6 +135,38 @@ def define_general_histogram():
     h["hEMu_dRcut_highMET_deepjet"] = ROOT.TH1F ("hEMu_dRcut_highMET_deepjet", "hEMu_dRcut_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
     h["hEMu_dRcut_lowMET_dPhicut_deepjet"] = ROOT.TH1F ("hEMu_dRcut_lowMET_dPhicut_deepjet", "hEMu_dRcut_lowMET_dPhicut_deepjet ; deepjet score ; Events ", 100, 0, 1)
 
+    h["hEMu_withoutMuMu_Nbjet"] = ROOT.TH1F ("hEMu_withoutMuMu_Nbjet", "hEMu_withoutMuMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_withoutMuMu_dRcut_Nbjet"] = ROOT.TH1F ("hEMu_withoutMuMu_dRcut_Nbjet", "hEMu_withoutMuMu_dRcut_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_withoutMuMu_lowMET_Nbjet"] = ROOT.TH1F ("hEMu_withoutMuMu_lowMET_Nbjet", "hEMu_withoutMuMu_lowMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_withoutMuMu_highMET_Nbjet"] = ROOT.TH1F ("hEMu_withoutMuMu_highMET_Nbjet", "hEMu_withoutMuMu_highMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_withoutMuMu_dRcut_lowMET_dPhicut_Nbjet"] = ROOT.TH1F ("hEMu_withoutMuMu_dRcut_lowMET_dPhicut_Nbjet", "hEMu_withoutMuMu_dRcut_lowMET_dPhicut_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_withoutMuMu_dRcut_lowMET_Nbjet"] = ROOT.TH1F ("hEMu_withoutMuMu_dRcut_lowMET_Nbjet", "hEMu_withoutMuMu_dRcut_lowMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hEMu_withoutMuMu_dRcut_highMET_Nbjet"] = ROOT.TH1F ("hEMu_withoutMuMu_dRcut_highMET_Nbjet", "hEMu_withoutMuMu_dRcut_highMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+
+    h["hEMu_withoutMuMu_deepjet"] = ROOT.TH1F ("hEMu_withoutMuMu_deepjet", "hEMu_withoutMuMu_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_withoutMuMu_dRcut_deepjet"] = ROOT.TH1F ("hEMu_withoutMuMu_dRcut_deepjet", "hEMu_withoutMuMu_dRcut_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_withoutMuMu_lowMET_deepjet"] = ROOT.TH1F ("hEMu_withoutMuMu_lowMET_deepjet", "hEMu_withoutMuMu_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_withoutMuMu_highMET_deepjet"] = ROOT.TH1F ("hEMu_withoutMuMu_highMET_deepjet", "hEMu_withoutMuMu_highMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_withoutMuMu_dRcut_lowMET_deepjet"] = ROOT.TH1F ("hEMu_withoutMuMu_dRcut_lowMET_deepjet", "hEMu_withoutMuMu_dRcut_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_withoutMuMu_dRcut_highMET_deepjet"] = ROOT.TH1F ("hEMu_withoutMuMu_dRcut_highMET_deepjet", "hEMu_withoutMuMu_dRcut_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hEMu_withoutMuMu_dRcut_lowMET_dPhicut_deepjet"] = ROOT.TH1F ("hEMu_withoutMuMu_dRcut_lowMET_dPhicut_deepjet", "hEMu_withoutMuMu_dRcut_lowMET_dPhicut_deepjet ; deepjet score ; Events ", 100, 0, 1)
+
+    h["hMuMu_Nbjet"] = ROOT.TH1F ("hMuMu_Nbjet", "hMuMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hMuMu_dRcut_Nbjet"] = ROOT.TH1F ("hMuMu_dRcut_Nbjet", "hMuMu_dRcut_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hMuMu_lowMET_Nbjet"] = ROOT.TH1F ("hMuMu_lowMET_Nbjet", "hMuMu_lowMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hMuMu_highMET_Nbjet"] = ROOT.TH1F ("hMuMu_highMET_Nbjet", "hMuMu_highMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hMuMu_dRcut_lowMET_dPhicut_Nbjet"] = ROOT.TH1F ("hMuMu_dRcut_lowMET_dPhicut_Nbjet", "hMuMu_dRcut_lowMET_dPhicut_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hMuMu_dRcut_lowMET_Nbjet"] = ROOT.TH1F ("hMuMu_dRcut_lowMET_Nbjet", "hMuMu_dRcut_lowMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+    h["hMuMu_dRcut_highMET_Nbjet"] = ROOT.TH1F ("hMuMu_dRcut_highMET_Nbjet", "hMuMu_dRcut_highMET_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
+
+    h["hMuMu_deepjet"] = ROOT.TH1F ("hMuMu_deepjet", "hMuMu_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hMuMu_dRcut_deepjet"] = ROOT.TH1F ("hMuMu_dRcut_deepjet", "hMuMu_dRcut_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hMuMu_lowMET_deepjet"] = ROOT.TH1F ("hMuMu_lowMET_deepjet", "hMuMu_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hMuMu_highMET_deepjet"] = ROOT.TH1F ("hMuMu_highMET_deepjet", "hMuMu_highMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hMuMu_dRcut_lowMET_deepjet"] = ROOT.TH1F ("hMuMu_dRcut_lowMET_deepjet", "hMuMu_dRcut_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hMuMu_dRcut_highMET_deepjet"] = ROOT.TH1F ("hMuMu_dRcut_highMET_deepjet", "hMuMu_dRcut_lowMET_deepjet ; deepjet score ; Events ", 100, 0, 1)
+    h["hMuMu_dRcut_lowMET_dPhicut_deepjet"] = ROOT.TH1F ("hMuMu_dRcut_lowMET_dPhicut_deepjet", "hMuMu_dRcut_lowMET_dPhicut_deepjet ; deepjet score ; Events ", 100, 0, 1)
+
     h["hEMu_nonIsoMu_Nbjet"] = ROOT.TH1F ("hEMu_nonIsoMu_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
     h["hEMu_nonIsoE_Nbjet"] = ROOT.TH1F ("hEMu_nonIsoE_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
     h["hEMu_nonIso_Nbjet"] = ROOT.TH1F ("hEMu_nonIso_Nbjet", "hEMu_Nbjet ; N_{bjet} ; Events ", 10, 0, 10)
@@ -145,7 +179,21 @@ def define_general_histogram():
     h["hEMu_dRcut_lowMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_dRcut_lowMET_deepjet_dRlbj", "hEMu_dRcut_lowMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
     h["hEMu_dRcut_highMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_dRcut_highMET_deepjet_dRlbj", "hEMu_dRcut_highMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
 
-    
+    h["hEMu_withoutMuMu_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_withoutMuMu_deepjet_dRlbj", "hEMu_withoutMuMu_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_withoutMuMu_dRcut_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_withoutMuMu_dRcut_deepjet_dRlbj", "hEMu_withoutMuMu_dRcut_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_withoutMuMu_lowMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_withoutMuMu_lowMET_deepjet_dRlbj", "hEMu_withoutMuMu_lowMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_withoutMuMu_highMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_withoutMuMu_highMET_deepjet_dRlbj", "hEMu_withoutMuMu_highMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_withoutMuMu_dRcut_lowMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_withoutMuMu_dRcut_lowMET_deepjet_dRlbj", "hEMu_withoutMuMu_dRcut_lowMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hEMu_withoutMuMu_dRcut_highMET_deepjet_dRlbj"] = ROOT.TH2F ("hEMu_withoutMuMu_dRcut_highMET_deepjet_dRlbj", "hEMu_withoutMuMu_dRcut_highMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+
+
+    h["hMuMu_deepjet_dRlbj"] = ROOT.TH2F ("hMuMu_deepjet_dRlbj", "hMuMu_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hMuMu_dRcut_deepjet_dRlbj"] = ROOT.TH2F ("hMuMu_dRcut_deepjet_dRlbj", "hMuMu_dRcut_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hMuMu_lowMET_deepjet_dRlbj"] = ROOT.TH2F ("hMuMu_lowMET_deepjet_dRlbj", "hMuMu_lowMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hMuMu_highMET_deepjet_dRlbj"] = ROOT.TH2F ("hMuMu_highMET_deepjet_dRlbj", "hMuMu_highMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5)
+    h["hMuMu_dRcut_lowMET_deepjet_dRlbj"] = ROOT.TH2F ("hMuMu_dRcut_lowMET_deepjet_dRlbj", "hMuMu_dRcut_lowMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+    h["hMuMu_dRcut_highMET_deepjet_dRlbj"] = ROOT.TH2F ("hMuMu_dRcut_highMET_deepjet_dRlbj", "hMuMu_dRcut_highMET_deepjet_dRlbj ; deepjet score ; dR(l,bj) ", 100, 0, 1, 100, 0, 5 )
+
 
 #-----Objects-----
 
@@ -167,6 +215,72 @@ def define_general_histogram():
     h['hTauBoostedPt'] = ROOT.TH1F ("hTauBoostedPt", "Boosted Tau P_{T}; P_{T}; a.u.", 500, 0, 500)
 
 
+def cut_flow_hists():
+
+    h['MuonEvent_MuonPt_SingleMuon'] = ROOT.TH1F( "MuonEvent_MuonPt_SingleMuon" , "MuonEvent_MuonPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonEvent_MetPt_SingleMuon'] = ROOT.TH1F( "MuonEvent_MetPt_SingleMuon" , "MuonEvent_MetPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+
+    h['MuonElectronEvent_MuonPt_SingleMuon'] = ROOT.TH1F( "MuonElectronEvent_MuonPt_SingleMuon" , "MuonElectronEvent_MuonPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_ElectronPt_SingleMuon'] = ROOT.TH1F( "MuonElectronEvent_ElectronPt_SingleMuon" , "MuonElectronEvent_ElectronPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_MetPt_SingleMuon'] = ROOT.TH1F( "MuonElectronEvent_MetPt_SingleMuon" , "MuonElectronEvent_MetPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_dRl_SingleMuon'] = ROOT.TH1F( "MuonElectronEvent_dRl_SingleMuon" , "MuonElectronEvent_dRl_SingleMuon; P_{T} (GeV), Events", 100, 0, 5)
+
+    h['MuonElectronEvent_MuonPt_MuonEG'] = ROOT.TH1F( "MuonElectronEvent_MuonPt_MuonEG" , "MuonElectronEvent_MuonPt_MuonEG; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_ElectronPt_MuonEG'] = ROOT.TH1F( "MuonElectronEvent_ElectronPt_MuonEG" , "MuonElectronEvent_ElectronPt_MuonEG; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_MetPt_MuonEG'] = ROOT.TH1F( "MuonElectronEvent_MetPt_MuonEG" , "MuonElectronEvent_MetPt_MuonEG; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_dRl_MuonEG'] = ROOT.TH1F( "MuonElectronEvent_dRl_MuonEG" , "MuonElectronEvent_dRl_MuonEG; P_{T} (GeV), Events", 100, 0, 5)
+
+    h['MuonElectronEvent_MuonPt_Both'] = ROOT.TH1F( "MuonElectronEvent_MuonPt_Both" , "MuonElectronEvent_MuonPt_Both; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_ElectronPt_Both'] = ROOT.TH1F( "MuonElectronEvent_ElectronPt_Both" , "MuonElectronEvent_ElectronPt_Both; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_MetPt_Both'] = ROOT.TH1F( "MuonElectronEvent_MetPt_Both" , "MuonElectronEvent_MetPt_Both; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronEvent_dRl_Both'] = ROOT.TH1F( "MuonElectronEvent_dRl_Both" , "MuonElectronEvent_dRl_Both; P_{T} (GeV), Events", 100, 0, 5)
+
+    h['MuonElectronJetEvent_MuonPt_SingleMuon'] = ROOT.TH1F( "MuonElectronJetEvent_MuonPt_SingleMuon" , "MuonElectronJetEvent_MuonPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_ElectronPt_SingleMuon'] = ROOT.TH1F( "MuonElectronJetEvent_ElectronPt_SingleMuon" , "MuonElectronJetEvent_ElectronPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_JetPt_SingleMuon'] = ROOT.TH1F( "MuonElectronJetEvent_JetPt_SingleMuon" , "MuonElectronJetEvent_JetPt_SingleMuon; P_{T} (GeV), Events", 2000, 0, 2000)
+    h['MuonElectronJetEvent_MetPt_SingleMuon'] = ROOT.TH1F( "MuonElectronJetEvent_MetPt_SingleMuon" , "MuonElectronJetEvent_MetPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_dRl_SingleMuon'] = ROOT.TH1F( "MuonElectronJetEvent_dRl_SingleMuon" , "MuonElectronJetEvent_dRl_SingleMuon; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJetEvent_dRj_SingleMuon'] = ROOT.TH1F( "MuonElectronJetEvent_dRj_SingleMuon" , "MuonElectronJetEvent_dRj_SingleMuon; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJetEvent_deepjet_SingleMuon'] = ROOT.TH1F( 'MuonElectronJetEvent_deepjet_SingleMuon', 'MuonElectronJetEvent_deepjet_SingleMuon; deepjet; Events', 100, 0, 1)
+
+    h['MuonElectronJetEvent_MuonPt_MuonEG'] = ROOT.TH1F( "MuonElectronJetEvent_MuonPt_MuonEG" , "MuonElectronJetEvent_MuonPt_MuonEG; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_ElectronPt_MuonEG'] = ROOT.TH1F( "MuonElectronJetEvent_ElectronPt_MuonEG" , "MuonElectronJetEvent_ElectronPt_MuonEG; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_JetPt_MuonEG'] = ROOT.TH1F( "MuonElectronJetEvent_JetPt_MuonEG" , "MuonElectronJetEvent_JetPt_MuonEG; P_{T} (GeV), Events", 2000, 0, 2000)
+    h['MuonElectronJetEvent_MetPt_MuonEG'] = ROOT.TH1F( "MuonElectronJetEvent_MetPt_MuonEG" , "MuonElectronJetEvent_MetPt_MuonEG; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_dRl_MuonEG'] = ROOT.TH1F( "MuonElectronJetEvent_dRl_MuonEG" , "MuonElectronJetEvent_dRl_MuonEG; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJetEvent_dRj_MuonEG'] = ROOT.TH1F( "MuonElectronJetEvent_dRj_MuonEG" , "MuonElectronJetEvent_dRj_MuonEG; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJetEvent_deepjet_MuonEG'] = ROOT.TH1F( 'MuonElectronJetEvent_deepjet_MuonEG', 'MuonElectronJetEvent_deepjet_MuonEG; deepjet; Events', 100, 0, 1)
+
+    h['MuonElectronJetEvent_MuonPt_Both'] = ROOT.TH1F( "MuonElectronJetEvent_MuonPt_Both" , "MuonElectronJetEvent_MuonPt_Both; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_ElectronPt_Both'] = ROOT.TH1F( "MuonElectronJetEvent_ElectronPt_Both" , "MuonElectronJetEvent_ElectronPt_Both; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_JetPt_Both'] = ROOT.TH1F( "MuonElectronJetEvent_JetPt_Both" , "MuonElectronJetEvent_JetPt_Both; P_{T} (GeV), Events", 2000, 0, 2000)
+    h['MuonElectronJetEvent_MetPt_Both'] = ROOT.TH1F( "MuonElectronJetEvent_MetPt_Both" , "MuonElectronJetEvent_MetPt_Both; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJetEvent_dRl_Both'] = ROOT.TH1F( "MuonElectronJetEvent_dRl_Both" , "MuonElectronJetEvent_dRl_Both; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJetEvent_dRj_Both'] = ROOT.TH1F( "MuonElectronJetEvent_dRj_Both" , "MuonElectronJetEvent_dRj_Both; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJetEvent_deepjet_Both'] = ROOT.TH1F( 'MuonElectronJetEvent_deepjet_Both', 'MuonElectronJetEvent_deepjet_Both; deepjet; Events', 100, 0, 1)
+
+    h['MuonElectronJethighMetEvent_MuonPt_SingleMuon'] = ROOT.TH1F( "MuonElectronJethighMetEvent_MuonPt_SingleMuon" , "MuonElectronJethighMetEvent_MuonPt_SingleMuon; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJethighMetEvent_ElectronPt_SingleMuon'] = ROOT.TH1F( "MuonElectronJethighMetEvent_ElectronPt_SingleMuon" , "MuonElectronJethighMetEvent_ElectronPt_SingleMuon;P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJethighMetEvent_JetPt_SingleMuon'] = ROOT.TH1F( "MuonElectronJethighMetEvent_JetPt_SingleMuon" , "MuonElectronJethighMetEvent_JetPt_SingleMuon; P_{T} (GeV), Events", 2000, 0, 2000)
+    h['MuonElectronJethighMetEvent_dRl_SingleMuon'] = ROOT.TH1F( "MuonElectronJethighMetEvent_dRl_SingleMuon" , "MuonElectronJethighMetEvent_dRl_SingleMuon; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJethighMetEvent_dRj_SingleMuon'] = ROOT.TH1F( "MuonElectronJethighMetEvent_dRj_SingleMuon" , "MuonElectronJethighMetEvent_dRj_SingleMuon; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJethighMetEvent_deepjet_SingleMuon'] = ROOT.TH1F( 'MuonElectronJethighMetEvent_deepjet_SingleMuon', 'MuonElectronJethighMetEvent_deepjet_SingleMuon; deepjet; Events', 100, 0, 1)
+
+    h['MuonElectronJethighMetEvent_MuonPt_MuonEG'] = ROOT.TH1F( "MuonElectronJethighMetEvent_MuonPt_MuonEG" , "MuonElectronJethighMetEvent_MuonPt_MuonEG; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJethighMetEvent_ElectronPt_MuonEG'] = ROOT.TH1F( "MuonElectronJethighMetEvent_ElectronPt_MuonEG" , "MuonElectronJethighMetEvent_ElectronPt_MuonEG; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJethighMetEvent_JetPt_MuonEG'] = ROOT.TH1F( "MuonElectronJethighMetEvent_JetPt_MuonEG" , "MuonElectronJethighMetEvent_JetPt_MuonEG; P_{T} (GeV), Events", 2000, 0, 2000)
+    h['MuonElectronJethighMetEvent_dRl_MuonEG'] = ROOT.TH1F( "MuonElectronJethighMetEvent_dRl_MuonEG" , "MuonElectronJethighMetEvent_dRl_MuonEG; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJethighMetEvent_dRj_MuonEG'] = ROOT.TH1F( "MuonElectronJethighMetEvent_dRj_MuonEG" , "MuonElectronJethighMetEvent_dRj_MuonEG; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJethighMetEvent_deepjet_MuonEG'] = ROOT.TH1F( 'MuonElectronJethighMetEvent_deepjet_MuonEG', 'MuonElectronJethighMetEvent_deepjet_MuonEG; deepjet; Events', 100, 0, 1)
+
+    h['MuonElectronJethighMetEvent_MuonPt_Both'] = ROOT.TH1F( "MuonElectronJethighMetEvent_MuonPt_Both" , "MuonElectronJethighMetEvent_MuonPt_Both; P_{T} (GeV), Events", 500, 0,500)
+    h['MuonElectronJethighMetEvent_ElectronPt_Both'] = ROOT.TH1F( "MuonElectronJethighMetEvent_ElectronPt_Both" , "MuonElectronJethighMetEvent_ElectronPt_Both; P_{T} (GeV), Events", 500, 0, 500)
+    h['MuonElectronJethighMetEvent_JetPt_Both'] = ROOT.TH1F( "MuonElectronJethighMetEvent_JetPt_Both" , "MuonElectronJethighMetEvent_JetPt_Both; P_{T} (GeV), Events", 2000, 0, 2000)
+    h['MuonElectronJethighMetEvent_dRl_Both'] = ROOT.TH1F( "MuonElectronJethighMetEvent_dRl_Both" , "MuonElectronJethighMetEvent_dRl_Both; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJethighMetEvent_dRj_Both'] = ROOT.TH1F( "MuonElectronJethighMetEvent_dRj_Both" , "MuonElectronJethighMetEvent_dRj_Both; P_{T} (GeV), Events", 100, 0, 5)
+    h['MuonElectronJethighMetEvent_deepjet_Both'] = ROOT.TH1F( 'MuonElectronJethighMetEvent_deepjet_Both', 'MuonElectronJethighMetEvent_deepjet_Both; deepjet; Events', 100, 0, 1)
+
+
 hist_regions = []
 
 trigger_regions = [
@@ -181,6 +295,7 @@ trigger_regions = [
 ]
 
 Regions = [
+    "_baseline",
     "_dRcut",
     "_SR",
     "_dRcut_lowMET",
@@ -223,7 +338,8 @@ if triggerStudy == True:
 isoRegions = ["hEMu",
              "hEMu_nonIsoMu",
              "hEMu_nonIsoE",
-             "hEMu_nonIso"
+             "hEMu_nonIso",
+              "hEMu_withoutMuMu"
 ]
 
 isoPlotRegions = []
@@ -249,6 +365,7 @@ for r in hist_regions:
     define_event_histogram(r)
 
 define_general_histogram()
+cut_flow_hists()
 
 for key in h.keys():
     h[key].Sumw2()
@@ -294,7 +411,7 @@ def pass_baseline(l1, l2, j):
         return -9999
 
 
-def MuMu_Channel(mu, js, met_pt, met_phi):
+def MuMu_Channel(mu, js, met_pt, met_phi, plot=False):
 
     isMuMu = 0
     h['hMuMu_Events'].Fill(1, genweight)
@@ -313,16 +430,21 @@ def MuMu_Channel(mu, js, met_pt, met_phi):
         if ( isData == 0 and isSingleMuonEvent == 1 ) or \
            ( isData == 1 and isSingleMuonDataset == 1 and isSingleMuonEvent == 1 ) :
 
-            plot_event_hist("hMuMu_Baseline", mu1, mu2, j, m)
+            if plot == True:
+
+                check_Nbjet(mu1, mu2, j, m, js, "hMuMu")            
+                plot_event_hist("hMuMu_Baseline", mu1, mu2, j, m)
 
             if pass_deltaR(mu1, mu2, j, "MuMu"):
-                plot_event_hist('hMuMu_dRcut', mu1, mu2, j, m)
+
+                if plot==True: plot_event_hist('hMuMu_dRcut', mu1, mu2, j, m)
 
                 if m.Pt() > 100:
-                    plot_event_hist('hMuMu_dRcut_highMET', mu1, mu2, j, m)
+                    if plot==True: plot_event_hist('hMuMu_dRcut_highMET', mu1, mu2, j, m)
 
                     if abs(m.DeltaPhi(mu1)) < 1 and abs(m.DeltaPhi(j)) > 2:
-                        plot_event_hist('hMuMu_SR_dRcut_highMET_dPhicut', mu1, mu2, j, m)
+                        if plot==True: plot_event_hist('hMuMu_SR_dRcut_highMET_dPhicut', mu1, mu2, j, m)
+
                         isMuMu = 1
 
     return isMuMu
@@ -350,6 +472,7 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
        ( isData == 1 and ( isMuonEGDataset == 1 and ( trigger[0] == 0 and trigger[1] == 1 ) ) ) :
 
         if pass_baseline(e, mu, j) == 1 :
+            plot_event_hist(isolation+"_baseline", e, mu, j, m)
 
             check_Nbjet(e, mu, j, m, js, isolation)
 
@@ -507,6 +630,14 @@ def check_Nbjet(e, mu, jv, m, js, isolation = "hEMu"):
 
 def trigger_study(e, mu, j , m, trigger):
 
+    if trigger[0] == 1 :
+        if pass_baseline(e, mu, j) == 1 :
+            plot_event_hist(isolation+"_Baseline_SingleMuon", e, mu, j ,m)
+
+    if trigger[1] == 1 :
+        if pass_baseline(e, mu, j) == 1 :
+            plot_event_hist(isolation+"_Baseline_MuonEG", e, mu, j ,m)
+
     if ( isData == 0 and ( trigger[0] == 1 and trigger[1] == 0 ) ) or \
        ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 and trigger[1] == 0 ) ) :
         if pass_baseline(e, mu, j) == 1 :
@@ -540,6 +671,129 @@ def trigger_study(e, mu, j , m, trigger):
                 plot_event_hist(isolation+"_bjet_Both_MuonEG", e, mu, j, m) 
 
 
+def check_cut_flow(muons, electrons, jets):
+
+    trigger = [0,0]
+
+    mu = ROOT.TLorentzVector()
+    mu.SetPtEtaPhiM(muons[0].pt, muons[0].eta, muons[0].phi, muons[0].mass)
+
+    if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) : trigger[0] = 1
+
+    if trigger[0] == 1:
+        h['MuonEvent_MuonPt_SingleMuon'].Fill(mu.Pt(), genweight)
+        h['MuonEvent_MetPt_SingleMuon'].Fill(met_pt, genweight)
+
+        if len(electrons) > 0 and muons[0].charge*electrons[0].charge < 0 :
+
+            e = ROOT.TLorentzVector()
+            e.SetPtEtaPhiM(electrons[0].pt, electrons[0].eta, electrons[0].phi, electrons[0].mass)
+
+            h['MuonElectronEvent_MuonPt_SingleMuon'].Fill(mu.Pt(), genweight)
+            h['MuonElectronEvent_ElectronPt_SingleMuon'].Fill(e.Pt(), genweight)
+            h['MuonElectronEvent_MetPt_SingleMuon'].Fill(met_pt, genweight)
+            h['MuonElectronEvent_dRl_SingleMuon'].Fill(mu.DeltaR(e), genweight)
+
+            if len(jets) > 0 :
+
+                j = ROOT.TLorentzVector()
+                j.SetPtEtaPhiM(jets[0].pt, jets[0].eta, jets[0].phi, jets[0].mass)
+
+                h['MuonElectronJetEvent_MuonPt_SingleMuon'].Fill(mu.Pt(), genweight)
+                h['MuonElectronJetEvent_ElectronPt_SingleMuon'].Fill(e.Pt(), genweight)
+                h['MuonElectronJetEvent_JetPt_SingleMuon'].Fill(j.Pt(), genweight)
+                h['MuonElectronJetEvent_MetPt_SingleMuon'].Fill(met_pt, genweight)
+                h['MuonElectronJetEvent_dRl_SingleMuon'].Fill(mu.DeltaR(e), genweight)
+                h['MuonElectronJetEvent_dRj_SingleMuon'].Fill(j.DeltaR(e+mu), genweight)
+                for i in range(len(jets)):
+                    h['MuonElectronJetEvent_deepjet_SingleMuon'].Fill(jets[i].deepjet, genweight)
+
+                if met_pt > 100.0 :
+
+                    h['MuonElectronJethighMetEvent_MuonPt_SingleMuon'].Fill(mu.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_ElectronPt_SingleMuon'].Fill(e.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_JetPt_SingleMuon'].Fill(j.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_dRl_SingleMuon'].Fill(mu.DeltaR(e), genweight)
+                    h['MuonElectronJethighMetEvent_dRj_SingleMuon'].Fill(j.DeltaR(e+mu), genweight)
+                    for i in range(len(jets)):
+                        h['MuonElectronJethighMetEvent_deepjet_SingleMuon'].Fill(jets[i].deepjet, genweight)
+
+
+    if len(electrons) > 0 and muons[0].charge*electrons[0].charge < 0 :
+        
+        e = ROOT.TLorentzVector()
+        e.SetPtEtaPhiM(electrons[0].pt, electrons[0].eta, electrons[0].phi, electrons[0].mass)
+
+        if ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) : trigger[1] = 1
+
+        if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) : trigger[0] = 1
+
+        if trigger[1] == 1:
+
+            h['MuonElectronEvent_MuonPt_MuonEG'].Fill(mu.Pt(), genweight)
+            h['MuonElectronEvent_ElectronPt_MuonEG'].Fill(e.Pt(), genweight)
+            h['MuonElectronEvent_MetPt_MuonEG'].Fill(met_pt, genweight)
+            h['MuonElectronEvent_dRl_MuonEG'].Fill(mu.DeltaR(e), genweight)
+
+            if len(jets) > 0 :
+
+                j = ROOT.TLorentzVector()
+                j.SetPtEtaPhiM(jets[0].pt, jets[0].eta, jets[0].phi, jets[0].mass)
+
+                h['MuonElectronJetEvent_MuonPt_MuonEG'].Fill(mu.Pt(), genweight)
+                h['MuonElectronJetEvent_ElectronPt_MuonEG'].Fill(e.Pt(), genweight)
+                h['MuonElectronJetEvent_JetPt_MuonEG'].Fill(j.Pt(), genweight)
+                h['MuonElectronJetEvent_MetPt_MuonEG'].Fill(met_pt, genweight)
+                h['MuonElectronJetEvent_dRl_MuonEG'].Fill(mu.DeltaR(e), genweight)
+                h['MuonElectronJetEvent_dRj_MuonEG'].Fill(j.DeltaR(e+mu), genweight)
+                for i in range(len(jets)):
+                    h['MuonElectronJetEvent_deepjet_MuonEG'].Fill(jets[i].deepjet, genweight)
+
+                if met_pt > 100.0 :
+
+                    h['MuonElectronJethighMetEvent_MuonPt_MuonEG'].Fill(mu.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_ElectronPt_MuonEG'].Fill(e.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_JetPt_MuonEG'].Fill(j.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_dRl_MuonEG'].Fill(mu.DeltaR(e), genweight)
+                    h['MuonElectronJethighMetEvent_dRj_MuonEG'].Fill(j.DeltaR(e+mu), genweight)
+                    for i in range(len(jets)):
+                        h['MuonElectronJethighMetEvent_deepjet_MuonEG'].Fill(jets[i].deepjet, genweight)
+
+
+        if ( isData == 0 and ( trigger[0] == 1 or trigger[1] == 1 ) ) or \
+           ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 ) ) or \
+           ( isData == 1 and ( isMuonEGDataset == 1 and ( trigger[0] == 0 and trigger[1] == 1 ) ) ) :
+
+            h['MuonElectronEvent_MuonPt_Both'].Fill(mu.Pt(), genweight)
+            h['MuonElectronEvent_ElectronPt_Both'].Fill(e.Pt(), genweight)
+            h['MuonElectronEvent_MetPt_Both'].Fill(met_pt, genweight)
+            h['MuonElectronEvent_dRl_Both'].Fill(mu.DeltaR(e), genweight)
+
+            if len(jets) > 0 :
+
+                j = ROOT.TLorentzVector()
+                j.SetPtEtaPhiM(jets[0].pt, jets[0].eta, jets[0].phi, jets[0].mass)
+
+                h['MuonElectronJetEvent_MuonPt_Both'].Fill(mu.Pt(), genweight)
+                h['MuonElectronJetEvent_ElectronPt_Both'].Fill(e.Pt(), genweight)
+                h['MuonElectronJetEvent_JetPt_Both'].Fill(j.Pt(), genweight)
+                h['MuonElectronJetEvent_MetPt_Both'].Fill(met_pt, genweight)
+                h['MuonElectronJetEvent_dRl_Both'].Fill(mu.DeltaR(e), genweight)
+                h['MuonElectronJetEvent_dRj_Both'].Fill(j.DeltaR(e+mu), genweight)
+                for i in range(len(jets)):
+                    h['MuonElectronJetEvent_deepjet_Both'].Fill(jets[i].deepjet, genweight)
+
+                if met_pt > 100.0 :
+
+                    h['MuonElectronJethighMetEvent_MuonPt_Both'].Fill(mu.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_ElectronPt_Both'].Fill(e.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_JetPt_Both'].Fill(j.Pt(), genweight)
+                    h['MuonElectronJethighMetEvent_dRl_Both'].Fill(mu.DeltaR(e), genweight)
+                    h['MuonElectronJethighMetEvent_dRj_Both'].Fill(j.DeltaR(e+mu), genweight)
+                    for i in range(len(jets)):
+                        h['MuonElectronJethighMetEvent_deepjet_Both'].Fill(jets[i].deepjet, genweight)
+
+
 def Mt(lepton, met):
 
     cos = np.cos(met.DeltaPhi(lepton))
@@ -557,7 +811,8 @@ def plot_event_hist(region, l1, l2, j, m):
     h[region+"_JetPt"].Fill(j.Pt(), genweight)
     h[region+"_MetPt"].Fill(m.Pt(), genweight)
     h[region+"_Nj"].Fill(len(s_j), genweight)
-    h[region+"_dR"].Fill(l1.DeltaR(l2), j.DeltaR(l1+l2), genweight)
+    h[region+"_dRl"].Fill(l1.DeltaR(l2), genweight)
+    h[region+"_dRj"].Fill(j.DeltaR(l1+l2), genweight)
     h[region+"_dPhil"].Fill(m.DeltaPhi(l1), m.DeltaPhi(l2), genweight)
     h[region+"_dPhi"].Fill(m.DeltaPhi(l1+l2), m.DeltaPhi(j), genweight)
 
@@ -669,18 +924,19 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    if jets.size()>0:
       for i in range(jets.size()):
          jet = jets.at(i)
-         if jet.id == 2:
-             h['hJetPt'].Fill(jet.pt, genweight)
-             h['hBtag'].Fill(jet.deepjet)
-             s_j+=[jet]
-             if jet.deepjet > 0.7476:
-                 h['hBJetPt'].Fill(jet.pt, genweight)
-                 s_b+=[jet]
+         if abs(jet.eta) < 2.5 :
+             if jet.id >= 2:
+                 h['hJetPt'].Fill(jet.pt, genweight)
+                 h['hBtag'].Fill(jet.deepjet, genweight)
+                 s_j+=[jet]
+                 if jet.deepjet > 0.7476:
+                     h['hBJetPt'].Fill(jet.pt, genweight)
+                     s_b+=[jet]
 
    if muons.size()>0:
        for i in range(muons.size()):
            muon = muons.at(i)
-           if abs(muon.eta) < 2.4 : 
+           if abs(muon.eta) < 2.4 :
                if muon.id >= 1:
                    h['hMuonPt'].Fill(muon.pt, genweight) 
                    s_mu+=[muon]
@@ -705,6 +961,7 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                      h['hNonIsoElectronPt'].Fill(electron.pt, genweight)
                      s_nonIsoE+=[electron]
 
+
    s_j.sort(key=lambda x: x.pt, reverse=True)
    s_e.sort(key=lambda x: x.pt, reverse=True)
    s_isoe.sort(key=lambda x: x.pt, reverse=True)
@@ -717,8 +974,18 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    isEMu = 0
    isMuMu = 0
 
-   if len(s_isomu) > 1 and len(s_j) > 0 and s_isomu[0].charge*s_isomu[1].charge < 0 and len(s_b) == 0: 
-       if MuMu_Channel(s_isomu, s_j, met_pt, met_phi) == 1: continue
+   if len(s_isomu) > 0 :
+       check_cut_flow(s_isomu, s_isoe, s_j)
+
+   if len(s_isomu) > 1 and len(s_j) > 0 and s_isomu[0].charge*s_isomu[1].charge < 0 : 
+       MuMu_Channel(s_isomu, s_j, met_pt, met_phi, plot=True)
+       #if MuMu_Channel(s_isomu, s_j, met_pt, met_phi) == 1: continue
+
+   if len(s_isomu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and s_isoe[0].charge*s_isomu[0].charge < 0 :
+       EMu_Channel(s_isoe,s_isomu, s_j, met_pt, met_phi, "hEMu_withoutMuMu")
+
+   if len(s_isomu) > 1 and len(s_j) > 0 and s_isomu[0].charge*s_isomu[1].charge < 0 :
+       if MuMu_Channel(s_isomu, s_j, met_pt, met_phi) == 1 : continue
 
    if len(s_isomu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and s_isoe[0].charge*s_isomu[0].charge < 0 :
        EMu_Channel(s_isoe,s_isomu, s_j, met_pt, met_phi)
