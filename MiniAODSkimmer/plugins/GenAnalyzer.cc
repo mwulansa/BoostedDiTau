@@ -164,17 +164,19 @@ void GenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   
   for (unsigned int i = 0; i < GenParticles.size(); ++i) {
     auto genParticle = GenParticles[i];
+    GenParticleInfo g;
+    g.ishardprocess = genParticle.isHardProcess();
+    g.isdirecthardprocesstaudecayproductfinalstate = genParticle.isDirectHardProcessTauDecayProductFinalState();
+    g.pt = genParticle.pt();
+    g.eta = genParticle.eta();
+    g.phi = genParticle.phi();
+    g.mass = genParticle.mass();
+    g.pdgid = genParticle.pdgId();
     if ((genParticle.isHardProcess() and abs(genParticle.pdgId()) == 15) or genParticle.isDirectHardProcessTauDecayProductFinalState()) {
-      GenParticleInfo g;
-      g.pt = genParticle.pt();
-      g.eta = genParticle.eta();
-      g.phi = genParticle.phi();
-      g.mass = genParticle.mass();
-      g.pdgid = genParticle.pdgId();
       g.isfinalstate = true;
-      if (abs(genParticle.pdgId()) == 15 and genParticle.isHardProcess()) g.isfinalstate = false;
-      genParticleInfoData->push_back(g);
     }
+    if (abs(genParticle.pdgId()) == 15 and genParticle.isHardProcess()) g.isfinalstate = false;
+    genParticleInfoData->push_back(g);  
   }
   
   tree->Fill();
