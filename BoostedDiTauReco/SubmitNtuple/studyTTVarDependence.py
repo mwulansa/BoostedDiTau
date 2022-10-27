@@ -71,7 +71,7 @@ event_cut = {
 
 met_range = [x for x in range(0,510,10)]
 nb_range = [x for x in range(0,6)]
-dR_range = [round(x*0.1, 1) for x in range(4, 16)]
+dR_range = [round(x*0.1, 1) for x in range(1, 16)]
 
 h = {}
 
@@ -203,7 +203,9 @@ def check_var_dependence(l1, l2, jets, met_pt, met_phi):
 
     if ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) : trigger[1] = 1
     
-    if ( isData == 0 and ( trigger[0] == 1 or trigger[1] == 1 ) ) :
+    if ( isData == 0 and ( trigger[0] == 1 or trigger[1] == 1 ) ) or \
+       ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 ) ) or \
+       ( isData == 1 and ( isMuonEGDataset == 1 and ( trigger[0] == 0 and trigger[1] == 1 ) ) ) :
 
         if pass_baseline(e, mu, j) :            
             plot_event_hist("hEMu_baseline", e, mu, j, m)
@@ -213,6 +215,7 @@ def check_var_dependence(l1, l2, jets, met_pt, met_phi):
                 plot_event_hist("hEMu_dRjcut", e, mu, j, m)
 
                 for i in range(len(dR_range)-1) :
+                    if dR_range[i] < 0.4 and isData == 1 : continue
                     if e.DeltaR(mu) > dR_range[i] and e.DeltaR(mu) < dR_range[i+1] :
                         h["hEMu_Nbjet_MetPt_dR"+str(dR_range[i])].Fill(m.Pt(), len(s_b), genweight)
 
