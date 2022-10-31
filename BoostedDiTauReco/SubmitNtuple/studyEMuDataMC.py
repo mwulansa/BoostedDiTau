@@ -18,6 +18,10 @@ isSingleMuonDataset = 0
 if "-b" in opts:
     isData = 0
 
+if "-tt" in opts:
+    isData = 0
+    bEffStudy = True
+
 if "-de" in opts :
     isData = 1
     isMuonEGDataset = 1
@@ -71,6 +75,25 @@ event_cut = {
     'mass' : 5
 }
 
+met_range = [x for x in range(0,510,10)]
+nb_range = [x for x in range(0,6)]
+dR_range = [round(x*0.1, 1) for x in range(1, 16)]
+
+for metcut in met_range:
+    h["hEMu_Nbjet_MetPt"+str(metcut)] = ROOT.TH1F ("hEMu_Nbjet_MetPt_"+str(metcut), "hEMu_Nbjet_MetPt_"+str(metcut)+"; Nbjet ; Events", 6, 0, 6)
+
+for i in nb_range:
+    h["hEMu_MetPt_Nbjet"+str(i)] = ROOT.TH1F ("hEMu_MetPt_Nbjet_"+str(i), "hEMu_MetPt_Nbjet_"+str(i)+"; MET (GeV) ; Events", 500, 0, 500)
+
+for dr in dR_range:
+    h["hEMu_Nbjet_MetPt_dR"+str(dr)] = ROOT.TH2F ("hEMu_Nbjet_MetPt_dR_"+str(dr), "hEMu_Nbjet_MetPt_dR_"+str(dr)+"; E_{T}^{Miss} ; N_{bjet}", 500, 0, 500, 6, 0, 6)
+    h["hEMu_MetPt_bjet0_dR"+str(dr)] = ROOT.TH1F ("hEMu_MetPt_bjet0_dR_"+str(dr), "hEMu_MetPt_bjet0_dR_"+str(dr)+"; E_{T}^{Miss} ; Events", 500, 0, 500)
+    h["hEMu_MetPt_bjet_dR"+str(dr)] = ROOT.TH1F ("hEMu_MetPt_bjet_dR_"+str(dr), "hEMu_MetPt_bjet_dR_"+str(dr)+"; E_{T}^{Miss} ; Events", 500, 0, 500)
+    h["hEMu_Nbjet_highMET_dR"+str(dr)] = ROOT.TH1F ("hEMu_Nbjet_highMET_dR_"+str(dr), "hEMu_Nbjet_highMET_dR_"+str(dr)+"; N_{bjet} ; Events", 6, 0, 6)
+    h["hEMu_Nbjet_lowMET_dR"+str(dr)] = ROOT.TH1F ("hEMu_Nbjet_lowMET_dR_"+str(dr), "hEMu_Nbjet_lowMET_dR_"+str(dr)+"; N_{bjet} ; Events", 6, 0, 6)
+
+    h["hEMu_MetPt_dR"+str(dr)] = ROOT.TH1F ("hEMu_MetPt_dR_"+str(dr), "hEMu_MetPt_dR_"+str(dr)+"; E_{T}^{Miss} ; Event", 500, 0, 500)
+    h["hEMu_Nbjet_dR"+str(dr)] = ROOT.TH1F ("hEMu_Nbjet_dR_"+str(dr), "hEMu_Nbjet_dR_"+str(dr)+"; N_{bjet} ; Event", 6, 0, 6)
 
 def define_event_histogram(region):
 
@@ -103,6 +126,8 @@ def define_event_histogram(region):
 
 def define_b_eff_histogram(region):
 
+    h[region+"_JetFlavour"] = ROOT.TH1F (region+"_JetFlavour", region+"_JetFlavour ; jetflavour ; Events", 6, 0, 6)
+
     h[region+"_BFlavour_JetPt"] = ROOT.TH1F (region+"_BFlavour_JetPt", region+"_BFlavour_JetPt ; P_{T} (GeV) ; Events", 2000, 0 , 2000)
     h[region+"_BFlavour_JetEta"] = ROOT.TH1F (region+"_BFlavour_JetEta", region+"_BFlavour_JetEta ; Eta ; Events", 100, 0, 2.5)
     
@@ -133,12 +158,18 @@ def define_b_eff_histogram(region):
 
     h[region+"_LFlavour_BTagged_JetPtEta"] = ROOT.TH2F (region+"_LFlavour_BTagged_JetPtEta", region+"_LFlavour_BTagged_JetPtEta ; P_{T} (GeV) ; Eta", 2000, 0, 2000, 100, 0, 2.5)
 
+    h[region+"_Loosebjet_Pt_deepjet"] = ROOT.TH2F (region+"_Loosebjet_Pt_deepjet", region+"_Loosebjet_Pt_deepjet ; Pt (GeV) ; deepjet", 2000, 0, 2000, 100, 0, 1)
+    h[region+"_Loosebjet_Eta_deepjet"] = ROOT.TH2F (region+"_Loosebjet_Eta_deepjet", region+"_Loosebjet_Eta_deepjet ; Eta ; deepjet", 100, 0, 2.5, 100, 0, 1)
     h[region+"_Loosebjet_Pt"] = ROOT.TH1F (region+"_Loosebjet_Pt", region+"_Loosebjet_Pt ; Pt (GeV) ; Events", 2000, 0, 2000)
     h[region+"_Loosebjet_Eta"] = ROOT.TH1F (region+"_Loosebjet_Eta", region+"_Loosebjet_Eta ; Eta ; Events", 100, 0, 2.5)
 
+    h[region+"_Mediumbjet_Pt_deepjet"] = ROOT.TH2F (region+"_Mediumbjet_Pt_deepjet", region+"_Mediumbjet_Pt_deepjet ; Pt (GeV) ; deepjet", 2000, 0, 2000, 100, 0, 1)
+    h[region+"_Mediumbjet_Eta_deepjet"] = ROOT.TH2F (region+"_Mediumbjet_Eta_deepjet", region+"_Mediumbjet_Eta_deepjet ; Eta ; deepjet", 100, 0, 2.5, 100, 0, 1)
     h[region+"_Mediumbjet_Pt"] = ROOT.TH1F (region+"_Mediumbjet_Pt", region+"_Mediumbjet_Pt ; Pt (GeV) ; Events", 2000, 0, 2000)
     h[region+"_Mediumbjet_Eta"] = ROOT.TH1F (region+"_Mediumbjet_Eta", region+"_Mediumbjet_Eta ; Eta ; Events", 100, 0, 2.5)
 
+    h[region+"_Tightbjet_Pt_deepjet"] = ROOT.TH2F (region+"_Tightbjet_Pt_deepjet", region+"_Tightbjet_Pt_deepjet ; Pt (GeV) ; deepjet", 2000, 0, 2000, 100, 0, 1)
+    h[region+"_Tightbjet_Eta_deepjet"] = ROOT.TH2F (region+"_Tightbjet_Eta_deepjet", region+"_Tightbjet_Eta_deepjet ; Eta ; deepjet", 100, 0, 2.5, 100, 0, 1)
     h[region+"_Tightbjet_Pt"] = ROOT.TH1F (region+"_Tightbjet_Pt", region+"_Tightbjet_Pt ; Pt (GeV) ; Events", 2000, 0, 2000)
     h[region+"_Tightbjet_Eta"] = ROOT.TH1F (region+"_Tightbjet_Eta", region+"_Tightbjet_Eta ; Eta ; Events", 100, 0, 2.5)
 
@@ -410,7 +441,9 @@ Regions = [
     "_highMET",
     "_bjet",
     "_SR_dPhicut",
-    "_SR_mTcut"
+    "_SR_mTcut",
+    "_dRjcut",
+    "_baseline_varDep"
 ]
 
 Bjet_Regions = [
@@ -431,6 +464,10 @@ b_eff_regions = [
     "_dRcut_highMET",
     "_lowMET",
     "_highMET",
+    "_SR",
+    "_dRcut_highMET_bjet",
+    "_dRcut_lowMET_bjet",
+    "_dRcut_lowMET_bjet0"
 ]
 
 
@@ -636,6 +673,7 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
                     if len(s_b) == 0 : #SR
                         h[isolation+'_Events'].Fill(4, genweight)
                         plot_event_hist(isolation+"_SR", e, mu, j, m)
+                        find_b_efficiency(isolation+"_SR", js)
 
                         h[isolation+"_SR_muIso"].Fill(mu_emu[0].iso, genweight)
                             
@@ -654,6 +692,7 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
 
                     if len(s_b) == 0 :
                         plot_event_hist(isolation+"_dRcut_lowMET_bjet0", e, mu, j, m)
+                        find_b_efficiency(isolation+"_dRcut_lowMET_bjet0", js)
 
                     if np.cos(m.DeltaPhi(mu)) > 0.8 :
                         plot_event_hist(isolation+"_dRcut_dPhicut_lowMET", e, mu, j, m)
@@ -667,6 +706,7 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
 
                     if m.Pt() > event_cut['metcut'] : #high MET non-zero b-jet
                         plot_event_hist(isolation+"_dRcut_highMET_bjet", e, mu, j, m)
+                        find_b_efficiency(isolation+"_dRcut_highMET_bjet", js)
 
                         if len(s_b) == 1 : plot_event_hist(isolation+"_dRcut_highMET_bjet1", e, mu, j, m)
                         if len(s_b) == 2 : plot_event_hist(isolation+"_dRcut_highMET_bjet2", e, mu, j, m)
@@ -685,6 +725,7 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
 
                     if m.Pt() < event_cut['metcut'] : #lowMET non-zero b-jet
                         plot_event_hist(isolation+"_dRcut_lowMET_bjet", e, mu, j, m)
+                        find_b_efficiency(isolation+"_dRcut_lowMET_bjet", js)
 
                         if len(s_b) == 1 : plot_event_hist(isolation+"_dRcut_lowMET_bjet1", e, mu, j, m)
                         if len(s_b) == 2 : plot_event_hist(isolation+"_dRcut_lowMET_bjet2", e, mu, j, m)
@@ -700,6 +741,7 @@ def find_b_efficiency(isolation, jets):
     if bEffStudy == True :
 
         for i in range(len(jets)):
+            h[isolation+'_JetFlavour'].Fill(jets[i].jetflavour, genweight)
             if jets[i].jetflavour == 5 :
                 h[isolation+'_BFlavour_JetPt'].Fill(jets[i].pt)
                 h[isolation+'_BFlavour_JetEta'].Fill(abs(jets[i].eta))
@@ -740,14 +782,20 @@ def plot_pt_eta_deepjet(name, js):
 
     for i in range(len(js)):
         if js[i].deepjet > 0.0532 and js[i].deepjet < 0.3040:
+            h[name+'_Loosebjet_Pt_deepjet'].Fill(js[i].pt, js[i].deepjet, genweight)
+            h[name+'_Loosebjet_Eta_deepjet'].Fill(abs(js[i].eta), js[i].deepjet, genweight)
             h[name+'_Loosebjet_Pt'].Fill(js[i].pt, genweight)
-            h[name+'_Loosebjet_Eta'].Fill(js[i].eta, genweight)
+            h[name+'_Loosebjet_Eta'].Fill(abs(js[i].eta), genweight)
         if js[i].deepjet > 0.3040 and js[i].deepjet < 0.7476:
+            h[name+'_Mediumbjet_Pt_deepjet'].Fill(js[i].pt, js[i].deepjet, genweight)
+            h[name+'_Mediumbjet_Eta_deepjet'].Fill(abs(js[i].eta), js[i].deepjet, genweight)
             h[name+'_Mediumbjet_Pt'].Fill(js[i].pt, genweight)
-            h[name+'_Mediumbjet_Eta'].Fill(js[i].eta, genweight)
+            h[name+'_Mediumbjet_Eta'].Fill(abs(js[i].eta), genweight)
         if js[i].deepjet > 0.7476 :
+            h[name+'_Tightbjet_Pt_deepjet'].Fill(js[i].pt, js[i].deepjet, genweight)
+            h[name+'_Tightbjet_Eta_deepjet'].Fill(abs(js[i].eta), js[i].deepjet, genweight)
             h[name+'_Tightbjet_Pt'].Fill(js[i].pt, genweight)
-            h[name+'_Tightbjet_Eta'].Fill(js[i].eta, genweight)
+            h[name+'_Tightbjet_Eta'].Fill(abs(js[i].eta), genweight)
 
 
 def check_Nbjet(e, mu, jv, m, js, isolation = "hEMu"):
@@ -1103,6 +1151,63 @@ def check_cut_flow(muons, electrons, jets):
                             h['MuonElectronJethighMetEvent_deepjet_Both'].Fill(jets[i].deepjet, genweight)
 
 
+def check_var_dependence(l1, l2, jets, met_pt, met_phi):
+
+    e, mu, j, m = get_TLorentzVector(l1[0], l2[0], jets[0], met_pt, met_phi)
+
+    trigger = [0,0]
+
+    if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) : trigger[0] = 1
+
+    if ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) : trigger[1] = 1
+    
+    if ( isData == 0 and ( trigger[0] == 1 or trigger[1] == 1 ) ) or \
+       ( isData == 1 and ( isSingleMuonDataset == 1 and trigger[0] == 1 ) ) or \
+       ( isData == 1 and ( isMuonEGDataset == 1 and ( trigger[0] == 0 and trigger[1] == 1 ) ) ) :
+
+        if pass_baseline(e, mu, j) :            
+            plot_event_hist("hEMu_baseline_varDep", e, mu, j, m)
+
+            if j.DeltaR(e+mu) > 0.8 :
+
+                plot_event_hist("hEMu_dRjcut", e, mu, j, m)
+
+                for i in range(len(dR_range)-1) :
+                    if dR_range[i] < 0.4 and isData == 1 : continue
+                    if e.DeltaR(mu) > dR_range[i] and e.DeltaR(mu) < dR_range[i+1] :
+                        h["hEMu_Nbjet_MetPt_dR"+str(dR_range[i])].Fill(m.Pt(), len(s_b), genweight)
+
+                        h["hEMu_MetPt_dR"+str(dR_range[i])].Fill(m.Pt(),  genweight)
+                        h["hEMu_Nbjet_dR"+str(dR_range[i])].Fill(len(s_b), genweight)
+
+                        if len(s_b) == 0 :
+                            h["hEMu_MetPt_bjet0_dR"+str(dR_range[i])].Fill(m.Pt(), genweight)
+
+                        if len(s_b) > 0 :
+                            h["hEMu_MetPt_bjet_dR"+str(dR_range[i])].Fill(m.Pt(), genweight)
+
+                        if m.Pt() > 100 :
+                            h["hEMu_Nbjet_highMET_dR"+str(dR_range[i])].Fill(len(s_b), genweight)
+
+                        if m.Pt() < 100 :
+                            h["hEMu_Nbjet_lowMET_dR"+str(dR_range[i])].Fill(len(s_b), genweight)
+
+
+            if pass_deltaR(e, mu, j, "EMu") :
+
+                plot_event_hist("hEMu_dRcut", e, mu, j, m)
+
+                for i in range(len(met_range)-1):
+
+                    if m.Pt() > met_range[i] and m.Pt() < met_range[i+1] :
+                        h["hEMu_Nbjet_MetPt"+str(met_range[i])].Fill(len(s_b), genweight)
+                    
+                for i in nb_range:
+                    
+                    if len(s_b) == i :
+                        h["hEMu_MetPt_Nbjet"+str(i)].Fill(m.Pt(), genweight)
+
+
 def Mt(lepton, met):
 
     cos = np.cos(met.DeltaPhi(lepton))
@@ -1288,6 +1393,8 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
    isMuMu = 0
 
 
+   if len(s_isomu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and s_isomu[0].charge*s_isoe[0].charge < 0 :
+       check_var_dependence(s_isoe, s_isomu, s_j, met_pt, met_phi)
 
    if len(s_isomu) == 1 and len(s_isoe) == 1 and len(s_j) > 1 and s_isomu[0].charge*s_isoe[0].charge < 0 :
        kin_selection(s_isomu, s_isoe, s_j)
