@@ -443,7 +443,15 @@ Regions = [
     "_SR_dPhicut",
     "_SR_mTcut",
     "_dRjcut",
-    "_baseline_varDep"
+    "_baseline_varDep",
+    "_lowMET_bjet0_invertdR_0.5",
+    "_lowMET_bjet0_invertdR_0.6",
+    "_lowMET_bjet_invertdR_0.5",
+    "_lowMET_bjet_invertdR_0.6",
+    "_highMET_bjet0_invertdR_0.5",
+    "_highMET_bjet0_invertdR_0.6",
+    "_highMET_bjet_invertdR_0.5",
+    "_highMET_bjet_invertdR_0.6",
 ]
 
 Bjet_Regions = [
@@ -464,6 +472,8 @@ b_eff_regions = [
     "_dRcut_highMET",
     "_lowMET",
     "_highMET",
+    "_lowMET_invdRcut",
+    "_highMET_invdRcut",
     "_SR",
     "_dRcut_highMET_bjet",
     "_dRcut_lowMET_bjet",
@@ -646,6 +656,21 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
                 if len(s_b) == 2 : plot_event_hist(isolation+"_lowMET_bjet2", e, mu, j, m)
                 if len(s_b) > 1 : plot_event_hist(isolation+"_lowMET_bjet3", e, mu, j, m)
 
+                if len(s_b) == 0 :
+                    if j.DeltaR(e+mu) > 0.8 :
+                        if e.DeltaR(mu) > 0.4 and e.DeltaR(mu) < 0.5 :
+                            plot_event_hist(isolation+"_lowMET_bjet0_invertdR_0.5", e, mu, j, m)
+                        if e.DeltaR(mu) > 0.4 and e.DeltaR(mu) < 0.6 :
+                            plot_event_hist(isolation+"_lowMET_bjet0_invertdR_0.6", e, mu, j, m)
+
+                if len(s_b) > 0 :
+                    if j.DeltaR(e+mu) > 0.8 :
+                        if e.DeltaR(mu) > 0.4 and e.DeltaR(mu) < 0.5 :
+                            plot_event_hist(isolation+"_lowMET_bjet_invertdR_0.5", e, mu, j, m)
+                        if e.DeltaR(mu) > 0.4 and e.DeltaR(mu) < 0.6 :
+                            plot_event_hist(isolation+"_lowMET_bjet_invertdR_0.6", e, mu, j, m)
+
+
             if m.Pt() > event_cut['metcut'] : #highMET                                                                                                                     
                 plot_event_hist(isolation+"_highMET", e, mu, j, m)
 
@@ -653,6 +678,21 @@ def EMu_Channel(ele, mu_emu, js, met_pt, met_phi, isolation = "hEMu"):
                 if len(s_b) == 1 : plot_event_hist(isolation+"_highMET_bjet1", e, mu, j, m)
                 if len(s_b) == 2 : plot_event_hist(isolation+"_highMET_bjet2", e, mu, j, m)
                 if len(s_b) > 1 : plot_event_hist(isolation+"_highMET_bjet3", e, mu, j, m)
+
+                if len(s_b) == 0 :
+                    if j.DeltaR(e+mu) > 0.8 :
+                        if e.DeltaR(mu) > 0.4 and e.DeltaR(mu) < 0.5 :
+                            plot_event_hist(isolation+"_highMET_bjet0_invertdR_0.5", e, mu, j, m)
+                        if e.DeltaR(mu) > 0.4 and e.DeltaR(mu) < 0.6 :
+                            plot_event_hist(isolation+"_highMET_bjet0_invertdR_0.6", e, mu, j, m)
+
+                if len(s_b) > 0 :
+                    if j.DeltaR(e+mu) > 0.8 :
+                        if e.DeltaR(mu) > 0.4 and e.DeltaR(mu) < 0.5 :
+                            plot_event_hist(isolation+"_highMET_bjet_invertdR_0.5", e, mu, j, m)
+                        if e.DeltaR(mu) > 0.4 and e.DeltaR(mu) < 0.6 :
+                            plot_event_hist(isolation+"_highMET_bjet_invertdR_0.6", e, mu, j, m)
+
 
             if len(s_b) > 0 : #non-zero b-jet
                 plot_event_hist(isolation+"_bjet", e, mu, j, m)
@@ -897,6 +937,9 @@ def check_Nbjet(e, mu, jv, m, js, isolation = "hEMu"):
         find_b_efficiency(isolation+"_lowMET", js)
         plot_pt_eta_deepjet(isolation+"_lowMET", js)
 
+        if e.DeltaR(mu) < 0.6 and e.DeltaR(mu) > 0.4 and jv.DeltaR(e+mu) > 0.8 :
+            find_b_efficiency(isolation+"_lowMET_invdRcut", js)
+
         for i in range(len(js)):
             h[isolation+'_lowMET_deepjet'].Fill(js[i].deepjet, genweight)
 
@@ -921,6 +964,9 @@ def check_Nbjet(e, mu, jv, m, js, isolation = "hEMu"):
         h[isolation+'_highMET_Nbjet'].Fill(len(s_b), genweight)
         find_b_efficiency(isolation+"_highMET", js)
         plot_pt_eta_deepjet(isolation+"_highMET", js)
+
+        if e.DeltaR(mu) < 0.6 and e.DeltaR(mu) > 0.4 and jv.DeltaR(e+mu) > 0.8 :
+            find_b_efficiency(isolation+"_highMET_invdRcut", js)
 
         for i in range(len(js)):
             h[isolation+'_highMET_deepjet'].Fill(js[i].deepjet, genweight)
@@ -1173,7 +1219,6 @@ def check_var_dependence(l1, l2, jets, met_pt, met_phi):
                 plot_event_hist("hEMu_dRjcut", e, mu, j, m)
 
                 for i in range(len(dR_range)-1) :
-                    if dR_range[i] < 0.4 and isData == 1 : continue
                     if e.DeltaR(mu) > dR_range[i] and e.DeltaR(mu) < dR_range[i+1] :
                         h["hEMu_Nbjet_MetPt_dR"+str(dR_range[i])].Fill(m.Pt(), len(s_b), genweight)
 
@@ -1181,12 +1226,14 @@ def check_var_dependence(l1, l2, jets, met_pt, met_phi):
                         h["hEMu_Nbjet_dR"+str(dR_range[i])].Fill(len(s_b), genweight)
 
                         if len(s_b) == 0 :
+                            if dR_range[i] < 0.4 and isData == 1 : continue
                             h["hEMu_MetPt_bjet0_dR"+str(dR_range[i])].Fill(m.Pt(), genweight)
 
                         if len(s_b) > 0 :
                             h["hEMu_MetPt_bjet_dR"+str(dR_range[i])].Fill(m.Pt(), genweight)
 
                         if m.Pt() > 100 :
+                            if dR_range[i] < 0.4 and isData == 1 : continue
                             h["hEMu_Nbjet_highMET_dR"+str(dR_range[i])].Fill(len(s_b), genweight)
 
                         if m.Pt() < 100 :
