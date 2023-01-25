@@ -86,6 +86,7 @@ def book_event_histogram(region):
     h[region+"_Lepton2Pt"] = ROOT.TH1F (region+"_Lepton2Pt", region+"_Lepton2Pt ; P_{T} (GeV) ; Events ", 500, 0, 500)
     h[region+"_JetPt"] = ROOT.TH1F (region+"_JetPt", region+"_JetPt ; JetP_{T} (GeV) ; Events ", 2000, 0, 2000)
     h[region+"_MetPt"] = ROOT.TH1F (region+"_MetPt", region+"_MetPt ; MET (GeV) ; Events ", 500, 0, 500)
+    h[region+"_Mt"] = ROOT.TH1F (region+"_Mt", region+"_Mt ; M_{T} (GeV) ; Events ", 150, 0, 150)
     h[region+"_Nj"] = ROOT.TH1F (region+"_Nj", region+"_Nj ; N_{j} ; Events ", 10, 0, 10)
     h[region+"_dRl"] = ROOT.TH1F (region+"_dRl", region+"_dRl ; dR(leptons) ; Events", 100, 0, 5)
     h[region+"_dRj"] = ROOT.TH1F (region+"_dRj", region+"_dRj ; dR(jet, ditau) ; Events", 100, 0, 5)
@@ -130,6 +131,7 @@ def plot_variable(region, l1, l2, j, m):
     h[region+"_Lepton2Pt"].Fill(l2.Pt(), weight)
     h[region+"_JetPt"].Fill(j.Pt(), weight)
     h[region+"_MetPt"].Fill(m.Pt(), weight)
+    h[region+"_Mt"].Fill(Mt(l1, m), weight)
     h[region+"_Nj"].Fill(len(s_jet), weight)
     h[region+"_dRl"].Fill(l1.DeltaR(l2), weight)
     h[region+"_dRj"].Fill(j.DeltaR(l1+l2), weight)
@@ -152,9 +154,11 @@ def mumu_channel():
 
             if pass_deltaR(mu1, mu2, jet, 'MuMu') == 1 :
 
-                plot_variable('MuMu', mu1, mu2, jet, met)
+                if met.Pt() > event_cut['metcut'] :
 
-                isMuMu = 1
+                    plot_variable('MuMu', mu1, mu2, jet, met)
+
+                    isMuMu = 1
 
     return isMuMu
 
@@ -185,11 +189,35 @@ def mutau_channel():
 
                 if Mt(mu,met) < 50 :
 
-                    plot_variable('MuTau', mu, tau, jet, met)
-                    isMuTau = 1
+                    if met.Pt() > event_cut['metcut'] :
+
+                        plot_variable('MuTau', mu, tau, jet, met)
+
+                        isMuTau = 1
 
     return isMuTau
 
+def ee_channel():
+
+    isEE = 0
+
+    if s_isoelectron[0].charge*s_isoelectron[1].charge < 0 :
+
+        e1 = get_TLorentzVector(s_isoelectron[0])
+        e2 = get_TLorentzVector(s_isoelectron[0])
+        jet = get_TLorentzVector(s_jet[0])
+
+        if ( jet.Pt() > 500 and ( isHT == 1 or isHTMHT == 1 ) ) or ( e1.Pt() > 35 and isIsoEle == 1 ) :
+
+            if pass_deltaR(e1, e2, jet, 'EE') == 1 :
+
+                if met.Pt() > event_cut['metcut'] :
+
+                    plot_variable('EE', e1, e2, jet, met)
+
+                    isEE = 1
+
+    return isEE
 
 def emu_channel():
 
@@ -201,8 +229,8 @@ def emu_channel():
         mu = get_TLorentzVector(s_isomuon[0])
         jet = get_TLorentzVector(s_jet[0])
 
-        if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 )\
-        or ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 )\
+        if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) \
+        or ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) \
         or ( jet.Pt() > 500 and isHT == 1 ) :
 
             if pass_deltaR(e, mu, jet, 'EMu') == 1 :
@@ -216,11 +244,22 @@ def emu_channel():
     return isEMu
 
 
+regions = ['MuMu', 'MuTau', 'EMu', 'EE']
+etauR = ['ETau_OS','ETau_SS']
+
+for e in etauR :
+    regions.append(e)
+    regions.append(e+'_dRcut')
+    regions.append(e+'_dRcut_highMET')
+    regions.append(e+'_dRcut_lowMET')
+
 book_histogram()
-book_event_histogram('MuMu')
-book_event_histogram('ETau')
-book_event_histogram('MuTau')
-book_event_histogram('EMu')
+
+for r in regions:
+    book_event_histogram(r)
+
+for key in h.keys():
+    h[key].Sumw2()
 
 #-------- File loop --------#
 
@@ -392,21 +431,52 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 : 
         if mutau_channel() == 1 : continue
 
-    if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >= 1 and s_electron[0].charge*s_tauEclean[0].charge < 0 :
+    if len(s_isoelectron) >=2 and len(s_jet) >= 1 :
+        if ee_channel() == 1 : continue
+
+    if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >= 1 :
 
         e = get_TLorentzVector(s_electron[0])
         tau = get_TLorentzVector(s_tauEclean[0])
         jet = get_TLorentzVector(s_jet[0])
 
-        if ( jet.Pt() > 500 and ( isHT == 1 or isHTMHT == 1 ) ) or ( e.Pt() > 35 and isIsoEle == 1 ):
+        if (e+tau).M() > event_cut['mass'] :
 
-            if pass_deltaR(e, tau, jet, 'ETau') == 1:
+            if ( jet.Pt() > 500 and ( isHT == 1 or isHTMHT == 1 ) ) or ( e.Pt() > 35 and isIsoEle == 1 ):
 
-                plot_variable('ETau', e, tau, jet, met)
+                if s_electron[0].charge*s_tauEclean[0].charge < 0 : #OS
 
-                # if len(s_isomuon) >= 2 : mumu_channel()
-                # if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 : emu_channel()
-                # if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 : mutau_channel()
+                    plot_variable('ETau_OS', e, tau, jet, met)
+
+                    if pass_deltaR(e, tau, jet, 'ETau') == 1:
+
+                        plot_variable('ETau_OS_dRcut', e, tau, jet, met)
+
+                        if met.Pt() > event_cut['metcut'] : #OS highMET
+
+                            plot_variable('ETau_OS_dRcut_highMET', e, tau, jet, met)
+
+                        if met.Pt() < event_cut['metcut'] : #OS lowMET   
+
+                            plot_variable('ETau_OS_dRcut_lowMET', e, tau, jet, met)
+
+                if s_electron[0].charge*s_tauEclean[0].charge > 0 : #SS
+
+                    plot_variable('ETau_SS', e, tau, jet, met)
+
+                    if pass_deltaR(e, tau, jet, 'ETau') == 1:
+
+                        plot_variable('ETau_SS_dRcut', e, tau, jet, met)
+
+                        if met.Pt() > event_cut['metcut'] : #SS highMET                                                                                   
+
+                            plot_variable('ETau_SS_dRcut_highMET', e, tau, jet, met)
+
+                        if met.Pt() < event_cut['metcut'] : #SS lowMET                                                                          
+
+                            plot_variable('ETau_SS_dRcut_lowMET', e, tau, jet, met)
+
+
 
 out.cd()
 
@@ -416,3 +486,4 @@ for key in h.keys():
 out.Close()
 
 print("--- %s seconds ---" % (time.time() - start_time))
+print(regions)
