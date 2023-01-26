@@ -8,8 +8,20 @@ opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
 outputTitle = "h_studyETauChannel"
 
+isData = 0
+
 if "-b" in opts:
     isData = 0
+
+if "-dj" in opts:
+    isData = 1
+    isJetHTSample = 1
+    isSingleElectronSample = 0
+
+if "de" in opts:
+    isData = 1
+    isJetHTSample = 0
+    isSingleElectronSample = 1
 
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/JetInfoDS.h"')
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/MuonInfoDS.h"')
@@ -109,7 +121,7 @@ def pass_deltaR(l1, l2, j, channel):
             return 1
         else:
             return -9999
-    if channel == "MuMu" or channel == "EMu" :
+    if channel == "MuMu" or channel == "EMu" or channel == "EE":
         if l1.DeltaR(l2) < event_cut["dRl"] and j.DeltaR(l1) > event_cut["dRlj"] and j.DeltaR(l2) > event_cut["dRlj"]:
             return 1
         else:
@@ -204,10 +216,10 @@ def ee_channel():
     if s_isoelectron[0].charge*s_isoelectron[1].charge < 0 :
 
         e1 = get_TLorentzVector(s_isoelectron[0])
-        e2 = get_TLorentzVector(s_isoelectron[0])
+        e2 = get_TLorentzVector(s_isoelectron[1])
         jet = get_TLorentzVector(s_jet[0])
 
-        if ( jet.Pt() > 500 and ( isHT == 1 or isHTMHT == 1 ) ) or ( e1.Pt() > 35 and isIsoEle == 1 ) :
+        if ( jet.Pt() > 500 and isHT == 1 ) or ( e1.Pt() > 35 and isIsoEle == 1 ) :
 
             if pass_deltaR(e1, e2, jet, 'EE') == 1 :
 
@@ -246,12 +258,16 @@ def emu_channel():
 
 regions = ['MuMu', 'MuTau', 'EMu', 'EE']
 etauR = ['ETau_OS','ETau_SS']
+etauM = ['highMt', 'lowMt']
 
 for e in etauR :
     regions.append(e)
     regions.append(e+'_dRcut')
     regions.append(e+'_dRcut_highMET')
     regions.append(e+'_dRcut_lowMET')
+    for m in etauM :
+        regions.append(e+'_dRcut_highMET_'+m)
+        regions.append(e+'_dRcut_lowMET_'+m)
 
 book_histogram()
 
@@ -422,27 +438,35 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
     # ---------- Event Selections --------- #
 
-    if len(s_isomuon) >= 2 and len(s_jet) >= 1 : 
+    if len(s_isomuon) >= 2 and len(s_jet) >= 1 and len(s_bjet) == 0 : 
         if mumu_channel() == 1: continue
 
-    if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 : 
+    if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 and len(s_bjet) == 0 : 
         if emu_channel() == 1 : continue
 
-    if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 : 
+    if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 and len(s_bjet) == 0 : 
         if mutau_channel() == 1 : continue
 
-    if len(s_isoelectron) >=2 and len(s_jet) >= 1 :
+    if len(s_isoelectron) >=2 and len(s_jet) >= 1 and len(s_bjet) == 0 :
         if ee_channel() == 1 : continue
 
-    if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >= 1 :
+    if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >= 1 and len(s_bjet) == 0 :
+
+        isJetHTEvent = 0
+        isSingleElectronEvent = 0
 
         e = get_TLorentzVector(s_electron[0])
         tau = get_TLorentzVector(s_tauEclean[0])
         jet = get_TLorentzVector(s_jet[0])
 
-        if (e+tau).M() > event_cut['mass'] :
+        if ( jet.Pt() > 500 and isHT == 1 ) : isJetHTEvent = 1
+        if ( e.Pt() > 35 and isIsoEle == 1 ) : isSingleElectronEvent = 1
 
-            if ( jet.Pt() > 500 and ( isHT == 1 or isHTMHT == 1 ) ) or ( e.Pt() > 35 and isIsoEle == 1 ):
+        if (e+tau).M() > event_cut['mass'] :
+        
+            if ( isData == 0 and ( isJetHTEvent == 1 or isSingleElectronEvent == 1 ) ) \
+               or ( isData == 1 and ( isJetHTSample == 1 and isJetHTEvent == 1 ) ) \
+               or ( isData == 1 and ( isSingleElectronSample == 1 and ( isJetHTEvent == 0 and isSingleElectronEvent == 1 ) ) ) :                     
 
                 if s_electron[0].charge*s_tauEclean[0].charge < 0 : #OS
 
@@ -456,9 +480,25 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
                             plot_variable('ETau_OS_dRcut_highMET', e, tau, jet, met)
 
+                            if Mt(e, met) < event_cut['mtcut'] : #OS highMET lowMt
+
+                                plot_variable('ETau_OS_dRcut_highMET_lowMt', e, tau, jet, met)
+
+                            if Mt(e, met) > event_cut['mtcut'] : #OS highMET highMt                                                               
+            
+                                plot_variable('ETau_OS_dRcut_highMET_highMt', e, tau, jet, met)
+
                         if met.Pt() < event_cut['metcut'] : #OS lowMET   
 
                             plot_variable('ETau_OS_dRcut_lowMET', e, tau, jet, met)
+
+                            if Mt(e, met) < event_cut['mtcut'] : #OS lowMET lowMt                                                                                         
+
+                                plot_variable('ETau_OS_dRcut_lowMET_lowMt', e, tau, jet, met)
+
+                            if Mt(e, met) > event_cut['mtcut'] : #OS lowMET highMt          
+
+                                plot_variable('ETau_OS_dRcut_lowMET_highMt', e, tau, jet, met)
 
                 if s_electron[0].charge*s_tauEclean[0].charge > 0 : #SS
 
@@ -472,10 +512,25 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
                             plot_variable('ETau_SS_dRcut_highMET', e, tau, jet, met)
 
+                            if Mt(e, met) < event_cut['mtcut'] : #SS highMET lowMt                                                                                    
+    
+                                plot_variable('ETau_SS_dRcut_highMET_lowMt', e, tau, jet, met)
+
+                            if Mt(e, met) > event_cut['mtcut'] : #SS highMET highMt        
+
+                                plot_variable('ETau_SS_dRcut_highMET_highMt', e, tau, jet, met)
+
                         if met.Pt() < event_cut['metcut'] : #SS lowMET                                                                          
 
                             plot_variable('ETau_SS_dRcut_lowMET', e, tau, jet, met)
 
+                            if Mt(e, met) < event_cut['mtcut'] : #SS lowMET lowMt                                                                                   
+
+                                plot_variable('ETau_SS_dRcut_lowMET_lowMt', e, tau, jet, met)
+
+                            if Mt(e, met) > event_cut['mtcut'] : #SS lowMET highMt                        
+
+                                plot_variable('ETau_SS_dRcut_lowMET_highMt', e, tau, jet, met)
 
 
 out.cd()
