@@ -17,14 +17,14 @@ from FWCore.ParameterSet.MassReplace import massSearchReplaceParam
 
 
 import sys
-inputfile = sys.argv[2]
+#inputfile = sys.argv[2]
 #runSignal = True
 #runSignal=False
 ###########
 runType = 'signal'
 #runType = 'background'
 #runType = 'data'
-#maxEvents = 100
+#maxEvents = 1
 maxEvents=-1
 appendOutput = True
 #isMC = True
@@ -76,6 +76,12 @@ process.source = cms.Source(
 process.maxEvents = cms.untracked.PSet(
     input=cms.untracked.int32(maxEvents)
 )
+
+process.options = cms.untracked.PSet(
+    SkipEvent = cms.untracked.vstring('ProductNotFound')
+)
+
+
 print('\t Max events:', process.maxEvents.input.value())
 
 # if runSignal:
@@ -92,7 +98,11 @@ print('\t Max events:', process.maxEvents.input.value())
 
 if runType == 'signal':
     readFiles.extend([
-        inputfile
+        'root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root',
+#        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_2.root',
+#        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_3.root',
+#        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_4.root'
+#        inputfile
         #'file:patMiniAOD_standard.root'
         #'file:/eos/uscms/store/user/rhabibul/HtoAA/HtoAAMiniAODTest/4B62060B-AC2A-694A-8E56-B484FD41BCB2.root'
         #'file:/eos/uscms/store/user/rhabibul/HtoAA/HtoAAMiniAODTest/04905A2E-7E30-1942-A815-EC9B488A4391.root'
@@ -171,7 +181,7 @@ if appendOutput:
     #process.output.outputCommands.append('keep *_selectedPatTausMuonCleaned_*_*')
     process.output.outputCommands.append('keep *_slimmedTausUnCleaned_*_*')
     process.output.outputCommands.append('keep *_slimmedTausElectronCleaned_*_*')
-    process.output.outputCommands.append('keep *_slimmedTausLowPtElectronCleaned_*_*')
+    #process.output.outputCommands.append('keep *_slimmedTausLowPtElectronCleaned_*_*')
     process.output.outputCommands.append('keep *_slimmedTausMuonCleaned_*_*')
     process.output.outputCommands.append('keep *_lumiSummary_*_*')
     
@@ -237,6 +247,10 @@ process.ak4PFJetsRecoTauChargedHadronsElectronCleaned.minJetPt = jetPt
 
 print ('Step : 6 - Lower Pt MuonCleaned Taus')
 
+process.options = cms.untracked.PSet(
+    SkipEvent = cms.untracked.vstring("ProductNotFound")
+)
+
 getattr(process,'selectedPatTausMuonCleaned').cut = cms.string("pt > {} && abs(eta) < 2.3 && tauID(\'decayModeFinding\')> 0.5".format(tauPt))
 process.ak4PFJetsLegacyHPSPiZerosMuonCleaned.minJetPt = jetPt
 process.combinatoricRecoTausMuonCleaned.minJetPt = jetPt
@@ -269,6 +283,11 @@ if process.maxEvents.input.value() > 10000 or process.maxEvents.input.value() < 
 #    process.options,
 #    wantSummary=cms.untracked.bool(True)
 #)
+
+process.options = cms.untracked.PSet(
+    SkipEvent = cms.untracked.vstring('ProductNotFound')
+)
+
 
 process.options = dict( # numberOfThreads = 4,
     numberOfThreads = 1,

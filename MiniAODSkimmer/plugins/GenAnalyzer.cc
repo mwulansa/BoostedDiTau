@@ -176,7 +176,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       g.isfinalstate = true;
     }
     if (abs(genParticle.pdgId()) == 15 and genParticle.isHardProcess()) g.isfinalstate = false;
-    genParticleInfoData->push_back(g);  
+    genParticleInfoData->push_back(g);
   }
   
   tree->Fill();

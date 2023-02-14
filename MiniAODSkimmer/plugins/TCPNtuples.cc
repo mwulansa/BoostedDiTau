@@ -54,7 +54,7 @@ void TCPNtuples::beginJob() {
   tree->Branch("TausLowPtECleaned", "TauInfoDS", &tauInfoDataLowPtECleaned);
   tree->Branch("TausMCleaned", "TauInfoDS", &tauInfoDataMCleaned);
   tree->Branch("TausBoosted", "TauInfoDS", &tauInfoDataBoosted);
-  tree->Branch("Mets", &metInfo_, "pt/F:phi/F:ptUncor/F:phiUncor/F:ptJECUp/F:phiJECUp/F:ptJERUp/F:phiJERUp/F:ptUncUp/F:phiUncUp/F:ptJECDown/F:phiJECDown/F:ptJERDown/F:phiJERDown/F:ptUncDown/F:phiUncDown/F");
+  tree->Branch("Mets", &metInfo_, "pt/F:phi/F:eta/F:mass/F:ptUncor/F:phiUncor/F:ptJECUp/F:phiJECUp/F:ptJERUp/F:phiJERUp/F:ptUncUp/F:phiUncUp/F:ptJECDown/F:phiJECDown/F:ptJERDown/F:phiJERDown/F:ptUncDown/F:phiUncDown/F");
 }
 
 void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
@@ -95,6 +95,7 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 	j.mass = jet.mass();
 	j.ptuncor = jet.correctedP4(0).Pt();
 	j.deepcsv = jet.bDiscriminator("pfDeepCSVJetTags:probb") + jet.bDiscriminator("pfDeepCSVJetTags:probbb");
+	j.deepjet = jet.bDiscriminator("pfDeepFlavourJetTags:probb") + jet.bDiscriminator("pfDeepFlavourJetTags:probbb") + jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
 	if (jetIDLepVeto) j.id = 2;
 	else j.id = 1;
 	if (jet.pt() > 50) j.puid = 3;
@@ -342,6 +343,8 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
 
   metInfo_.pt = met.pt();
   metInfo_.phi = met.phi();
+  metInfo_.eta = met.eta();
+  metInfo_.mass = met.mass();
   metInfo_.ptUncor = met.uncorPt();
   metInfo_.phiUncor = met.uncorPhi();
   metInfo_.ptJECUp = met.shiftedPt(pat::MET::JetEnUp);
@@ -371,6 +374,7 @@ void TCPNtuples::fillTauInfoDS(const std::vector<pat::Tau>& Taus, int whichColl)
       t.eta = tau.eta();
       t.phi = tau.phi();
       t.mass = tau.mass();
+      t.charge = tau.charge();
       t.decaymode = tau.decayMode();
       t.mvaidraw = tau.tauID("byIsolationMVArun2017v2DBoldDMwLTraw2017");
       t.deepidraw = tau.tauID("byDeepTau2017v2p1VSeraw");

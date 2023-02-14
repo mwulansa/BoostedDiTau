@@ -1049,6 +1049,17 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
     process.pileupjetidpath = cms.Path( process.pileupJetIdUpdated + process.patJetCorrFactorsReapplyJEC + process.updatedJets )
 
     process.schedule.append(process.pileupjetidpath)
+
+    process.prefiringweight = l1PrefiringWeightProducer.clone(
+       TheJets = cms.InputTag("updatedPatJetsUpdatedJEC"), #this should be the slimmedJets collection with up to date JECs !
+    DataEraECAL = cms.string("2017BtoF"),
+    DataEraMuon = cms.string("20172018"),
+    UseJetEMPt = cms.bool(False),
+    PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+    PrefiringRateSystematicUnctyMuon = cms.double(0.2)
+    )
+
+    process.schedule.append(process.prefiringweight)
     
 def addFurtherSkimming(process):
     

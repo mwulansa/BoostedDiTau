@@ -119,7 +119,9 @@ elif runType == 'background':
 elif runType == 'data':
     readFiles.extend([
         #'/store/data/Run2018D/SingleMuon/MINIAOD/12Nov2019_UL2018-v4/710000/B7163712-7B03-D949-91C9-EB5DD2E1D4C3.root' # SingleMuon PD
-        'file:root://cmseos.fnal.gov//store/user/mwulansa/9032A966-8ED0-B645-97B6-A8EBC1D8D3B9.root'
+        #'file:root://cmsxrootd.fnal.gov//store/data/Run2017B/SingleMuon/MINIAOD/UL2017_MiniAODv2-v1/260000/9032A966-8ED0-B645-97B6-A8EBC1D8D3B9.root'
+        'file:root://cmsxrootd.fnal.gov//store/data/Run2017B/SingleMuon/MINIAOD/UL2017_MiniAODv2-v1/260000/C8EB51DD-FE0A-E54E-BD22-640AE281E2AB.root'
+        #'file:root://cmseos.fnal.gov//store/user/mwulansa/9032A966-8ED0-B645-97B6-A8EBC1D8D3B9.root'
         #'/store/data/Run2018D/Tau/MINIAOD/12Nov2019_UL2018-v1/00000/01415E2B-7CE5-B94C-93BD-0796FC40BD97.root' # Tau PD
     ])
 else:

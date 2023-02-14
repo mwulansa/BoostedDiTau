@@ -58,6 +58,8 @@ public:
     tauInfoDataBoosted->clear();
     metInfo_.pt = -9999.;
     metInfo_.phi = -9999.;
+    metInfo_.eta = -9999.;
+    metInfo_.mass = -9999.;
     metInfo_.ptUncor = -9999.;
     metInfo_.phiUncor = -9999.;
     metInfo_.ptJECUp = -9999.;
@@ -115,6 +117,7 @@ private:
   struct MetInfo {
     MetInfo() {
       pt = phi = 0.;
+      eta = mass = 0.;
       ptUncor = phiUncor = 0.;
       ptJECUp = phiJECUp = 0.;
       ptJERUp = phiJERUp = 0.;
@@ -124,6 +127,7 @@ private:
       ptUncDown = phiUncDown = 0.;
     }
     float pt, phi;
+    float eta, mass;
     float ptUncor, phiUncor;
     float ptJECUp, phiJECUp;
     float ptJERUp, phiJERUp;

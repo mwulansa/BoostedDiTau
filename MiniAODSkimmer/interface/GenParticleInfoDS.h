@@ -6,7 +6,7 @@
 struct GenParticleInfo {
   float pt, eta, phi, mass;
   int pdgid;
-  bool isfinalstate;
+  bool isfinalstate, ishardprocess, isdirecthardprocesstaudecayproductfinalstate;
 
   bool operator<(const GenParticleInfo& p) const { return pt < p.pt; }
   
