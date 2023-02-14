@@ -374,6 +374,7 @@ void TCPNtuples_Data::fillTauInfoDS(const std::vector<pat::Tau>& Taus, int which
       t.eta = tau.eta();
       t.phi = tau.phi();
       t.mass = tau.mass();
+      t.charge = tau.charge();
       t.decaymode = tau.decayMode();
       t.mvaidraw = tau.tauID("byIsolationMVArun2017v2DBoldDMwLTraw2017");
       t.deepidraw = tau.tauID("byDeepTau2017v2p1VSeraw");

@@ -96,6 +96,7 @@ void TCPNtuples_Backgrounds::analyze(const edm::Event& iEvent, const edm::EventS
 	j.ptuncor = jet.correctedP4(0).Pt();
 	j.deepcsv = jet.bDiscriminator("pfDeepCSVJetTags:probb") + jet.bDiscriminator("pfDeepCSVJetTags:probbb");
 	j.deepjet = jet.bDiscriminator("pfDeepFlavourJetTags:probb") + jet.bDiscriminator("pfDeepFlavourJetTags:probbb") + jet.bDiscriminator("pfDeepFlavourJetTags:problepb");
+	j.jetflavour = jet.hadronFlavour();
 	if (jetIDLepVeto) j.id = 2;
 	else j.id = 1;
 	if (jet.pt() > 50) j.puid = 3;
@@ -374,6 +375,7 @@ void TCPNtuples_Backgrounds::fillTauInfoDS(const std::vector<pat::Tau>& Taus, in
       t.eta = tau.eta();
       t.phi = tau.phi();
       t.mass = tau.mass();
+      t.charge = tau.charge();
       t.decaymode = tau.decayMode();
       t.mvaidraw = tau.tauID("byIsolationMVArun2017v2DBoldDMwLTraw2017");
       t.deepidraw = tau.tauID("byDeepTau2017v2p1VSeraw");

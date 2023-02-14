@@ -3,6 +3,10 @@ import ROOT
 
 opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
+
+if "-r" in opts:
+    region = sys.argv[2]
+
 #histlist = sys.argv[1]
 
 # Cross section calc----------------
@@ -77,10 +81,10 @@ xsec_TCP50 = xsec_M[4]
 xsecs={
 #     'TCP_m10':{'':xsec_TCP10},
 #     'TCP_m30':{
-#     'TCP_m30_HT-0to100':{'':xsec_M[2]*8.887e-05},
+     'TCP_m30_HT-0to100':{'':xsec_M[2]*8.887e-05},
      'TCP_Ntuple_m30_HT-100to400':{'':xsec_M[2]*8.395e-06},
      'TCP_Ntuple_m30_HT-400toInf':{'':xsec_M[2]*1.930e-07},
-#     'TCP_Ntuple_m50_HT-0to100':{'':xsec_M[4]*9.217e-05},
+     'TCP_Ntuple_m50_HT-0to100':{'':xsec_M[4]*9.217e-05},
      'TCP_Ntuple_m50_HT-100to400':{'':xsec_M[4]*1.233e-05},
      'TCP_Ntuple_m50_HT-400toInf':{'':xsec_M[4]*2.938e-07},
 #     'DYJetsToLL_lowMassDY' : {
@@ -111,8 +115,8 @@ xsecs={
          'M-50_HT-1200to2500':0.1937, 
          'M-50_HT-2500toInf':0.003514},
      'DYJetsToLL_M-4to50':{
-#         'HT-70to100':321.2,
-         'HT-70to100':145.5,
+         'HT-70to100':321.2,
+#         'HT-70to100':145.5,
          'HT-100to200':204.0,
          'HT-200to400':54.39,
          'HT-400to600':5.697,
@@ -120,13 +124,19 @@ xsecs={
 # #    'DYJetsToQQ':{
 # #        'HT180':1208},
      'TTJets':{
-         'TuneCP5':750.5},
-#     'ST':{
-#         's-channel_4f_leptonDecays':3.549,
-#         't-channel_antitop_4f_inclusiveDecays':26.38,
-#         't-channel_top_4f_inclusiveDecays':44.33,
-#         'tW_antitop_5f_inclusiveDecays':34.97,
-#         'tW_top_5f_inclusiveDecays':34.91},
+          'TuneCP5':750.5},
+     'TTTo2L2Nu':{
+         'TuneCP5':88.29},
+     'TTToSemiLeptonic':{
+         'TuneCP5':365.34},
+     'TTToHadronic':{
+         'TuneCP5':377.96},
+     'ST':{
+#         's_channel':3.549,
+#         't_channel_antitop':69.09,
+#         't_channel_top':115.3,
+         'tW_antitop':34.97,
+         'tW_top':34.91},
      'Diboson':{
          'WW':75.95,
          'WZ':27.59,
@@ -152,13 +162,6 @@ xsecs={
           'HT-1000to1500':1092.0,
           'HT-1500to2000':99.76,
           'HT-2000toInf':20.35}
-# #    'QCD-10X':{
-# #        'Pt-15to7000':1.34e9}
-#     'WJetsToQQ':{
-#         'HT-600ToInf':99.65},
-# #        'HT180':3105.0},
-#     'ZJetsToQQ':{
-#         'HT600toInf':581.9}
 }
 
 
@@ -173,6 +176,8 @@ xsecsQCD = {
     'HT-1500to2000':{'':99.76},
     'HT-2000toInf':{'':20.35}
 }
+
+fileName = "studyTTVarDependence"
 
 def weightBackgroundHists(hists, files, version, study, var, Sample):
 #    for sample in list(xsecs):
@@ -194,6 +199,7 @@ def weightBackgroundHists(hists, files, version, study, var, Sample):
 ##                filename="h_debugMuTau_HighHT_FullyLeptonic_"+sample+"_"+mass+"_"+version+".root"
 ##                filename="h_debugMuTau_HighHT_FullyLeptonic_JetHT_"+sample+"_"+mass+"_"+version+".root"
 ##                filename="h_debugMuTau_HighHT_FullyLeptonic_HTTrig_"+sample+"_"+mass+"_"+version+".root"
+                filename = "h_"+fileName+"_"+sample+"_"+mass+"_"+version+".root"
                 if "-al" in opts:
                     filename="h_debugMuTau_HighHT_Inclusive_Altered_"+sample+"_"+mass+"_"+version+".root"
 #                    filename="h_debugMuTau_HighHT_FullyLeptonic_Inclusive_Altered_"+sample+"_"+mass+"_"+version+".root"
@@ -204,6 +210,8 @@ def weightBackgroundHists(hists, files, version, study, var, Sample):
                     filename="h_debugMuTau_HighHT_Inclusive_"+sample+"_"+mass+"_"+version+".root"
                     if "-2d" in opts:
                         filename="h_debugMuTau_HighHT_plot2DforTau_Inclusive_"+sample+"_"+mass+"_"+version+".root"
+                    if "-mc" in opts:
+                        filename="h_debugMuTau_HighHT_Inclusive_MCOnly_"+sample+"_"+mass+"_"+version+".root"
 #                filename="h_debugMuTau_HighHT_"+sample+"_"+mass+"_"+version+".root"
 #                filename="h_TriggerStudy_TightPtcut_"+sample+"_"+mass+"_"+version+".root"          
 #                filename="h_TriggerStudy_HTMHTFirst_LooseJetPt_"+sample+"_"+mass+"_"+version+".root"          
@@ -235,7 +243,8 @@ def weightBackgroundHists(hists, files, version, study, var, Sample):
                 else:
                     hist.Scale(scale)
                 hists[sample].Add(hist)
-            
+
+
 hists = {}
 files = []
 
@@ -249,17 +258,22 @@ files = []
 #2D = v7,v1
 
 if "-nm" in opts:
-    version = 'v8'
-    iteration = 'v8'
-    study ='Nominal'
+    version = 'v13'
+    iteration = 'v13'
+    study ='Norminal'
     if "-2d" in opts:
         version = 'v5'
         iteration = 'v5'
         study ='2DNominal'
+    if "-mc" in opts:
+        version = 'v1'
+        iteration = 'v1'
+        study ='MCOnly'
+
 
 if "-al" in opts:
-    version = 'v8'
-    iteration = 'v8'
+    version = 'v12'
+    iteration = 'v12'
     study ='AlteredID'
     if "-2d" in opts:
         version = 'v5'
@@ -276,26 +290,25 @@ L = 41480.0
 
 gen = False
 scaling = 'xsection' #'xsection' else: 'unity'
-
+version = 'v2'
+study = 'studyTTVarDependence'
+iteration = 'v2'
 #-------------
-
-#Sample = ['QCD', 'TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
-#Sample = ['TTJets', 'TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
-#Sample = ['WJetsToLNu', 'TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','QCD','DYJetsToLL']
-#Sample = ['QCD', 'TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
 
 Sample = ['TTJets']
 
-if "-t" in opts:
+if "--tcp" in opts:
     Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
 if "-l" in opts:
     Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf']
 if "-h" in opts:
     Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
-if "-a" in opts:
-    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','QCD','WJetsToLNu','DYJetsToLL','TTJets','DYJetsToLL_M-4to50','Diboson']
+if "-a" in opts or "--all" in opts:
+    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','WJetsToLNu','DYJetsToLL','TTTo2L2Nu','DYJetsToLL_M-4to50','Diboson','TTToSemiLeptonic','ST','QCD']
+if "--tt" in opts:
+    Sample = ['TTTo2L2Nu', 'TTToSemiLeptonic', 'TTToHadronic']
 if "-b" in opts:
-    Sample = ['QCD','WJetsToLNu','DYJetsToLL','TTJets','DYJetsToLL_M-4to50','Diboson']
+    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','QCD','WJetsToLNu','DYJetsToLL','TTJets','DYJetsToLL_M-4to50','Diboson']
 if "-ht" in opts:
     Sample = ['QCD','WJetsToLNu','DYJetsToLL','DYJetsToLL_M-4to50']
 if "-d" in opts:
@@ -306,117 +319,32 @@ if "-q" in opts:
 
 #VARIABLE = ["TauPtJetPt","TauPtJet2Pt","TauPtMuonPt","TauPtdRl","TauPtdRj2tau","TauPtdRjtau","TauPtdRjmu","MuonPtdRl","TauPtdRgenMu","MuonPtdRgenMu"]
 #VARIABLE = ['TauPtdRjmu','TauPtdRjtau','TauPtdRl','MuonPtdRl','TauPtMuonPt','TauPtJetPt','TauPtJet2Pt','TauPtdRj2tau','DimuonMass','MuonPtMuon2Pt','TauPtdRl2','TauPtdRgenMu','MuonPtdRgenMu']
-#VARIABLE = ['TauPt','Nj','JetPt', 'MuonPt', 'MetPt']
-VARIABLE = ['MetPt']
+#VARIABLE = ['TauPt','Nj','JetPt', 'MuonPt', 'MetPt','Mass','Mt']
+#VARIABLE = ['MetPt']
+VARIABLE = ['Mass', 'Lepton1Pt', 'Lepton2Pt', 'JetPt', 'MetPt', 'Nj','dRl','dRj', 'dPhil', 'dPhi','Mtl1', 'Mtl2','Mtl','cosMl1','cosMl2','cosl','Count']
+#VARIABLE = ["BFlavour_JetPt", "BFlavour_JetEta","CFlavour_JetPt", "CFlavour_JetEta", "LFlavour_JetPt", "LFlavour_JetEta", "BFlavour_BTagged_JetPt", "BFlavour_BTagged_JetEta","CFlavour_BTagged_JetPt", "CFlavour_BTagged_JetEta", "LFlavour_BTagged_JetPt", "LFlavour_BTagged_JetEta"]
+#VARIABLE = ['MuonPt_SingleMuon','ElectronPt_SingleMuon','MetPt_SingleMuon','dRl_SingleMuon']
+#VARIABLE = ['MuonPt_Both','ElectronPt_Both','dRl_Both','JetPt_Both','MetPt_Both','dRj_Both']
+#VARIABLE = ['MuonPt_Both','ElectronPt_Both','dRl_Both','JetPt_Both','dRj_Both']
+#VARIABLE = ['Mass', 'cosMl1','cosMl2','Count']
+#VARIABLE = ['Mass']
 #VARIABLE = ['TauPt', 'TauPt0','TauPt1','TauPt10','Nj','JetPt', 'MuonPt']
 #VARIABLE = ['TauPtMass','TauPt0Mass','TauPt1Mass','TauPt10Mass','NJetMass']
+#VARIABLE = ['Mt','MetPt']
 
-if "-2dmass" in opts:
-    REGION = ['hMuTau_SR_highMET_lowMt_dRcut']
-
-if "-dr3" in opts:
-    REGION = ["hMuTau_SS_dRcut_highMET_lowMt"]
-    if "-2d" in opts:
-        REGION = ["hMuTau_SS_highMET_lowMt_dRcut","hMuTau_SS_highMET_lowMt"]
-        if "-dRl" in opts:
-            REGION = ["hMuTau_SS_highMET_lowMt_dRcutl"]
-
-if "-sr" in opts:
-    REGION = ["hMuTau_SR_dRcut_highMET_lowMt"]
-    if "-2d" in opts:
-        REGION = ["hMuTau_SR_highMET_lowMt_dRcut","hMuTau_SR_highMET_lowMt"]
-
-if "-dr1" in opts:
-#    REGION = ['hMuTau_highMt_dRcut_highMET', 'hMuTau_highMt_highMET']
-    REGION = ['hMuTau_highMt_dRcut']
-
-if "-dr2" in opts:
-    REGION = ["hMuTau_lowMET_dRcut_lowMt","hMuTau_lowMET_lowMt"]
-#    REGION = ["hMuTau_lowMET_dRcut_lowMt"]
-    if "-2d" in opts:
-        REGION = ["hMuTau_OS_lowMET_lowMt_dRcut","hMuTau_OS_lowMET_lowMt"]
-        if "-dRl" in opts:
-            REGION = ["hMuTau_OS_lowMET_lowMt_dRcutl"]
-        if "-dRjt" in opts:
-            REGION = ["hMuTau_OS_lowMET_lowMt_dRcutjt"]
-        if "-dRjm" in opts:
-            REGION = ["hMuTau_OS_lowMET_lowMt_dRcutjm"]
-
-if "-dr4" in opts:
-    REGION = ['hMuTau_lowMET_dRcut_highMt','hMuTau_lowMET_highMt']
-
-if "-dr5" in opts:
-    REGION = ['hMuTau_SS_dRcut_highMET_highMt']
-
-if "-dr6" in opts:
-#    REGION = ["hMuTau_SS_lowMET_dRcut_lowMt","hMuTau_SS_lowMET_lowMt"]
-    REGION = ["hMuTau_SS_lowMET_dRcut_lowMt"]
-    if "-2d" in opts:
-        REGION = ["hMuTau_SS_lowMET_lowMt_dRcut","hMuTau_SS_lowMET_lowMt"]
-        if "-dRl" in opts:
-            REGION = ["hMuTau_SS_lowMET_lowMt_dRcutl"]
-        if "-dRjt" in opts:
-            REGION = ["hMuTau_SS_lowMET_lowMt_dRcutjt"]
-        if "-dRjm" in opts:
-            REGION = ["hMuTau_SS_lowMET_lowMt_dRcutjm"]
-
-if "-dr7" in opts:
-    REGION = ['hMuTau_SS_lowMET_dRcut_highMt','hMuTau_SS_lowMET_highMt']
+REGION = []
 
 histlist = []
 
-for region in REGION:
-    histlist.append(region)
-    if "-2d" not in opts: histlist.append(region)
+#for region in REGION:
+if  "-r" in opts:
     for variable in VARIABLE:
         histlist.append(region+"_"+variable)
 #        histlist.append(region+"_"+variable+"_loosedR")
 
-# histlist = ['hMuTau_SS','hMuTau_SS_TauPt','hMuTau_SS_Nj']
-# histlist = ['hMuMu_lowMET','hMuMu_lowMET_Muon1Pt','hMuMu_lowMET_Muon2Pt','hMuMu_lowMET_JetPt','hMuMu_lowMET_MetPt','hMuMu_lowMET_Nj','hMuTau_lowMET','hMuTau_lowMET_TauPt','hMuTau_lowMET_JetPt','hMuTau_lowMET_Nj','hMuTau_lowMET_MuonPt']
+if "-h" in opts:
+    histlist.append(sys.argv[2])
 
-# #-------Tau Pt
-# histlist = ['hMuTau_SS_TauPt','hMuTau_SS_lowMET_TauPt','hMuTau_SS_lowMET_highMt_TauPt','hMuTau_SS_lowMET_lowMt_TauPt','hMuTau_SS_lowMET_dRcut_TauPt','hMuTau_SS_lowMET_dRcut_highMt_TauPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPt','hMuTau_SS_dRcut_TauPt','hMuTau_SS_dRcut_highMET_TauPt','hMuTau_SS_dRcut_highMET_highMt_TauPt','hMuTau_SS_dRcut_highMET_lowMt_TauPt']
-
-# #----------------SS
-# if "-ss" in opts:
-#     histlist = ['hMuTau_SS_TauPtJetPt','hMuTau_SS_TauPtJet2Pt','hMuTau_SS_TauPtMuonPt']
-
-# #----------------DR1
-# if "-dr1" in opts:
-#     histlist = ['hMuTau_highMt_dRcut_highMET','hMuTau_highMt_dRcut_highMET_TauPt','hMuTau_highMt_dRcut_highMET_JetPt','hMuTau_highMt_dRcut_highMET_Nj','hMuTau_highMt_highMET','hMuTau_highMt_highMET_TauPt','hMuTau_highMt_highMET_JetPt','hMuTau_highMt_highMET_Nj','hMuTau_highMt_highMET_dRl','hMuTau_highMt_highMET_dRj','hMuTau_highMt_dRcut_highMET_TauPt0','hMuTau_highMt_dRcut_highMET_TauPt10','hMuTau_highMt_dRcut_highMET_TauPt1']
-# #----------------DR2
-# if "-dr2" in opts:
-#     histlist = ['hMuTau_lowMET_dRcut_lowMt','hMuTau_lowMET_dRcut_lowMt_TauPt','hMuTau_lowMET_dRcut_lowMt_JetPt','hMuTau_lowMET_dRcut_lowMt_Nj','hMuTau_lowMET_lowMt','hMuTau_lowMET_lowMt_TauPt','hMuTau_lowMET_lowMt_JetPt','hMuTau_lowMET_lowMt_Nj','hMuTau_lowMET_lowMt_dRl','hMuTau_lowMET_lowMt_dRj','hMuTau_lowMET_dRcut_lowMt_MuonPt','hMuTau_lowMET_dRcut_lowMt_TauPt0','hMuTau_lowMET_dRcut_lowMt_TauPt1','hMuTau_lowMET_dRcut_lowMt_TauPt10']
-# #----------------DR3
-# if "-dr3" in opts:
-#     histlist = ['hMuTau_SS_dRcut_highMET_lowMt','hMuTau_SS_dRcut_highMET_lowMt_TauPt','hMuTau_SS_dRcut_highMET_lowMt_JetPt','hMuTau_SS_dRcut_highMET_lowMt_Nj','hMuTau_SS_dRcut_MetPt','hMuTau_SS_dRcut_highMET_Mt','hMuTau_SS_dRcut_highMET_lowMt_TauPt1','hMuTau_SS_dRcut_highMET_lowMt_TauPt10','hMuTau_SS_dRcut_highMET_lowMt_TauPt0','hMuTau_SS_dRcut_highMET_lowMt_MuonPt','hMuTau_SS_dRcut_highMET_lowMt_MetPt']
-#     if "-2d" in opts:
-#         histlist = ['hMuTau_SS_highMET_lowMt_TauPtJetPt','hMuTau_SS_highMET_lowMt_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_TauPtdRl','hMuTau_SS_highMET_lowMt_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_TauPtdRjtau','hMuTau_SS_highMET_lowMt_TauPtdRjmu','hMuTau_SS_highMET_lowMt_dRcut_TauPtJetPt','hMuTau_SS_highMET_lowMt_dRcut_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_dRcut_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_dRcut_TauPtdRl','hMuTau_SS_highMET_lowMt_dRcut_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_dRcut_TauPtdRjtau','hMuTau_SS_highMET_lowMt_dRcut_TauPtdRjmu','hMuTau_SS_highMET_lowMt_dRcut_TauPtdRgenMu','hMuTau_SS_highMET_lowMt_TauPtdRgenMu','hMuTau_SS_highMET_lowMt_dRcut_MuonPtdRgenMu','hMuTau_SS_highMET_lowMt_MuonPtdRgenMu']
-#         if "-dRl" in opts:
-#             histlist = 'hMuTau_SS_highMET_lowMt_dRcutl_TauPtJetPt','hMuTau_SS_highMET_lowMt_dRcutl_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_dRcutl_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_dRcutl_TauPtdRl','hMuTau_SS_highMET_lowMt_dRcutl_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_dRcutl_TauPtdRjtau','hMuTau_SS_highMET_lowMt_dRcutl_TauPtdRjmu'
-#         if "-dRjt" in opts:
-#             histlist = 'hMuTau_SS_highMET_lowMt_dRcutjt_TauPtJetPt','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_dRcutjt_TauPtdRl','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtdRjtau','hMuTau_SS_highMET_lowMt_dRcutjt_TauPtdRjmu'
-#         if "-dRjm" in opts:
-#             histlist = 'hMuTau_SS_highMET_lowMt_dRcutjm_TauPtJetPt','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtJet2Pt','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtMuonPt', 'hMuTau_SS_highMET_lowMt_dRcutjm_TauPtdRl','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtdRj2tau','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtdRjtau','hMuTau_SS_highMET_lowMt_dRcutjm_TauPtdRjmu'
-# #----------------AR/SR
-# if "-sr" in opts:
-#     histlist = ['hMuTau_SR_dRcut_highMET_lowMt','hMuTau_SR_dRcut_highMET_lowMt_TauPt','hMuTau_SR_dRcut_highMET_lowMt_JetPt','hMuTau_SR_dRcut_highMET_lowMt_Nj','hMuTau_SR_dRcut_highMET_lowMt_MuonPt','hMuTau_SR_dRcut_highMET_lowMt_MetPt','hMuTau_SR_dRcut_highMET_lowMt_Mt','hMuTau_SR_dRcut_highMET_lowMt_TauPt0','hMuTau_SR_dRcut_highMET_lowMt_TauPt10','hMuTau_SR_dRcut_highMET_lowMt_TauPt1','hMuTau_SR_dRcut_highMET_lowMt_MetPt']
-#     if "-2d" in opts:
-#         histlist = ['hMuTau_SR_highMET_lowMt_dRcut_TauPtJetPt','hMuTau_SR_highMET_lowMt_dRcut_TauPtMuonPt','hMuTau_SR_highMET_lowMt_dRcut_TauPtdRjmu','hMuTau_SR_highMET_lowMt_dRcut_TauPtdRl','hMuTau_SR_highMET_lowMt_dRcut_TauPtdRjtau','hMuTau_SR_highMET_lowMt_TauPtJetPt','hMuTau_SR_highMET_lowMt_TauPtMuonPt','hMuTau_SR_highMET_lowMt_TauPtdRjmu','hMuTau_SR_highMET_lowMt_TauPtdRl','hMuTau_SR_highMET_lowMt_TauPtdRjtau','hMuTau_SR_highMET_lowMt_dRcut_TauPtJet2Pt','hMuTau_SR_highMET_lowMt_TauPtJet2Pt']
-# #----------------DR4
-# if "-dr4" in opts:
-#     histlist = ['hMuTau_lowMET_dRcut_highMt','hMuTau_lowMET_dRcut_highMt_TauPt','hMuTau_lowMET_dRcut_highMt_JetPt','hMuTau_lowMET_dRcut_highMt_Nj','hMuTau_lowMET_highMt','hMuTau_lowMET_highMt_TauPt','hMuTau_lowMET_highMt_JetPt','hMuTau_lowMET_highMt_Nj','hMuTau_lowMET_highMt_dRl','hMuTau_lowMET_highMt_dRj','hMuTau_lowMET_dRcut_highMt_TauPt0','hMuTau_lowMET_dRcut_highMt_TauPt10','hMuTau_lowMET_dRcut_highMt_TauPt1']
-# #----------------DR5
-# if "-dr5" in opts:
-#     histlist = ['hMuTau_SS_dRcut_highMET_highMt','hMuTau_SS_dRcut_highMET_highMt_TauPt','hMuTau_SS_dRcut_highMET_highMt_JetPt','hMuTau_SS_dRcut_highMET_highMt_Nj','hMuTau_SS_dRcut_highMET_highMt_TauPt1','hMuTau_SS_dRcut_highMET_highMt_TauPt0','hMuTau_SS_dRcut_highMET_highMt_TauPt10']
-# #----------------DR6
-# if "-dr6" in opts:
-#     histlist = ['hMuTau_SS_lowMET_dRcut_lowMt','hMuTau_SS_lowMET_dRcut_lowMt_TauPt','hMuTau_SS_lowMET_dRcut_lowMt_JetPt','hMuTau_SS_lowMET_dRcut_lowMt_Nj','hMuTau_SS_lowMET_lowMt','hMuTau_SS_lowMET_lowMt_TauPt','hMuTau_SS_lowMET_lowMt_JetPt','hMuTau_SS_lowMET_lowMt_Nj','hMuTau_SS_lowMET_lowMt_dRj','hMuTau_SS_lowMET_lowMt_dRl','hMuTau_SS_lowMET_dRcut_lowMt_TauPt0','hMuTau_SS_lowMET_dRcut_lowMt_TauPt10','hMuTau_SS_lowMET_dRcut_lowMt_TauPt1','hMuTau_SS_lowMET_dRcut_lowMt_MuonPt','hMuTau_SS_lowMET_lowMt_MuonPt','hMuTau_SS_lowMET_dRcut_lowMt_MetPt']
-# #    histlist = ['hMuTau_SS_lowMET_dRcut_lowMt_TauPtJetPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMuonPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMetPt','hMuTau_SS_lowMET_dRcut_lowMt_TauPtMuMuMass','hMuTau_SS_lowMET_dRcut_lowMt_TauPtdRj','hMuTau_SS_lowMET_dRcut_lowMt_TauPtdRj2']
-# #----------------DR7
-# if "-dr7" in opts:
-#     histlist = ['hMuTau_SS_lowMET_dRcut_highMt','hMuTau_SS_lowMET_dRcut_highMt_TauPt','hMuTau_SS_lowMET_dRcut_highMt_JetPt','hMuTau_SS_lowMET_dRcut_highMt_Nj','hMuTau_SS_lowMET_highMt','hMuTau_SS_lowMET_highMt_TauPt','hMuTau_SS_lowMET_highMt_JetPt','hMuTau_SS_lowMET_highMt_Nj','hMuTau_SS_lowMET_highMt_dRl','hMuTau_SS_lowMET_highMt_dRj','hMuTau_SS_lowMET_highMt_MuonPt','hMuTau_SS_lowMET_dRcut_highMt_MuonPt']
 
 
 for var in histlist:
@@ -433,6 +361,7 @@ for var in histlist:
 
     for name in Sample:
 #        hists[name].Rebin(10)                                                                                                           
+
 
         if name=='DYJetsToLL':
             hists[name].SetFillColor(ROOT.kRed-6)
@@ -451,8 +380,14 @@ for var in histlist:
         #     hists[name].SetFillColor(ROOT.kBlack)
         elif name=='TTJets':
             hists[name].SetFillColor(ROOT.kOrange-4)
-        # elif name=='ST':
-        #     hists[name].SetFillColor(ROOT.kMagenta-9)
+        elif name=='TTTo2L2Nu':
+            hists[name].SetFillColor(ROOT.kOrange-4)
+        elif name=='TTToSemiLeptonic':
+            hists[name].SetFillColor(ROOT.kOrange-5)
+        elif name=='TTToHadronic':
+            hists[name].SetFillColor(ROOT.kOrange-6)
+        elif name=='ST':
+            hists[name].SetFillColor(ROOT.kMagenta-9)
         elif name == 'Diboson':
             hists[name].SetFillColor(ROOT.kAzure+7)
         elif name == 'QCD':
@@ -468,4 +403,7 @@ for var in histlist:
     out.Close()
 
 print(VARIABLE)
-print(histlist)
+print("Histlist")
+print(*histlist, sep=", ")
+print("Regions")
+print(*REGION, sep=", ")
