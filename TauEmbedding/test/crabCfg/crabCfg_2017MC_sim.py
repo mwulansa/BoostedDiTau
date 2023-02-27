@@ -19,9 +19,9 @@ config.General.transferLogs = False
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = '../simulation.py'
 #config.JobType.inputFiles = ['../PileupHistogram-goldenJSON-13tev-2016-69200ub.root', '../PileupMC.root']
-#config.JobType.numCores = 4
-#config.JobType.pyCfgParams = ["numThreads=4"]
-config.JobType.maxMemoryMB = 4000
+config.JobType.numCores = 4
+config.JobType.pyCfgParams = ["numThreads=4"]
+config.JobType.maxMemoryMB = 2500
 config.JobType.maxJobRuntimeMin = 2000
 config.JobType.allowUndistributedCMSSW = True
 

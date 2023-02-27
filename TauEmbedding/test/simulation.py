@@ -67,35 +67,6 @@ process.source = cms.Source("PoolSource",
     secondaryFileNames = cms.untracked.vstring()
 )
 
-process.options = cms.untracked.PSet(
-    FailPath = cms.untracked.vstring(),
-    IgnoreCompletely = cms.untracked.vstring(),
-    Rethrow = cms.untracked.vstring(),
-    SkipEvent = cms.untracked.vstring(),
-    allowUnscheduled = cms.obsolete.untracked.bool,
-    canDeleteEarly = cms.untracked.vstring(),
-    deleteNonConsumedUnscheduledModules = cms.untracked.bool(True),
-    dumpOptions = cms.untracked.bool(False),
-    emptyRunLumiMode = cms.obsolete.untracked.string,
-    eventSetup = cms.untracked.PSet(
-        forceNumberOfConcurrentIOVs = cms.untracked.PSet(
-            allowAnyLabel_=cms.required.untracked.uint32
-        ),
-        numberOfConcurrentIOVs = cms.untracked.uint32(0)
-    ),
-    fileMode = cms.untracked.string('FULLMERGE'),
-    forceEventSetupCacheClearOnNewRun = cms.untracked.bool(False),
-    makeTriggerResults = cms.obsolete.untracked.bool,
-    numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(0),
-    numberOfConcurrentRuns = cms.untracked.uint32(1),
-    numberOfStreams = cms.untracked.uint32(0),
-    numberOfThreads = cms.untracked.uint32(1),
-    printDependencies = cms.untracked.bool(False),
-    sizeOfStackForThreadsInKB = cms.optional.untracked.uint32,
-    throwIfIllegalParameter = cms.untracked.bool(True),
-    wantSummary = cms.untracked.bool(False)
-)
-
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
     annotation = cms.untracked.string('BoostedDiTau/TauEmbedding/python/EmbeddingPythia8Hadronizer_cfi.py nevts:-1'),
@@ -391,3 +362,32 @@ process.patPFMetT1T2SmearCorrPuppi.jetCorrLabelRes = cms.InputTag("L3Absolute")
 ##     process.rerunMvaIsolationSequence *
 ##     getattr(process,updatedTauName)
 ## )
+
+process.options = cms.untracked.PSet(
+    FailPath = cms.untracked.vstring(),
+    IgnoreCompletely = cms.untracked.vstring(),
+    Rethrow = cms.untracked.vstring(),
+    SkipEvent = cms.untracked.vstring(),
+    allowUnscheduled = cms.obsolete.untracked.bool,
+    canDeleteEarly = cms.untracked.vstring(),
+    deleteNonConsumedUnscheduledModules = cms.untracked.bool(True),
+    dumpOptions = cms.untracked.bool(True),
+    emptyRunLumiMode = cms.obsolete.untracked.string,
+    eventSetup = cms.untracked.PSet(
+        forceNumberOfConcurrentIOVs = cms.untracked.PSet(
+            allowAnyLabel_=cms.required.untracked.uint32
+        ),
+        numberOfConcurrentIOVs = cms.untracked.uint32(0)
+    ),
+    fileMode = cms.untracked.string('FULLMERGE'),
+    forceEventSetupCacheClearOnNewRun = cms.untracked.bool(False),
+    makeTriggerResults = cms.obsolete.untracked.bool,
+    numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(1),
+    numberOfConcurrentRuns = cms.untracked.uint32(1),
+    numberOfStreams = cms.untracked.uint32(0),
+    numberOfThreads = cms.untracked.uint32(4),
+    printDependencies = cms.untracked.bool(False),
+    sizeOfStackForThreadsInKB = cms.optional.untracked.uint32,
+    throwIfIllegalParameter = cms.untracked.bool(True),
+    wantSummary = cms.untracked.bool(False)
+)
