@@ -1,30 +1,30 @@
-#include "BoostedDiTau/MiniAODSkimmer/plugins/TCPNtuples.h"
+#include "BoostedDiTau/MiniAODSkimmer/plugins/TCPNtuples_Data.h"
 
-TCPNtuples::TCPNtuples(const edm::ParameterSet& iConfig) :
+TCPNtuples_Data::TCPNtuples_Data(const edm::ParameterSet& iConfig) :
   MET_(consumes< vector<pat::MET> > (iConfig.getParameter<edm::InputTag>("METCollection"))),
   Jets_(consumes< vector<pat::Jet> > (iConfig.getParameter<edm::InputTag>("JetCollection"))),
   Muons_(consumes< vector<pat::Muon> > (iConfig.getParameter<edm::InputTag>("MuonCollection"))),
   Electrons_(consumes< vector<pat::Electron> > (iConfig.getParameter<edm::InputTag>("ElectronCollection"))),
-  LowPtElectrons_(consumes< vector<pat::Electron> > (iConfig.getParameter<edm::InputTag>("LowPtElectronCollection"))),
-  idScoreCut_(iConfig.getParameter<string>("LowPtEIdScoreCut")),
+  //  LowPtElectrons_(consumes< vector<pat::Electron> > (iConfig.getParameter<edm::InputTag>("LowPtElectronCollection"))),
+  //  idScoreCut_(iConfig.getParameter<string>("LowPtEIdScoreCut")),
   Vertices_(consumes< vector<reco::Vertex> > (iConfig.getParameter<edm::InputTag>("VertexCollection"))),
   rhoTag_(consumes<double>(iConfig.getParameter<edm::InputTag>("rhoTag"))),
   effectiveAreas_((iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
   TausUnCleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("UnCleanedTauCollection"))),
   TausECleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("ECleanedTauCollection"))),
-  TausLowPtECleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("LowPtECleanedTauCollection"))),
+//  TausLowPtECleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("LowPtECleanedTauCollection"))),
   TausMCleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("MCleanedTauCollection"))),
   TausBoosted_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("BoostedTauCollection"))) {
   usesResource(TFileService::kSharedResource);
 }
 
-void TCPNtuples::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+void TCPNtuples_Data::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   edm::ParameterSetDescription desc;
   desc.setUnknown();
   descriptions.addDefault(desc);
 }
 
-void TCPNtuples::beginJob() {
+void TCPNtuples_Data::beginJob() {
   
   edm::Service<TFileService> fs;
   fs->mkdir( "analysis" );
@@ -38,26 +38,26 @@ void TCPNtuples::beginJob() {
   jetInfoData = new JetInfoDS();
   muonInfoData = new MuonInfoDS();
   electronInfoData = new ElectronInfoDS();
-  lowPtElectronInfoData = new ElectronInfoDS();
+  //  lowPtElectronInfoData = new ElectronInfoDS();
   tauInfoDataUnCleaned = new TauInfoDS();
   tauInfoDataECleaned = new TauInfoDS();
-  tauInfoDataLowPtECleaned = new TauInfoDS();
+  //  tauInfoDataLowPtECleaned = new TauInfoDS();
   tauInfoDataMCleaned = new TauInfoDS();
   tauInfoDataBoosted = new TauInfoDS();
   
   tree->Branch("Jets", "JetInfoDS", &jetInfoData);
   tree->Branch("Muons", "MuonInfoDS", &muonInfoData);
   tree->Branch("Electrons", "ElectronInfoDS", &electronInfoData);
-  tree->Branch("LowPtElectrons", "ElectronInfoDS", &lowPtElectronInfoData);
+  //  tree->Branch("LowPtElectrons", "ElectronInfoDS", &lowPtElectronInfoData);
   tree->Branch("TausUnCleaned", "TauInfoDS", &tauInfoDataUnCleaned);
   tree->Branch("TausECleaned", "TauInfoDS", &tauInfoDataECleaned);
-  tree->Branch("TausLowPtECleaned", "TauInfoDS", &tauInfoDataLowPtECleaned);
+  //  tree->Branch("TausLowPtECleaned", "TauInfoDS", &tauInfoDataLowPtECleaned);
   tree->Branch("TausMCleaned", "TauInfoDS", &tauInfoDataMCleaned);
   tree->Branch("TausBoosted", "TauInfoDS", &tauInfoDataBoosted);
   tree->Branch("Mets", &metInfo_, "pt/F:phi/F:eta/F:mass/F:ptUncor/F:phiUncor/F:ptJECUp/F:phiJECUp/F:ptJERUp/F:phiJERUp/F:ptUncUp/F:phiUncUp/F:ptJECDown/F:phiJECDown/F:ptJERDown/F:phiJERDown/F:ptUncDown/F:phiUncDown/F");
 }
 
-void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+void TCPNtuples_Data::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
 
   Reset();
 
@@ -272,7 +272,7 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
       } else {
 	e.iso = 0;
       }
-      e.lowptid = -9999;
+      //      e.lowptid = -9999;
       //std::cout << e.iso << '\n';
       math::XYZPointF p1 = electron.trackPositionAtVtx();
       math::XYZPoint p2 = PrimaryVertex.position();
@@ -284,33 +284,33 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
     }
   }
 
-  edm::Handle< std::vector<pat::Electron> > LowPtElectronsHandle;
-  iEvent.getByToken(LowPtElectrons_, LowPtElectronsHandle);
-  auto LowPtElectrons = *LowPtElectronsHandle;
+  //  edm::Handle< std::vector<pat::Electron> > LowPtElectronsHandle;
+  //  iEvent.getByToken(LowPtElectrons_, LowPtElectronsHandle);
+  //  auto LowPtElectrons = *LowPtElectronsHandle;
 
-  if (LowPtElectrons.size() > 0) {
-    for (unsigned int i = 0; i < LowPtElectrons.size(); ++i) {
-      auto electron = LowPtElectrons[i];
+  // if (LowPtElectrons.size() > 0) {
+  //   for (unsigned int i = 0; i < LowPtElectrons.size(); ++i) {
+  //     auto electron = LowPtElectrons[i];
       
-      if ( electron.pt() < 1 || electron.eta() > 2.5 || electron.electronID("ID") < std::stof(idScoreCut_) ) continue;
-      ElectronInfo e;
-      e.pt = electron.pt();
-      e.eta = electron.eta();
-      e.phi = electron.phi();
-      e.mass = electron.mass();
-      e.charge = electron.charge();
-      e.id = -9999;
-      e.lowptid = electron.electronID("ID");
-      //std::cout << e.iso << '\n';
-      math::XYZPointF p1 = electron.trackPositionAtVtx();
-      math::XYZPoint p2 = PrimaryVertex.position();
-      float dz = abs(p1.z()-p2.z());
-      float dxy = sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()));
-      e.dxy = dxy;
-      e.dz = dz;
-      lowPtElectronInfoData->push_back(e);
-    }
-  }
+  //     if ( electron.pt() < 1 || electron.eta() > 2.5 || electron.electronID("ID") < std::stof(idScoreCut_) ) continue;
+  //     ElectronInfo e;
+  //     e.pt = electron.pt();
+  //     e.eta = electron.eta();
+  //     e.phi = electron.phi();
+  //     e.mass = electron.mass();
+  //     e.charge = electron.charge();
+  //     e.id = -9999;
+  //     e.lowptid = electron.electronID("ID");
+  //     //std::cout << e.iso << '\n';
+  //     math::XYZPointF p1 = electron.trackPositionAtVtx();
+  //     math::XYZPoint p2 = PrimaryVertex.position();
+  //     float dz = abs(p1.z()-p2.z());
+  //     float dxy = sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()));
+  //     e.dxy = dxy;
+  //     e.dz = dz;
+  //     lowPtElectronInfoData->push_back(e);
+  //   }
+  // }
 
   edm::Handle< std::vector<pat::Tau> > TausUnCleanedHandle;
   iEvent.getByToken(TausUnCleaned_, TausUnCleanedHandle);
@@ -332,10 +332,10 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   auto TausBoosted = *TausBoostedHandle;
   fillTauInfoDS(TausBoosted, 4);
 
-  edm::Handle< std::vector<pat::Tau> > TausLowPtECleanedHandle;
-  iEvent.getByToken(TausLowPtECleaned_, TausLowPtECleanedHandle);
-  auto TausLowPtECleaned = *TausLowPtECleanedHandle;
-  fillTauInfoDS(TausLowPtECleaned, 5);
+  // edm::Handle< std::vector<pat::Tau> > TausLowPtECleanedHandle;
+  // iEvent.getByToken(TausLowPtECleaned_, TausLowPtECleanedHandle);
+  // auto TausLowPtECleaned = *TausLowPtECleanedHandle;
+  // fillTauInfoDS(TausLowPtECleaned, 5);
 
   edm::Handle< std::vector<pat::MET> > METHandle;
   iEvent.getByToken(MET_, METHandle);
@@ -363,7 +363,7 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   tree->Fill();
 }
 
-void TCPNtuples::fillTauInfoDS(const std::vector<pat::Tau>& Taus, int whichColl) {
+void TCPNtuples_Data::fillTauInfoDS(const std::vector<pat::Tau>& Taus, int whichColl) {
   if (Taus.size() > 0) {
     for (unsigned int i = 0; i < Taus.size(); ++i) {
       auto tau = Taus[i];
@@ -401,12 +401,12 @@ void TCPNtuples::fillTauInfoDS(const std::vector<pat::Tau>& Taus, int whichColl)
       if (whichColl == 2) tauInfoDataECleaned->push_back(t);
       if (whichColl == 3) tauInfoDataMCleaned->push_back(t);
       if (whichColl == 4) tauInfoDataBoosted->push_back(t);
-      if (whichColl == 5) tauInfoDataLowPtECleaned->push_back(t);
+      //      if (whichColl == 5) tauInfoDataLowPtECleaned->push_back(t);
     }
   }
 }
 
-float TCPNtuples::deltaR(float phi1, float phi2, float eta1, float eta2) {
+float TCPNtuples_Data::deltaR(float phi1, float phi2, float eta1, float eta2) {
   
   const float dphi = reco::deltaPhi(phi1, phi2);
   const float deta = eta1 - eta2;
@@ -415,5 +415,5 @@ float TCPNtuples::deltaR(float phi1, float phi2, float eta1, float eta2) {
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(TCPNtuples);
+DEFINE_FWK_MODULE(TCPNtuples_Data);
   

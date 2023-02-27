@@ -24,7 +24,7 @@ import sys
 runType = 'signal'
 #runType = 'background'
 #runType = 'data'
-#maxEvents = 1
+#maxEvents = 100
 maxEvents=-1
 appendOutput = True
 #isMC = True
@@ -98,7 +98,8 @@ print('\t Max events:', process.maxEvents.input.value())
 
 if runType == 'signal':
     readFiles.extend([
-        'root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root',
+        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_1.root',
+#        'file:root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL17MiniAODv2/ZZ_TuneCP5_13TeV-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v1/230000/0571FD70-4526-9F4F-BD99-769E4256D634.root'
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_2.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_3.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_4.root'
@@ -128,7 +129,7 @@ else:
 
 
 
-import BoostedDiTau.MiniAODSkimmer.adaptToRunAtMiniAODCustom as tauAtMiniToolsCustom
+import BoostedDiTau.MiniAODSkimmer.adaptToRunAtMiniAODCustom_Backgrounds as tauAtMiniToolsCustom
 
 #####
 print ('Step : 1 - Added Paths for RecoCleaned ')
@@ -259,10 +260,10 @@ process.ak4PFJetsRecoTauChargedHadronsMuonCleaned.minJetPt = jetPt
 
 
 tauAtMiniToolsCustom.addFurtherSkimming(process)
-#tauAtMiniToolsCustom.addTCPNtuples(process)
+tauAtMiniToolsCustom.addTCPNtuples(process)
 
-process.out = cms.EndPath(process.output)
-process.schedule.append(process.out)
+#process.out = cms.EndPath(process.output)
+#process.schedule.append(process.out)
 
 ###########################################
 process.load('FWCore.MessageService.MessageLogger_cfi')

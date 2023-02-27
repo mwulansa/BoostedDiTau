@@ -21,9 +21,9 @@ import sys
 #runSignal = True
 #runSignal=False
 ###########
-runType = 'signal'
+#runType = 'signal'
 #runType = 'background'
-#runType = 'data'
+runType = 'data'
 #maxEvents = 1
 maxEvents=-1
 appendOutput = True
@@ -98,7 +98,9 @@ print('\t Max events:', process.maxEvents.input.value())
 
 if runType == 'signal':
     readFiles.extend([
-        'root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root',
+#        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_1.root',
+         'file:root://cmsxrootd.fnal.gov//store/data/Run2017B/SingleMuon/MINIAOD/UL2017_MiniAODv2-v1/260000/9032A966-8ED0-B645-97B6-A8EBC1D8D3B9.root'
+#        'file:root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL17MiniAODv2/ZZ_TuneCP5_13TeV-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v1/230000/0571FD70-4526-9F4F-BD99-769E4256D634.root'
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_2.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_3.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_4.root'
@@ -117,7 +119,10 @@ elif runType == 'background':
 elif runType == 'data':
     readFiles.extend([
         #'/store/data/Run2018D/SingleMuon/MINIAOD/12Nov2019_UL2018-v4/710000/B7163712-7B03-D949-91C9-EB5DD2E1D4C3.root' # SingleMuon PD
-        '/store/data/Run2018D/Tau/MINIAOD/12Nov2019_UL2018-v1/00000/01415E2B-7CE5-B94C-93BD-0796FC40BD97.root' # Tau PD
+        #'file:root://cmsxrootd.fnal.gov//store/data/Run2017B/SingleMuon/MINIAOD/UL2017_MiniAODv2-v1/260000/9032A966-8ED0-B645-97B6-A8EBC1D8D3B9.root'
+        'file:root://cmsxrootd.fnal.gov//store/data/Run2017B/SingleMuon/MINIAOD/UL2017_MiniAODv2-v1/260000/C8EB51DD-FE0A-E54E-BD22-640AE281E2AB.root'
+        #'file:root://cmseos.fnal.gov//store/user/mwulansa/9032A966-8ED0-B645-97B6-A8EBC1D8D3B9.root'
+        #'/store/data/Run2018D/Tau/MINIAOD/12Nov2019_UL2018-v1/00000/01415E2B-7CE5-B94C-93BD-0796FC40BD97.root' # Tau PD
     ])
 else:
     print('Unknown runType =',runType,'; Use \"signal\" or \"background\" or \"data\"')
@@ -128,7 +133,7 @@ else:
 
 
 
-import BoostedDiTau.MiniAODSkimmer.adaptToRunAtMiniAODCustom as tauAtMiniToolsCustom
+import BoostedDiTau.MiniAODSkimmer.adaptToRunAtMiniAODCustom_Data as tauAtMiniToolsCustom
 
 #####
 print ('Step : 1 - Added Paths for RecoCleaned ')
@@ -259,10 +264,10 @@ process.ak4PFJetsRecoTauChargedHadronsMuonCleaned.minJetPt = jetPt
 
 
 tauAtMiniToolsCustom.addFurtherSkimming(process)
-#tauAtMiniToolsCustom.addTCPNtuples(process)
+tauAtMiniToolsCustom.addTCPNtuples(process)
 
-process.out = cms.EndPath(process.output)
-process.schedule.append(process.out)
+#process.out = cms.EndPath(process.output)
+#process.schedule.append(process.out)
 
 ###########################################
 process.load('FWCore.MessageService.MessageLogger_cfi')

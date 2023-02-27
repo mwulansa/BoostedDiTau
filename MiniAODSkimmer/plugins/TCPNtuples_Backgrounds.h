@@ -1,5 +1,5 @@
-#ifndef MiniAODSkimmer_MiniAODCleaner_TCPNtuples_h
-#define MiniAODSkimmer_MiniAODCleaner_TCPNtuples_h
+#ifndef MiniAODSkimmer_MiniAODCleaner_TCPNtuples_Backgrounds_h
+#define MiniAODSkimmer_MiniAODCleaner_TCPNtuples_Backgrounds_h
 
 // system include files
 #include <memory>
@@ -35,11 +35,11 @@
 using namespace edm;
 using namespace std;
 
-class TCPNtuples : public edm::one::EDAnalyzer<edm::one::WatchRuns,edm::one::SharedResources> {
+class TCPNtuples_Backgrounds : public edm::one::EDAnalyzer<edm::one::WatchRuns,edm::one::SharedResources> {
 public:
 
-  explicit TCPNtuples(const edm::ParameterSet&);
-  ~TCPNtuples() override {}
+  explicit TCPNtuples_Backgrounds(const edm::ParameterSet&);
+  ~TCPNtuples_Backgrounds() override {}
   
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -50,10 +50,10 @@ public:
     jetInfoData->clear();
     muonInfoData->clear();
     electronInfoData->clear();
-    lowPtElectronInfoData->clear();
+    //    lowPtElectronInfoData->clear();
     tauInfoDataUnCleaned->clear();
     tauInfoDataECleaned->clear();
-    tauInfoDataLowPtECleaned->clear();
+    //    tauInfoDataLowPtECleaned->clear();
     tauInfoDataMCleaned->clear();
     tauInfoDataBoosted->clear();
     metInfo_.pt = -9999.;
@@ -79,10 +79,10 @@ public:
   JetInfoDS* jetInfoData;
   MuonInfoDS* muonInfoData;
   ElectronInfoDS* electronInfoData;
-  ElectronInfoDS* lowPtElectronInfoData;
+  //  ElectronInfoDS* lowPtElectronInfoData;
   TauInfoDS* tauInfoDataUnCleaned;
   TauInfoDS* tauInfoDataECleaned;
-  TauInfoDS* tauInfoDataLowPtECleaned;
+  //  TauInfoDS* tauInfoDataLowPtECleaned;
   TauInfoDS* tauInfoDataMCleaned;
   TauInfoDS* tauInfoDataBoosted;
 
@@ -99,14 +99,14 @@ private:
   edm::EDGetTokenT< std::vector<pat::Jet> > Jets_;
   edm::EDGetTokenT< std::vector<pat::Muon> > Muons_;
   edm::EDGetTokenT< std::vector<pat::Electron> > Electrons_;
-  edm::EDGetTokenT< std::vector<pat::Electron> > LowPtElectrons_;
+  //  edm::EDGetTokenT< std::vector<pat::Electron> > LowPtElectrons_;
   string idScoreCut_;
   edm::EDGetTokenT< std::vector<reco::Vertex> > Vertices_;
   edm::EDGetTokenT<double> rhoTag_;
   EffectiveAreas effectiveAreas_;
   edm::EDGetTokenT< std::vector<pat::Tau> > TausUnCleaned_;
   edm::EDGetTokenT< std::vector<pat::Tau> > TausECleaned_;
-  edm::EDGetTokenT< std::vector<pat::Tau> > TausLowPtECleaned_;
+  //  edm::EDGetTokenT< std::vector<pat::Tau> > TausLowPtECleaned_;
   edm::EDGetTokenT< std::vector<pat::Tau> > TausMCleaned_;
   edm::EDGetTokenT< std::vector<pat::Tau> > TausBoosted_;
   
