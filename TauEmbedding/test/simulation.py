@@ -42,6 +42,7 @@ process.maxEvents = cms.untracked.PSet(
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
     fileNames = cms.untracked.vstring('file:outLHE.root'),
+    #fileNames = cms.untracked.vstring('file:outMuonSelection.root'),
     inputCommands = cms.untracked.vstring(
         'keep *'
         #'drop LHEXMLStringProduct_*_*_*',
@@ -178,6 +179,7 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
 )
 
 # Additional output definition
+process.load('BoostedDiTau.TauEmbedding.EmbeddingLHEProducer_cfi')
 
 # Other statements
 if hasattr(process, "XMLFromDBSource"): process.XMLFromDBSource.label="Extended"
@@ -221,7 +223,7 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
              'MuHad',
              'MuMu'
          ),
-         HadHadCut = cms.string('Had1.Pt > 10 && Had2.Pt > 10'),
+         HadHadCut = cms.string('Had1.Pt > 0 && Had2.Pt > 0'),
          MuHadCut = cms.string('Mu.Pt > 0 && Had.Pt > 0'),
          MuMuCut = cms.string('Mu1.Pt > 0 && Mu2.Pt > 0')
      )
@@ -264,8 +266,8 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
     pythiaPylistVerbosity = cms.untracked.int32(0)
 )
 
-
 # Path and EndPath definitions
+#process.lhe = cms.Path(process.makeexternalLHEProducer)
 process.generation_step = cms.Path(process.pgen)
 process.simulation_step = cms.Path(process.psim)
 process.digitisation_step = cms.Path(process.pdigi)
@@ -308,18 +310,27 @@ process.endjob_step = cms.EndPath(process.endOfProcess)
 process.MINIAODSIMoutput_step = cms.EndPath(process.MINIAODSIMoutput)
 
 process.MINIAODSIMEventContent.outputCommands += [
-    'keep *_*_*_LHE',
-    'keep *_*_*_SELECT'
+        'keep *_*_*_LHE',
+        'keep *_*_*_SELECT',
+        'keep *_ak4PFJets_*_*',
+        'keep *_patTaus_*_*',
+        'keep *_hpsPFTauProducerSansRefs_*_*',
+        'keep *_combinatoricRecoTaus_*_*',
+        'keep *_ak4PFJetsRecoTauChargedHadrons_*_*',
+        'keep *_ak4PFJetsLegacyHPSPiZeros_*_*'
 ]
 
 # Schedule definition
-process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.digitisation_step,process.L1simulation_step,process.digi2raw_step,process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Flag_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStripHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilter,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadPFMuonDzFilter,process.Flag_hfNoisyHitsFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Filter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.endjob_step,process.MINIAODSIMoutput_step)
+#process.schedule = cms.Schedule(process.generation_step,process.simulation_step,process.digitisation_step,process.L1simulation_step,process.digi2raw_step,process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.genfiltersummary_step,process.endjob_step,process.MINIAODSIMoutput_step)
+process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.digitisation_step,process.L1simulation_step,process.digi2raw_step,process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.endjob_step,process.MINIAODSIMoutput_step)
 process.schedule.associate(process.patTask)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
+
+#associatePatAlgosToolsTask(process)
 # filter all path with the production filter sequence
 for path in process.paths:
-	getattr(process,path).insert(0, process.generator)
+        getattr(process,path)._seq = process.generator * getattr(process,path)._seq
 
 # customisation of the process.
 
@@ -368,3 +379,15 @@ process.patPFMetT1T2SmearCorr.jetCorrLabelRes = cms.InputTag("L3Absolute")
 process.patPFMetT1T2SmearCorrNoHF.jetCorrLabelRes = cms.InputTag("L3Absolute")
 process.patPFMetT1T2SmearCorrPuppi.jetCorrLabelRes = cms.InputTag("L3Absolute")
 
+## updatedTauName = "slimmedTausNewID" #name of pat::Tau collection with new tau-Ids
+## import RecoTauTag.RecoTau.tools.runTauIdMVA as tauIdConfig
+## tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, cms, debug = False,
+##                     updatedTauName = updatedTauName,
+##                     toKeep = ["deepTau2017v2p1", "2017v2", #deepTau TauIDs
+##                                ])
+## tauIdEmbedder.runTauID()
+## # Path and EndPath definitions
+## process.p = cms.Path(
+##     process.rerunMvaIsolationSequence *
+##     getattr(process,updatedTauName)
+## )

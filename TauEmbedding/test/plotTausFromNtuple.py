@@ -23,6 +23,7 @@ fchain.SetBranchAddress("GenParticleInfo", ROOT.AddressOf(genparticles))
 h1 = ROOT.TH1F ("genTauPt", "", 500, 0, 500)
 h2 = ROOT.TH1F ("mtautau", "", 50, 0, 500)
 h3 = ROOT.TH1F ("genTauDR", "", 70, 0, 7)
+h4 = ROOT.TH1F ("tauPt", "", 500, 0, 500)
 
 nthth = 0
 for iev in range(fchain.GetEntries()): # Be careful!!!
@@ -39,7 +40,7 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     #if len(gen_e) == 0 and len(gen_mu) == 0 and len(gen_tau) > 0:
     if len(gen_tau) > 0:
         nthth += 1
-        print(iev, nthth, taus.size())
+        #print(iev, nthth, taus.size())
         selected_taus = []
         for tau in taus:
             if tau.deepid >=2: selected_taus+=[tau]
@@ -52,6 +53,9 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
             mu2.SetPtEtaPhiM(selected_taus[1].pt, selected_taus[1].eta, selected_taus[1].phi, selected_taus[1].mass)
 
             h2.Fill((mu1+mu2).M())
+            
+            if mu1.Pt() > mu2.Pt(): h4.Fill(mu1.Pt())
+            else: h4.Fill(mu2.Pt())
 
         if len(gen_tau) > 1:
             if gen_tau[0].pt > gen_tau[1].pt: h1.Fill(gen_tau[0].pt)
@@ -70,3 +74,4 @@ out.cd()
 h1.Write()
 h2.Write()
 h3.Write()
+h4.Write()

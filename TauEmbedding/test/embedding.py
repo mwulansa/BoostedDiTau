@@ -109,10 +109,20 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
 process.MINIAODSIMoutput.outputCommands += [
     #'drop *_*_*_Embed',
     'keep *_*_*_SELECT',
+    'keep *_*_*_LHE',
+    'keep *_*_*_SIMembedding',
     'keep *_selectedPatTausEmbed_*_*',
     'keep *_embeddedPFCandidates_*_*',
     'keep *_selectedPatJetsAK4PFchs__*',
-    'keep *_slimmedMETsTEST_*_*'
+    'keep *_slimmedMETsTEST_*_*',
+    'keep *_ak4PFJetsPATEmbed_*_*',
+    'keep *_ak4PFJets_*_*',
+    'keep *_patTausEmbed_*_*',
+    'keep *_hpsPFTauProducerSansRefsEmbed_*_*',
+    'keep *_combinatoricRecoTausEmbed_*_*',
+    'keep *_ak4PFJetsRecoTauChargedHadronsEmbed_*_*',
+    'keep *_ak4PFJetsLegacyHPSPiZerosEmbed_*_*',
+    'keep *_patJetsPATEmbed_*_*'
     ]
 
 process.endjob_step = cms.EndPath(process.endOfProcess)
@@ -210,7 +220,8 @@ process.patPFMetT1T2SmearCorrTEST.jetCorrLabelRes = cms.InputTag("L3Absolute")
 
 
 process.deepTau2017v2p1MiniAODTausEmbed.electrons = cms.InputTag("slimmedElectrons","","DQM")
-process.deepTau2017v2p1MiniAODTausEmbed.muons = cms.InputTag("slimmedMuons","","DQM")
+process.deepTau2017v2p1MiniAODTausEmbed.muons = cms.InputTag('embeddedPFCandidates','slimmedMuonsEmbedded')
 process.deepTau2017v2p1MiniAODTausEmbed.pfcands = cms.InputTag('embeddedPFCandidates','packedPFCandidatesEmbedded')
+process.deepTau2017v2p1MiniAODTausEmbed.vertices = cms.InputTag('embeddedPFCandidates', 'offlineSlimmedPrimaryVerticesEmbedded')
 
-process.hpsPFTauPrimaryVertexProducerEmbed.lostCandidatesTag = cms.InputTag("lostTracks","","DQM")
+process.hpsPFTauPrimaryVertexProducerEmbed.lostCandidatesTag = cms.InputTag('embeddedPFCandidates','lostTracksEmbedded')

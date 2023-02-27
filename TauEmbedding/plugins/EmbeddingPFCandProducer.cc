@@ -21,6 +21,7 @@
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
 #include "TLorentzVector.h"
 #include "TMath.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -47,10 +48,13 @@ class EmbeddingPFCandProducer : public edm::stream::EDProducer<> {
 
       // ----------member data ---------------------------
   edm::EDGetTokenT<edm::View<pat::Muon>> muonsSrc_;
+  edm::EDGetTokenT<std::vector<pat::Muon>> muonsEmbedSrc_;
   edm::EDGetTokenT<pat::PackedCandidateCollection> packedCandSrc_;
   edm::EDGetTokenT<pat::PackedCandidateCollection> packedCandSrcEmbedding_;
   edm::EDGetTokenT<pat::PackedCandidateCollection> lostTrackSrc_;
   edm::EDGetTokenT<pat::PackedCandidateCollection> lostTrackSrcEmbedding_;
+  edm::EDGetTokenT<std::vector<reco::Vertex>> offlineSlimmedPrimaryVerticesSrc_;
+  edm::EDGetTokenT<std::vector<reco::Vertex>> offlineSlimmedPrimaryVerticesSrcEmbedding_;
   
   edm::ParameterSet* cfg_;
 
@@ -58,15 +62,20 @@ class EmbeddingPFCandProducer : public edm::stream::EDProducer<> {
 
 EmbeddingPFCandProducer::EmbeddingPFCandProducer(const edm::ParameterSet& iConfig):
   muonsSrc_(consumes<edm::View<pat::Muon>>(iConfig.getParameter<edm::InputTag>("muonsSrc"))),
+  muonsEmbedSrc_(consumes<std::vector<pat::Muon>>(iConfig.getParameter<edm::InputTag>("muonsEmbedSrc"))),
   packedCandSrc_(consumes<pat::PackedCandidateCollection>(iConfig.getParameter<edm::InputTag>("packedCandSrc"))),
   packedCandSrcEmbedding_(consumes<pat::PackedCandidateCollection>(iConfig.getParameter<edm::InputTag>("packedCandSrcEmbedding"))),
   lostTrackSrc_(consumes<pat::PackedCandidateCollection>(iConfig.getParameter<edm::InputTag>("lostTrackSrc"))),
-  lostTrackSrcEmbedding_(consumes<pat::PackedCandidateCollection>(iConfig.getParameter<edm::InputTag>("lostTrackSrcEmbedding"))){
+  lostTrackSrcEmbedding_(consumes<pat::PackedCandidateCollection>(iConfig.getParameter<edm::InputTag>("lostTrackSrcEmbedding"))),
+  offlineSlimmedPrimaryVerticesSrc_(consumes<std::vector<reco::Vertex>>(iConfig.getParameter<edm::InputTag>("offlineSlimmedPrimaryVerticesSrc"))),
+  offlineSlimmedPrimaryVerticesSrcEmbedding_(consumes<std::vector<reco::Vertex>>(iConfig.getParameter<edm::InputTag>("offlineSlimmedPrimaryVerticesSrcEmbedding"))){
   //register your products
   cfg_ = const_cast<edm::ParameterSet*>(&iConfig);
-  
+
+  produces<std::vector<pat::Muon>>("slimmedMuonsEmbedded");
   produces<pat::PackedCandidateCollection >("packedPFCandidatesEmbedded");
   produces<pat::PackedCandidateCollection >("lostTracksEmbedded");
+  produces<std::vector<reco::Vertex> >("offlineSlimmedPrimaryVerticesEmbedded");
 }
 
 
@@ -87,6 +96,9 @@ EmbeddingPFCandProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSet
    iEvent.getByToken(muonsSrc_, muonHandle);
    edm::View<pat::Muon> coll_muons = *muonHandle;
 
+   edm::Handle< std::vector<pat::Muon> > muons;
+   iEvent.getByToken(muonsEmbedSrc_, muons);
+
    edm::Handle<pat::PackedCandidateCollection> packedCands;
    iEvent.getByToken(packedCandSrc_, packedCands);
 
@@ -99,13 +111,18 @@ EmbeddingPFCandProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSet
    edm::Handle<pat::PackedCandidateCollection> lostTracksEmbedding;
    iEvent.getByToken(lostTrackSrcEmbedding_, lostTracksEmbedding);
 
-   std::cout << lostTracks->size() << " | " << lostTracksEmbedding->size() << "\n";
-  
+   edm::Handle<std::vector<reco::Vertex>> offlineSlimmedPrimaryVertices;
+   iEvent.getByToken(offlineSlimmedPrimaryVerticesSrc_, offlineSlimmedPrimaryVertices);
+
+   edm::Handle<std::vector<reco::Vertex>> offlineSlimmedPrimaryVerticesEmbedding;
+   iEvent.getByToken(offlineSlimmedPrimaryVerticesSrcEmbedding_, offlineSlimmedPrimaryVerticesEmbedding);
+
+
+   std::unique_ptr< std::vector<pat::Muon> > slimmedMuonsEmbedded(new std::vector<pat::Muon>);
    std::unique_ptr<pat::PackedCandidateCollection> packedCandsEmbedded(new pat::PackedCandidateCollection);
-
    std::unique_ptr<pat::PackedCandidateCollection> lostTracksEmbedded(new pat::PackedCandidateCollection);
+   std::unique_ptr<std::vector<reco::Vertex>> offlineSlimmedPrimaryVerticesEmbedded(new std::vector<reco::Vertex>);
 
-   std::cout << coll_muons.size() << " | " << packedCands->size() << " | " << packedCandsEmbedding->size() << " | " << packedCandsEmbedded->size() << "\n";
    
    std::vector<reco::CandidatePtr> mSourceCandPtrs;
    for (edm::View<pat::Muon>::const_iterator muon = coll_muons.begin(); muon!= coll_muons.end();  ++muon) {
@@ -114,7 +131,8 @@ EmbeddingPFCandProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSet
      }
    }
 
-   //std::cout << (*packedCands)[0].covarianceVersion() << "|" << (*packedCands)[0].bestTrack()->covarianceVersion()<< "\n";
+   //std::cout << mSourceCandPtrs.size() << "\n";
+
    for( size_t i = 0; i < packedCands->size(); ++i) {
      reco::CandidatePtr ptr2PF(packedCands,i);
      if (std::find(mSourceCandPtrs.begin(),mSourceCandPtrs.end(),ptr2PF) == mSourceCandPtrs.end()) {
@@ -122,55 +140,46 @@ EmbeddingPFCandProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSet
      }
    }
 
-   //std::cout << (*packedCandsEmbedding)[0].covarianceVersion() << "\n";
+//   std::vector<reco::PFCandidateRef> mSourceRefs;
+//   for (edm::View<pat::Muon>::const_iterator muon = coll_muons.begin(); muon!= coll_muons.end();  ++muon) {
+//     mSourceRefs.push_back(muon->pfCandidateRef());
+//   }
+  
+   for( size_t i = 0; i < muons->size(); ++i) {
+     //reco::CandidatePtr mptr(muons,i);
+     if (std::find(mSourceCandPtrs.begin(),mSourceCandPtrs.end(),(*muons)[i].sourceCandidatePtr(0)) == mSourceCandPtrs.end()) slimmedMuonsEmbedded -> push_back((*muons)[i]);
+   }
+
    for( size_t i = 0; i < packedCandsEmbedding->size(); ++i) {
      reco::CandidatePtr ptr2PF(packedCandsEmbedding,i);
      packedCandsEmbedded->push_back((*packedCandsEmbedding)[i]);
      packedCandsEmbedded->back().setCovarianceVersion(0);
    }
-   //std::cout << (*packedCandsEmbedding)[0].covarianceVersion() << "\n";
-
-   std::cout << coll_muons.size() << " | " << packedCands->size() << " | " << packedCandsEmbedding->size() << " | " << packedCandsEmbedded->size() << "\n";
-
+   
    for( size_t i = 0; i < lostTracks->size(); ++i) {
      lostTracksEmbedded->push_back((*lostTracks)[i]);
    }
-
+   
    for( size_t i = 0; i < lostTracksEmbedding->size(); ++i) {
      lostTracksEmbedded->push_back((*lostTracksEmbedding)[i]);
      lostTracksEmbedded->back().setCovarianceVersion(0);
    }
    
-//
-//   //Get the PFCandidates being pointed to by pat::Electrons
-//   std::vector<reco::CandidatePtr> mSourceCandPtrs;
-//   
-//   if (coll_muons.isValid()) {
-//     for (pat::MuRefVector::const_iterator iElectron = electrons->begin(); iElectron != electrons->end(); ++iElectron)
-//       {
-//	 
-//	 for( unsigned int i=0; i < (*iElectron)->numberOfSourceCandidatePtrs(); ++i) {
-//	   eSourceCandPtrs.push_back((*iElectron)->sourceCandidatePtr(i));
-//	 }                      
-//       }
-//   }
-//   for( size_t i = 0; i < packedCands->size(); ++i) {
-//     //bool ElectronFlag= false;
-//     //if((*packedCands)[i].isElectron())
-//     if((*packedCands)[i].pdgId()==11) {
-//       reco::CandidatePtr ptr2PF(packedCands,i);
-//       //std::cout<< " ====packed Candidate is an electron=== "<<std::endl;
-//       if (std::find(eSourceCandPtrs.begin(),eSourceCandPtrs.end(),ptr2PF) != eSourceCandPtrs.end()) {}
-//       else {
-//	 packedCandsExcludingElectrons->push_back((*packedCands)[i]);
-//       }
-//     }
-//     else {
-//       packedCandsExcludingElectrons->push_back((*packedCands)[i]);
-//     }    
-//   }
+   for ( size_t i = 0; i < offlineSlimmedPrimaryVerticesEmbedding->size(); ++i) {
+     offlineSlimmedPrimaryVerticesEmbedded -> push_back((*offlineSlimmedPrimaryVerticesEmbedding)[i]);
+   }
+
+   for ( size_t i = 0; i < offlineSlimmedPrimaryVertices->size(); ++i) {
+     if (i == 0) continue;
+     offlineSlimmedPrimaryVerticesEmbedded -> push_back((*offlineSlimmedPrimaryVertices)[i]);
+   }
+
+   //std::cout << coll_muons.size() << " " << muons->size() << " " << slimmedMuonsEmbedded->size() << "\n";
+   
+   iEvent.put(std::move(slimmedMuonsEmbedded),"slimmedMuonsEmbedded");
    iEvent.put(std::move(packedCandsEmbedded),"packedPFCandidatesEmbedded");
    iEvent.put(std::move(lostTracksEmbedded),"lostTracksEmbedded");
+   iEvent.put(std::move(offlineSlimmedPrimaryVerticesEmbedded),"offlineSlimmedPrimaryVerticesEmbedded");
 }
 
 // ------------ method called once each stream before processing any runs, lumis or events  ------------

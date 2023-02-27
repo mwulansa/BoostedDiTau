@@ -7,31 +7,65 @@ events=Events('embedded.root')
 
 out=ROOT.TFile('h_embedded.root','recreate')
 
-h0 = ROOT.TH1F ("genTauPt", "", 500, 0, 500)
-h1 = ROOT.TH1F ("mmumu", "", 50, 0, 500)
-h2 = ROOT.TH1F ("mtautau", "", 50, 0, 500)
-h3 = ROOT.TH1F ("mtautauEmbed", "", 50, 0, 500)
-h4 = ROOT.TH1F ("Weights", "", 20, 0, 2)
-h6 = ROOT.TH1F ("MET", "", 50, 0, 500)
-h7 = ROOT.TH1F ("METEmbed", "", 50, 0, 500)
-h8 = ROOT.TH1F ("genTauDR", "", 70, 0, 7)
 
+h={}
+hname = "genTauPt"
+h[hname] = ROOT.TH1F (hname, "", 500, 0, 500)
+hname = "mmumu"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 500)
+hname = "mtautau"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 500)
+hname = "mtautauEmbed"
+h[hname ]= ROOT.TH1F (hname, "", 50, 0, 500)
+
+hname = "mtautau_deep"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 500)
+hname = "mtautauEmbed_deep"
+h[hname ]= ROOT.TH1F (hname, "", 50, 0, 500)
+
+hname = "Weights"
+h[hname] = ROOT.TH1F (hname, "", 20, 0, 2)
+hname = "MET"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 500)
+hname = "METEmbed"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 500)
+hname = "genTauDR"
+h[hname] = ROOT.TH1F (hname, "", 70, 0, 7)
+hname = "genTauM"
+h[hname] = ROOT.TH1F (hname, "", 150, 0, 150)
+
+hname = "tauPt"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 100)
+hname = "tauPtEmbed"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 100)
+
+hname = "tauPt_deep"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 100)
+hname = "tauPtEmbed_deep"
+h[hname] = ROOT.TH1F (hname, "", 50, 0, 100)
+
+hname = 'pfJetPt'
+h[hname] = ROOT.TH1F (hname, "", 500, 0, 500)
+hname = 'pfJetPtEmbed'
+h[hname] = ROOT.TH1F (hname, "", 500, 0, 500)
+
+hname = 'pfTauPt'
+h[hname] = ROOT.TH1F (hname, "", 500, 0, 500)
+hname = 'pfTauPtEmbed'
+h[hname] = ROOT.TH1F (hname, "", 500, 0, 500)
 
 handleGenParticle = Handle ('vector<reco::GenParticle>')
 labelGenParticle = ('prunedGenParticles', '', 'SIMembedding')
 
 handleTaus = Handle ('vector<pat::Tau>')
-labelTaus = ('slimmedTausNewID','','SELECT')
-#labelTaus = ('slimmedTaus')
+#labelTaus = ('slimmedTausNewID','','SELECT')
+labelTaus = ('slimmedTaus', '', 'SIMembedding')
 
 handleMuons = Handle ('vector<pat::Muon>')
 labelMuons = ('slimmedMuons','','DQM')
 
 handleTausEmbed = Handle ('vector<pat::Tau>')
 labelTausEmbed = ('selectedPatTausEmbed','','Embed')
-
-handleTausMC = Handle ('vector<pat::Tau>')
-labelTausMC = ('slimmedTaus','','SIMembedding')
 
 handleGenParticles = Handle ('vector<reco::GenParticle>')
 labelGenParticles = ('prunedGenParticles','','SIMembedding')
@@ -51,8 +85,49 @@ labelMetEmbed = ('slimmedMETsTEST','','Embed')
 handleGenInfo = Handle('GenEventInfoProduct')
 labelGenInfo = ( 'generator', '', 'SIMembedding' )
 
+handlePVInfo = Handle ('vector<reco::Vertex>')
+labelPVInfo = ('offlineSlimmedPrimaryVertices', '', 'DQM')
+
+handlePVInfoEmbed = Handle ('vector<reco::Vertex>')
+labelPVInfoEmbed = ('embeddedPFCandidates','offlineSlimmedPrimaryVerticesEmbedded','Embed')
+
+handlePFJets = Handle ('vector<reco::PFJet>')
+labelPFJets = ('ak4PFJets', '', 'SIMembedding')
+
+handlePFJetsEmbed = Handle ('vector<reco::PFJet>')
+labelPFJetsEmbed = ('ak4PFJetsPATEmbed', '', 'Embed')
+
+handlePFTaus = Handle ('vector<reco::PFTau>')
+#labelPFTaus = ('combinatoricRecoTaus', '', 'SIMembedding')
+labelPFTaus = ('hpsPFTauProducerSansRefs', '', 'SIMembedding')
+
+handlePFTausEmbed = Handle ('vector<reco::PFTau>')
+#labelPFTausEmbed = ('combinatoricRecoTausEmbed', '', 'Embed')
+labelPFTausEmbed = ('hpsPFTauProducerSansRefsEmbed', '', 'Embed')
+
+handlePosition = Handle ('ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> >')
+labelPosition = ('externalLHEProducer','vertexPosition', 'LHE')
+
+nevt=0
 for event in events:
-    #print('-----')
+    nevt+=1
+    print('-----', nevt)
+
+    event.getByLabel(labelPVInfo, handlePVInfo)
+    pv = handlePVInfo.product()[0]
+
+    event.getByLabel(labelPVInfoEmbed, handlePVInfoEmbed)
+    pvEmbed = handlePVInfoEmbed.product()[0]
+
+    event.getByLabel(labelPosition, handlePosition)
+    position = handlePosition.product()
+
+    print(position.x(), position.y(), position.z())
+    print(handlePVInfo.product().size(), pv.x(), pv.y(), pv.z())
+    print(handlePVInfoEmbed.product().size(), pvEmbed.x(), pvEmbed.y(), pvEmbed.z())
+
+    #for track in pv.tracks():
+    #    print(track)
     
     event.getByLabel(labelTaus, handleTaus)
     taus=handleTaus.product()
@@ -62,10 +137,7 @@ for event in events:
     
     event.getByLabel(labelTausEmbed, handleTausEmbed)
     tausEmbed=handleTausEmbed.product()
- 
-    event.getByLabel(labelTausMC, handleTausMC)
-    tausMC=handleTausMC.product()
- 
+  
     event.getByLabel(labelGenParticles, handleGenParticles)
     genParticle=handleGenParticles.product()
  
@@ -87,20 +159,46 @@ for event in events:
 
     event.getByLabel(labelGenParticles, handleGenParticles)
     genParticles=handleGenParticles.product()
+
+    event.getByLabel(labelPFJets, handlePFJets)
+    pfJets=handlePFJets.product()
+
+    if pfJets.size() > 0:
+        h["pfJetPt"].Fill(pfJets[0].pt())
+
+    event.getByLabel(labelPFJetsEmbed, handlePFJetsEmbed)
+    pfJetsEmbed=handlePFJetsEmbed.product()
+
+    if pfJetsEmbed.size() > 0:
+        h["pfJetPtEmbed"].Fill(pfJetsEmbed[0].pt())
+
+    event.getByLabel(labelPFTaus, handlePFTaus)
+    pfTaus=handlePFTaus.product()
+
+    if pfTaus.size() > 0:
+        h["pfTauPt"].Fill(pfTaus[0].pt())
+
+    event.getByLabel(labelPFTausEmbed, handlePFTausEmbed)
+    pfTausEmbed=handlePFTausEmbed.product()
+
+    if pfTausEmbed.size() > 0:
+        h["pfTauPtEmbed"].Fill(pfTausEmbed[0].pt())
     
     #print(taus.size(), tausEmbed.size(), tausMC.size())
 
-    h6.Fill(met[0].pt())
-    h7.Fill(metEmbed[0].pt(), genweight)
-    h4.Fill(genweight)
+    h['MET'].Fill(met[0].pt())
+    h['METEmbed'].Fill(metEmbed[0].pt(), genweight)
+    h['Weights'].Fill(genweight)
 
     selected_gentaus = []
     for particle in genParticles:
         if abs(particle.pdgId()) == 15 and particle.isHardProcess():
             selected_gentaus += [particle]
     if len(selected_gentaus) > 1:
-        if selected_gentaus[0].pt() > selected_gentaus[1].pt(): h0.Fill(selected_gentaus[0].pt())
-        else: h0.Fill(selected_gentaus[1].pt())
+        #if selected_gentaus[0].pt() > selected_gentaus[1].pt(): h["genTauPt"].Fill(selected_gentaus[0].pt())
+        #else: h["genTauPt"].Fill(selected_gentaus[1].pt())
+        h["genTauPt"].Fill(selected_gentaus[0].pt(), genweight)
+        h["genTauPt"].Fill(selected_gentaus[1].pt(), genweight)
 
         t1=ROOT.TLorentzVector()
         t1.SetPtEtaPhiM(selected_gentaus[0].pt(), selected_gentaus[0].eta(), selected_gentaus[0].phi(), selected_gentaus[0].mass()) 
@@ -108,7 +206,10 @@ for event in events:
         t2=ROOT.TLorentzVector()
         t2.SetPtEtaPhiM(selected_gentaus[1].pt(), selected_gentaus[1].eta(), selected_gentaus[1].phi(), selected_gentaus[1].mass())
             
-        h8.Fill(t1.DeltaR(t2))
+        h["genTauDR"].Fill(t1.DeltaR(t2), genweight)
+        h["genTauM"].Fill((t1+t2).M(), genweight)
+
+        #h2.Fill((t1+t2).M(), genweight)
 
     selected_muons=[]
     for muon in muons:
@@ -120,15 +221,40 @@ for event in events:
     selected_taus=[]
     for tau in taus:
         #print(tau.pt())
-        if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFindingNewDMs") and tau.tauID("byVLooseDeepTau2017v2p1VSjet") and tau.tauID("byVLooseDeepTau2017v2p1VSmu"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFindingNewDMs") and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding"):
+        if tau.pt()>18 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") > 0.5 and tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"):
             selected_taus+=[tau]
 
     selected_taus_embed=[]
     for tau in tausEmbed:
         #print("embed:",tau.pt())
         #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFindingNewDMs") and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
-        if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding"):
+        if tau.pt()>18 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") and tau.tauID("byVLooseIsolationMVArun2017v2DBoldDMwLT2017"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") > 0.5 and tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"):
             selected_taus_embed+=[tau]
+
+    selected_taus_deep=[]
+    for tau in taus:
+        #print(tau.pt())
+        if tau.pt()>18 and abs(tau.eta())<2.3 and tau.tauID("decayModeFindingNewDMs") and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") > 0.5 and tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"):
+            selected_taus_deep+=[tau]
+
+    selected_taus_embed_deep=[]
+    for tau in tausEmbed:
+        #print("embed:",tau.pt())
+        if tau.pt()>18 and abs(tau.eta())<2.3 and tau.tauID("decayModeFindingNewDMs") and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("byVLooseDeepTau2017v2p1VSjet"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") and tau.tauID("byVLooseIsolationMVArun2017v2DBoldDMwLT2017"):
+        #if tau.pt()>10 and abs(tau.eta())<2.3 and tau.tauID("decayModeFinding") > 0.5 and tau.tauID("byVLooseIsolationMVArun2v1DBoldDMwLT"):
+            selected_taus_embed_deep+=[tau]
 
     if len(selected_muons) > 1:
         mu1=ROOT.TLorentzVector()
@@ -137,42 +263,67 @@ for event in events:
         mu2=ROOT.TLorentzVector()
         mu2.SetPtEtaPhiM(selected_muons[1].pt(), selected_muons[1].eta(), selected_muons[1].phi(), selected_muons[1].mass())
 
-        h1.Fill((mu1+mu2).M())
+        h["mmumu"].Fill((mu1+mu2).M())
 
     if len(selected_taus) > 1:
+        if selected_taus[0].charge() * selected_taus[1].charge() > 0: continue
+        
         mu1=ROOT.TLorentzVector()
         mu1.SetPtEtaPhiM(selected_taus[0].pt(), selected_taus[0].eta(), selected_taus[0].phi(), selected_taus[0].mass()) 
     
         mu2=ROOT.TLorentzVector()
         mu2.SetPtEtaPhiM(selected_taus[1].pt(), selected_taus[1].eta(), selected_taus[1].phi(), selected_taus[1].mass())
 
-        h2.Fill((mu1+mu2).M())
+        h["mtautau"].Fill((mu1+mu2).M(), genweight)
+
+        #if mu1.Pt() > mu2.Pt(): h["tauPt"].Fill(mu1.Pt(), genweight)
+        #else: h["tauPt"].Fill(mu2.Pt(), genweight)
+        h["tauPt"].Fill(mu1.Pt(), genweight)
+        h["tauPt"].Fill(mu2.Pt(), genweight)
 
     if len(selected_taus_embed) > 1:
+        if selected_taus_embed[0].charge() * selected_taus_embed[1].charge() > 0: continue
+        
         mu1=ROOT.TLorentzVector()
         mu1.SetPtEtaPhiM(selected_taus_embed[0].pt(), selected_taus_embed[0].eta(), selected_taus_embed[0].phi(), selected_taus_embed[0].mass()) 
     
         mu2=ROOT.TLorentzVector()
         mu2.SetPtEtaPhiM(selected_taus_embed[1].pt(), selected_taus_embed[1].eta(), selected_taus_embed[1].phi(), selected_taus_embed[1].mass())
 
-        h3.Fill((mu1+mu2).M(), genweight)
+        h["mtautauEmbed"].Fill((mu1+mu2).M(), genweight)
 
-        
+        #if mu1.Pt() > mu2.Pt(): h["tauPtEmbed"].Fill(mu1.Pt(), genweight)
+        #else: h["tauPtEmbed"].Fill(mu2.Pt(), genweight)
+        h["tauPtEmbed"].Fill(mu1.Pt(), genweight)
+        h["tauPtEmbed"].Fill(mu2.Pt(), genweight)
 
-    #print("GenParticle")
-    #for p in genParticle:
-        #if abs(p.pdgId()) == 15 and p.isHardProcess():
-            #print(p.pt())
+    if len(selected_taus_deep) > 1:
+        if selected_taus_deep[0].charge() * selected_taus_deep[1].charge() > 0: continue
         
-    #print(len(selected_taus), len(selected_taus_embed))
+        mu1=ROOT.TLorentzVector()
+        mu1.SetPtEtaPhiM(selected_taus_deep[0].pt(), selected_taus_deep[0].eta(), selected_taus_deep[0].phi(), selected_taus_deep[0].mass()) 
+    
+        mu2=ROOT.TLorentzVector()
+        mu2.SetPtEtaPhiM(selected_taus_deep[1].pt(), selected_taus_deep[1].eta(), selected_taus_deep[1].phi(), selected_taus_deep[1].mass())
+
+        h["mtautau_deep"].Fill((mu1+mu2).M(), genweight)
+        h["tauPt_deep"].Fill(mu1.Pt(), genweight)
+        h["tauPt_deep"].Fill(mu2.Pt(), genweight)
+
+    if len(selected_taus_embed_deep) > 1:
+        if selected_taus_embed_deep[0].charge() * selected_taus_embed_deep[1].charge() > 0: continue
+        
+        mu1=ROOT.TLorentzVector()
+        mu1.SetPtEtaPhiM(selected_taus_embed_deep[0].pt(), selected_taus_embed_deep[0].eta(), selected_taus_embed_deep[0].phi(), selected_taus_embed_deep[0].mass()) 
+    
+        mu2=ROOT.TLorentzVector()
+        mu2.SetPtEtaPhiM(selected_taus_embed_deep[1].pt(), selected_taus_embed_deep[1].eta(), selected_taus_embed_deep[1].phi(), selected_taus_embed_deep[1].mass())
+
+        h["mtautauEmbed_deep"].Fill((mu1+mu2).M(), genweight)
+        h["tauPtEmbed_deep"].Fill(mu1.Pt(), genweight)
+        h["tauPtEmbed_deep"].Fill(mu2.Pt(), genweight)
 
 
 out.cd()
-h0.Write()
-h1.Write()
-h2.Write()
-h3.Write()
-h4.Write()
-h6.Write()
-h7.Write()
-h8.Write()
+for hist in sorted(h.keys()):
+    h[hist].Write()
