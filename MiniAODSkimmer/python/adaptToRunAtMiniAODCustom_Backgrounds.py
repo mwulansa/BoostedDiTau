@@ -5,6 +5,7 @@ import PhysicsTools.PatAlgos.tools.helpers as configtools
 from PhysicsTools.PatAlgos.tools.helpers import cloneProcessingSnippet
 from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
 from PhysicsTools.PatAlgos.tools.helpers import removeIfInSequence
+from PhysicsTools.PatUtils.l1PrefiringWeightProducer_cfi import l1PrefiringWeightProducer
 
 ##############
 #Tools to adapt Tau sequences to run tau ReReco+PAT at MiniAOD samples
@@ -225,13 +226,24 @@ def addTauReRecoCustom(process):
     #     massSearchReplaceAnyInputTag(process.miniAODTausSequenceLowPtElectronCleaned,cms.InputTag(label_old,"category"),cms.InputTag(label_new,"category"))
     
 
+    process.prefiringweight = l1PrefiringWeightProducer.clone(
+        TheJets = cms.InputTag("updatedJets"), #this should be the slimmedJets collection with up to date JECs !                          
+        DataEraECAL = cms.string("UL2017BtoF"),
+        DataEraMuon = cms.string("20172018"),
+        UseJetEMPt = cms.bool(False),
+        PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+        PrefiringRateSystematicUnctyMuon = cms.double(0.2)
+    )
+
+    process.prefiringweightMaker = cms.Path(process.prefiringweight)
+
     ######## Tau-Reco Path ####### 
     process.TauReco = cms.Path(process.miniAODTausSequence)
     process.TauRecoElectronCleaned = cms.Path(process.miniAODTausSequenceElectronCleaned)
     process.TauRecoMuonCleaned = cms.Path(process.miniAODTausSequenceMuonCleaned)
     process.TauRecoBoosted = cms.Path(process.miniAODTausSequenceBoosted)
 #    process.TauRecoLowPtElectronCleaned = cms.Path(process.miniAODTausSequenceLowPtElectronCleaned)
-    process.schedule = cms.Schedule(process.TauReco,process.TauRecoElectronCleaned,process.TauRecoMuonCleaned, process.TauRecoBoosted) 
+    process.schedule = cms.Schedule(process.prefiringweightMaker, process.TauReco,process.TauRecoElectronCleaned,process.TauRecoMuonCleaned, process.TauRecoBoosted) 
     
     
 def convertModuleToMiniAODInput(process, name):
@@ -1050,16 +1062,6 @@ def adaptTauToMiniAODReReco(process, runType, reclusterJets=True):
 
     process.schedule.append(process.pileupjetidpath)
 
-    process.prefiringweight = l1PrefiringWeightProducer.clone(
-       TheJets = cms.InputTag("updatedPatJetsUpdatedJEC"), #this should be the slimmedJets collection with up to date JECs !
-    DataEraECAL = cms.string("2017BtoF"),
-    DataEraMuon = cms.string("20172018"),
-    UseJetEMPt = cms.bool(False),
-    PrefiringRateSystematicUnctyECAL = cms.double(0.2),
-    PrefiringRateSystematicUnctyMuon = cms.double(0.2)
-    )
-
-    process.schedule.append(process.prefiringweight)
     
 def addFurtherSkimming(process):
     
@@ -1081,7 +1083,7 @@ def addFurtherSkimming(process):
     ###############
     process.HLT =cms.EDFilter("HLTHighLevel",
                               TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
-                              HLTPaths = cms.vstring("HLT_PFJet450_v*", "HLT_PFHT1050_v*", "HLT_PFHT500_PFMET100_PFMHT100_IDTight_v*", "HLT_IsoMu27_v*", "HLT_Mu50_v", "HLT_Ele35_WPTight_Gsf_v", "HLT_Ele32_WPTight_Gsf_L1DoubleEG_v", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v", "HLT_DoubleEle33_CaloIdL_MW_v", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v", "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v", "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v", "HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET90_v"), #2017
+                              HLTPaths = cms.vstring("HLT_PFJet450_v*", "HLT_PFJet500_v*","HLT_PFHT1050_v*", "HLT_PFHT500_PFMET100_PFMHT100_IDTight_v*", "HLT_IsoMu27_v*", "HLT_Mu50_v", "HLT_Ele35_WPTight_Gsf_v", "HLT_Ele32_WPTight_Gsf_L1DoubleEG_v", "HLT_Ele24_eta2p1_WPTight_Gsf_LooseChargedIsoPFTau30_eta2p1_CrossL1_v", "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v", "HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v", "HLT_DoubleEle33_CaloIdL_MW_v", "HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v", "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v", "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v", "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v", "HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET90_v"), #2017
                               #HLTPaths = cms.vstring("HLT_IsoMu24_v*"), #2018  
                               eventSetupPathsKey = cms.string(''),
                               andOr = cms.bool(True), #----- True = OR, False = AND between the HLTPaths
@@ -1117,7 +1119,6 @@ def addTCPNtuples(process):
 #                                        LowPtECleanedTauCollection = cms.InputTag('slimmedTausLowPtElectronCleaned'),
                                         MCleanedTauCollection = cms.InputTag('slimmedTausMuonCleaned'),
                                         BoostedTauCollection = cms.InputTag('slimmedTausBoosted'),
-                                        
     )
     process.tcpNtupleMaker = cms.Path(process.tcpNtuples)
 
@@ -1137,9 +1138,18 @@ def addTCPNtuples(process):
     process.tcpTrigNtupleMaker = cms.Path(process.tcpTrigNtuples)
 
     
+    process.tcpPrefiring = cms.EDAnalyzer("TCPPrefiring",
+                                          PrefiringWeight = cms.InputTag("prefiringweight:nonPrefiringProb"),
+                                          PrefiringWeightUp = cms.InputTag("prefiringweight:nonPrefiringProbUp"),
+                                          PrefiringWeightDown = cms.InputTag("prefiringweight:nonPrefiringProbDown")
+    )
+
+    process.tcpPrefiringMaker = cms.Path(process.tcpPrefiring)
+
     process.schedule.append(process.tcpTrigNtupleMaker)
     process.schedule.append(process.tcpGenNtupleMaker)
     process.schedule.append(process.tcpNtupleMaker)
+    process.schedule.append(process.tcpPrefiringMaker)
 
     process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string('TCPNtuple_Backgrounds.root'),
