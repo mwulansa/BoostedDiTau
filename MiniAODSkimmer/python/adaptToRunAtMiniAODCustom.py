@@ -1073,7 +1073,7 @@ def addFurtherSkimming(process):
                                          genEventInfo = cms.InputTag("generator")
     )
     
-    process.main_path *= process.lumiSummary
+    #process.main_path *= process.lumiSummary
      
 
     ###############
@@ -1135,7 +1135,6 @@ def addTCPNtuples(process):
                                             TriggerResults = cms.InputTag("TriggerResults", "", "HLT")
     )
     process.tcpTrigNtupleMaker = cms.Path(process.tcpTrigNtuples)
-
 
     process.tcpPrefiring = cms.EDAnalyzer("TCPPrefiring",
                                           PrefiringWeight = cms.InputTag("prefiringweight:nonPrefiringProb"),
