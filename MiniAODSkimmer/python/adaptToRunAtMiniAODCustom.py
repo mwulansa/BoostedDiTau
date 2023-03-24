@@ -1145,6 +1145,23 @@ def addTCPNtuples(process):
 
     process.tcpPrefiringMaker = cms.Path(process.tcpPrefiring)
 
+    process.tcpMetfilter = cms.EDAnalyzer("TCPMETFilter",
+                                          metFilters = cms.InputTag("TriggerResults","","RECO"),
+                                          primaryVertexFilterSel = cms.string("Flag_goodVertices"),
+                                          beamHaloFilterSel = cms.string("Flag_globalSuperTightHalo2016Filter"),
+                                          hbheFilterSel = cms.string("Flag_HBHENoiseFilter"),
+                                          hbheIsoFilterSel = cms.string("Flag_HBHENoiseIsoFilter"),
+                                          ecalTPFilterSel = cms.string("Flag_EcalDeadCellTriggerPrimitiveFilter"),
+                                          badPFMuonFilterSel = cms.string("Flag_BadPFMuonFilter"),
+                                          badChargedCandFilterSel = cms.string("Flag_BadChargedCandidateFilter"),
+                                          eeBadScFilterSel = cms.string("Flag_eeBadScFilter"),
+                                          ecalBadCalFilterSel = cms.string("Flag_ecalBadCalibFilter")
+    )
+
+    process.tcpMetfilterMaker = cms.Path(process.tcpMetfilter)
+
+    process.schedule.append(process.tcpMetfilterMaker)
+
     process.schedule.append(process.tcpTrigNtupleMaker)
     process.schedule.append(process.tcpGenNtupleMaker)
     process.schedule.append(process.tcpNtupleMaker)
