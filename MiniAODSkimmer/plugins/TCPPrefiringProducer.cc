@@ -1,4 +1,3 @@
-// system include files                                                                                                                                                                                                                
 #include <memory>
 #include <iostream>
 #include <regex>
