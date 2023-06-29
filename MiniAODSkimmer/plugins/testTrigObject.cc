@@ -98,48 +98,117 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
   iEvent.getByToken(triggerPrescales_, triggerPrescales);
 
   const edm::TriggerNames &names = iEvent.triggerNames(*triggerBits);
+
+  bool muonLeg, eLeg;
+  muonLeg = false;
+  eLeg = false;
+
   for (pat::TriggerObjectStandAlone obj : *triggerObjects) { // note: not "const &" since we want to call unpackPathNames
     obj.unpackPathNames(names);
+
     std::vector pathNamesAll = obj.pathNames(false);
     std::vector pathNamesLast = obj.pathNames(true);
-    // Print all trigger paths, for each one record also if the object is associated to a 'l3' filter (always true for the
-    // definition used in the PAT trigger producer) and if it's associated to the last filter of a successfull path (which
-    // means that this object did cause this trigger to succeed; however, it doesn't work on some multi-object triggers)
-    //  std::cout << "\t   Paths (" << pathNamesAll.size()<<"/"<<pathNamesLast.size()<<"):    ";
+
     TrigObjectInfo trigObj;
+
+    bool acceptedPath;
+    
     for (unsigned h = 0, n = pathNamesAll.size(); h < n; ++h) {
 
       if ( pathNamesAll[h].find("HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v") == std::string::npos &&
-	   pathNamesAll[h].find("HLT_Ele35_WPTight_Gsf_v") == std::string::npos && 
-	   pathNamesAll[h].find("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v") == std::string::npos &&  
-	   pathNamesAll[h].find("HLT_Ele115_CaloIdVT_GsfTrkIdT_v") == std::string::npos &&
-	   pathNamesAll[h].find("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v") == std::string::npos &&
-	   pathNamesAll[h].find("HLT_PFHT1050_v") == std::string::npos &&
-	   pathNamesAll[h].find("HLT_PFJet500_v") == std::string::npos &&
-           pathNamesAll[h].find("HLT_Photon200_v") == std::string::npos
-	   ) continue;
+    	   pathNamesAll[h].find("HLT_Ele35_WPTight_Gsf_v") == std::string::npos && 
+    	   pathNamesAll[h].find("HLT_Ele115_CaloIdVT_GsfTrkIdT_v") == std::string::npos &&
+    	   pathNamesAll[h].find("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v") == std::string::npos &&
+    	   pathNamesAll[h].find("HLT_PFHT1050_v") == std::string::npos &&
+    	   pathNamesAll[h].find("HLT_PFJet500_v") == std::string::npos &&
+           pathNamesAll[h].find("HLT_Mu50_v") == std::string::npos &&
+	   pathNamesAll[h].find("HLT_IsoMu27_v") == std::string::npos &&
+	   pathNamesAll[h].find("HLT_Photon200_v") == std::string::npos &&
+	   pathNamesAll[h].find("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v") == std::string::npos &&
+	   pathNamesAll[h].find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v") == std::string::npos
+    	   ) continue;
 
-      trigObj.pt = obj.pt();
-      trigObj.eta = obj.eta();
-      trigObj.mass = obj.mass();
-      trigObj.phi = obj.phi();
+      bool isL3   = obj.hasPathName( pathNamesAll[h], false, true );
 
-      if (pathNamesAll[h].find("HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v") != std::string::npos) trigObj.isEleJet = 1; // 1 isEleJet
-      
-      bool isBoth = obj.hasPathName( pathNamesAll[h], true, true );
-      bool isLF = obj.hasPathName( pathNamesAll[h], true, false );
-      if ( !isBoth && !isLF ) continue;
+      if ( !isL3 ) continue;
 
-      if ( pathNamesAll[h].find("HLT_Ele35_WPTight_Gsf_v") != std::string::npos || pathNamesAll[h].find("HLT_Ele32_WPTight_Gsf_L1DoubleEG_v") != std::string::npos ) trigObj.isIsoEle = 1; // 0 isIsoEle                                                                                                                       
-      
-      if ( pathNamesAll[h].find("HLT_Ele115_CaloIdVT_GsfTrkIdT_v") != std::string::npos ) trigObj.isEle = 1; // 2 isEle
+      bool isBoth = obj.hasPathName( pathNamesAll[h], true, true );      
+      bool isLF   = obj.hasPathName( pathNamesAll[h], true, false );
+      acceptedPath = false;
 
-      if ( pathNamesAll[h].find("HLT_PFJet500") != std::string::npos ) trigObj.isSingleJet = 1;
-      if ( pathNamesAll[h].find("HLT_PFHT1050") != std::string::npos ) trigObj.isJetHT = 1;
-      if ( pathNamesAll[h].find("HLT_Photon200") != std::string::npos ) trigObj.isPhoton = 1;
+      if (pathNamesAll[h].find("HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v") != std::string::npos) {
+	for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
+	  if ( obj.filterIds()[h] == 81 || obj.filterIds()[h] == 92 || obj.filterIds()[h] == 82 ) trigObj.isEleLeg = 1;
+	  if ( obj.hasPathName( "HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v14", true, true ) ) {
+	    trigObj.isJetLeg = 1;
+	    trigObj.isEleJet = 1;
+	  }
+	}
+	acceptedPath = true;  
+      }
 
-      trigObjectInfoData->push_back(trigObj);
+      if (pathNamesAll[h].find("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v") != std::string::npos || pathNamesAll[h].find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v") != std::string::npos) {
+	if (isBoth) {
+	  for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
+	    if ( obj.filterIds()[h] == 83 ) {
+	      trigObj.isMuonEGmu = 1;
+	      muonLeg = true;
+	    }
+	    if ( obj.filterIds()[h] == 81 || obj.filterIds()[h] == 82 || obj.filterIds()[h] == 92 ) {
+	      trigObj.isMuonEGe = 1;
+	      eLeg = true;
+	    }
+	  }	  
+	  acceptedPath = true;
+	  if ( muonLeg == true && eLeg == true ) trigObj.isMuonEG = 1;
+	}
+      }
 
+      if (pathNamesAll[h].find("HLT_Mu50_v11") != std::string::npos) {
+	if ( isBoth ) {
+ 	  trigObj.isMu = 1;
+	  acceptedPath = true;
+	}
+      }
+
+      if (pathNamesAll[h].find("HLT_IsoMu27_v13") != std::string::npos) {
+	if ( isBoth ) {
+	  trigObj.isIsoMu = 1;
+	  acceptedPath = true;
+	}
+      }
+
+      if (pathNamesAll[h].find("HLT_Photon200_v12") != std::string::npos) {
+	if ( isBoth ) {
+	  trigObj.isPhoton = 1;
+	  acceptedPath = true;
+	}
+      }
+
+      if (pathNamesAll[h].find("HLT_PFJet500_v") != std::string::npos){
+	if ( isBoth ) {
+          trigObj.isSingleJet = 1;
+          acceptedPath = true;
+        }
+      }
+
+      if (pathNamesAll[h].find("HLT_PFHT1050_v") != std::string::npos){
+	if ( isBoth ) {
+          trigObj.isJetHT = 1;
+          acceptedPath = true;
+        }
+      }
+
+      if (acceptedPath == true){
+
+	trigObj.pt = obj.pt();
+	trigObj.eta = obj.eta();
+	trigObj.mass = obj.mass();
+	trigObj.phi = obj.phi();  
+
+	trigObjectInfoData->push_back(trigObj);
+
+      }
     }
   }
   tree->Fill();
