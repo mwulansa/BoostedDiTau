@@ -110,9 +110,27 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
     std::vector pathNamesLast = obj.pathNames(true);
 
     TrigObjectInfo trigObj;
-
-    bool acceptedPath;
+    bool acceptedPath = false;
+        
+    trigObj.pt = obj.pt();
+    trigObj.eta = obj.eta();
+    trigObj.mass = obj.mass();
+    trigObj.phi = obj.phi();  
     
+
+    trigObj.isEleJet = 0;
+    trigObj.isEleLeg = 0;
+    trigObj.isJetLeg = 0;
+    trigObj.isMu = 0;
+    trigObj.isIsoMu = 0;
+    trigObj.isPhoton = 0;
+    trigObj.isSingleJet = 0;
+    trigObj.isJetHT = 0;
+    trigObj.isMuonEGmu = 0;
+    trigObj.isMuonEGe = 0;
+    trigObj.isMuonEG = 0;
+
+
     for (unsigned h = 0, n = pathNamesAll.size(); h < n; ++h) {
 
       if ( pathNamesAll[h].find("HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v") == std::string::npos &&
@@ -133,8 +151,6 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
       if ( !isL3 ) continue;
 
       bool isBoth = obj.hasPathName( pathNamesAll[h], true, true );      
-      bool isLF   = obj.hasPathName( pathNamesAll[h], true, false );
-      acceptedPath = false;
 
       if (pathNamesAll[h].find("HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v") != std::string::npos) {
 	for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
@@ -147,69 +163,52 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
 	acceptedPath = true;  
       }
 
+      if ( !isBoth ) continue;
+
       if (pathNamesAll[h].find("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v") != std::string::npos || pathNamesAll[h].find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v") != std::string::npos) {
-	if (isBoth) {
-	  for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
-	    if ( obj.filterIds()[h] == 83 ) {
-	      trigObj.isMuonEGmu = 1;
-	      muonLeg = true;
-	    }
-	    if ( obj.filterIds()[h] == 81 || obj.filterIds()[h] == 82 || obj.filterIds()[h] == 92 ) {
-	      trigObj.isMuonEGe = 1;
-	      eLeg = true;
-	    }
-	  }	  
-	  acceptedPath = true;
-	  if ( muonLeg == true && eLeg == true ) trigObj.isMuonEG = 1;
-	}
+	for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
+	  if ( obj.filterIds()[h] == 83 ) {
+	    trigObj.isMuonEGmu = 1;
+	    muonLeg = true;
+	  }
+	  if ( obj.filterIds()[h] == 81 || obj.filterIds()[h] == 82 || obj.filterIds()[h] == 92 ) {
+	    trigObj.isMuonEGe = 1;
+	    eLeg = true;
+	  }
+	}	  
+	acceptedPath = true;
+	if ( muonLeg == true && eLeg == true ) trigObj.isMuonEG = 1;
       }
 
-      if (pathNamesAll[h].find("HLT_Mu50_v11") != std::string::npos) {
-	if ( isBoth ) {
- 	  trigObj.isMu = 1;
-	  acceptedPath = true;
-	}
+      if (pathNamesAll[h].find("HLT_Mu50_v") != std::string::npos) {
+	trigObj.isMu = 1;
+	acceptedPath = true;
       }
 
-      if (pathNamesAll[h].find("HLT_IsoMu27_v13") != std::string::npos) {
-	if ( isBoth ) {
-	  trigObj.isIsoMu = 1;
-	  acceptedPath = true;
-	}
+      if (pathNamesAll[h].find("HLT_IsoMu27_v") != std::string::npos) {
+	trigObj.isIsoMu = 1;
+	acceptedPath = true;
       }
 
       if (pathNamesAll[h].find("HLT_Photon200_v12") != std::string::npos) {
-	if ( isBoth ) {
-	  trigObj.isPhoton = 1;
-	  acceptedPath = true;
-	}
+	trigObj.isPhoton = 1;
+	acceptedPath = true;
       }
 
       if (pathNamesAll[h].find("HLT_PFJet500_v") != std::string::npos){
-	if ( isBoth ) {
-          trigObj.isSingleJet = 1;
-          acceptedPath = true;
-        }
+	trigObj.isSingleJet = 1;
+	acceptedPath = true;
       }
 
       if (pathNamesAll[h].find("HLT_PFHT1050_v") != std::string::npos){
-	if ( isBoth ) {
-          trigObj.isJetHT = 1;
-          acceptedPath = true;
-        }
-      }
-
-      if (acceptedPath == true){
-
-	trigObj.pt = obj.pt();
-	trigObj.eta = obj.eta();
-	trigObj.mass = obj.mass();
-	trigObj.phi = obj.phi();  
-
-	trigObjectInfoData->push_back(trigObj);
-
+	trigObj.isJetHT = 1;
+	acceptedPath = true;
       }
     }
+
+    if (acceptedPath == false) continue;
+
+    trigObjectInfoData->push_back(trigObj);
   }
   tree->Fill();
 }
