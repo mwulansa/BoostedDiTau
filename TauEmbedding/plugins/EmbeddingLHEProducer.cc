@@ -156,8 +156,6 @@ EmbeddingLHEProducer::EmbeddingLHEProducer(const edm::ParameterSet& iConfig)
           "You must add the service\n"
           "in the configuration file or remove the modules that require it.";
     }
-
-
 }
 
 
@@ -209,7 +207,10 @@ EmbeddingLHEProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         assign_4vector(negativeLepton, &(*muon), studyFSRmode_);
         mu_minus_found = true;
       }
-      else if (mu_minus_found && mu_plus_found) break;
+      else if (mu_minus_found && mu_plus_found) {
+	std::cout << "Muons not found!" << std::endl;
+	break;
+      }
     }
     InitialRecoCorrection(positiveLepton,negativeLepton); //corrects Z mass peak to take into account smearing happening due to first muon reconstruction in the selection step
     mirror(positiveLepton,negativeLepton); // if no mirror, function does nothing.
@@ -373,8 +374,14 @@ void EmbeddingLHEProducer::transform_mumu_to_tautau(TLorentzVector &positiveLept
     } else {
       return;
     }
+    //std::cout << "Debug" << std::endl;
 
     TLorentzVector Z = positiveLepton + negativeLepton;
+
+    std::cout << "Di-lepton before boost M: " << Z.M()
+	      << " E: " << Z.E() 
+	      << " Pt: " << Z.Pt()
+	      << " dR: " << positiveLepton.DeltaR(negativeLepton) << "\n";
 
     TVector3 boost_from_Z_to_LAB = Z.BoostVector();
     TVector3 boost_from_LAB_to_Z = -Z.BoostVector();
@@ -382,6 +389,12 @@ void EmbeddingLHEProducer::transform_mumu_to_tautau(TLorentzVector &positiveLept
     // Boosting the two leptons to Z restframe, then both are back to back. This means, same 3-momentum squared
     positiveLepton.Boost(boost_from_LAB_to_Z);
     negativeLepton.Boost(boost_from_LAB_to_Z);
+
+    TLorentzVector Z_prime = positiveLepton + negativeLepton;
+    std::cout << "Di-lepton after boost M: " << Z_prime.M()
+	      << " E: " << Z_prime.E()
+	      << " Pt: " << Z_prime.Pt()
+	      << " dR: " << positiveLepton.DeltaR(negativeLepton) << "\n";
 
     // Energy of tau = 0.5*Z-mass
     double lep_mass_squared = lep_mass*lep_mass;
@@ -395,12 +408,19 @@ void EmbeddingLHEProducer::transform_mumu_to_tautau(TLorentzVector &positiveLept
 
     //Computing scale, applying it on the 3-momenta and building new 4 momenta of the taus
     double scale = std::sqrt(lep_3momentum_squared/positiveLepton.Vect().Mag2());
+    //std::cout << "scale: " << scale << "\n";
     positiveLepton.SetPxPyPzE(scale*positiveLepton.Px(),scale*positiveLepton.Py(),scale*positiveLepton.Pz(),std::sqrt(lep_energy_squared));
     negativeLepton.SetPxPyPzE(scale*negativeLepton.Px(),scale*negativeLepton.Py(),scale*negativeLepton.Pz(),std::sqrt(lep_energy_squared));
 
     //Boosting the new taus back to LAB frame
     positiveLepton.Boost(boost_from_Z_to_LAB);
     negativeLepton.Boost(boost_from_Z_to_LAB);
+
+    TLorentzVector Z_tt = positiveLepton + negativeLepton;
+    std::cout << "Di-tau after boost M: " << Z_tt.M()
+	      << " E: " << Z_tt.E()
+	      << " Pt: " << Z_tt.Pt()
+	      << " dR: " << positiveLepton.DeltaR(negativeLepton) << "\n";
 
     return;
 }
@@ -481,7 +501,7 @@ void EmbeddingLHEProducer::InitialRecoCorrection(TLorentzVector &positiveLepton,
     negativeLepton.SetPxPyPzE(EmbeddingCorrection*negativeLepton.Px(),EmbeddingCorrection*negativeLepton.Py(),EmbeddingCorrection*negativeLepton.Pz(),correctednegativeLeptonEnergy);
 
     edm::LogInfo("TauEmbedding") << "MuMinus after. Pt: " << negativeLepton.Pt() << " Mass: " << negativeLepton.M() ;
-    //std::cout << " MuMinus after. Pt: " << negativeLepton.Pt() << " Mass: " << negativeLepton.M() << " Energy: " << negativeLepton.E() << std::endl;
+    std::cout << " MuMinus after. Pt: " << negativeLepton.Pt() << " Mass: " << negativeLepton.M() << " Energy: " << negativeLepton.E() << std::endl;
   }
   return;
 }

@@ -41,7 +41,7 @@ process.maxEvents = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("PoolSource",
     dropDescendantsOfDroppedBranches = cms.untracked.bool(False),
-    fileNames = cms.untracked.vstring('file:outLHE.root'),
+    fileNames = cms.untracked.vstring('file:outLHE_muEmbedding.root'),
     #fileNames = cms.untracked.vstring('file:outMuonSelection.root'),
     inputCommands = cms.untracked.vstring(
         'keep *'
@@ -89,7 +89,7 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
     dropMetaData = cms.untracked.string('ALL'),
     eventAutoFlushCompressedSize = cms.untracked.int32(-900),
     fastCloning = cms.untracked.bool(False),
-    fileName = cms.untracked.string('file:simulated.root'),
+    fileName = cms.untracked.string('file:simulated_muEmbedding.root'),
     outputCommands = process.MINIAODSIMEventContent.outputCommands,
     overrideBranchesSplitLevel = cms.untracked.VPSet(
         cms.untracked.PSet(
@@ -160,45 +160,45 @@ from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase1_2017_realistic', '')
 
 process.generator = cms.EDFilter("Pythia8HadronizerFilter",
-    HepMCFilter = cms.PSet(
-##         filterName = cms.string('EmbeddingHepMCFilter'),
-##         filterParameters = cms.PSet(
-##             BosonPDGID = cms.int32(23),
-##             ElElCut = cms.string('El1.Pt > 22 && El2.Pt > 10'),
-##             ElHadCut = cms.string('El.Pt > 28 && Had.Pt > 25'),
-##             ElMuCut = cms.string('(El.Pt > 21 && Mu.Pt > 10) || (El.Pt > 10 && Mu.Pt > 21)'),
-##             Final_States = cms.vstring(
-##                 'ElEl',
-##                 'ElHad',
-##                 'ElMu',
-##                 'HadHad',
-##                 'MuHad',
-##                 'MuMu'
-##             ),
-##             #HadHadCut = cms.string('Had1.Pt > 35 && Had2.Pt > 30'),
-##             HadHadCut = cms.string('Had1.Pt > 10 && Had2.Pt > 10'),
-##             MuHadCut = cms.string('Mu.Pt > 18 && Had.Pt > 25 && Mu.Eta < 2.1'),
-##             MuMuCut = cms.string('Mu1.Pt > 17 && Mu2.Pt > 8')
-##         )
-     filterName = cms.string('EmbeddingHepMCFilter'),
-     filterParameters = cms.PSet(
-         BosonPDGID = cms.int32(23),
-         ElElCut = cms.string('El1.Pt > 0 && El2.Pt > 0'),
-         ElHadCut = cms.string('El.Pt > 0 && Had.Pt > 0'),
-         ElMuCut = cms.string('El.Pt > 0 && Mu.Pt > 0'),
-         Final_States = cms.vstring(
-             'ElEl',
-             'ElHad',
-             'ElMu',
-             'HadHad',
-             'MuHad',
-             'MuMu'
-         ),
-         HadHadCut = cms.string('Had1.Pt > 0 && Had2.Pt > 0'),
-         MuHadCut = cms.string('Mu.Pt > 0 && Had.Pt > 0'),
-         MuMuCut = cms.string('Mu1.Pt > 0 && Mu2.Pt > 0')
-     )
-    ),
+##     HepMCFilter = cms.PSet(
+## ##         filterName = cms.string('EmbeddingHepMCFilter'),
+## ##         filterParameters = cms.PSet(
+## ##             BosonPDGID = cms.int32(23),
+## ##             ElElCut = cms.string('El1.Pt > 22 && El2.Pt > 10'),
+## ##             ElHadCut = cms.string('El.Pt > 28 && Had.Pt > 25'),
+## ##             ElMuCut = cms.string('(El.Pt > 21 && Mu.Pt > 10) || (El.Pt > 10 && Mu.Pt > 21)'),
+## ##             Final_States = cms.vstring(
+## ##                 'ElEl',
+## ##                 'ElHad',
+## ##                 'ElMu',
+## ##                 'HadHad',
+## ##                 'MuHad',
+## ##                 'MuMu'
+## ##             ),
+## ##             #HadHadCut = cms.string('Had1.Pt > 35 && Had2.Pt > 30'),
+## ##             HadHadCut = cms.string('Had1.Pt > 10 && Had2.Pt > 10'),
+## ##             MuHadCut = cms.string('Mu.Pt > 18 && Had.Pt > 25 && Mu.Eta < 2.1'),
+## ##             MuMuCut = cms.string('Mu1.Pt > 17 && Mu2.Pt > 8')
+## ##         )
+##      filterName = cms.string('EmbeddingHepMCFilter'),
+##      filterParameters = cms.PSet(
+##          BosonPDGID = cms.int32(23),
+##          ElElCut = cms.string('El1.Pt > 0 && El2.Pt > 0'),
+##          ElHadCut = cms.string('El.Pt > 0 && Had.Pt > 0'),
+##          ElMuCut = cms.string('El.Pt > 0 && Mu.Pt > 0'),
+##          Final_States = cms.vstring(
+##              'ElEl',
+##              'ElHad',
+##              'ElMu',
+##              'HadHad',
+##              'MuHad',
+##              'MuMu'
+##          ),
+##          HadHadCut = cms.string('Had1.Pt > 0 && Had2.Pt > 0'),
+##          MuHadCut = cms.string('Mu.Pt > 0 && Had.Pt > 0'),
+##          MuMuCut = cms.string('Mu1.Pt > 0 && Mu2.Pt > 0')
+##      )
+##     ),
     PythiaParameters = cms.PSet(
         parameterSets = cms.vstring(
             'pythia8CommonSettings',
@@ -232,7 +232,7 @@ process.generator = cms.EDFilter("Pythia8HadronizerFilter",
     crossSection = cms.untracked.double(1.0),
     filterEfficiency = cms.untracked.double(1.0),
     maxEventsToPrint = cms.untracked.int32(1),
-    nAttempts = cms.uint32(1000),
+    nAttempts = cms.uint32(1),
     pythiaHepMCVerbosity = cms.untracked.bool(False),
     pythiaPylistVerbosity = cms.untracked.int32(0)
 )
@@ -306,10 +306,10 @@ for path in process.paths:
 # customisation of the process.
 
 # Automatic addition of the customisation function from BoostedDiTau.TauEmbedding.customisers
-from BoostedDiTau.TauEmbedding.customisers import customiseGenerator 
+from BoostedDiTau.TauEmbedding.customisers import customiseGenSimReco
 
 #call to customisation function customiseGenerator imported from BoostedDiTau.TauEmbedding.customisers
-process = customiseGenerator(process)
+process = customiseGenSimReco(process)
 
 # End of customisation functions
 
@@ -325,7 +325,7 @@ process = miniAOD_customizeAllMC(process)
 
 # Customisation from command line
 
-process.generator.nAttempts=cms.uint32(1000)
+process.generator.nAttempts=cms.uint32(1)
 #Have logErrorHarvester wait for the same EDProducers to finish as those providing data for the OutputModule
 from FWCore.Modules.logErrorHarvester_cff import customiseLogErrorHarvesterUsingOutputCommands
 process = customiseLogErrorHarvesterUsingOutputCommands(process)
@@ -385,9 +385,14 @@ process.options = cms.untracked.PSet(
     numberOfConcurrentLuminosityBlocks = cms.untracked.uint32(1),
     numberOfConcurrentRuns = cms.untracked.uint32(1),
     numberOfStreams = cms.untracked.uint32(0),
-    numberOfThreads = cms.untracked.uint32(4),
+    numberOfThreads = cms.untracked.uint32(1),
     printDependencies = cms.untracked.bool(False),
     sizeOfStackForThreadsInKB = cms.optional.untracked.uint32,
     throwIfIllegalParameter = cms.untracked.bool(True),
     wantSummary = cms.untracked.bool(False)
+)
+
+
+process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",
+    ignoreTotal = cms.untracked.int32(1)
 )

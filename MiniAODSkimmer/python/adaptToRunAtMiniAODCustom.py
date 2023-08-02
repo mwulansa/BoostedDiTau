@@ -1135,6 +1135,24 @@ def addTCPNtuples(process):
                                    closeFileFast = cms.untracked.bool(True)
     )
 
+def addMTTNtuples(process):
+    process.fast_mtt_ntuples = cms.EDAnalyzer("fastMTTNtuples",
+                                  METCollection = cms.InputTag("slimmedMETs"),
+                                  JetCollection = cms.InputTag("slimmedJets"),
+                                  MuonCollection = cms.InputTag("slimmedMuons"),
+                                  VertexCollection = cms.InputTag("offlineSlimmedPrimaryVertices"),
+                                  MCleanedTauCollection = cms.InputTag('slimmedTausMuonCleaned'),
+                                  BoostedTauCollection = cms.InputTag('slimmedTausBoosted')
+                                              )
+    process.mttNtupleMaker = cms.Path(process.fast_mtt_ntuples)
+
+    process.schedule.append(process.mttNtupleMaker)
+
+    process.TFileService = cms.Service("TFileService",
+                                   fileName = cms.string('mttNtuple.root'),
+                                   closeFileFast = cms.untracked.bool(True)
+    )
+
 
 ### this is not needed unless you want to save EDM format files
 def setOutputModule(mode=0):

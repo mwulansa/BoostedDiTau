@@ -59,7 +59,7 @@ patMuonsAfterKinCutsDoubleMu = cms.EDFilter("PATMuonSelector",
 
 patMuonsAfterKinCutsSingleMu = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("slimmedMuons"),
-    cut = cms.string("pt > 3 && abs(eta) < 2.5"),
+    cut = cms.string("pt > 3 && abs(eta) < 2.4"),
     filter = cms.bool(True)
 )
 
@@ -115,8 +115,9 @@ patMuonsAfterLooseIDSingleMu = cms.EDFilter("PATMuonSelector",
 )
 
 patMuonsAfterLooseIDLooseIsoSingleMu = cms.EDFilter("PATMuonSelector",
-    src = cms.InputTag("patMuonsAfterKinCutsSingleMu"),
-    cut = cms.string("isLooseMuon && (pfIsolationR04().sumChargedHadronPt + max(0., pfIsolationR04().sumNeutralHadronEt + pfIsolationR04().sumPhotonEt - 0.5*pfIsolationR04().sumPUPt))/pt < 0.25"),
+    src = cms.InputTag("patMuonsAfterLooseIDSingleMu"),
+    #cut = cms.string("(pfIsolationR04().sumChargedHadronPt + max(0., pfIsolationR04().sumNeutralHadronEt + pfIsolationR04().sumPhotonEt - 0.5*pfIsolationR04().sumPUPt))/pt < 0.25"),
+    cut = cms.string(""),
     filter = cms.bool(True)
 )
 
@@ -136,9 +137,12 @@ patMuonsAfterLooseIDJetHT = cms.EDFilter("PATMuonSelector",
 
 ## Zmumu selection
 ZmumuCandidates = cms.EDProducer("CandViewShallowCloneCombiner",
-    checkCharge = cms.bool(True),
+    checkCharge = cms.bool(False),
     # require one of the muons with pT > 17 GeV, and an invariant mass > 1 GeV
-    cut = cms.string('charge = 0 & max(daughter(0).pt, daughter(1).pt) > 24 & mass > 70 & daughter(0).isGlobalMuon & daughter(1).isGlobalMuon'),
+    #cut = cms.string('charge = 0 & max(daughter(0).pt, daughter(1).pt) > 24 & mass > 70 & daughter(0).isGlobalMuon & daughter(1).isGlobalMuon'),
+    #cut = cms.string('charge = 0 & mass < 20 & mass > 1 & daughter(0).isGlobalMuon & daughter(1).isGlobalMuon'),
+    #cut = cms.string('mass < 20 & mass > 1 & daughter(0).isGlobalMuon & daughter(1).isGlobalMuon'),
+    cut = cms.string('charge = 0 & mass < 20 & mass > 3.6'),
     decay = cms.string("patMuonsAfterLooseIDLooseIsoSingleMu@+ patMuonsAfterLooseIDLooseIsoSingleMu@-")
 )
 
@@ -217,10 +221,10 @@ ZmumuCandidatesFilterMCJetHT = cms.EDFilter("CandViewCountFilter",
 selectedMuonsForEmbedding = cms.EDProducer("MuMuForEmbeddingSelector",
     ZmumuCandidatesCollection = cms.InputTag("ZmumuCandidates")
 )
-## 
-## selectedBoostedMuonsForEmbedding = cms.EDProducer("MuMuForEmbeddingBoostedSelector",
-##     ZmumuCandidatesCollection = cms.InputTag("ZmumuCandidates")
-## )
+
+selectedBoostedMuonsForEmbedding = cms.EDProducer("MuMuForEmbeddingBoostedSelector",
+    ZmumuCandidatesCollection = cms.InputTag("ZmumuCandidates")
+)
 
 ## HighPtJetFilter = cms.EDFilter("CandCountFilter",
 ##                                src = cms.InputTag("patJetsAfterLooseID","Analysis"),
@@ -336,6 +340,15 @@ makePatMuonsZmumuSelection = cms.Sequence(
     + ZmumuCandidates
     + ZmumuCandidatesFilter
     + selectedMuonsForEmbedding
+)
+
+makePatMuonsZmumuSelectionBoosted = cms.Sequence(
+    patMuonsAfterKinCutsSingleMu
+    + patMuonsAfterLooseIDSingleMu
+    + patMuonsAfterLooseIDLooseIsoSingleMu
+    + ZmumuCandidates
+    + ZmumuCandidatesFilter
+    + selectedBoostedMuonsForEmbedding
 )
 
 studyPatMuonsZmumuSelectionDoubleMu = cms.Sequence(
