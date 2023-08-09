@@ -40,6 +40,9 @@ private:
   virtual void endRun(edm::Run const&, edm::EventSetup const&) override {}
   virtual void analyze(edm::Event const&, edm::EventSetup const&) override;
 
+
+  // bool doprints_;		
+
   edm::EDGetTokenT<edm::TriggerResults> metFiltersToken_;
 
   // std::string beamHaloFilter_;
@@ -77,6 +80,7 @@ private:
 };
 
 TCPMETFilter::TCPMETFilter(const edm::ParameterSet& iConfig):
+  //doprints_(iConfig.getParameter<bool>("doprints")),
   metFiltersToken_(consumes< edm::TriggerResults >(iConfig.getParameter<edm::InputTag>("metFilters"))){
   usesResource(TFileService::kSharedResource);
   beamHaloFilterSt_       = iConfig.getParameter<std::string>("beamHaloFilterSel");
@@ -137,6 +141,8 @@ void TCPMETFilter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
 
   event_ = Event;
 
+  std::cout << "MET Filters decision: \n";
+
   for (unsigned i = 0, n = triggerResults.size(); i < n; ++i){
 
     if ( names.triggerName(i) == beamHaloFilterSt_ && triggerResults.accept(i) == 1 ) beamHaloFilter_ = 1;
@@ -148,7 +154,17 @@ void TCPMETFilter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
     if ( names.triggerName(i) == badChargedCandFilterSt_ && triggerResults.accept(i) == 1 ) badChargedCandFilter_ = 1;
     if ( names.triggerName(i) == eeBadScFilterSt_ && triggerResults.accept(i) == 1 ) eeBadScFilter_ = 1;
     if ( names.triggerName(i) == ecalBadCalFilterSt_ && triggerResults.accept(i) == 1 ) ecalBadCalFilter_ = 1;
+
+    std::cout << names.triggerName(i) << std::endl;
+    if (names.triggerName(i) == beamHaloFilter_) { std::cout << " Beam Halo = " << metFilters->accept(i) << "\n"; }
+    if (names.triggerName(i) == hbheFilter_) { std::cout << " HBHE = " << metFilters->accept(i) << "\n"; }
+    if (names.triggerName(i) == hbheIsoFilter_) { std::cout << " HBHE (Iso) = " << metFilters->accept(i) << "\n"; }
+    if (names.triggerName(i) == ecalTPFilter_) { std::cout << " Ecal TP = " << metFilters->accept(i) << "\n"; }
+    if (names.triggerName(i) == badPFMuonFilter_) { std::cout << " Bad PF Muon = " << metFilters->accept(i) << "\n"; }
+    if (names.triggerName(i) == badChargedCandFilter_) { std::cout << " Bad Charged Hadron = " << metFilters->accept(i) << "\n"; }
+    if (names.triggerName(i) == eeBadScFilter_) { std::cout << " EE SuperCluster = " << metFilters->accept(i) << "\n"; }
   }
+
 
   tree->Fill();
 }
