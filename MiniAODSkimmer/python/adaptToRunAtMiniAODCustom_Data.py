@@ -1144,11 +1144,19 @@ def addTCPNtuples(process):
 
     process.schedule.append(process.tcpMetfilterMaker)
 
+    process.testTrigObj = cms.EDAnalyzer("TCPTrigObjectAnalyzer",
+                                         bits = cms.InputTag("TriggerResults","","HLT"),
+                                         prescales = cms.InputTag("patTrigger"),
+                                         objects = cms.InputTag("slimmedPatTrigger"),
+    )
+
+    process.testTrigObjMaker = cms.Path(process.testTrigObj)
 
     
     process.schedule.append(process.tcpTrigNtupleMaker)
 #    process.schedule.append(process.tcpGenNtupleMaker)
     process.schedule.append(process.tcpNtupleMaker)
+    process.schedule.append(process.testTrigObjMaker)
 
     process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string('TCPNtuple_Data.root'),

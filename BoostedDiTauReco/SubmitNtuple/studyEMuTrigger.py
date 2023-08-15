@@ -6,9 +6,9 @@ start_time = time.time()
 
 opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
-outputTitle = "h_studyEMuTrigger"
+outputTitle = "h_studyEMuDataMC"
 
-if "-mc" in opts:
+if "-b" in opts:
     isData = 0
 
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/JetInfoDS.h"')
@@ -197,7 +197,40 @@ def MuMu_Channel(mu, js, met_pt, met_phi):
 
     return isMuMu
 
+
 def EMu_Channel(ele,mu_emu, js, met_pt, met_phi):
+
+    isEMu = 0
+    h['hEMu_Events'].Fill(1, genweight)
+
+    e, mu, j, m = get_TLorentzVector(ele[0], mu_emu[0], js[0], met_pt, met_phi)
+
+    trigger = [0,0]
+
+    if ( mu.Pt() > 50 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) : trigger[0] = 1
+    
+    if ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) : trigger[1] = 1
+
+    if trigger[0] == 1 or trigger[1] == 1:
+
+        if pass_baseline(e, mu, j) == 1:
+            if pass_deltaR(e, mu, j, "EMu") == 1:
+                if m.Pt() > 100 :
+
+                    h["hEMu_SR_Mtl1"].Fill(Mt(l1,m), genweight)
+                    h["hEMu_SR_Mtl2"].Fill(Mt(l2,m), genweight)
+                    h["hEMu_SR_Mtl"].Fill(Mt((l1+l2),m), genweight)
+
+                    h['hEMu_SR_cosEm'].Fill(np.cos(m.DeltaPhi(e)), genweight)
+                    h['hEMu_SR_cosMum'].Fill(np.cos(m.DeltaPhi(mu)), genweight)
+                    
+                if m.Pt() < 100 : #lowMET
+
+
+
+
+
+def EMu_Channel_triggerStudy(ele,mu_emu, js, met_pt, met_phi):
 
     isEMu = 0
     h['hEMu_Events'].Fill(1, genweight)
@@ -229,6 +262,7 @@ def EMu_Channel(ele,mu_emu, js, met_pt, met_phi):
 
                 if m.Pt() > 100.0 :
                     plot_event_hist("hEMu_JetHT+SingleMu+SingleE+MuonEG", e, mu, j ,m)
+
                     h["hEMu_Trigger_Event"].Fill(4, genweight)
 
                     if trigger[0] == 1 and ( trigger[1] == trigger[2] == trigger[3] == 0 ):
@@ -273,7 +307,6 @@ def plot_event_hist(region, l1, l2, j, m):
     h[region+"_Lepton1Pt"].Fill(l1.Pt(), genweight)
     h[region+"_Lepton2Pt"].Fill(l2.Pt(), genweight)
     h[region+"_JetPt"].Fill(j.Pt(), genweight)
-    h[region+"_Mt"].Fill(Mt(l2,m), genweight)
     h[region+"_MetPt"].Fill(m.Pt(), genweight)
     h[region+"_Nj"].Fill(len(s_j), genweight)
     h[region+"_dR"].Fill(l1.DeltaR(l2), j.DeltaR(l1+l2), genweight)
@@ -419,6 +452,9 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
        if MuMu_Channel(s_isomu, s_j, met_pt, met_phi) == 1: continue
 
    if len(s_isomu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and len(s_b) == 0 and s_isoe[0].charge*s_isomu[0].charge < 0 : 
+       EMu_Channel_triggerStudy(s_isoe,s_isomu, s_j, met_pt, met_phi)
+
+   if len(s_isomu) > 0 and len(s_isoe) > 0 and len(s_j) > 0 and len(s_b) == 0 and s_isoe[0].charge*s_isomu[0].charge < 0 :
        EMu_Channel(s_isoe,s_isomu, s_j, met_pt, met_phi)
 
 

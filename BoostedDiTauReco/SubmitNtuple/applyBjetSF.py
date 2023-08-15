@@ -130,10 +130,14 @@ for r in plot_regions :
 
     define_eff_histogram(r)
     define_eff_histogram(r+"_0bjet")
+    define_eff_histogram(r+"_bjet")
     define_event_histogram(r)
     define_event_histogram(r+"_noCorr")
     define_event_histogram(r+"_0bjet")
     define_event_histogram(r+"_0bjet_noCorr")
+    define_event_histogram(r+"_bjet")
+    define_event_histogram(r+"_bjet_noCorr")
+
 
 def get_TLorentzVector(l1, l2, js, met_pt, met_phi):
 
@@ -198,9 +202,14 @@ def fill_efficiency(region):
 
 def measure_efficiency(region):
 
-    h[region+'_BFlavour_BTagging_Efficiency'] = h[region+'_BFlavour_BTagged_JetPtEta'].Divide(h[region+'_BFlavour_JetPtEta'])
-    h[region+'_CFlavour_BTagging_Efficiency'] = h[region+'_CFlavour_BTagged_JetPtEta'].Divide(h[region+'_CFlavour_JetPtEta'])
-    h[region+'_LFlavour_BTagging_Efficiency'] = h[region+'_LFlavour_BTagged_JetPtEta'].Divide(h[region+'_LFlavour_JetPtEta'])
+    h[region+'_BFlavour_BTagging_Efficiency'] = h[region+'_BFlavour_BTagged_JetPtEta'].Clone(region+'_BFlavour_BTagging_Efficiency')
+    h[region+'_BFlavour_BTagging_Efficiency'].Divide(h[region+'_BFlavour_JetPtEta'])
+
+    h[region+'_CFlavour_BTagging_Efficiency'] = h[region+'_CFlavour_BTagged_JetPtEta'].Clone(region+'_CFlavour_BTagging_Efficiency')
+    h[region+'_CFlavour_BTagging_Efficiency'].Divide(h[region+'_CFlavour_JetPtEta'])
+
+    h[region+'_LFlavour_BTagging_Efficiency'] = h[region+'_LFlavour_BTagged_JetPtEta'].Clone(region+'_LFlavour_BTagging_Efficiency')
+    h[region+'_LFlavour_BTagging_Efficiency'].Divide(h[region+'_LFlavour_JetPtEta'])
 
 
 def get_efficiency(region, jet):
@@ -340,41 +349,102 @@ def EMu_events():
                     bj2.SetPtEtaPhiM(bjs[1].pt, bjs[1].eta, bjs[1].phi, bjs[1].mass)
 
             region = 'Baseline'
+            measure_efficiency(region)
             bweight = get_weight(region, js)
 
             plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
             plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
-
+        
             if m.Pt() < event_cut['metcut'] :
 
                 region = 'lowMET'
+                measure_efficiency(region)
                 bweight = get_weight(region, js)
 
                 plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
                 plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
+                if len(bjs) == 0 :
+
+                    region = 'lowMET_0bjet'
+                    measure_efficiency(region)
+                    bweight = get_weight(region, js)
+                
+                    plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                    plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
+                if len(bjs) > 0 :
+
+                    region = 'lowMET_bjet'
+                    measure_efficiency(region)
+                    bweight = get_weight(region, js)
+                
+                    plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                    plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
 
             if m.Pt() > event_cut['metcut'] :
 
                 region = 'highMET'
+                measure_efficiency(region)
                 bweight = get_weight(region, js)
 
                 plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
                 plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
 
-            if j.DeltaR(e+mu) > event_cut['dRlj'] :
+                if len(bjs) == 0 :
 
-                if e.DeltaR(mu) < 0.4 :
+                    region = 'highMET_0bjet'
+                    measure_efficiency(region)
+                    bweight = get_weight(region, js)
+                
+                    plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                    plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
 
-                    region = 'dRcut'
+                if len(bjs) > 0 :
+
+                    region = 'highMET_bjet'
+                    measure_efficiency(region)
                     bweight = get_weight(region, js)
 
                     plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
                     plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
 
 
+            if j.DeltaR(e+mu) > event_cut['dRlj'] :
+
+                if e.DeltaR(mu) < 0.4 :
+
+                    region = 'dRcut'
+                    measure_efficiency(region)
+                    bweight = get_weight(region, js)
+
+                    plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                    plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
+                    if len(bjs) == 0 :
+
+                        region = 'dRcut_0bjet'
+                        measure_efficiency(region)
+                        bweight = get_weight(region, js)
+                
+                        plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                        plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
+                    if len(bjs) > 0 :
+                        
+                        region = 'dRcut_bjet'
+                        measure_efficiency(region)
+                        bweight = get_weight(region, js)
+
+                        plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                        plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
+
                     if m.Pt() < event_cut['metcut'] :
                         
                         region = 'lowMET_dRcut'
+                        measure_efficiency(region)
                         bweight = get_weight(region, js)
 
                         plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
@@ -383,6 +453,16 @@ def EMu_events():
                         if len(bjs) == 0 :
 
                             region = 'lowMET_dRcut_0bjet'
+                            measure_efficiency(region)
+                            bweight = get_weight(region, js)
+
+                            plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                            plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
+                        if len(bjs) > 0 :
+
+                            region = 'lowMET_dRcut_bjet'
+                            measure_efficiency(region)
                             bweight = get_weight(region, js)
 
                             plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
@@ -392,6 +472,7 @@ def EMu_events():
                     if m.Pt() > event_cut['metcut'] :
 
                         region = 'highMET_dRcut'
+                        measure_efficiency(region)
                         bweight = get_weight(region, js)
 
                         plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
@@ -400,6 +481,16 @@ def EMu_events():
                         if len(bjs) == 0 :
 
                             region = 'highMET_dRcut_0bjet'
+                            measure_efficiency(region)
+                            bweight = get_weight(region, js)
+
+                            plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                            plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
+                        if len(bjs) > 0 :
+
+                            region = 'highMET_dRcut_bjet'
+                            measure_efficiency(region)
                             bweight = get_weight(region, js)
 
                             plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
@@ -411,6 +502,7 @@ def EMu_events():
                     if m.Pt() > event_cut['metcut'] :
 
                         region = 'highMET_invdRcut'
+                        measure_efficiency(region)
                         bweight = get_weight(region, js)
 
                         plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
@@ -419,6 +511,16 @@ def EMu_events():
                         if len(bjs) == 0 :
 
                             region = 'highMET_invdRcut_0bjet'
+                            measure_efficiency(region)
+                            bweight = get_weight(region, js)
+
+                            plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                            plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
+
+                        if len(bjs) > 0 :
+
+                            region = 'highMET_invdRcut_bjet'
+                            measure_efficiency(region)
                             bweight = get_weight(region, js)
 
                             plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
@@ -428,6 +530,7 @@ def EMu_events():
                     if m.Pt() < event_cut['metcut'] :
                             
                         region = 'lowMET_invdRcut'
+                        measure_efficiency(region)
                         bweight = get_weight(region, js)
 
                         plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
@@ -436,11 +539,21 @@ def EMu_events():
                         if len(bjs) == 0 :
 
                             region = 'lowMET_invdRcut_0bjet'
+                            measure_efficiency(region)
                             bweight = get_weight(region, js)
 
                             plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
                             plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
 
+
+                        if len(bjs) > 0 :
+
+                            region = 'lowMET_invdRcut_bjet'
+                            measure_efficiency(region)
+                            bweight = get_weight(region, js)
+
+                            plot_event_hist(region+"_noCorr", e, mu, j, j2, m, bj, bj2, js, bjs, genweight)
+                            plot_event_hist(region, e, mu, j, j2, m, bj, bj2, js, bjs, genweight*bweight)
 
 
 
@@ -524,7 +637,9 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
     if isData == 0:
         weight = fchain.GetBranch("lumiInfo")
-        genweight = weight.GetLeaf('weight').GetValue()
+        gweight = weight.GetLeaf("weight").GetValue()
+        puweight = fchain.GetLeaf("puWeight").GetValue()
+        genweight = gweight*puweight
 
     h['hEvents'].Fill(1.5, genweight)
 

@@ -1168,7 +1168,6 @@ def addTCPNtuples(process):
     process.tcpMetfilterMaker = cms.Path(process.tcpMetfilter)
 
     process.schedule.append(process.tcpMetfilterMaker)
-
     process.schedule.append(process.tcpTrigNtupleMaker)
     process.schedule.append(process.tcpGenNtupleMaker)
     process.schedule.append(process.tcpNtupleMaker)

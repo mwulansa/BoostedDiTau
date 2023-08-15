@@ -86,6 +86,9 @@ event_cut = {
     'mass' : 5
 }
 
+eptcuts = [50, 60, 70, 80, 90]
+jetptcuts = [170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300]
+
 #define histograms here
 
 def book_histogram():
@@ -105,6 +108,31 @@ def book_histogram():
     h['hMuonPt'] = ROOT.TH1F ("hMuPt", "Muon P_{T} ; P_{T} ; N", 500, 0, 500)
     h['hIsoMuonPt'] = ROOT.TH1F ("hIsoMuPt", "Isolated Muon P_{T} ; P_{T} ; N", 500, 0, 500)
     h['hNonIsoMuonPt'] = ROOT.TH1F ("hNonIsoMuPt", "Non-Isolated Muon P_{T} ; P_{T} ; N", 500, 0, 500)
+
+    h['hIsMuPt'] = ROOT.TH1F ("hIsMuPt", "isMu Trig. Obj. P_{T} ; P_{T} ; N", 500, 0, 500)
+    h['hIsIsoMuPt'] = ROOT.TH1F ("hIsIsoMuPt", "isIsoMu Trig. Obj. P_{T} ; P_{T} ; N", 500, 0, 500)
+    h['hIsEleJetPt'] = ROOT.TH1F ("hIsEleJetPt", "isEleJet Trig. Obj. P_{T} ; P_{T} ; N", 2000, 0, 2000)
+    h['hIsSingleJetPt'] = ROOT.TH1F ("hIsSingleJetPt", "isSingleJet Trig. Obj. P_{T} ; P_{T} ; N", 2000, 0, 2000)
+    h['isMuTrigObjPt'] = ROOT.TH1F ("IsMuTrigObjPt", "isMu Trig. Obj. P_{T} ; P_{T} ; N", 500, 0, 500)
+
+    h['hIsEleJetEta'] = ROOT.TH1F ("hIsEleJetEta", "isEleJet Trig. Obj. Eta ; Eta ; N", 100, -3, 3)
+
+    h['hIsMuEta'] = ROOT.TH1F ("hIsMuEta", "isMu Trig. Obj. Eta ; Eta ; N", 100, -3, 3)
+    h['hIsMuPhi'] = ROOT.TH1F ("hIsMuPhi", "isMu Trig. Obj. Phi ; Phi ; N", 100, -4, 4)
+    h['hIsMuPtEta'] = ROOT.TH2F ("hIsMuPtEta", "hIsMuPtEta; P_{T}; eta", 500, 0, 500, 100, -3, 3)
+    h['hIsMuPtPhi'] = ROOT.TH2F ("hIsMuPtPhi", "hIsMuPtPhi; P_{T}; phi", 500, 0, 500, 100, -4, 4)
+    h['hIsMuPtMass'] = ROOT.TH2F ("hIsMuPtMass", "hIsMuPtMass; P_{T}; mass", 500, 0, 500, 100, 0, 0.0001)
+
+    h['hIsIsoMuEta'] = ROOT.TH1F ("hIsIsoMuEta", "isIsoMu Trig. Obj. Eta ; Eta ; N", 100, -3, 3)
+    h['hIsIsoMuPhi'] = ROOT.TH1F ("hIsIsoMuPhi", "isIsoMu Trig. Obj. Phi ; Phi ; N", 100, -4, 4)
+    h['hIsIsoMuPtEta'] = ROOT.TH2F ("hIsIsoMuPtEta", "hIsIsoMuPtEta; P_{T}; eta", 500, 0, 500, 100, -3, 3)
+    h['hIsIsoMuPtPhi'] = ROOT.TH2F ("hIsIsoMuPtPhi", "hIsIsoMuPtPhi; P_{T}; phi", 500, 0, 500, 100, -4, 4)
+    h['hIsIsoMuPtMass'] = ROOT.TH2F ("hIsIsoMuPtMass", "hIsIsoMuPtMass; P_{T}; mass", 500, 0, 500, 100, 0, 0.0001)
+
+    h["isMuRecoPt"] = ROOT.TH1F ("isMuRecoPt", "isMu Reco P_{T} ; P_{T} ; N", 500, 0, 500)
+    h["isIsoMuRecoPt"] = ROOT.TH1F ("isIsoMuRecoPt", "isMu Reco P_{T} ; P_{T} ; N", 500, 0, 500)
+    h["isMatchedMuRecoPt"] = ROOT.TH1F ("isMatchedMuRecoPt", "isMu Matched Reco P_{T} ; P_{T} ; N", 500, 0, 500)
+    h["isMatchedTrigObjPt"] = ROOT.TH1F ("isMatchedTrigObjPt", "isMu Matched TrigObj P_{T} ; P_{T} ; N", 500, 0, 500)
 
     h['hElectronPt'] = ROOT.TH1F ("hEPt", "Electron P_{T} ; P_{T} ; N", 500, 0, 500)
     h['hIsoElectronPt'] = ROOT.TH1F ("hIsoEPt", "Isolated Electron P_{T} ; P_{T} ; N", 500, 0, 500)
@@ -136,11 +164,12 @@ def book_histogram():
     h["ETau_TriggerMatchedEle_OS_dRcut_deltaR_trigObj_Jet_isEleJet"] = ROOT.TH1F ("ETau_TriggerMatchedEle_OS_dRcut_deltaR_trigObj_Jet_isEleJet", "DeltaR(trigObj, Jet); dR; N", 100, 0, 5)
     h["ETau_TriggerMatchedEle_OS_dRcut_highMET_deltaR_trigObj_Jet_isEleJet"] = ROOT.TH1F ("ETau_TriggerMatchedEle_OS_dRcut_highMET_deltaR_trigObj_Jet_isEleJet", "DeltaR(trigObj, Jet); dR; N", 100, 0, 5)
 
-
     h["ETau_deltaR_trigObj_reco_isEleJet"] = ROOT.TH2F ("ETau_deltaR_trigObj_reco_isEleJet", "DeltaR(trigObj, recoObj); DeltaR(trigObj, electron); DeltaR(trigObj, jet)", 100, 0, 5, 100, 0, 5)
     h["ETau_dRjcut_deltaR_trigObj_reco_isEleJet"] = ROOT.TH2F ("ETau_dRjcut_deltaR_trigObj_reco_isEleJet", "DeltaR(trigObj, recoObj); DeltaR(trigObj, electron); DeltaR(trigObj, jet)", 100, 0, 5, 100, 0, 5)
     h["ETau_dRlcut_deltaR_trigObj_reco_isEleJet"] = ROOT.TH2F ("ETau_dRlcut_deltaR_trigObj_reco_isEleJet", "DeltaR(trigObj, recoObj); DeltaR(trigObj, electron); DeltaR(trigObj, jet)", 100, 0, 5, 100, 0, 5)
     h["ETau_dRcut_deltaR_trigObj_reco_isEleJet"] = ROOT.TH2F ("ETau_dRcut_deltaR_trigObj_reco_isEleJet", "DeltaR(trigObj, recoObj); DeltaR(trigObj, electron); DeltaR(trigObj, jet)", 100, 0, 5, 100, 0, 5)
+
+    h["isMudRlj"] = ROOT.TH2F ("isMudRlj", "DeltaR(trigObj, recoObj); DeltaR(trigObj, mu); DeltaR(trigObj, jet)", 100, 0, 5, 100, 0, 5)
 
 
 def book_event_histogram(region):
@@ -171,7 +200,7 @@ def book_trigger_histogram(region):
     h[region+"_dRl"] = ROOT.TH1F (region+"_dRl", region+"_dRl ; dR(leptons) ; Events", 100, 0, 5)
     h[region+"_dRj"] = ROOT.TH1F (region+"_dRj", region+"_dRj ; dR(jet, ditau) ; Events", 100, 0, 5)
     h[region+"_MetPt"] = ROOT.TH1F (region+"_MetPt", region+"_MetPt ; MET (GeV) ; Events ", 500, 0, 500)
-
+    h[region+"_Mt"] = ROOT.TH1F (region+"_Mt", region+"_Mt ; M_{T} (GeV) ; Events ", 150, 0, 150)
 
 def get_TLorentzVector(obj):
     
@@ -261,123 +290,116 @@ def plot_for_triggers(region, l1, l2, j, ht):
     h[region+"_dRl"].Fill(l1.DeltaR(l2), weight)
     h[region+"_dRj"].Fill(j.DeltaR(l1+l2), weight)
     h[region+"_MetPt"].Fill(met.Pt(), weight)
-
+    h[region+"_Mt"].Fill(Mt(l1, met), weight)
 
 def etau_trigger_study():
 
     e = get_TLorentzVector(s_electron[0])
     tau = get_TLorentzVector(s_tauEclean[0])
     jet = get_TLorentzVector(s_jet[0])
-
-#    isEleJet = 0
-#    isEle = 0
-#    isPhoton200 = 0
-
-    if isData == 0 :
-        if len(gen_e) > 0 :
-            genE = get_TLorentzVector(gen_e[0])
-            if len(gen_e) > 1 :
-                genE2 = get_TLorentzVector(gen_e[1])
         
-
+    #Before any trigger selections
     if s_electron[0].charge*s_tauEclean[0].charge < 0 :
         plot_for_triggers('ETau_TriggerMatch_OS_Before', e, tau, jet ,iht)
         if pass_deltaR(e, tau, jet, 'ETau') == 1 : 
             plot_for_triggers('ETau_TriggerMatch_OS_dRcut_Before', e, tau, jet, iht)
-            if met.Pt() > 100 : 
-                plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_Before', e, tau, jet, iht)
+            if met.Pt() >= 100 : 
+                plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_0EPtcut_Before', e, tau, jet, iht)
                 h["ETau_TriggerMatched_OS_dRcut_highMET_Before_JetPt_EPt"].Fill(jet.Pt(), e.Pt(), weight)
+                if e.Pt() >= 100:
+                    plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_100EPtcut_Before', e, tau, jet, iht)
+                if e.Pt() >= 90:
+                    plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_90EPtcut_Before', e, tau, jet, iht)
+                for ec in eptcuts:
+                    for jc in jetptcuts:
+                        if e.Pt() >= ec and jet.Pt() >= jc:
+                            plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_'+str(jc)+'JetPtcut_'+str(ec)+'EPtcut_Before', e, tau, jet, iht)
+                if Mt(e,met) < 50 :
+                    for ec in eptcuts:
+                        for jc in jetptcuts:
+                            if e.Pt() >= ec and jet.Pt() >= jc:
+                                plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_lowMt_'+str(jc)+'JetPtcut_'+str(ec)+'EPtcut_Before', e, tau, jet, iht)
 
-        if isEle == 1:
 
-            isMatched = False
-
-            for itrigobj in tOisEle:
-                if isMatched == True : break
-
-                trigObject = get_TLorentzVector(itrigobj)
-                h['ETau_deltaR_trigObj_Electron_isEle'].Fill(trigObject.DeltaR(e), weight)
-
-                if e.DeltaR(jet) >= 0.8 : h['ETau_dRjcut_deltaR_trigObj_Electron_isEle'].Fill(trigObject.DeltaR(e), weight)
-                if e.DeltaR(jet) <= 0.4 : h['ETau_closeEJ_deltaR_trigObj_Electron_isEle'].Fill(trigObject.DeltaR(e), weight)
-
-                if e.DeltaR(trigObject) > 0.1 : continue
-                isMatched = True
-                plot_for_triggers('ETau_TriggerMatch_OS_isEle', e, tau, jet ,iht)
-
-                if pass_deltaR(e, tau, jet, 'ETau') == 1 :
-                    plot_for_triggers('ETau_TriggerMatch_OS_dRcut_isEle', e, tau, jet, iht)
-                    if met.Pt() >= 100 :
-                        plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_isEle', e, tau, jet, iht)
-            
-        if isEleJet == 1:
-
-            isMatched = False
-            isMatchedE = False
-            isMatchedJet = False
-
-            for itrigobj in tOisEleJet:
-                if isMatchedE == True and isMatchedJet == True : 
-                    #print("Objects Matched")
-                    isMatched = True
-                    break
-
-                trigObject = get_TLorentzVector(itrigobj)
-                h['ETau_deltaR_trigObj_Electron_isEleJet'].Fill(trigObject.DeltaR(e), weight)
-                h['ETau_deltaR_trigObj_Jet_isEleJet'].Fill(trigObject.DeltaR(jet), weight)
-                h['ETau_deltaR_trigObj_reco_isEleJet'].Fill(trigObject.DeltaR(e), trigObject.DeltaR(jet), weight)
-
-                if jet.DeltaR(e+tau) >= 0.8 and e.DeltaR(tau) >= 0.05:
-                    h['ETau_dRjcut_deltaR_trigObj_Electron_isEleJet'].Fill(trigObject.DeltaR(e), weight)
-                    h['ETau_dRjcut_deltaR_trigObj_Jet_isEleJet'].Fill(trigObject.DeltaR(jet), weight)
-                    h['ETau_dRjcut_deltaR_trigObj_reco_isEleJet'].Fill(trigObject.DeltaR(e), trigObject.DeltaR(jet), weight)
-
-                if e.DeltaR(tau) <= 0.4 and e.DeltaR(tau) >= 0.05:
-                    h['ETau_dRlcut_deltaR_trigObj_reco_isEleJet'].Fill(trigObject.DeltaR(e), trigObject.DeltaR(jet), weight)
-                if pass_deltaR(e, tau, jet, 'ETau') == 1 :
-                    h['ETau_dRcut_deltaR_trigObj_reco_isEleJet'].Fill(trigObject.DeltaR(e), trigObject.DeltaR(jet), weight)
-
-                    if trigObject.DeltaR(e) <= 0.1 and isMatchedE == False: 
-                        #print("Electron matched")
-                        isMatchedE = True
-                        if pass_deltaR(e, tau, jet, 'ETau') == 1 :
-                            plot_for_triggers('ETau_TriggerMatchEle_OS_dRcut_isEleJet', e, tau, jet, iht)
-                            if met.Pt() >= 100 : 
-                                plot_for_triggers('ETau_TriggerMatchEle_OS_dRcut_highMET_isEleJet', e, tau, jet, iht)
-                                h["ETau_TriggerMatchedEle_OS_dRcut_highMET_isEleJet_JetPt_EPt"].Fill(jet.Pt(), e.Pt(), weight)
-                        continue
-
-                    if isMatchedE == True:
-                        if pass_deltaR(e, tau, jet, 'ETau') == 1 :
-                            h['ETau_TriggerMatchedEle_OS_dRcut_deltaR_trigObj_Jet_isEleJet'].Fill(trigObject.DeltaR(jet), weight)
-                            if met.Pt() >= 100 : 
-                                h['ETau_TriggerMatchedEle_OS_dRcut_highMET_deltaR_trigObj_Jet_isEleJet'].Fill(trigObject.DeltaR(jet), weight)
+    #For trigger matching
+    if s_electron[0].charge*s_tauEclean[0].charge < 0 and pass_deltaR(e, tau, jet, 'ETau') == 1 :
         
-                    if trigObject.DeltaR(jet) <= 0.1 and isMatchedJet == False:
-                        #print("Jet matched")
-                        isMatchedJet = True
-                        if pass_deltaR(e, tau, jet,'ETau') == 1 :
-                            plot_for_triggers('ETau_TriggerMatchJet_OS_dRcut_isEleJet', e, tau, jet, iht)
-                            if met.Pt() >= 100 :
-                                plot_for_triggers('ETau_TriggerMatchJet_OS_dRcut_highMET_isEleJet', e, tau, jet, iht)
-                                h["ETau_TriggerMatchedJet_OS_dRcut_highMET_isEleJet_JetPt_EPt"].Fill(jet.Pt(), e.Pt(), weight)
-                        continue
+        if isIsoEle == 1 :
+            plot_for_triggers('ETau_TriggerMatch_OS_isIsoEle', e, tau, jet ,iht)
+            if pass_deltaR(e, tau, jet, 'ETau') == 1 :
+                plot_for_triggers('ETau_TriggerMatch_OS_dRcut_isIsoEle', e, tau, jet, iht)
+                if met.Pt() >= 100:
+                    plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_isIsoEle', e, tau, jet, iht)
 
-                    if isMatchedJet == True:
-                        if pass_deltaR(e, tau, jet,'ETau') == 1 :
-                            h['ETau_TriggerMatchedJet_OS_dRcut_deltaR_trigObj_Electron_isEleJet'].Fill(trigObject.DeltaR(e), weight)
-                            if met.Pt() >= 100 :
-                                h['ETau_TriggerMatchedJet_OS_dRcut_highMET_deltaR_trigObj_Electron_isEleJet'].Fill(trigObject.DeltaR(e), weight)
+        if isSingleJet500 == 1 and jet.Pt() >= 600 and isEleJet != 1 :
+            plot_for_triggers('ETau_TriggerMatch_OS_isSingleJet', e, tau, jet ,iht)
+            if pass_deltaR(e, tau, jet, 'ETau') == 1 :
+                plot_for_triggers('ETau_TriggerMatch_OS_dRcut_isSingleJet', e, tau, jet, iht)
+                if met.Pt() >= 100:
+                    plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_isSingleJet', e, tau, jet, iht)
+
+        if isEleJet != 1 : return
+
+        isMatched = False
+        isMatchedE = False
+        isMatchedJet = False
+
+        for itrigobj in tOisEleJet:
+            if isMatchedE == True and isMatchedJet == True: break
+            isEleLeg = False
+            isJetLeg = False
+            if itrigobj.isEleLeg == 1 : isEleLeg = True
+            if itrigobj.isJetLeg == 1 : isJetLeg = True
+
+            trigObject = get_TLorentzVector(itrigobj)
+            
+            h['ETau_deltaR_trigObj_reco_isEleJet'].Fill(trigObject.DeltaR(e), trigObject.DeltaR(jet), weight)
+            if isEleLeg == True : h['ETau_deltaR_trigObj_Electron_isEleJet'].Fill(trigObject.DeltaR(e), weight)
+            if isJetLeg == True : h['ETau_deltaR_trigObj_Jet_isEleJet'].Fill(trigObject.DeltaR(jet), weight)
+
+            if isEleLeg == True and isMatchedE == False:
+                if trigObject.DeltaR(e) < 0.1 : 
+                    isMatchedE = True
+                    if pass_deltaR(e, tau, jet, 'ETau') == 1 :                                                                                              
+                        plot_for_triggers('ETau_TriggerMatchEle_OS_dRcut_isEleJet', e, tau, jet, iht)                                                  
+                        if met.Pt() >= 100 :                                
+                            plot_for_triggers('ETau_TriggerMatchEle_OS_dRcut_highMET_isEleJet', e, tau, jet, iht)
+                            h["ETau_TriggerMatchedEle_OS_dRcut_highMET_isEleJet_JetPt_EPt"].Fill(jet.Pt(), e.Pt(), weight)            
+
+            if isJetLeg == True and isMatchedJet == False:
+                if trigObject.DeltaR(jet) < 0.1 : 
+                    isMatchedJet = True
+                    if pass_deltaR(e, tau, jet,'ETau') == 1 :
+                        plot_for_triggers('ETau_TriggerMatchJet_OS_dRcut_isEleJet', e, tau, jet, iht)
+                        if met.Pt() >= 100 :       
+                            plot_for_triggers('ETau_TriggerMatchJet_OS_dRcut_highMET_isEleJet', e, tau, jet, iht)
+                            h["ETau_TriggerMatchedJet_OS_dRcut_highMET_isEleJet_JetPt_EPt"].Fill(jet.Pt(), e.Pt(), weight)   
 
 
-            if isMatched == True:
-                plot_for_triggers('ETau_TriggerMatch_OS_isEleJet', e, tau, jet ,iht)
-                if pass_deltaR(e, tau, jet, 'ETau') == 1 :
-                    plot_for_triggers('ETau_TriggerMatch_OS_dRcut_isEleJet', e, tau, jet, iht)
-                    if met.Pt() >= 100 :
-                        plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_isEleJet', e, tau, jet, iht)
-                        h["ETau_TriggerMatched_OS_dRcut_highMET_isEleJet_JetPt_EPt"].Fill(jet.Pt(), e.Pt(), weight)
+        if isMatchedE != True and isMatchedJet != True :
+            return
+        
+        plot_for_triggers('ETau_TriggerMatch_OS_isEleJet', e, tau, jet ,iht)
+        if pass_deltaR(e, tau, jet, 'ETau') == 1 :
+            plot_for_triggers('ETau_TriggerMatch_OS_dRcut_isEleJet', e, tau, jet, iht)                                          
+            if met.Pt() >= 100:
+                plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_0EPtcut_isEleJet', e, tau, jet, iht)
+                h["ETau_TriggerMatched_OS_dRcut_highMET_isEleJet_JetPt_EPt"].Fill(jet.Pt(), e.Pt(), weight)
+                if e.Pt() >= 100:
+                    plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_100EPtcut_isEleJet', e, tau, jet, iht)
+                if e.Pt() >= 90:
+                    plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_90EPtcut_isEleJet', e, tau, jet, iht)
 
+                for ec in eptcuts:
+                    for jc in jetptcuts:
+                        if e.Pt() >= ec and jet.Pt() >= jc:
+                            plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_'+str(jc)+'JetPtcut_'+str(ec)+'EPtcut_isEleJet', e, tau, jet, iht)
+
+                if Mt(e,met) < 50 :
+                    for ec in eptcuts:
+                        for jc in jetptcuts:
+                            if e.Pt() >= ec and jet.Pt() >= jc:
+                                plot_for_triggers('ETau_TriggerMatch_OS_dRcut_highMET_lowMt_'+str(jc)+'JetPtcut_'+str(ec)+'EPtcut_isEleJet', e, tau, jet, iht)
 
 def mutau_channel():
 
@@ -406,6 +428,117 @@ def mutau_channel():
                         isMuTau = 1
 
     return isMuTau
+
+def mutau_trigger_study():
+
+    if s_muon[0].charge*s_tauMuclean[0].charge < 0:
+
+        mu = get_TLorentzVector(s_muon[0])
+        tau = get_TLorentzVector(s_tauMuclean[0])
+        jet = get_TLorentzVector(s_jet[0])
+
+        #Before trigger requirements
+        plot_for_triggers('MuTau_TriggerMatch_OS_0MuPtcut_Before', mu, tau, jet ,iht)
+        if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
+            plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_Before', mu, tau, jet ,iht)
+            if met.Pt() > event_cut['metcut'] :
+                plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_Before', mu, tau, jet ,iht)
+                if Mt(mu,met) < 50 :
+                    plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_Before', mu, tau, jet ,iht)
+                    if isMu == 1:
+                        plot_for_triggers('MuTau_NoTriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu', mu, tau, jet ,iht)
+                    if isIsoMu == 1:
+                        plot_for_triggers('MuTau_NoTriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isIsoMu', mu, tau, jet ,iht)
+                    
+#        if isMu == 0 and isIsoMu == 0 : return
+
+#        if isMu == 1:
+#            h["isMuRecoPt"].Fill(mu.Pt(), weight)
+
+        isMatchedMu = False
+        for ito in tOisMu:
+            if isMatchedMu == True: break
+            trigObject = get_TLorentzVector(ito)
+            h["isMuTrigObjPt"].Fill(trigObject.Pt(), weight)
+            h["isMudRlj"].Fill(trigObject.DeltaR(mu), trigObject.DeltaR(jet), weight)
+            if trigObject.DeltaR(mu) < 0.1 :
+                h["isMatchedMuRecoPt"].Fill(mu.Pt(), weight)
+                h["isMatchedTrigObjPt"].Fill(trigObject.Pt(), weight)
+                isMatchedMu = True
+
+        if isMatchedMu == True:
+            plot_for_triggers('MuTau_TriggerMatch_OS_0MuPtcut_isMu', mu, tau, jet ,iht)
+            if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
+                plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMu', mu, tau, jet ,iht)
+                if met.Pt() > event_cut['metcut'] :
+                    plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMu', mu, tau, jet ,iht)
+                    if Mt(mu,met) < 50 :
+                        plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu', mu, tau, jet ,iht)
+
+#        if isIsoMu == 1:
+#            h["isIsoMuRecoPt"].Fill(mu.Pt(), weight)
+
+        isMatchedIsoMu = False
+        for ito in tOisIsoMu:
+            if isMatchedIsoMu == True: break
+            trigObject = get_TLorentzVector(ito)
+            if trigObject.DeltaR(mu) < 0.1 : isMatchedIsoMu = True
+
+        if isMatchedIsoMu == True:
+            plot_for_triggers('MuTau_TriggerMatch_OS_0MuPtcut_isIsoMu', mu, tau, jet ,iht)
+            if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
+                plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isIsoMu', mu, tau, jet ,iht)
+                if met.Pt() > event_cut['metcut'] :
+                    plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isIsoMu', mu, tau, jet ,iht)
+                    if Mt(mu,met) < 50 :
+                        plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isIsoMu', mu, tau, jet ,iht)
+
+
+        isMatchedJet = False
+        if len(tOisSingleJet) > 0:
+            for ito in tOisSingleJet:
+                if isMatchedJet == True: break
+                trigObject = get_TLorentzVector(ito)
+                if trigObject.DeltaR(jet) < 0.1 : isMatchedJet = True
+
+            if isMatchedJet == True:
+                plot_for_triggers('MuTau_TriggerMatch_OS_0MuPtcut_isSingleJet', mu, tau, jet ,iht)
+                if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
+                    plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isSingleJet', mu, tau, jet ,iht)
+                    if met.Pt() > event_cut['metcut'] :
+                        plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isSingleJet', mu, tau, jet ,iht)
+                        if Mt(mu,met) < 50 :
+                            plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isSingleJet', mu, tau, jet ,iht)
+
+
+        if isMatchedMu == True or isMatchedJet == True:
+            plot_for_triggers('MuTau_TriggerMatch_OS_0MuPtcut_isMuJet', mu, tau, jet ,iht)
+            if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
+                    plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMuJet', mu, tau, jet ,iht)
+                    if met.Pt() > event_cut['metcut'] :
+                        plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMuJet', mu, tau, jet ,iht)
+                        if Mt(mu,met) < 50 :
+                            plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMuJet', mu, tau, jet ,iht)
+
+        if isMatchedMu == True or isMatchedIsoMu == True:
+            plot_for_triggers('MuTau_TriggerMatch_OS_0MuPtcut_isMuIsoMu', mu, tau, jet ,iht)
+            if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
+                    plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMuIsoMu', mu, tau, jet ,iht)
+                    if met.Pt() > event_cut['metcut'] :
+                        plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMuIsoMu', mu, tau, jet ,iht)
+                        if Mt(mu,met) < 50 :
+                            plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMuIsoMu', mu, tau, jet ,iht)
+
+
+        if isMatchedMu == True or isMatchedIsoMu == True or isMatchedJet == True:
+            plot_for_triggers('MuTau_TriggerMatch_OS_0MuPtcut_All', mu, tau, jet ,iht)
+            if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
+                    plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_All', mu, tau, jet ,iht)
+                    if met.Pt() > event_cut['metcut'] :
+                        plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_All', mu, tau, jet ,iht)
+                        if Mt(mu,met) < 50 :
+                            plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_All', mu, tau, jet ,iht)
+
 
 def ee_channel():
 
@@ -469,20 +602,70 @@ def emu_channel():
 
 regions = ['MuMu', 'MuTau', 'EMu', 'EE']
 book_trigger_histogram('ETau_TriggerMatch_OS_Before')
+book_trigger_histogram('MuTau_TriggerMatch_OS_0MuPtcut_Before')
 book_trigger_histogram('ETau_TriggerMatch_OS_isEle')
 book_trigger_histogram('ETau_TriggerMatch_OS_isEleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_isSingleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_isIsoEle')
+book_trigger_histogram('MuTau_TriggerMatch_OS_0MuPtcut_isMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_0MuPtcut_isIsoMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_0MuPtcut_All')
+book_trigger_histogram('MuTau_TriggerMatch_OS_0MuPtcut_isSingleJet')
+book_trigger_histogram('MuTau_TriggerMatch_OS_0MuPtcut_isMuJet')
+book_trigger_histogram('MuTau_TriggerMatch_OS_0MuPtcut_isMuIsoMu')
 book_trigger_histogram('ETau_TriggerMatchEle_OS_isEleJet')
 book_trigger_histogram('ETau_TriggerMatchJet_OS_isEleJet')
 book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_Before')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_Before')
 book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_isEle')
 book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_isEleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_isSingleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_isIsoEle')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isIsoMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isSingleJet')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMuJet')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMuIsoMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_All')
 book_trigger_histogram('ETau_TriggerMatchEle_OS_dRcut_isEleJet')
 book_trigger_histogram('ETau_TriggerMatchJet_OS_dRcut_isEleJet')
 book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_Before')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_Before')
 book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_isEle')
 book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_isEleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_isSingleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_isIsoEle')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isIsoMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isSingleJet')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMuJet')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMuIsoMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_All')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_Before')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isIsoMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isSingleJet')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMuJet')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMuIsoMu')
+book_trigger_histogram('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_All')
+book_trigger_histogram('MuTau_NoTriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu')
+book_trigger_histogram('MuTau_NoTriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isIsoMu')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_100EPtcut_isEleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_90EPtcut_isEleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_0EPtcut_isEleJet')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_100EPtcut_Before')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_90EPtcut_Before')
+book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_0JetPtcut_0EPtcut_Before')
 book_trigger_histogram('ETau_TriggerMatchEle_OS_dRcut_highMET_isEleJet')
 book_trigger_histogram('ETau_TriggerMatchJet_OS_dRcut_highMET_isEleJet')
+
+for ec in eptcuts:
+    for jc in jetptcuts:
+        book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_'+str(jc)+'JetPtcut_'+str(ec)+'EPtcut_Before')
+        book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_'+str(jc)+'JetPtcut_'+str(ec)+'EPtcut_isEleJet')
+        book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_lowMt_'+str(jc)+'JetPtcut_'+str(ec)+'EPtcut_Before')
+        book_trigger_histogram('ETau_TriggerMatch_OS_dRcut_highMET_lowMt_'+str(jc)+'JetPtcut_'+str(ec)+'EPtcut_isEleJet')
+
 
 book_histogram()
 
@@ -589,22 +772,47 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
     #-------------- Trigger Objects ---------------#
 
-    tO = []
     tOisEleJet = []
-    tOisEle = []
+    tOisIsoMu = []
+    tOisMu = []
+    tOisSingleJet = []
+
     if trigObj.size() > 0:
         for i in range(trigObj.size()):
             iobj = trigObj.at(i)
-            tO += [iobj]
-            if iobj.isEle == 1 : tOisEle+=[iobj]
-            if iobj.isEleJet == 1 : tOisEleJet+=[iobj]
+            if iobj.isEleJet == 1 : 
+                tOisEleJet+=[iobj]
+                h['hIsEleJetPt'].Fill(iobj.pt)
+                h['hIsEleJetEta'].Fill(iobj.eta)
+            if iobj.isMu == 1 : 
+#                print("isMu trigger object: pt= %s, eta= %s, phi= %s, mass= %s" %(iobj.pt, iobj.eta, iobj.phi, iobj.mass)) 
+                tOisMu+=[iobj]
+                h['hIsMuPt'].Fill(iobj.pt)
+                h['hIsMuEta'].Fill(iobj.eta)
+                h['hIsMuPhi'].Fill(iobj.phi)
+                h['hIsMuPtEta'].Fill(iobj.pt, iobj.eta)
+                h['hIsMuPtPhi'].Fill(iobj.pt, iobj.phi)
+                h['hIsMuPtMass'].Fill(iobj.pt, iobj.mass)
+            if iobj.isIsoMu == 1 : 
+                tOisIsoMu+=[iobj]
+                h['hIsIsoMuEta'].Fill(iobj.eta)
+                h['hIsIsoMuPhi'].Fill(iobj.phi)
+                h["hIsIsoMuPt"].Fill(iobj.pt)
+                h['hIsIsoMuPtEta'].Fill(iobj.pt, iobj.eta)
+                h['hIsIsoMuPtPhi'].Fill(iobj.pt, iobj.phi)
+                h['hIsIsoMuPtMass'].Fill(iobj.pt, iobj.mass)
+            if iobj.isSingleJet == 1 :
+                tOisSingleJet+=[iobj]
+                h["hIsSingleJetPt"].Fill(iobj.pt)
 
-    tOisEle.sort(key=lambda x: x.pt, reverse=True)
+                
     tOisEleJet.sort(key=lambda x: x.pt, reverse=True)
+    tOisIsoMu.sort(key=lambda x: x.pt, reverse=True)    
+    tOisMu.sort(key=lambda x: x.pt, reverse=True)
 
     #-------------- Trigger definitions -----------#
 
-    #isSingleJet500 = fchain.GetLeaf('isSingleJet500').GetValue()
+    isSingleJet500 = fchain.GetLeaf('isSingleJet500').GetValue()
     isHT = fchain.GetLeaf('isHT').GetValue()
     isHTMHT = fchain.GetLeaf('isHTMHT').GetValue()
     isMu = fchain.GetLeaf('isMu').GetValue()
@@ -723,14 +931,15 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
         if emu_channel() == 1 : continue
 
     if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 : 
+        mutau_trigger_study()
         if mutau_channel() == 1 : continue
 
     if len(s_isoelectron) >=2 and len(s_jet) >= 1 :
         if ee_channel() == 1 : continue
 
     if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >= 1 :
-#        if isData == 0 : etau_trigger_study()
-        etau_trigger_study()
+        if isData == 0 : etau_trigger_study()
+#        etau_trigger_study()
 #        etau_channel(s_tauEclean, "nominal")
 
     # if len(s_electron) >= 1 and len(s_tauEcleanAltered) >= 1 and len(s_jet) >= 1 and len(s_bjet) == 0 :

@@ -172,9 +172,7 @@ void GenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
     g.phi = genParticle.phi();
     g.mass = genParticle.mass();
     g.pdgid = genParticle.pdgId();
-    if ((genParticle.isHardProcess() and abs(genParticle.pdgId()) == 15) or genParticle.isDirectHardProcessTauDecayProductFinalState()) {
-      g.isfinalstate = true;
-    }
+    if (genParticle.isDirectHardProcessTauDecayProductFinalState()) g.isfinalstate = true;
     if (abs(genParticle.pdgId()) == 15 and genParticle.isHardProcess()) g.isfinalstate = false;
     genParticleInfoData->push_back(g);
   }

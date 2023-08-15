@@ -108,8 +108,8 @@ void TCPMETFilter::beginJob(){
 
   tree->Branch("event", &event_, "event/I");
 
-  tree->Branch("beamhalofilter", &beamHaloFilter_, "beamhalofilter/O");
   tree->Branch("primaryvertexfilter", &primaryVertexFilter_, "primaryvertexfilter/O");
+  tree->Branch("beamhalofilter", &beamHaloFilter_, "beamhalofilter/O");
   tree->Branch("hbhefilter", &hbheFilter_, "hbhefilter/O");
   tree->Branch("hbheisofilter", &hbheIsoFilter_, "hbheisofilter/O");
   tree->Branch("ecaltpfilter", &ecalTPFilter_, "ecaltpfilter/O");
@@ -127,8 +127,10 @@ void TCPMETFilter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   edm::Handle<edm::TriggerResults> metFilters;
   iEvent.getByToken(metFiltersToken_, metFilters);
 
-  TriggerResults triggerResults = *metFilters;
-  auto &names = iEvent.triggerNames(*metFilters);
+  const edm::TriggerNames &names = iEvent.triggerNames(*metFilters);
+
+  // TriggerResults triggerResults = *metFilters;
+  // auto &names = iEvent.triggerNames(*metFilters);
   
   beamHaloFilter_ = 0;
   primaryVertexFilter_ = 0;
@@ -138,31 +140,31 @@ void TCPMETFilter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   badPFMuonFilter_ = 0;
   badChargedCandFilter_ = 0;
   eeBadScFilter_ = 0;
+  ecalBadCalFilter_ = 0;
 
   event_ = Event;
 
-  std::cout << "MET Filters decision: \n";
+  for (unsigned i = 0, n = metFilters->size(); i < n; ++i){
 
-  for (unsigned i = 0, n = triggerResults.size(); i < n; ++i){
+    if ( names.triggerName(i) == beamHaloFilterSt_ && metFilters->accept(i) == 1 ) beamHaloFilter_ = 1;
+    if ( names.triggerName(i) == primaryVertexFilterSt_ && metFilters->accept(i) == 1 ) primaryVertexFilter_ = 1;
+    if ( names.triggerName(i) == hbheFilterSt_ && metFilters->accept(i) == 1 ) hbheFilter_ = 1;
+    if ( names.triggerName(i) == hbheIsoFilterSt_ && metFilters->accept(i) == 1 ) hbheIsoFilter_= 1;
+    if ( names.triggerName(i) == ecalTPFilterSt_ && metFilters->accept(i) == 1 ) ecalTPFilter_ = 1;
+    if ( names.triggerName(i) == badPFMuonFilterSt_ && metFilters->accept(i) == 1 ) badPFMuonFilter_ = 1;
+    if ( names.triggerName(i) == badChargedCandFilterSt_ && metFilters->accept(i) == 1 ) badChargedCandFilter_ = 1;
+    if ( names.triggerName(i) == eeBadScFilterSt_ && metFilters->accept(i) == 1 ) eeBadScFilter_ = 1;
+    if ( names.triggerName(i) == ecalBadCalFilterSt_ && metFilters->accept(i) == 1 ) ecalBadCalFilter_ = 1;
 
-    if ( names.triggerName(i) == beamHaloFilterSt_ && triggerResults.accept(i) == 1 ) beamHaloFilter_ = 1;
-    if ( names.triggerName(i) == primaryVertexFilterSt_ && triggerResults.accept(i) == 1 ) primaryVertexFilter_ = 1;
-    if ( names.triggerName(i) == hbheFilterSt_ && triggerResults.accept(i) == 1 ) hbheFilter_ = 1;
-    if ( names.triggerName(i) == hbheIsoFilterSt_ && triggerResults.accept(i) == 1 ) hbheIsoFilter_= 1;
-    if ( names.triggerName(i) == ecalTPFilterSt_ && triggerResults.accept(i) == 1 ) ecalTPFilter_ = 1;
-    if ( names.triggerName(i) == badPFMuonFilterSt_ && triggerResults.accept(i) == 1 ) badPFMuonFilter_ = 1;
-    if ( names.triggerName(i) == badChargedCandFilterSt_ && triggerResults.accept(i) == 1 ) badChargedCandFilter_ = 1;
-    if ( names.triggerName(i) == eeBadScFilterSt_ && triggerResults.accept(i) == 1 ) eeBadScFilter_ = 1;
-    if ( names.triggerName(i) == ecalBadCalFilterSt_ && triggerResults.accept(i) == 1 ) ecalBadCalFilter_ = 1;
-
-    std::cout << names.triggerName(i) << std::endl;
-    if (names.triggerName(i) == beamHaloFilter_) { std::cout << " Beam Halo = " << metFilters->accept(i) << "\n"; }
-    if (names.triggerName(i) == hbheFilter_) { std::cout << " HBHE = " << metFilters->accept(i) << "\n"; }
-    if (names.triggerName(i) == hbheIsoFilter_) { std::cout << " HBHE (Iso) = " << metFilters->accept(i) << "\n"; }
-    if (names.triggerName(i) == ecalTPFilter_) { std::cout << " Ecal TP = " << metFilters->accept(i) << "\n"; }
-    if (names.triggerName(i) == badPFMuonFilter_) { std::cout << " Bad PF Muon = " << metFilters->accept(i) << "\n"; }
-    if (names.triggerName(i) == badChargedCandFilter_) { std::cout << " Bad Charged Hadron = " << metFilters->accept(i) << "\n"; }
-    if (names.triggerName(i) == eeBadScFilter_) { std::cout << " EE SuperCluster = " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == primaryVertexFilterSt_) { std::cout << " Primary Vertex " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == beamHaloFilterSt_) { std::cout << " Beam Halo = " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == hbheFilterSt_) { std::cout << " HBHE = " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == hbheIsoFilterSt_) { std::cout << " HBHE (Iso) = " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == ecalTPFilterSt_) { std::cout << " Ecal TP = " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == badPFMuonFilterSt_) { std::cout << " Bad PF Muon = " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == badChargedCandFilterSt_) { std::cout << " Bad Charged Hadron = " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == eeBadScFilterSt_) { std::cout << " EE SuperCluster = " << metFilters->accept(i) << "\n"; }
+    // if (names.triggerName(i) == ecalBadCalFilterSt_) { std::cout << " ECAL Bad Calibration = " << metFilters->accept(i) << "\n"; }
   }
 
 

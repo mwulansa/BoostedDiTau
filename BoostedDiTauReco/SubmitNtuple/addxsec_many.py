@@ -1,55 +1,21 @@
 import os, sys, math
 import ROOT
+import argparse
 
 opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
-
 
 if "-r" in opts:
     region = sys.argv[2]
 
-#histlist = sys.argv[1]
+#regions = ['MuMu', 'ETau', 'ETau_dRcut', 'ETau_dRcut_Metcut', 'MuTau', 'EMu']
 
-# Cross section calc----------------
-
-# pi = math.pi
-
-# c_t = 1
-# m_t = 1.77686
-# fa = 1000
-
-# m_a = [10,30,50]
-# #xsec_gt = [1.0256092e-07, 3.133914e-07, 5.072265e-07]
-
-# xsec_gt = [1.0256092e-07, 1.930e-07 , 5.021e-07]
-
-# Br = [[0,0,0], [6.7, 2.5, 1.5] , [9.7, 3.6, 2.1] , [5.7, 2.2, 1.4] , [6.2, 1.6, 0.79] , [3.0, 1.1, 0.66] , [3.0, 1.1, 0.66] , [9.7, 3.6, 2.1] , [0.88, 0.48, 0.43] , [1.9, 0.42, 0.19] , [1.8, 0.41, 0.19] , [2.1, 0.94, 0.66] , [2.9, 1.3, 0.85]] #so Model 1 is M[_][1]
-
-# xsec_M = [[],[],[]]
-
-# # for j in range (3):
-# #     for i in range (13):
-# #         Gamma_tt = ((c_t**2*m_a[j]/(8*pi))*m_t**2*math.sqrt(1-4*m_t**2/m_a[j]**2))/fa**2
-# #         xsec_g_TCP = xsec_gt[j] / Gamma_tt
-# #         xsec_M_list = xsec_g_TCP * Br[i][j]
-# #         xsec_M[j].append(xsec_M_list)
-# #         print xsec_M[j][i]
-# #     print "Gamma_tt = ", Gamma_tt
-
-# for i in range (9):
-#     Gamma_tt = ((c_t**2*m_a[i]/(8*pi))*m_t**2*math.sqrt(1-4*m_t**2/m_a[i]**2))/fa**2
-#     xsec_g_TCP = 1/ Gamma_tt#cross section of gg fusion to tcp
-#     xsec_M_list = xsec_g_TCP * Br[i]#Cross Section of gg fusion to TCP to tau Tau
-#     xsec_M.append(xsec_M_list)
-#     #print xsec_M[j][i]
-# ###Rescale each
-# xsec_TCP10 = xsec_M[0]*41.53e3
-# xsec_TCP30 = xsec_M[2]*41.53e3
-# xsec_TCP50 = xsec_M[4]*41.53e3
-
-# xsec_TCP10 = xsec_M[0][1]
-# xsec_TCP30 = xsec_M[1][1]
-# xsec_TCP50 = xsec_M[2][1]
-
+parser = argparse.ArgumentParser(description="Normalize by cross-section")
+parser.add_argument("-v", "--version", type=str, help="Version for doHadd")
+parser.add_argument("-f", "--filename", type=str, help="filename from condor output")
+parser.add_argument("-a", "--all", action="store_true", help="go through all samples")
+parser.add_argument("-r", "--region", type=str, help="regions to plot")
+parser.add_argument("--histo", type=str, nargs="+")
+args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 pi = math.pi
 
@@ -61,7 +27,7 @@ m_a = [10,20,30,40,50,60,70,80,90,100]#pseudoScalar Mass
 xsec_gt = [1.0256092e-07, 1.930e-07 , 5.021e-07]
 
 #Br = [0, 6.8 , 9.7 , 5.7 , 6.2 , 3.0 , 3.0 , 9.7 , 0.88 , 1.9 , 1.8 , 2.1 , 2.9] #so Model 1 is M[_][1]
-Br=[6.7,3.4,2.5,1.9,1.5,1.2,.95,.79,.66,.57]#Branching ration of TCP to tau tau from theory paper model 1
+Br=[6.7,3.4,2.5,1.9,1.5,1.2,.95,.79,.66,.57]#Branching ratio of TCP to tau tau from theory paper model 1
 xsec_M = []
 
 for i in range (9):
@@ -70,18 +36,34 @@ for i in range (9):
     xsec_M_list = xsec_g_TCP * Br[i]#Cross Section of gg fusion to TCP to tau Tau
     xsec_M.append(xsec_M_list)
     #print xsec_M[j][i]
+
 ###Rescale each
 xsec_TCP10 = xsec_M[0]
 xsec_TCP30 = xsec_M[2]
 xsec_TCP50 = xsec_M[4]
 
+print("xsec_TCP10", xsec_TCP10)
+print("xsec_TCP30", xsec_TCP30)
+print("xsec_TCP50", xsec_TCP50)
 
 #----------------------------------
 
+TCPxsec = {
+    'm10':{'':xsec_M[0]*1.0256092e-07},
+    'm30_HT-100to400':{'':xsec_M[2]*8.395e-06},
+    'm30_HT-400toInf':{'':xsec_M[2]*1.930e-07},
+    'm50_HT-100to400':{'':xsec_M[4]*1.233e-05},
+    'm50_HT-400toInf':{'':xsec_M[4]*2.938e-07},
+    'm30':{'':xsec_M[2]*8.887e-05+xsec_M[2]*8.395e-06+xsec_M[2]*1.930e-07},
+    'm50':{'':xsec_M[4]*9.217e-05+xsec_M[4]*1.233e-05+xsec_M[4]*2.938e-07},
+}
+
 xsecs={
 #     'TCP_m10':{'':xsec_TCP10},
-#     'TCP_m30':{
-     'TCP_m30_HT-0to100':{'':xsec_M[2]*8.887e-05},
+     'TCP_Ntuple_m12_HT-0to100':{'':xsec_M[2]*8.887e-05},
+     'TCP_Ntuple_m12_HT-100to400':{'':3.635E-06*10000000},
+     'TCP_Ntuple_m12_HT-400toInf':{'':6.490e-08*10000000},
+     'TCP_Ntuple_m30_HT-0to100':{'':xsec_M[2]*8.887e-05},
      'TCP_Ntuple_m30_HT-100to400':{'':xsec_M[2]*8.395e-06},
      'TCP_Ntuple_m30_HT-400toInf':{'':xsec_M[2]*1.930e-07},
      'TCP_Ntuple_m50_HT-0to100':{'':xsec_M[4]*9.217e-05},
@@ -123,20 +105,29 @@ xsecs={
          'HT-600toInf':1.85},
 # #    'DYJetsToQQ':{
 # #        'HT180':1208},
-     'TTJets':{
-          'TuneCP5':750.5},
-     'TTTo2L2Nu':{
-         'TuneCP5':88.29},
-     'TTToSemiLeptonic':{
-         'TuneCP5':365.34},
-     'TTToHadronic':{
-         'TuneCP5':377.96},
+     # 'TTJets':{
+     #      'TuneCP5':750.5},
+     # 'TTTo2L2Nu':{
+     #     'TuneCP5':88.29},
+     # 'TTToSemiLeptonic':{
+     #     'TuneCP5':365.34},
+     # 'TTToHadronic':{
+     #     'TuneCP5':377.96},
+     'TT':{
+         'TTTo2L2Nu_TuneCP5':88.2497,
+         'TTToSemiLeptonic_TuneCP5':365.30899,
+         'TTToHadronic_TuneCP5':377.9517},
      'ST':{
-#         's_channel':3.549,
-#         't_channel_antitop':69.09,
-#         't_channel_top':115.3,
-         'tW_antitop':34.97,
-         'tW_top':34.91},
+         's-channel':3.549,
+         't-channel_antitop':26.2278,
+         't-channel_top':44.07048,
+         'tW_antitop':35.6,
+         'tW_top':35.6},
+         # 's_channel':3.549,
+         # 't_channel_antitop':69.09,
+         # 't_channel_top':115.3,
+         # 'tW_antitop':34.97,
+         # 'tW_top':34.91},
      'Diboson':{
          'WW':75.95,
          'WZ':27.59,
@@ -144,24 +135,32 @@ xsecs={
       'WJetsToLNu_flat':{
           'TuneCP5':52940.0},
       'WJetsToLNu':{
-          'HT-70to100':1264.0,
-          'HT-100to200':1256.0,
-          'HT-200to400':335.5,
-          'HT-400to600':45.25,
-          'HT-600to800':10.97,
-          'HT-800to1200':4.933,
-          'HT-1200to2500':1.16,
-          'HT-2500toInf':0.008001},
+          'HT-70To100':1264.0,
+          'HT-100To200':1343.0,
+          'HT-200To400':359.6,
+          'HT-400To600':48.85,
+          'HT-600To800':12.05,
+          'HT-800To1200':5.501,
+          'HT-1200To2500':1.329},
+          # 'HT-2500ToInf':0.03216},
+          # 'HT-70to100':1264.0,
+          # 'HT-100to200':1256.0,
+          # 'HT-200to400':335.5,
+          # 'HT-400to600':45.25,
+          # 'HT-600to800':10.97,
+          # 'HT-800to1200':4.933,
+          # 'HT-1200to2500':1.16,
+          # 'HT-2500toInf':0.008001},
       'QCD':{
-          'HT-50to100':185300000.0,
-          'HT-100to200':23590000.0,
-          'HT-200to300':1551000.0,
-          'HT-300to500':323400.0,
-          'HT-500to700':30140.0,
-          'HT-700to1000':6344.0,
-          'HT-1000to1500':1092.0,
-          'HT-1500to2000':99.76,
-          'HT-2000toInf':20.35}
+          'HT50to100':185300000.0,
+          'HT100to200':23590000.0,
+          'HT200to300':1551000.0,
+          'HT300to500':323400.0,
+          'HT500to700':30140.0,
+          'HT700to1000':6344.0,
+          'HT1000to1500':1092.0,
+          'HT1500to2000':99.76,
+          'HT2000toInf':20.35}
 }
 
 
@@ -177,7 +176,10 @@ xsecsQCD = {
     'HT-2000toInf':{'':20.35}
 }
 
-fileName = "studyTTVarDependence"
+print("TCPxsec", TCPxsec)
+
+if args.filename :
+    fileName = args.filename
 
 def weightBackgroundHists(hists, files, version, study, var, Sample):
 #    for sample in list(xsecs):
@@ -187,18 +189,6 @@ def weightBackgroundHists(hists, files, version, study, var, Sample):
             if gen==True:
                 filename="h_Gen_"+sample+"_"+mass+"_"+version+".root"
             else:
-#                filename="h_TriggerStudy_EMu_"+sample+".root"          
-#                filename="h_GenBaseline_"+sample+"_"+mass+"_"+version+".root" 
-#                filename="h_TriggerStudy_"+sample+"_"+mass+"_"+version+".root"          
-#                filename="h_ModeSelectionStudy_"+sample+"_"+mass+"_"+version+".root"
-#                filename="h_ModeSelectionStudy_wIso_"+sample+"_"+mass+"_"+version+".root"
-#                filename="h_studyMetRegion_"+sample+"_"+mass+"_"+version+".root"
-#                filename="h_studyNbjetRegion_"+sample+"_"+mass+"_"+version+".root"
-#                filename="h_studyWJetsRegion_JetTrig_"+sample+"_"+mass+"_"+version+".root"
-#                filename="h_studyWJetsRegion_MuonTrig_"+sample+"_"+mass+"_"+version+".root"
-##                filename="h_debugMuTau_HighHT_FullyLeptonic_"+sample+"_"+mass+"_"+version+".root"
-##                filename="h_debugMuTau_HighHT_FullyLeptonic_JetHT_"+sample+"_"+mass+"_"+version+".root"
-##                filename="h_debugMuTau_HighHT_FullyLeptonic_HTTrig_"+sample+"_"+mass+"_"+version+".root"
                 filename = "h_"+fileName+"_"+sample+"_"+mass+"_"+version+".root"
                 if "-al" in opts:
                     filename="h_debugMuTau_HighHT_Inclusive_Altered_"+sample+"_"+mass+"_"+version+".root"
@@ -212,11 +202,6 @@ def weightBackgroundHists(hists, files, version, study, var, Sample):
                         filename="h_debugMuTau_HighHT_plot2DforTau_Inclusive_"+sample+"_"+mass+"_"+version+".root"
                     if "-mc" in opts:
                         filename="h_debugMuTau_HighHT_Inclusive_MCOnly_"+sample+"_"+mass+"_"+version+".root"
-#                filename="h_debugMuTau_HighHT_"+sample+"_"+mass+"_"+version+".root"
-#                filename="h_TriggerStudy_TightPtcut_"+sample+"_"+mass+"_"+version+".root"          
-#                filename="h_TriggerStudy_HTMHTFirst_LooseJetPt_"+sample+"_"+mass+"_"+version+".root"          
-#                filename="h_TriggerStudy_HTMHTFirst_TightJetPt_"+sample+"_"+mass+"_"+version+".root"          
-#                filename="h_Baseline_wNIso_"+sample+"_"+mass+"_"+version+".root"          
 #            histname="h"+reco+"_"+var
             histname=var 
             print(filename, histname)
@@ -280,9 +265,6 @@ if "-al" in opts:
         iteration = 'v5'
         study ='2DAltered'
 
-#study ='GenDY'
-#study = 'mT'
-#study = 'FullyLeptonic'
 
 L = 41480.0
 #L = 1
@@ -290,9 +272,16 @@ L = 41480.0
 
 gen = False
 scaling = 'xsection' #'xsection' else: 'unity'
-version = 'v2'
-study = 'studyTTVarDependence'
-iteration = 'v2'
+
+# version = 'v5'
+# study = 'applyBjetSF'
+# iteration = 'v5'
+
+if args.version :
+    version = args.version
+    iteration = args.version
+    study = args.filename
+
 #-------------
 
 Sample = ['TTJets']
@@ -303,8 +292,12 @@ if "-l" in opts:
     Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf']
 if "-h" in opts:
     Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
-if "-a" in opts or "--all" in opts:
-    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','WJetsToLNu','DYJetsToLL','TTTo2L2Nu','DYJetsToLL_M-4to50','Diboson','TTToSemiLeptonic','ST','QCD']
+if args.all :
+#    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','WJetsToLNu','DYJetsToLL','DYJetsToLL_M-4to50','Diboson','ST','QCD']
+#    Sample = ['TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
+#    Sample = ['TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf']
+    Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf', 'TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf']
+#    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','DYJetsToLL','DYJetsToLL_M-4to50','QCD','WJetsToLNu','TT','Diboson','ST']
 if "--tt" in opts:
     Sample = ['TTTo2L2Nu', 'TTToSemiLeptonic', 'TTToHadronic']
 if "-b" in opts:
@@ -321,7 +314,10 @@ if "-q" in opts:
 #VARIABLE = ['TauPtdRjmu','TauPtdRjtau','TauPtdRl','MuonPtdRl','TauPtMuonPt','TauPtJetPt','TauPtJet2Pt','TauPtdRj2tau','DimuonMass','MuonPtMuon2Pt','TauPtdRl2','TauPtdRgenMu','MuonPtdRgenMu']
 #VARIABLE = ['TauPt','Nj','JetPt', 'MuonPt', 'MetPt','Mass','Mt']
 #VARIABLE = ['MetPt']
-VARIABLE = ['Mass', 'Lepton1Pt', 'Lepton2Pt', 'JetPt', 'MetPt', 'Nj','dRl','dRj', 'dPhil', 'dPhi','Mtl1', 'Mtl2','Mtl','cosMl1','cosMl2','cosl','Count']
+#VARIABLE = ['Mass', 'Lepton1Pt', 'Lepton2Pt', 'JetPt', 'MetPt', 'Nj','dRl','dRj', 'dPhil', 'dPhi','Mtl1', 'Mtl2','Mtl','cosMl1','cosMl2','cosl','Count']
+#VARIABLE = ['Mass', 'Lepton1Pt', 'Lepton2Pt', 'JetPt', 'MetPt', 'Mt','Nj','dRl','dRj', 'dPhil', 'dPhi','Count']
+#VARIABLE = ['Lepton1Pt', 'Lepton2Pt', 'LeadingJetPt', 'Count', 'HT','dRl','dRj','Mass','MetPt']
+VARIABLE = ['Lepton1Pt', 'Lepton2Pt', 'LeadingJetPt', 'Mass']
 #VARIABLE = ["BFlavour_JetPt", "BFlavour_JetEta","CFlavour_JetPt", "CFlavour_JetEta", "LFlavour_JetPt", "LFlavour_JetEta", "BFlavour_BTagged_JetPt", "BFlavour_BTagged_JetEta","CFlavour_BTagged_JetPt", "CFlavour_BTagged_JetEta", "LFlavour_BTagged_JetPt", "LFlavour_BTagged_JetEta"]
 #VARIABLE = ['MuonPt_SingleMuon','ElectronPt_SingleMuon','MetPt_SingleMuon','dRl_SingleMuon']
 #VARIABLE = ['MuonPt_Both','ElectronPt_Both','dRl_Both','JetPt_Both','MetPt_Both','dRj_Both']
@@ -337,15 +333,13 @@ REGION = []
 histlist = []
 
 #for region in REGION:
-if  "-r" in opts:
+if "-r" in opts:
     for variable in VARIABLE:
-        histlist.append(region+"_"+variable)
+        histlist.append(args.region+"_"+variable)
 #        histlist.append(region+"_"+variable+"_loosedR")
 
-if "-h" in opts:
-    histlist.append(sys.argv[2])
-
-
+if args.histo is not None:
+    histlist = args.histo
 
 for var in histlist:
     weightBackgroundHists(hists, files, version, study, var, Sample)

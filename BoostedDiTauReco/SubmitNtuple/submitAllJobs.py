@@ -1,30 +1,52 @@
 import sys,os
+import argparse
 
-if len(sys.argv) == 1:
-    print("Please input either 'first' or 'second'")
+if __name__ == "__main__":
 
-iteration = sys.argv[1]
+    parser = argparse.ArgumentParser(description="To submit MC/data to condor")
+    parser.add_argument("--complete", action="store_true", help="submit all MC samples and data (current default SingleE and JetHT)")
+    parser.add_argument("--mc", nargs="+", type=str, help="MC samples to submit")
+    parser.add_argument("--data", nargs="+", type=str, help="submit dataset")
+    args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
 
-opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
+    os.system("./makeTarBall.csh")
 
-if sys.argv[1] == "first" :
-    if len(sys.argv) == 2: print("Please specify dataset or background only")
-    if len(sys.argv) > 2 and not sys.argv[2].startswith("-"):
-        os.system("./makeTarBall.csh")
-        dataset = sys.argv[2]
-        if dataset == "JetHT": os.system("./submitJobs.csh "+dataset+" -dj") 
-        if dataset == "SingleMuon": os.system("./submitJobs.csh "+dataset+" -ds")
-        SAMPLE = ['DYJetsToLL_M-50_HTBinned','DYJetsToLL_M-4to50_HTBinned','WJetsToLNu_HTBinned','WW','WZ','ZZ']
-        for sample in SAMPLE:
-            os.system("./submitJobs.csh "+sample+" -b")
-    if "-b" in opts :
-        os.system("./makeTarBall.csh")
-        SAMPLE = ['DYJetsToLL_M-50_HTBinned','DYJetsToLL_M-4to50_HTBinned','WJetsToLNu_HTBinned','WW','WZ','ZZ']
+    if args.complete:
+        SAMPLE = ['DYJetsToLL_M-50','DYJetsToLL_M-4to50','WJetsToLNu','WW','WZ','ZZ','ST_tW_top','ST_tW_antitop','TTTo2L2Nu','TTToSemiLeptonic','ST_s-channel','ST_t-channel_antitop','ST_t-channel_top','TTToHadronic','QCD']
+
+        DATASET = ["SingleElectron", "JetHT"]
+
         for sample in SAMPLE:
             os.system("./submitJobs.csh "+sample+" -b")
 
-if sys.argv[1] == "second" :
-    SAMPLE = ['QCD_HTBinned','TTJets']
-    for sample in SAMPLE:
-        os.system("./submitJobs.csh "+sample+" -b")
+        # for dataset in DATASET:
+        #     if dataset == "SingleElectron":
+        #         os.system("./submitJobs.csh "+dataset+" -de")
+        #         print("./submitJobs.csh "+dataset+" -de")
 
+        #     if dataset == "JetHT":
+        #         os.system("./submitJobs.csh "+dataset+" -dj")
+        #         print("./submitJobs.csh "+dataset+" -dj")
+
+
+    elif args.mc is not None:
+        SAMPLE = args.mc
+
+        for sample in SAMPLE:
+            os.system("./submitJobs.csh "+sample+" -b")
+
+    elif args.data is not None:
+        DATASET = args.data
+
+        for dataset in DATASET:
+            if dataset == "SingleElectron":
+                os.system("./submitJobs.csh "+dataset+" -de")
+                print("./submitJobs.csh "+dataset+" -de")
+
+            if dataset == "JetHT":
+                os.system("./submitJobs.csh "+dataset+" -dj")
+                print("./submitJobs.csh "+dataset+" -dj")
+
+        print("Submitted "+str(DATASET))
+
+    print("Submitted "+str(SAMPLE))

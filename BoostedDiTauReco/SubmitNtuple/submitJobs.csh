@@ -27,7 +27,7 @@ echo $NQueue
 echo ./filelists/$SAMPLE/${SAMPLE}_Process.txt $OutputPrefix
 condor_submit condor.jdl
 
-if ($SAMPLE == "DYJetsToLL_M-4to50_HTBinned") then
+if ($SAMPLE == "DYJetsToLL_M-4to50") then
     foreach Mass (`ls filelists/$SAMPLE`)
 	setenv MASS $Mass
 	setenv HT DYJetsToLL_M-4to50
@@ -38,7 +38,18 @@ if ($SAMPLE == "DYJetsToLL_M-4to50_HTBinned") then
     end
 endif
 
-if ($SAMPLE == "DYJetsToLL_M-50_HTBinned") then
+if ($SAMPLE == "DY1jToLL_M-1to10") then
+    foreach Mass (`ls filelists/$SAMPLE`)
+        setenv MASS $Mass
+        setenv HT DY1jToLL_M-1to10
+        setenv NQueue `ls filelists/$SAMPLE/$MASS | wc -l`
+        echo Number of Jobs: $NQueue
+        echo ./filelists/$SAMPLE/$MASS/${HT}_${MASS}_Process.txt $OutputPrefix
+        condor_submit condorHT.jdl
+    end
+endif
+
+if ($SAMPLE == "DYJetsToLL_M-50") then
     foreach Mass (`ls filelists/$SAMPLE`)
 	setenv MASS $Mass
 	setenv HT DYJetsToLL_M-50
@@ -49,7 +60,7 @@ if ($SAMPLE == "DYJetsToLL_M-50_HTBinned") then
     end
 endif
 
-if ($SAMPLE == "WJetsToLNu_HTBinned") then
+if ($SAMPLE == "WJetsToLNu") then
     foreach Mass (`ls filelists/$SAMPLE`)
 	setenv MASS $Mass
 	setenv HT WJetsToLNu
@@ -60,7 +71,7 @@ if ($SAMPLE == "WJetsToLNu_HTBinned") then
     end
 endif
 
-if ($SAMPLE == "QCD_HTBinned") then
+if ($SAMPLE == "QCD") then
     foreach Mass (`ls filelists/$SAMPLE`)
 	setenv MASS $Mass
 	setenv HT QCD
