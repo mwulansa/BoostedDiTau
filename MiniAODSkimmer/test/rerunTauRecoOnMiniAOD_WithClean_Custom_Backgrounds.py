@@ -21,8 +21,8 @@ import sys
 #runSignal = True
 #runSignal=False
 ###########
-runType = 'signal'
-#runType = 'background'
+#runType = 'signal'
+runType = 'background'
 #runType = 'data'
 #maxEvents = 100
 maxEvents=-1
@@ -99,6 +99,9 @@ print('\t Max events:', process.maxEvents.input.value())
 if runType == 'signal':
     readFiles.extend([
         'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_1.root',
+        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_2.root',
+        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_3.root',
+        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_4.root',
 #        'file:root://cmsxrootd.fnal.gov//store/mc/RunIISummer20UL17MiniAODv2/ZZ_TuneCP5_13TeV-pythia8/MINIAODSIM/106X_mc2017_realistic_v9-v1/230000/0571FD70-4526-9F4F-BD99-769E4256D634.root'
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_2.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_3.root',
@@ -113,7 +116,8 @@ elif runType == 'background':
     readFiles.extend([
         #'file:patMiniAOD_standard.root'
         #'/store/relval/CMSSW_10_5_0_pre1/RelValQCD_FlatPt_15_3000HS_13/MINIAODSIM/PU25ns_103X_mcRun2_asymptotic_v3-v1/20000/A5CBC261-E3AB-C842-896F-E6AFB38DD22F.root'
-        'file:/eos/uscms/store/user/rhabibul/HtoAA/HtoAAMiniAODTest/002C691B-A0CE-A24F-8805-03B4C52C9004.root'
+#        'file:/eos/uscms/store/user/rhabibul/HtoAA/HtoAAMiniAODTest/002C691B-A0CE-A24F-8805-03B4C52C9004.root'
+        'file:root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD_1.root',
     ])
 elif runType == 'data':
     readFiles.extend([

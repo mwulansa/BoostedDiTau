@@ -98,10 +98,9 @@ print('\t Max events:', process.maxEvents.input.value())
 
 if runType == 'signal':
     readFiles.extend([
-        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD_1.root',
+        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root',
         'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD_2.root',
-        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD_3.root',
-        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD_4.root',
+#        'root://cmseos.fnal.gov//store/user/mwulansa/Events/TCP_m10_ht_100to400_slc7_amd64_gcc10_MINIAOD/TCP_m10_ht_100to400_slc7_amd64_gcc10_MINIAOD_1.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_2.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_3.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_4.root'
@@ -262,10 +261,10 @@ process.ak4PFJetsRecoTauChargedHadronsMuonCleaned.minJetPt = jetPt
 
 
 tauAtMiniToolsCustom.addFurtherSkimming(process)
-#tauAtMiniToolsCustom.addTCPNtuples(process)
+tauAtMiniToolsCustom.addTCPNtuples(process)
 
-process.out = cms.EndPath(process.output)
-process.schedule.append(process.out)
+#process.out = cms.EndPath(process.output)
+#process.schedule.append(process.out)
 
 ###########################################
 process.load('FWCore.MessageService.MessageLogger_cfi')
