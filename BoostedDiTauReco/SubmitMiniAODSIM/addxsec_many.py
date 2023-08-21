@@ -22,11 +22,15 @@ for j in range (3):
         xsec_g_TCP = xsec_gt[j] / Gamma_tt
         xsec_M_list = xsec_g_TCP * Br[i]
         xsec_M[j].append(xsec_M_list)
-        print xsec_M[j][i]
+        print(xsec_M[j][i])
 
 xsec_TCP10 = xsec_M[0][1]
 xsec_TCP30 = xsec_M[1][1]
 xsec_TCP50 = xsec_M[2][1]
+
+print("xsec_TCP10", xsec_TCP10)
+print("xsec_TCP30", xsec_TCP30)
+print("xsec_TCP50", xsec_TCP50)
 
 #----------------------------------
 
@@ -166,6 +170,6 @@ for var in histlist:
             hists[name].SetFillColor(ROOT.kGreen+3)
 
         hists[name].Write()
-        print name
+        print(name)
 
     out.Close()

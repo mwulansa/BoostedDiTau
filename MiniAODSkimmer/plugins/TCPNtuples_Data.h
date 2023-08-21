@@ -74,6 +74,9 @@ public:
     metInfo_.phiJERDown = -9999.;
     metInfo_.ptUncDown = -9999.;
     metInfo_.phiUncDown = -9999.;
+    metInfo_.covXX = -9999.;
+    metInfo_.covYY = -9999.;
+    metInfo_.covXY = -9999.;
   }
 
   JetInfoDS* jetInfoData;
@@ -125,6 +128,7 @@ private:
       ptJECDown = phiJECDown = 0.;
       ptJERDown = phiJERDown = 0.;
       ptUncDown = phiUncDown = 0.;
+      covXX = covXY = covYY = 0.;
     }
     float pt, phi;
     float eta, mass;
@@ -135,6 +139,7 @@ private:
     float ptJECDown, phiJECDown;
     float ptJERDown, phiJERDown;
     float ptUncDown, phiUncDown;
+    float covXX, covXY, covYY;
   };
   
   MetInfo metInfo_;

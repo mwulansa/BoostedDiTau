@@ -14,9 +14,11 @@ TCPNtuples::TCPNtuples(const edm::ParameterSet& iConfig) :
   TausECleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("ECleanedTauCollection"))),
   TausLowPtECleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("LowPtECleanedTauCollection"))),
   TausMCleaned_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("MCleanedTauCollection"))),
-  TausBoosted_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("BoostedTauCollection"))) {
+  TausBoosted_(consumes< vector<pat::Tau> > (iConfig.getParameter<edm::InputTag>("BoostedTauCollection")))
+{
   usesResource(TFileService::kSharedResource);
 }
+
 
 void TCPNtuples::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   edm::ParameterSetDescription desc;
@@ -54,7 +56,7 @@ void TCPNtuples::beginJob() {
   tree->Branch("TausLowPtECleaned", "TauInfoDS", &tauInfoDataLowPtECleaned);
   tree->Branch("TausMCleaned", "TauInfoDS", &tauInfoDataMCleaned);
   tree->Branch("TausBoosted", "TauInfoDS", &tauInfoDataBoosted);
-  tree->Branch("Mets", &metInfo_, "pt/F:phi/F:eta/F:mass/F:ptUncor/F:phiUncor/F:ptJECUp/F:phiJECUp/F:ptJERUp/F:phiJERUp/F:ptUncUp/F:phiUncUp/F:ptJECDown/F:phiJECDown/F:ptJERDown/F:phiJERDown/F:ptUncDown/F:phiUncDown/F");
+  tree->Branch("Mets", &metInfo_, "pt/F:phi/F:eta/F:mass/F:ptUncor/F:phiUncor/F:ptJECUp/F:phiJECUp/F:ptJERUp/F:phiJERUp/F:ptUncUp/F:phiUncUp/F:ptJECDown/F:phiJECDown/F:ptJERDown/F:phiJERDown/F:ptUncDown/F:phiUncDown/F:covXX/F:covXY/F:covYY/F");
 }
 
 void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
@@ -133,6 +135,7 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
       else m.id = 1;
       m.dxy = muon.muonBestTrack()->dxy();
       m.dz = muon.muonBestTrack()->dz();
+      m.trigmatch = muon.triggered("HLT_Mu27_*");
       muonInfoData->push_back(m);
     }
   }
@@ -359,6 +362,9 @@ void TCPNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   metInfo_.phiJERDown = met.shiftedPhi(pat::MET::JetResDown);
   metInfo_.ptUncDown = met.shiftedPt(pat::MET::UnclusteredEnDown);
   metInfo_.phiUncDown = met.shiftedPhi(pat::MET::UnclusteredEnDown);
+  metInfo_.covXX = met.getSignificanceMatrix().At(0,0);
+  metInfo_.covYY = met.getSignificanceMatrix().At(1,1);
+  metInfo_.covXY = met.getSignificanceMatrix().At(0,1);
 
   tree->Fill();
 }
