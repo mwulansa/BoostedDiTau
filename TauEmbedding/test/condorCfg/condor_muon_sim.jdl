@@ -1,0 +1,11 @@
+universe = vanilla
+request_memory = 4200
+Executable = run_condor_muon_sim.sh
+Should_Transfer_Files = YES
+WhenToTransferOutput = ON_EXIT
+Output = ./condorOut/condor_muon_simulated_$ENV(INPUT).stdout
+Error = ./condorOut/condor_muon_simulated_$ENV(INPUT).stderr
+Log = ./condorOut/condor_muon_simulated_$ENV(INPUT).log
+Arguments = lhe_muon_v1_$ENV(INPUT) simulated_muon_v1_$ENV(INPUT)
+getenv = True
+Queue 1

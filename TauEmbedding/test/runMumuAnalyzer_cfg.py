@@ -4,9 +4,10 @@ import FWCore.ParameterSet.Config as cms
 from Configuration.StandardSequences.Eras import eras
 
 isMC = True
-whichTrigger="DoubleMu"
+#whichTrigger="DoubleMu"
 #whichTrigger="SingleMu"
 #whichTrigger="JetHT"
+whichTrigger = "NoTrigger"
 
 prefix = 'root://xrootd.unl.edu/'
 
@@ -18,7 +19,7 @@ if not isMC:
     elif whichTrigger == "JetHT":
         inputFiles = '/store/data/Run2016B/JetHT/MINIAOD/17Jul2018_ver2-v2/100000/00323A27-15B8-E811-88B5-E0071B6C9DB0.root'
 else:
-    inputFiles = '/store/mc/RunIISummer16MiniAODv3/DYJetsToLL_M-5to50_HT-70to100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/MINIAODSIM/PUMoriond17_94X_mcRun2_asymptotic_v3-v2/100000/026F8D54-5AEA-E811-91CC-24BE05CE2D41.root'
+    inputFiles = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/UpsilonTauTau/UL2017/YMuMu_128.root'
 
 if not isMC:
     outputFile = "outMuonAnalyzer"+whichTrigger+".root"

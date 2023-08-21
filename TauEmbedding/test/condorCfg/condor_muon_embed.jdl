@@ -1,0 +1,11 @@
+universe = vanilla
+request_memory = 4200
+Executable = run_condor_muon_embed.sh
+Should_Transfer_Files = YES
+WhenToTransferOutput = ON_EXIT
+Output = ./condorOut/condor_muon_embed_$ENV(INPUT).stdout
+Error = ./condorOut/condor_muon_embed_$ENV(INPUT).stderr
+Log = ./condorOut/condor_muon_embed_$ENV(INPUT).log
+Arguments = simulated_muon_v1_$ENV(INPUT) embed_muon_v1_$ENV(INPUT)
+getenv = True
+Queue 1
