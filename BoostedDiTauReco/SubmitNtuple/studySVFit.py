@@ -39,6 +39,7 @@ ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/MuonInfoDS.h
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/ElectronInfoDS.h"')
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/TauInfoDS.h"')
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/TrigObjectInfoDS.h"')
+ROOT.gInterpreter.ProcessLine('#include "../../../TauAnalysis/ClassicSVfit/test/testClassicSVfit.h"')
 
 inputFileListName=sys.argv[1]
 inputFileList=inputFileListName
@@ -109,6 +110,8 @@ def book_histogram():
     h['hTauMuCleanedPt'] = ROOT.TH1F ("hTauMuCleanedPt", "Muon-Cleaned Tau P_{T} ; P_{T} ; N", 500, 0, 500)
 
     # ---------------
+
+    h['MuTau_OS_dRcut_highMET_lowMt_SVFit'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_SVFit", "MuTau Mass - SVFit ; Mass ; N", 150, 0, 150)
 
 def book_event_histogram(region):
 
@@ -218,18 +221,26 @@ def mutau_channel():
             if trigObject.DeltaR(mu) < 0.1 :
                 isMatchedMu = True
 
-        if isMatchedMu == True:
-            plot_for_triggers('MuTau_TriggerMatch_OS_0MuPtcut_isMu', mu, tau, jet ,iht)
+        if isMatchedMu == True and mu.Pt() >= 50:
+            plot_variable('MuTau_TriggerMatch_OS_0MuPtcut_isMu', mu, tau, jet , met)
 
             if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
-                plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMu', mu, tau, jet ,iht)
+                plot_variable('MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMu', mu, tau, jet , met)
 
                 if met.Pt() > event_cut['metcut'] :
-                    plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMu', mu, tau, jet ,iht)
+                    plot_variable('MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMu', mu, tau, jet , met)
 
                     if Mt(mu,met) < event_cut['mtcut'] : #Final event selection
-                        plot_for_triggers('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu', mu, tau, jet ,iht)
+                        plot_variable('MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu', mu, tau, jet , met)
                         isMuTau = 1
+
+                        a=None
+                        a = ROOT.svFit(met_x, met_y, mu.Pt(), mu.Eta(), mu.Phi(), mu.M(), tau.Pt(), tau.Eta(), tau.Phi(),  tau.M(), s_tauMuclean[0].decaymode, 1, met_covXX, met_covXY, met_covYY)
+
+                        mSVFit = a.runSVFit()
+                        print("Mass from SV fit = ", mSVFit)
+
+                        h['MuTau_OS_dRcut_highMET_lowMt_SVFit'].Fill(mSVFit, weight)
 
     return isMuTau
 
@@ -294,8 +305,14 @@ def emu_channel():
 
 
 
-
 book_histogram()
+
+regions = [
+'MuTau_TriggerMatch_OS_0MuPtcut_isMu',
+'MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMu',
+'MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMu',
+'MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu',
+]
 
 for r in regions:
     book_event_histogram(r)
@@ -421,8 +438,8 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
             iobj = trigObj.at(i)
             if iobj.isEleJet == 1 : 
                 tOisEleJet+=[iobj]
-                h['hIsEleJetPt'].Fill(iobj.pt)
-                h['hIsEleJetEta'].Fill(iobj.eta)
+                # h['hIsEleJetPt'].Fill(iobj.pt)
+                # h['hIsEleJetEta'].Fill(iobj.eta)
             if iobj.isMu == 1 : tOisMu+=[iobj]
             if iobj.isIsoMu == 1 : tOisIsoMu +=[iobj]
             if iobj.isSingleJet == 1 : tOisSingleJet+=[iobj]
@@ -471,12 +488,12 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
             ijet = jets.at(i)
             if abs(ijet.eta) < 2.5 :
                 if ijet.id >= 2:
-                    h['hJetPt'].Fill(ijet.pt, weight)
-                    h['hDeepjet'].Fill(ijet.deepjet, weight)
+                    # h['hJetPt'].Fill(ijet.pt, weight)
+                    # h['hDeepjet'].Fill(ijet.deepjet, weight)
                     s_jet+=[ijet]
                     iht = iht + ijet.pt
                     if ijet.deepjet >= 0.7476:
-                        h['hBJetPt'].Fill(ijet.pt, weight)
+                        # h['hBJetPt'].Fill(ijet.pt, weight) 
                         s_bjet+=[ijet]
 
     s_muon = []
@@ -488,46 +505,46 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
             imuon = muons.at(i)
             if abs(imuon.eta) < 2.4 :
                 if imuon.id >= 1: #loose Muons
-                    h['hMuonPt'].Fill(imuon.pt, weight) 
+                    # h['hMuonPt'].Fill(imuon.pt, weight) 
                     s_muon+=[imuon]
                     if imuon.iso <= 0.25:
-                        h['hIsoMuonPt'].Fill(imuon.pt, weight)
+                        # h['hIsoMuonPt'].Fill(imuon.pt, weight)
                         s_isomuon+=[imuon]
                     if imuon.iso > 0.25:
-                        h['hNonIsoMuonPt'].Fill(imuon.pt, weight)
+                        # h['hNonIsoMuonPt'].Fill(imuon.pt, weight)
                         s_nonisomuon+=[imuon]
 
     s_electron = []
     s_isoelectron = []
     s_nonisoelectron = []
 
-    if electrons.size() > 0:
-        for i in range(electrons.size()):
-            ielectron = electrons.at(i)
-            if abs(ielectron.eta) < 2.5 :
-                if ielectron.id >= 1 :
-                    h['hElectronPt'].Fill(ielectron.pt, weight)
-                    s_electron+=[ielectron]
-                    if ielectron.iso >= 1:
-                        h['hIsoElectronPt'].Fill(ielectron.pt, weight)
-                        s_isoelectron+=[ielectron]
-                    if ielectron.iso == 0:
-                        h['hNonIsoElectronPt'].Fill(ielectron.pt, weight)
-                        s_nonisoelectron+=[ielectron]
+    # if electrons.size() > 0:
+    #     for i in range(electrons.size()):
+    #         ielectron = electrons.at(i)
+    #         if abs(ielectron.eta) < 2.5 :
+    #             if ielectron.id >= 1 :
+    #                 h['hElectronPt'].Fill(ielectron.pt, weight)
+    #                 s_electron+=[ielectron]
+    #                 if ielectron.iso >= 1:
+    #                     h['hIsoElectronPt'].Fill(ielectron.pt, weight)
+    #                     s_isoelectron+=[ielectron]
+    #                 if ielectron.iso == 0:
+    #                     h['hNonIsoElectronPt'].Fill(ielectron.pt, weight)
+    #                     s_nonisoelectron+=[ielectron]
 
     s_tauEclean = []
     s_tauEcleanAltered = []
 
-    if tausECleaned.size()>0:
-        for i in range(tausECleaned.size()):
-            itau = tausECleaned.at(i)
-            if abs(itau.eta) < 2.3 :
-                if itau.mvaid >= 4:
-                    h['hTauECleanedPt'].Fill(itau.pt, weight)
-                    s_tauEclean+=[itau]
-                if itau.mvaid < 4 and itau.mvaid >= 1 :
-                    h['hTauECleanedAlteredPt'].Fill(itau.pt, weight)
-                    s_tauEcleanAltered+=[itau]
+    # if tausECleaned.size()>0:
+    #     for i in range(tausECleaned.size()):
+    #         itau = tausECleaned.at(i)
+    #         if abs(itau.eta) < 2.3 :
+    #             if itau.mvaid >= 4:
+    #                 h['hTauECleanedPt'].Fill(itau.pt, weight)
+    #                 s_tauEclean+=[itau]
+    #             if itau.mvaid < 4 and itau.mvaid >= 1 :
+    #                 h['hTauECleanedAlteredPt'].Fill(itau.pt, weight)
+    #                 s_tauEcleanAltered+=[itau]
                     
 
     s_tauMuclean = []
@@ -537,21 +554,22 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
             itau = tausMCleaned.at(i)
             if abs(itau.eta) < 2.3 :
                 if itau.mvaid >= 4 :
-                    h['hTauMuCleanedPt'].Fill(itau.pt, weight)
+                    # h['hTauMuCleanedPt'].Fill(itau.pt, weight)
                     s_tauMuclean+=[itau]
 
 
     # ---------- Event Selections --------- #
 
-    if len(s_isomuon) >= 2 and len(s_jet) >= 1 : 
-        if mumu_channel() == 1: continue
+    # if len(s_isomuon) >= 2 and len(s_jet) >= 1 : 
+    #     if mumu_channel() == 1: continue
 
-    if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 : 
-        if emu_channel() == 1 : continue
+    # if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 : 
+    #     if emu_channel() == 1 : continue
 
     if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 : 
-        mutau_trigger_study()
-        if mutau_channel() == 1 : continue
+        mutau_channel()
+        # mutau_trigger_study()
+        # if mutau_channel() == 1 : continue
 
 
 out.cd()
