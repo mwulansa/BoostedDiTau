@@ -110,8 +110,47 @@ def book_histogram():
     h['hTauMuCleanedPt'] = ROOT.TH1F ("hTauMuCleanedPt", "Muon-Cleaned Tau P_{T} ; P_{T} ; N", 500, 0, 500)
 
     # ---------------
+    h['MuTau_OS_dRcut_highMET_lowMt_tauPtcut_mSVFit'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_tauPtcut_mSVFit", "MuTau Mass - SVFit ; Mass (GeV) ; N", 150, 0, 150)
+    h['MuTau_OS_dRcut_highMET_lowMt_mSVFit'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_mSVFit", "MuTau Mass - SVFit ; Mass (GeV) ; N", 150, 0, 150)
+    h['MuTau_OS_dRcut_highMET_lowMt_mSVFit0'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_mSVFit0", "MuTau Mass - SVFit dm 0; Mass (GeV) ; N", 150, 0, 150)
+    h['MuTau_OS_dRcut_highMET_lowMt_mSVFit1'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_mSVFit1", "MuTau Mass - SVFit dm 1; Mass (GeV) ; N", 150, 0, 150)
+    h['MuTau_OS_dRcut_highMET_lowMt_mSVFit10'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_mSVFit10", "MuTau Mass - SVFit dm 10; Mass (GeV) ; N", 150, 0, 150)
 
-    h['MuTau_OS_dRcut_highMET_lowMt_SVFit'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_SVFit", "MuTau Mass - SVFit ; Mass ; N", 150, 0, 150)
+    h['ETau_OS_dRcut_highMET_lowMt_tauPtcut_mSVFit'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_tauPtcut_mSVFit", "ETau Mass - SVFit ; Mass (GeV) ; N", 150, 0, 150)
+    h['ETau_OS_dRcut_highMET_lowMt_mSVFit'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_mSVFit", "ETau Mass - SVFit ; Mass (GeV) ; N", 150, 0, 150)
+    h['ETau_OS_dRcut_highMET_lowMt_mSVFit0'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_mSVFit0", "ETau Mass - SVFit dm 0; Mass (GeV) ; N", 150, 0, 150)
+    h['ETau_OS_dRcut_highMET_lowMt_mSVFit1'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_mSVFit1", "ETau Mass - SVFit dm 1; Mass (GeV) ; N", 150, 0, 150)
+    h['ETau_OS_dRcut_highMET_lowMt_mSVFit10'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_mSVFit10", "ETau Mass - SVFit dm 10; Mass (GeV) ; N", 150, 0, 150)
+
+    h['MuTau_OS_dRcut_highMET_lowMt_ptSVFit'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_ptSVFit", "MuTau Pt - SVFit ; Pt (GeV) ; N", 500, 0, 500)
+
+    h['MuTau_OS_dRcut_highMET_lowMt_mGenLevel'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_mGenLevel", "ditau mass - genLevel ; Mass ; N", 150, 0, 150)
+    h['MuTau_OS_dRcut_highMET_lowMt_ptGenLevel'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_ptGenLevel", "ditau pt - genLevel ; Pt ; N", 500, 0, 500)
+
+    h['MuTau_OS_dRcut_highMET_lowMt_mReco'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_mReco", "MuTau Mass - Reco ; Mass (GeV) ; N", 150, 0, 150)
+    h['MuTau_OS_dRcut_highMET_lowMt_ptReco'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_ptReco", "MuTau Pt - Reco ; Pt (GeV) ; N", 500, 0, 500)
+
+    h['ETau_OS_dRcut_highMET_lowMt_mGenLevel'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_mGenLevel", "ditau mass - genLevel ; Mass ; N", 150, 0, 150)
+    h['ETau_OS_dRcut_highMET_lowMt_ptGenLevel'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_ptGenLevel", "ditau pt - genLevel ; Pt ; N", 500, 0, 500)
+
+    h['ETau_OS_dRcut_highMET_lowMt_mReco'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_mReco", "ETau Mass - Reco ; Mass (GeV) ; N", 150, 0, 150)
+    h['ETau_OS_dRcut_highMET_lowMt_ptReco'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_ptReco", "ETau Pt - Reco ; Pt (GeV) ; N", 500, 0, 500)
+
+    h['MuTau_OS_dRcut_highMET_lowMt_ratioSVFit'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_ratioSVFit", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+    h['MuTau_OS_dRcut_highMET_lowMt_ratioSVFit0'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_ratioSVFit0", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+    h['MuTau_OS_dRcut_highMET_lowMt_ratioSVFit1'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_ratioSVFit1", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+    h['MuTau_OS_dRcut_highMET_lowMt_ratioSVFit10'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_ratioSVFit10", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+    h['MuTau_OS_dRcut_highMET_lowMt_ratioReco'] = ROOT.TH1F ("MuTau_OS_dRcut_highMET_lowMt_ratioReco", " Reco ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+
+    h['ETau_OS_dRcut_highMET_lowMt_ratioSVFit'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_ratioSVFit", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+    h['ETau_OS_dRcut_highMET_lowMt_ratioSVFit0'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_ratioSVFit0", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+    h['ETau_OS_dRcut_highMET_lowMt_ratioSVFit1'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_ratioSVFit1", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+    h['ETau_OS_dRcut_highMET_lowMt_ratioSVFit10'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_ratioSVFit10", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
+    h['ETau_OS_dRcut_highMET_lowMt_ratioReco'] = ROOT.TH1F ("ETau_OS_dRcut_highMET_lowMt_ratioReco", " Reco ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2) 
+
+    h['EMu_OS_dRcut_highMET_mSVFit'] = ROOT.TH1F ("EMu_OS_dRcut_highMET_mSVFit", "EMu Mass - SVFit ; Mass (GeV) ; N", 150, 0, 150)
+    h['EMu_OS_dRcut_highMET_mGenLevel'] = ROOT.TH1F ("EMu_OS_dRcut_highMET_mGenLevel", "ditau Mass - genLevel ; Mass (GeV) ; N", 150, 0, 150)
+    h['EMu_OS_dRcut_highMET_ratioSVFit'] = ROOT.TH1F ("EMu_OS_dRcut_highMET_ratioSVFit", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
 
 def book_event_histogram(region):
 
@@ -222,6 +261,7 @@ def mutau_channel():
                 isMatchedMu = True
 
         if isMatchedMu == True and mu.Pt() >= 50:
+            ###NOTE: The histogram names have 0MuPtcut, but the events DO have cuts on MuPt at 50 GeV
             plot_variable('MuTau_TriggerMatch_OS_0MuPtcut_isMu', mu, tau, jet , met)
 
             if pass_deltaR(mu, tau, jet, 'MuTau') == 1 :
@@ -235,12 +275,42 @@ def mutau_channel():
                         isMuTau = 1
 
                         a=None
-                        a = ROOT.svFit(met_x, met_y, mu.Pt(), mu.Eta(), mu.Phi(), mu.M(), tau.Pt(), tau.Eta(), tau.Phi(),  tau.M(), s_tauMuclean[0].decaymode, 1, met_covXX, met_covXY, met_covYY)
+                        a = ROOT.svFit(met_x, met_y, mu.Pt(), mu.Eta(), mu.Phi(), mu.M(), tau.Pt(), tau.Eta(), tau.Phi(),  tau.M(), s_tauMuclean[0].decaymode, 2, met_covXX, met_covXY, met_covYY)
 
-                        mSVFit = a.runSVFit()
+                        mSVFit = a.runSVFitMass()
+                        # ptSVFit = a.runSVFitPt()
+                        # etaSVFit = a.runSVFitEta()
+
                         print("Mass from SV fit = ", mSVFit)
 
-                        h['MuTau_OS_dRcut_highMET_lowMt_SVFit'].Fill(mSVFit, weight)
+                        h['MuTau_OS_dRcut_highMET_lowMt_mSVFit'].Fill(mSVFit, weight)
+                        h['MuTau_OS_dRcut_highMET_lowMt_mReco'].Fill((mu+tau).M(), weight)
+
+                        if s_tauMuclean[0].decaymode == 0 : h['MuTau_OS_dRcut_highMET_lowMt_mSVFit0'].Fill(mSVFit, weight)
+                        if s_tauMuclean[0].decaymode == 1 : h['MuTau_OS_dRcut_highMET_lowMt_mSVFit1'].Fill(mSVFit, weight)
+                        if s_tauMuclean[0].decaymode == 10 : h['MuTau_OS_dRcut_highMET_lowMt_mSVFit10'].Fill(mSVFit, weight)
+
+                        if tau.Pt() >= 20:
+                            h['MuTau_OS_dRcut_highMET_lowMt_tauPtcut_mSVFit'].Fill(mSVFit, weight)
+                        
+                        # h['MuTau_OS_dRcut_highMET_lowMt_ptSVFit'].Fill(ptSVFit, weight)
+                        # h['MuTau_OS_dRcut_highMET_lowMt_ptReco'].Fill((mu+tau).Pt(), weight)
+
+                        if len(gen_tau) == 2 :
+                            gentau1 = get_TLorentzVector(gen_tau[0])
+                            gentau2 = get_TLorentzVector(gen_tau[1])
+
+                            genMass = (gentau1+gentau2).M()
+
+                            h['MuTau_OS_dRcut_highMET_lowMt_mGenLevel'].Fill(genMass, weight)
+                            h['MuTau_OS_dRcut_highMET_lowMt_ptGenLevel'].Fill((gentau1+gentau2).Pt(), weight)
+
+                            ratioSVFit = (mSVFit-genMass)/genMass
+
+                            h['MuTau_OS_dRcut_highMET_lowMt_ratioSVFit'].Fill(ratioSVFit, weight)
+                            if s_tauMuclean[0].decaymode == 0 : h['MuTau_OS_dRcut_highMET_lowMt_ratioSVFit0'].Fill(ratioSVFit, weight)
+                            if s_tauMuclean[0].decaymode == 1 : h['MuTau_OS_dRcut_highMET_lowMt_ratioSVFit1'].Fill(ratioSVFit, weight)
+                            if s_tauMuclean[0].decaymode == 10 : h['MuTau_OS_dRcut_highMET_lowMt_ratioSVFit10'].Fill(ratioSVFit, weight)
 
     return isMuTau
 
@@ -277,33 +347,142 @@ def emu_channel():
 
     isEMu = 0
 
-    if s_isomuon[0].charge*s_isoelectron[0].charge < 0:
-
-        isJetHTEvent = 0
-        isSingleMuonEvent = 0
-        isMuonEGEvent = 0
+    if s_isoelectron[0].charge*s_isomuon[0].charge < 0 :
 
         e = get_TLorentzVector(s_isoelectron[0])
         mu = get_TLorentzVector(s_isomuon[0])
         jet = get_TLorentzVector(s_jet[0])
 
-        if ( jet.Pt() > 510 and ( isHT == 1 or isSingleJet500 == 1 ) ) : isJetHTEvent = 1
-        
-        if ( mu.Pt() > 52 and isMu == 1 ) or ( mu.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
-        if ( ( ( mu.Pt() > 8 and e.Pt() > 23 ) or ( mu.Pt() > 23 and e.Pt() > 12 ) ) and isMuonEG == 1 ) : isMuonEGEvent = 1
-       
-        if ( isData == 0 and ( isJetHTEvent == 1 and ( isSingleMuonEvent == 1 or isMuonEGEvent == 1 ) ) ) \
-           or ( isData == 1 and isJetHTSample == 1 and isJetHTEvent == 1 ):
+        isMatchedMu = False
+        for ito in tOisMu:
+            if isMatchedMu == True: break
+            trigObject = get_TLorentzVector(ito)
+            if trigObject.DeltaR(mu) < 0.1 : 
+                isMatchedMu = True
+
+        isMatchedMuonEGe = False
+        for ito in tOisMuonEGe:
+            if isMatchedMuonEGe == True: break
+            trigObject = get_TLorentzVector(ito)
+            if trigObject.DeltaR(e) < 0.1 : 
+                isMatchedMuonEGe = True
+
+        isMatchedMuonEGmu = False
+        for ito in tOisMuonEGmu:
+            if isMatchedMuonEGmu == True: break
+            trigObject = get_TLorentzVector(ito)
+            if trigObject.DeltaR(mu) < 0.1 : 
+                isMatchedMuonEGmu = True
+
+        isMatchedMuonEG = False
+        if isMatchedMuonEGe == True and isMatchedMuonEGmu == True: 
+            isMatchedMuonEG == True
+
+        if ( ( ( mu.Pt() >= 10.0 and e.Pt() >= 25.0 ) or ( mu.Pt() >= 25.0 and e.Pt() >= 15.0 ) ) and isMatchedMuonEG == True ) or \
+           ( mu.Pt() >= 50.0 and isMatchedMu == True ):
 
             if pass_deltaR(e, mu, jet, 'EMu') == 1 :
-
-                if met.Pt() > event_cut['metcut'] :
-                    
+                if met.Pt() > event_cut['metcut'] :                    
                     isEMu = 1
+                    plot_variable('EMu_TriggerMatch_OS_dRcut_highMET_isMuisMuonEG', e, mu, jet , met)
+
+                    a=None
+                    a = ROOT.svFit(met_x, met_y, e.Pt(), e.Eta(), e.Phi(), e.M(), mu.Pt(), mu.Eta(), mu.Phi(),  mu.M(), 0, 1, met_covXX, met_covXY, met_covYY)
+                    mSVFit = a.runSVFitMass()
+
+                    h['EMu_OS_dRcut_highMET_mSVFit'].Fill(mSVFit, weight)
+
+                    if len(gen_tau) == 2 :
+                        gentau1 = get_TLorentzVector(gen_tau[0])
+                        gentau2 = get_TLorentzVector(gen_tau[1])
+
+                        genMass = (gentau1+gentau2).M()
+                            
+                        h['EMu_OS_dRcut_highMET_mGenLevel'].Fill(genMass, weight)
+                        ratioSVFit = (mSVFit-genMass)/genMass
+                            
+                        h['EMu_OS_dRcut_highMET_ratioSVFit'].Fill(ratioSVFit, weight)
 
     return isEMu
 
 
+def etau_channel():
+
+    isETau = 0
+#    print("ETau Channel")
+
+    e = get_TLorentzVector(s_electron[0])
+    tau = get_TLorentzVector(s_tauEclean[0])
+    jet = get_TLorentzVector(s_jet[0])
+
+    isMatchedEleJet = False
+    isMatchedE = False
+    isMatchedJet = False
+
+    for itrigobj in tOisEleJet:
+        if isMatchedE == True and isMatchedJet == True: break
+        isEleLeg = False
+        isJetLeg = False
+        # print("isEleLeg: ", itrigobj.isEleLeg)
+        # print("isJetLeg: ", itrigobj.isJetLeg)
+        if itrigobj.isEleLeg == 1 : isEleLeg = True
+        if itrigobj.isJetLeg == 1 : isJetLeg = True
+
+        trigObject = get_TLorentzVector(itrigobj)
+
+        if isEleLeg == True and isMatchedE == False:
+            if trigObject.DeltaR(e) < 0.1 :
+                # print("Matched Eleleg")
+                isMatchedE = True
+
+        if isJetLeg == True and isMatchedJet == False:
+            if trigObject.DeltaR(jet) < 0.1 : 
+                # print("Matched JetLeg")
+                isMatchedJet = True
+
+    if isMatchedE == True and isMatchedJet == True : 
+        isMatchedEleJet = True
+
+    if jet.Pt() >= 200.0 and e.Pt() >= 60.0 and isMatchedEleJet == True:
+
+        if s_electron[0].charge*s_tauEclean[0].charge < 0 :
+            if pass_deltaR(e, tau, jet, 'ETau') == 1 and met.Pt() >= 100.0 and Mt(e,met) <= 50.0 :
+
+                isETau = 1
+                plot_variable('ETau_TriggerMatch_OS_dRcut_highMET_lowMt_isEleJet', e, tau, jet , met)
+
+                a=None
+                a = ROOT.svFit(met_x, met_y, e.Pt(), e.Eta(), e.Phi(), e.M(), tau.Pt(), tau.Eta(), tau.Phi(), tau.M(), s_tauEclean[0].decaymode, 3, met_covXX, met_covXY, met_covYY)
+                mSVFit = a.runSVFitMass()
+
+                h['ETau_OS_dRcut_highMET_lowMt_mSVFit'].Fill(mSVFit, weight)
+                h['ETau_OS_dRcut_highMET_lowMt_mReco'].Fill((e+tau).M(), weight)
+
+                if s_tauEclean[0].decaymode == 0 : h['ETau_OS_dRcut_highMET_lowMt_mSVFit0'].Fill(mSVFit, weight)
+                if s_tauEclean[0].decaymode == 1 : h['ETau_OS_dRcut_highMET_lowMt_mSVFit1'].Fill(mSVFit, weight)
+                if s_tauEclean[0].decaymode == 10 : h['ETau_OS_dRcut_highMET_lowMt_mSVFit10'].Fill(mSVFit, weight)
+
+                if tau.Pt() >= 20:
+                    h['ETau_OS_dRcut_highMET_lowMt_tauPtcut_mSVFit'].Fill(mSVFit, weight)
+
+                if len(gen_tau) == 2 :
+                    gentau1 = get_TLorentzVector(gen_tau[0])
+                    gentau2 = get_TLorentzVector(gen_tau[1])
+
+                    genMass = (gentau1+gentau2).M()
+
+                    h['ETau_OS_dRcut_highMET_lowMt_mGenLevel'].Fill(genMass, weight)
+                    h['ETau_OS_dRcut_highMET_lowMt_ptGenLevel'].Fill((gentau1+gentau2).Pt(), weight)
+
+                    ratioSVFit = (mSVFit-genMass)/genMass
+
+                    h['ETau_OS_dRcut_highMET_lowMt_ratioSVFit'].Fill(ratioSVFit, weight)
+                    if s_tauEclean[0].decaymode == 0 : h['ETau_OS_dRcut_highMET_lowMt_ratioSVFit0'].Fill(ratioSVFit, weight)
+                    if s_tauEclean[0].decaymode == 1 : h['ETau_OS_dRcut_highMET_lowMt_ratioSVFit1'].Fill(ratioSVFit, weight)
+                    if s_tauEclean[0].decaymode == 10 : h['ETau_OS_dRcut_highMET_lowMt_ratioSVFit10'].Fill(ratioSVFit, weight)
+
+    return isETau
+        
 
 book_histogram()
 
@@ -312,6 +491,8 @@ regions = [
 'MuTau_TriggerMatch_OS_dRcut_0MuPtcut_isMu',
 'MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMu',
 'MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu',
+'EMu_TriggerMatch_OS_dRcut_highMET_isMuisMuonEG',
+'ETau_TriggerMatch_OS_dRcut_highMET_lowMt_isEleJet'
 ]
 
 for r in regions:
@@ -419,12 +600,14 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     #-------------- Gen particles -----------#
 
     if isData == 0 :
-        gen_e = []
+        gen_mu = []
+        gen_tau = []
         if genParticle.size() > 0 :
             for i in range(genParticle.size()):
                 igen = genParticle.at(i)
                 if igen.isdirecthardprocesstaudecayproductfinalstate :
-                    if abs(igen.pdgid) == 11 : gen_e+=[igen]
+                    if abs(igen.pdgid) == 13 : gen_mu+=[igen]
+                if igen.ishardprocess and abs(igen.pdgid) == 15: gen_tau+=[igen]
 
     #-------------- Trigger Objects ---------------#
 
@@ -432,17 +615,19 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     tOisIsoMu = []
     tOisMu = []
     tOisSingleJet = []
+    tOisMuonEGe = []
+    tOisMuonEGmu = []
 
     if trigObj.size() > 0:
         for i in range(trigObj.size()):
             iobj = trigObj.at(i)
-            if iobj.isEleJet == 1 : 
-                tOisEleJet+=[iobj]
-                # h['hIsEleJetPt'].Fill(iobj.pt)
-                # h['hIsEleJetEta'].Fill(iobj.eta)
+            if iobj.isEleLeg == 1 : tOisEleJet+=[iobj]
+            if iobj.isJetLeg == 1 : tOisEleJet+=[iobj]
             if iobj.isMu == 1 : tOisMu+=[iobj]
             if iobj.isIsoMu == 1 : tOisIsoMu +=[iobj]
             if iobj.isSingleJet == 1 : tOisSingleJet+=[iobj]
+            if iobj.isMuonEGmu == 1 : tOisMuonEGmu+=[iobj]
+            if iobj.isMuonEGe == 1 : tOisMuonEGe+=[iobj]
                 
     tOisEleJet.sort(key=lambda x: x.pt, reverse=True)
     tOisIsoMu.sort(key=lambda x: x.pt, reverse=True)    
@@ -518,33 +703,33 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     s_isoelectron = []
     s_nonisoelectron = []
 
-    # if electrons.size() > 0:
-    #     for i in range(electrons.size()):
-    #         ielectron = electrons.at(i)
-    #         if abs(ielectron.eta) < 2.5 :
-    #             if ielectron.id >= 1 :
-    #                 h['hElectronPt'].Fill(ielectron.pt, weight)
-    #                 s_electron+=[ielectron]
-    #                 if ielectron.iso >= 1:
-    #                     h['hIsoElectronPt'].Fill(ielectron.pt, weight)
-    #                     s_isoelectron+=[ielectron]
-    #                 if ielectron.iso == 0:
-    #                     h['hNonIsoElectronPt'].Fill(ielectron.pt, weight)
-    #                     s_nonisoelectron+=[ielectron]
+    if electrons.size() > 0:
+        for i in range(electrons.size()):
+            ielectron = electrons.at(i)
+            if abs(ielectron.eta) < 2.5 :
+                if ielectron.id >= 1 :
+                    h['hElectronPt'].Fill(ielectron.pt, weight)
+                    s_electron+=[ielectron]
+                    if ielectron.iso >= 1:
+                        h['hIsoElectronPt'].Fill(ielectron.pt, weight)
+                        s_isoelectron+=[ielectron]
+                    if ielectron.iso == 0:
+                        h['hNonIsoElectronPt'].Fill(ielectron.pt, weight)
+                        s_nonisoelectron+=[ielectron]
 
     s_tauEclean = []
     s_tauEcleanAltered = []
 
-    # if tausECleaned.size()>0:
-    #     for i in range(tausECleaned.size()):
-    #         itau = tausECleaned.at(i)
-    #         if abs(itau.eta) < 2.3 :
-    #             if itau.mvaid >= 4:
-    #                 h['hTauECleanedPt'].Fill(itau.pt, weight)
-    #                 s_tauEclean+=[itau]
-    #             if itau.mvaid < 4 and itau.mvaid >= 1 :
-    #                 h['hTauECleanedAlteredPt'].Fill(itau.pt, weight)
-    #                 s_tauEcleanAltered+=[itau]
+    if tausECleaned.size()>0:
+        for i in range(tausECleaned.size()):
+            itau = tausECleaned.at(i)
+            if abs(itau.eta) < 2.3 :
+                if itau.mvaid >= 4:
+                    h['hTauECleanedPt'].Fill(itau.pt, weight)
+                    s_tauEclean+=[itau]
+                if itau.mvaid < 4 and itau.mvaid >= 1 :
+                    h['hTauECleanedAlteredPt'].Fill(itau.pt, weight)
+                    s_tauEcleanAltered+=[itau]
                     
 
     s_tauMuclean = []
@@ -560,16 +745,17 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
     # ---------- Event Selections --------- #
 
-    # if len(s_isomuon) >= 2 and len(s_jet) >= 1 : 
-    #     if mumu_channel() == 1: continue
+    if len(s_isomuon) >= 2 and len(s_jet) >= 1 : 
+        if mumu_channel() == 1: continue
 
-    # if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 : 
-    #     if emu_channel() == 1 : continue
+    if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 : 
+        if emu_channel() == 1 : continue
 
-    if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 : 
-        mutau_channel()
-        # mutau_trigger_study()
-        # if mutau_channel() == 1 : continue
+    if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1: 
+        if mutau_channel() == 1 : continue
+
+    if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >=1 and len(s_bjet) <= 1:
+        etau_channel()
 
 
 out.cd()
