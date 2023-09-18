@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser(description="Normalize by cross-section")
 parser.add_argument("-v", "--version", type=str, help="Version for doHadd")
 parser.add_argument("-f", "--filename", type=str, help="filename from condor output")
 parser.add_argument("-a", "--all", action="store_true", help="go through all samples")
+parser.add_argument("--tcp", action="store_true", help="go through tcp samples only")
 parser.add_argument("-r", "--region", type=str, help="regions to plot")
 parser.add_argument("--histo", type=str, nargs="+")
 args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
@@ -63,6 +64,8 @@ xsecs={
      'TCP_Ntuple_m12_HT-0to100':{'':xsec_M[2]*8.887e-05},
      'TCP_Ntuple_m12_HT-100to400':{'':3.635E-06*10000000},
      'TCP_Ntuple_m12_HT-400toInf':{'':6.490e-08*10000000},
+     'TCP_Ntuple_m10_HT-100to400':{'':xsec_M[0]*2.890e-06},
+     'TCP_Ntuple_m10_HT-400toInf':{'':xsec_M[0]*5.616e-08},
      'TCP_Ntuple_m30_HT-0to100':{'':xsec_M[2]*8.887e-05},
      'TCP_Ntuple_m30_HT-100to400':{'':xsec_M[2]*8.395e-06},
      'TCP_Ntuple_m30_HT-400toInf':{'':xsec_M[2]*1.930e-07},
@@ -114,9 +117,9 @@ xsecs={
      # 'TTToHadronic':{
      #     'TuneCP5':377.96},
      'TT':{
-         'TTTo2L2Nu_TuneCP5':88.2497,
-         'TTToSemiLeptonic_TuneCP5':365.30899,
-         'TTToHadronic_TuneCP5':377.9517},
+         'TTTo2L2Nu_TuneCP5':88.2497},
+#         'TTToSemiLeptonic_TuneCP5':365.30899,
+#         'TTToHadronic_TuneCP5':377.9517},
      'ST':{
          's-channel':3.549,
          't-channel_antitop':26.2278,
@@ -286,8 +289,9 @@ if args.version :
 
 Sample = ['TTJets']
 
-if "--tcp" in opts:
-    Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
+if args.tcp :
+    Sample = ['TCP_Ntuple_m10_HT-100to400', 'TCP_Ntuple_m10_HT-400toInf', 'TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf' ]
+#    Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
 if "-l" in opts:
     Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf']
 if "-h" in opts:
@@ -295,9 +299,9 @@ if "-h" in opts:
 if args.all :
 #    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','WJetsToLNu','DYJetsToLL','DYJetsToLL_M-4to50','Diboson','ST','QCD']
 #    Sample = ['TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
-#    Sample = ['TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf']
-    Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf', 'TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf']
-#    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','DYJetsToLL','DYJetsToLL_M-4to50','QCD','WJetsToLNu','TT','Diboson','ST']
+#    Sample = ['DYJetsToLL','DYJetsToLL_M-4to50', 'TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf', 'TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf','QCD','WJetsToLNu']
+#    Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf', 'TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf']
+    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','DYJetsToLL','DYJetsToLL_M-4to50','QCD','WJetsToLNu','Diboson','ST','TT']
 if "--tt" in opts:
     Sample = ['TTTo2L2Nu', 'TTToSemiLeptonic', 'TTToHadronic']
 if "-b" in opts:
@@ -317,7 +321,8 @@ if "-q" in opts:
 #VARIABLE = ['Mass', 'Lepton1Pt', 'Lepton2Pt', 'JetPt', 'MetPt', 'Nj','dRl','dRj', 'dPhil', 'dPhi','Mtl1', 'Mtl2','Mtl','cosMl1','cosMl2','cosl','Count']
 #VARIABLE = ['Mass', 'Lepton1Pt', 'Lepton2Pt', 'JetPt', 'MetPt', 'Mt','Nj','dRl','dRj', 'dPhil', 'dPhi','Count']
 #VARIABLE = ['Lepton1Pt', 'Lepton2Pt', 'LeadingJetPt', 'Count', 'HT','dRl','dRj','Mass','MetPt']
-VARIABLE = ['Lepton1Pt', 'Lepton2Pt', 'LeadingJetPt', 'Mass']
+#VARIABLE = ['Lepton1Pt', 'Lepton2Pt', 'LeadingJetPt', 'Mass','dRl','dRj']
+VARIABLE = ['Lepton1Pt', 'Lepton2Pt']
 #VARIABLE = ["BFlavour_JetPt", "BFlavour_JetEta","CFlavour_JetPt", "CFlavour_JetEta", "LFlavour_JetPt", "LFlavour_JetEta", "BFlavour_BTagged_JetPt", "BFlavour_BTagged_JetEta","CFlavour_BTagged_JetPt", "CFlavour_BTagged_JetEta", "LFlavour_BTagged_JetPt", "LFlavour_BTagged_JetEta"]
 #VARIABLE = ['MuonPt_SingleMuon','ElectronPt_SingleMuon','MetPt_SingleMuon','dRl_SingleMuon']
 #VARIABLE = ['MuonPt_Both','ElectronPt_Both','dRl_Both','JetPt_Both','MetPt_Both','dRj_Both']
