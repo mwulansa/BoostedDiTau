@@ -128,8 +128,12 @@ EmbeddingVertexCorrector::produce(edm::Event& iEvent, const edm::EventSetup& iSe
 
    std::cout << vertex_position.product()->x() << " "
 	     << vertex_position.product()->y() << " "
-	     << vertex_position.product()->z() << " "
-	     << vertex_position.product()->t() << "\n";
+   	     << vertex_position.product()->z() << " "
+   	     << vertex_position.product()->t() << "\n";
+   std::cout << vertex_shift.x()*cm << " "
+             << vertex_shift.y()*cm << " "
+             << vertex_shift.z()*cm << " "
+             << vertex_shift.t()*cm << "\n";
    
    // Apply vertex shift to all production vertices of the event
    CorrectedGenEvent->applyVtxGen(&vertex_shift);   

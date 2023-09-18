@@ -4,7 +4,7 @@ from Configuration.StandardSequences.Eras import eras
 
 inputFile = "file:outMuonSelection.root"
 #inputFile = "file:outMuonSelection_DYToLL_v1.root"
-outputFile = "outLHE.root"
+outputFile = "outLHE_muEmbedding.root"
 #maxEvents = 100
 
 process = cms.Process('LHE',eras.Run2_2017)
@@ -102,3 +102,7 @@ process.schedule = cms.Schedule(process.p, process.endjob_step, process.MINIAODo
 
 # Customisation from command line
 process.RandomNumberGeneratorService.externalLHEProducer.initialSeed=int(1552064665%100)
+
+
+process.externalLHEProducer.particleToEmbed = cms.int32(13)
+process.externalLHEProducer.vertices = cms.InputTag("offlineSlimmedPrimaryVertices", "", "DQM")

@@ -102,11 +102,13 @@ to_bemanipulate.append(module_manipulate(
 def modify_outputModules(process, keep_drop_list=[], module_veto_list=[]):
     outputModulesList = [key for key,
                          value in process.outputModules.items()]
+    print(outputModulesList)
     for outputModule in outputModulesList:
         if outputModule in module_veto_list:
             continue
         outputModule = getattr(process, outputModule)
         for add_element in keep_drop_list:
+            print(add_element)
             outputModule.outputCommands.extend(add_element)
     return process
 
@@ -116,18 +118,19 @@ def modify_outputModules(process, keep_drop_list=[], module_veto_list=[]):
 def keepSelected(dataTier):
     ret_vstring = cms.untracked.vstring(
         #"drop *_*_*_"+dataTier,
-        "keep *_patMuonsAfterID_*_"+dataTier,
-        "keep *_slimmedMuons_*_"+dataTier,
-        "keep *_selectedMuonsForEmbedding_*_"+dataTier,
-        "keep recoVertexs_offlineSlimmedPrimaryVertices_*_"+dataTier,
-        "keep *_firstStepPrimaryVertices_*_"+dataTier,
-        "keep *_offlineBeamSpot_*_"+dataTier,
-        "keep *_ecalDrivenElectronSeeds_*_"+dataTier
+        "keep *_*_*_"+dataTier
+        #"keep *_patMuonsAfterID_*_"+dataTier,
+        #"keep *_slimmedMuons_*_"+dataTier,
+        #"keep *_selectedMuonsForEmbedding_*_"+dataTier,
+        #"keep recoVertexs_offlineSlimmedPrimaryVertices_*_"+dataTier,
+        #"keep *_firstStepPrimaryVertices_*_"+dataTier,
+        #"keep *_offlineBeamSpot_*_"+dataTier,
+        #"keep *_ecalDrivenElectronSeeds_*_"+dataTier
     )
-    for akt_manimod in to_bemanipulate:
-        if "CLEAN" in akt_manimod.steps:
-            ret_vstring.append(
-                "keep *_"+akt_manimod.module_name+"_*_"+dataTier)
+    #for akt_manimod in to_bemanipulate:
+    #    if "CLEAN" in akt_manimod.steps:
+    #        ret_vstring.append(
+    #            "keep *_"+akt_manimod.module_name+"_*_"+dataTier)
     return ret_vstring
 
 
@@ -236,23 +239,68 @@ def customiseCleaning(process, changeProcessname=True, reselect=False):
 ################################ Customizer for simulaton ###########################
 def keepLHE():
     ret_vstring = cms.untracked.vstring()
-    ret_vstring.append("keep *_externalLHEProducer_*_LHEembedding")
-    ret_vstring.append("keep *_externalLHEProducer_*_LHEembeddingCLEAN")
+    #ret_vstring.append("keep *_externalLHEProducer_*_LHEembedding")
+    #ret_vstring.append("keep *_externalLHEProducer_*_LHEembeddingCLEAN")
+    ret_vstring.append("keep *_*_*_LHE")
     return ret_vstring
 
 
-def keepSimulated():
+def keepGen():
     ret_vstring = cms.untracked.vstring()
-    for akt_manimod in to_bemanipulate:
-        if "MERGE" in akt_manimod.steps:
-            ret_vstring.append(
-                "keep *_"+akt_manimod.module_name+"_*_SIMembedding")
-    ret_vstring.append("keep *_genParticles_*_SIMembedding")
-    ret_vstring.append("keep *_standAloneMuons_*_SIMembedding")
-    ret_vstring.append("keep *_glbTrackQual_*_SIMembedding")
-    ret_vstring.append("keep *_generator_*_SIMembedding")
-    ret_vstring.append("keep *_addPileupInfo_*_SIMembedding")
-    ret_vstring.append("keep *_slimmedAddPileupInfo_*_*")
+    #for akt_manimod in to_bemanipulate:
+    #    if "MERGE" in akt_manimod.steps:
+    #        ret_vstring.append(
+    #            "keep *_"+akt_manimod.module_name+"_*_SIMembedding")
+    #ret_vstring.append("keep *_genParticles_*_SIMembedding")
+    #ret_vstring.append("keep *_standAloneMuons_*_SIMembedding")
+    #ret_vstring.append("keep *_glbTrackQual_*_SIMembedding")
+    #ret_vstring.append("keep *_generator_*_SIMembedding")
+    #ret_vstring.append("keep *_addPileupInfo_*_SIMembedding")
+    #ret_vstring.append("keep *_slimmedAddPileupInfo_*_*")
+    ret_vstring.append("keep *_*_*_GENembedding")
+    #ret_vstring.append("drop *_mix_*_SIMembeddingGenSim")
+    return ret_vstring
+
+def keepGenInfo():
+    ret_vstring = cms.untracked.vstring()
+    #for akt_manimod in to_bemanipulate:
+    #    if "MERGE" in akt_manimod.steps:
+    #        ret_vstring.append(
+    #            "keep *_"+akt_manimod.module_name+"_*_SIMembedding")
+    #ret_vstring.append("keep *_genParticles_*_SIMembedding")
+    #ret_vstring.append("keep *_standAloneMuons_*_SIMembedding")
+    #ret_vstring.append("keep *_glbTrackQual_*_SIMembedding")
+    #ret_vstring.append("keep *_generator_*_SIMembedding")
+    #ret_vstring.append("keep *_addPileupInfo_*_SIMembedding")
+    #ret_vstring.append("keep *_slimmedAddPileupInfo_*_*")
+    ret_vstring.append("keep *_genParticles_*_GENembedding")
+    ret_vstring.append("keep *_ak4GenJets_*_GENembedding")
+    ret_vstring.append("keep *_enMetCalo_*_GENembedding")
+    ret_vstring.append("keep *_genMetTrue_*_GENembedding")
+    
+    #ret_vstring.append("drop *_mix_*_SIMembeddingGenSim")
+    return ret_vstring
+
+def keepSimEmbedding():
+    ret_vstring = cms.untracked.vstring()
+    #for akt_manimod in to_bemanipulate:
+    #    if "MERGE" in akt_manimod.steps:
+    #        ret_vstring.append(
+    #            "keep *_"+akt_manimod.module_name+"_*_SIMembedding")
+    #ret_vstring.append("keep *_genParticles_*_SIMembedding")
+    #ret_vstring.append("keep *_standAloneMuons_*_SIMembedding")
+    #ret_vstring.append("keep *_glbTrackQual_*_SIMembedding")
+    #ret_vstring.append("keep *_generator_*_SIMembedding")
+    #ret_vstring.append("keep *_addPileupInfo_*_SIMembedding")
+    #ret_vstring.append("keep *_slimmedAddPileupInfo_*_*")
+    #ret_vstring.append("keep *_*_*_SIMembedding")
+    #ret_vstring.append("drop *_mix_*_SIMembedding")
+    ret_vstring.append('keep *_ak4PFJets_*_*')
+    ret_vstring.append('keep *_patTaus_*_*')
+    ret_vstring.append('keep *_hpsPFTauProducerSansRefs_*_*')
+    ret_vstring.append('keep *_combinatoricRecoTaus_*_*')
+    ret_vstring.append('keep *_ak4PFJetsRecoTauChargedHadrons_*_*')
+    ret_vstring.append('keep *_ak4PFJetsLegacyHPSPiZeros_*_*')
     return ret_vstring
 
 
@@ -275,6 +323,66 @@ def customiseLHE(process, changeProcessname=True, reselect=False):
 
 
 def customiseGenerator(process, changeProcessname=True, reselect=False):
+    if reselect:
+        dataTier = "RESELECT"
+    else:
+        dataTier = "SELECT"
+        #dataTier = "reMINIAOD"
+    if changeProcessname:
+        process._Process__name = "GENembedding"
+
+    # here correct the vertex collection
+
+    process.load('BoostedDiTau.TauEmbedding.EmbeddingVertexCorrector_cfi')
+    process.VtxSmeared = process.VtxCorrectedToInput.clone()
+    print("Correcting Vertex in genEvent to one from input. Replaced 'VtxSmeared' with the Corrector.")
+    process.load('BoostedDiTau.TauEmbedding.EmbeddingBeamSpotOnline_cfi')
+    process.hltOnlineBeamSpot = process.onlineEmbeddingBeamSpotProducer.clone()
+    print("Setting online beam spot in HLTSchedule to the one from input data. Replaced 'hltOnlineBeamSpot' with the offline beam spot.")
+
+    # Disable noise simulation
+    process.mix.digitizers.castor.doNoise = cms.bool(False)
+
+    process.mix.digitizers.ecal.doESNoise = cms.bool(False)
+    process.mix.digitizers.ecal.doENoise = cms.bool(False)
+
+    process.mix.digitizers.hcal.doNoise = cms.bool(False)
+    process.mix.digitizers.hcal.doThermalNoise = cms.bool(False)
+    process.mix.digitizers.hcal.doHPDNoise = cms.bool(False)
+
+    process.mix.digitizers.pixel.AddNoisyPixels = cms.bool(False)
+    process.mix.digitizers.pixel.AddNoise = cms.bool(False)
+
+    process.mix.digitizers.strip.Noise = cms.bool(False)
+
+    process = customisoptions(process)
+    return modify_outputModules(process, [keepSelected(dataTier), keepLHE(), keepGen()], [])
+
+def customiseReconstruction(process, changeProcessname=True, reselect=False):
+    if reselect:
+        dataTier = "RESELECT"
+    else:
+        dataTier = "SELECT"
+        #dataTier = "reMINIAOD"
+    if changeProcessname:
+        process._Process__name = "SIMembedding"
+
+    # here correct the vertex collection
+
+    process.load('BoostedDiTau.TauEmbedding.EmbeddingVertexCorrector_cfi')
+    process.VtxSmeared = process.VtxCorrectedToInput.clone()
+    print("Correcting Vertex in genEvent to one from input. Replaced 'VtxSmeared' with the Corrector.")
+    process.load('BoostedDiTau.TauEmbedding.EmbeddingBeamSpotOnline_cfi')
+    process.hltOnlineBeamSpot = process.onlineEmbeddingBeamSpotProducer.clone()
+    print("Setting online beam spot in HLTSchedule to the one from input data. Replaced 'hltOnlineBeamSpot' with the offline beam spot.")
+
+    # Remove BeamSpot Production, use the one from selected data instead.
+    process.reconstruction.remove(process.offlineBeamSpot)
+
+    process = customisoptions(process)
+    return modify_outputModules(process, [keepSelected(dataTier), keepLHE(), keepGenInfo(), keepSimEmbedding()], [])
+
+def customiseGenSimReco(process, changeProcessname=True, reselect=False):
     if reselect:
         dataTier = "RESELECT"
     else:
@@ -311,12 +419,8 @@ def customiseGenerator(process, changeProcessname=True, reselect=False):
     process.mix.digitizers.strip.Noise = cms.bool(False)
 
     process = customisoptions(process)
-    ##process = fix_input_tags(process)
+    return modify_outputModules(process, [keepSelected(dataTier), keepLHE()], [])
 
-    #from PhysicsTools.PatAlgos.tools.helpers import massSearchReplaceAnyInputTag
-    #massSearchReplaceAnyInputTag(process.generation_step,cms.InputTag("externalLHEProducer", "", ""),cms.InputTag("externalLHEProducer", "", "reMINIAOD"))
-
-    return modify_outputModules(process, [keepSelected(dataTier), keepCleaned(dataTier), keepSimulated()], ["MINIAODSIMoutput"])
 
 
 def customiseGenerator_Reselect(process):

@@ -1,0 +1,11 @@
+universe = vanilla
+request_memory = 4200
+Executable = run_condor.sh
+Should_Transfer_Files = YES
+WhenToTransferOutput = ON_EXIT
+Output = ./condorOut/condor_$ENV(INPUT).stdout
+Error = ./condorOut/condor_$ENV(INPUT).stderr
+Log = ./condorOut/condor_$ENV(INPUT).log
+Arguments = TCP_m_50_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_$ENV(INPUT).root mttNtuple_$ENV(INPUT).root
+getenv = True
+Queue 1
