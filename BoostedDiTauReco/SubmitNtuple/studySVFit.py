@@ -68,15 +68,15 @@ pi = np.pi
 h = {}
 
 event_cut = {
-    'jetpt': 100,
+    'jetpt': 100.0,
     'dRl': 0.4,
     'dRltau': 0.05,
     'dRlj': 0.8,
     'metcut': 100.0,
     'mtcut': 50.0,
-    'dPhiml': 1,
-    'dPhimj': 2,
-    'mass' : 5
+    'dPhiml': 1.0,
+    'dPhimj': 2.0,
+    'mass' : 5.0
 }
 
 
@@ -233,14 +233,40 @@ def mumu_channel():
 
         if isData == 0 and ( isJetHTEvent == 1 ) \
            or ( isData == 1 and isJetHTSample == 1 and isJetHTEvent == 1 ) :
-
             if pass_deltaR(mu1, mu2, jet, 'MuMu') == 1 :
-
                 if met.Pt() > event_cut['metcut'] :
 
                     isMuMu = 1
 
     return isMuMu
+
+
+def ee_channel():    
+
+    isEE = 0
+
+    if s_isoelectron[0].charge*s_isoelectron[1].charge < 0 :
+
+        e1 = get_TLorentzVector(s_isoelectron[0])
+        e2 = get_TLorentzVector(s_isoelectron[1])
+        jet = get_TLorentzVector(s_jet[0])
+
+        isJetHTEvent = 0
+        isSingleElectronEvent = 0
+
+        if ( jet.Pt() > 510 and ( isHT == 1  or isSingleJet500 == 1 ) ) : isJetHTEvent = 1
+        if ( e1.Pt() > 37 and isIsoEle == 1 ) : isSingleElectronEvent = 1
+
+        if ( isData == 0 and ( isJetHTEvent == 1 or isSingleElectronEvent == 1 ) ) \
+           or ( isData == 1 and isJetHTSample == 1 and isJetHTEvent == 1 ) \
+           or ( isData == 1 and ( isSingleElectronSample == 1 and isJetHTSample == 0 and isSingleElectronEvent == 1 ) ) :
+
+            if pass_deltaR(e1, e2, jet, 'EE') == 1 :
+                if met.Pt() >= event_cut['metcut'] :
+                    plot_variable("EE_OS_dRcut_highMET", e1, e2, jet, met, weight)
+                    isEE = 1
+
+    return isEE
 
 
 def mutau_channel():
@@ -275,7 +301,7 @@ def mutau_channel():
                         isMuTau = 1
 
                         a=None
-                        a = ROOT.svFit(met_x, met_y, mu.Pt(), mu.Eta(), mu.Phi(), mu.M(), tau.Pt(), tau.Eta(), tau.Phi(),  tau.M(), s_tauMuclean[0].decaymode, 2, met_covXX, met_covXY, met_covYY)
+                        a = ROOT.svFit(met_x, met_y, mu.Pt(), mu.Eta(), mu.Phi(), mu.M(), tau.Pt(), tau.Eta(), tau.Phi(),  tau.M(), s_tauMuclean[0].decaymode, s_tauMuclean[0].decaymode, 2, met_covXX, met_covXY, met_covYY)
 
                         mSVFit = a.runSVFitMass()
                         # ptSVFit = a.runSVFitPt()
@@ -387,7 +413,7 @@ def emu_channel():
                     plot_variable('EMu_TriggerMatch_OS_dRcut_highMET_isMuisMuonEG', e, mu, jet , met)
 
                     a=None
-                    a = ROOT.svFit(met_x, met_y, e.Pt(), e.Eta(), e.Phi(), e.M(), mu.Pt(), mu.Eta(), mu.Phi(),  mu.M(), 0, 1, met_covXX, met_covXY, met_covYY)
+                    a = ROOT.svFit(met_x, met_y, e.Pt(), e.Eta(), e.Phi(), e.M(), mu.Pt(), mu.Eta(), mu.Phi(),  mu.M(), 0 ,0, 1, met_covXX, met_covXY, met_covYY)
                     mSVFit = a.runSVFitMass()
 
                     h['EMu_OS_dRcut_highMET_mSVFit'].Fill(mSVFit, weight)
@@ -409,7 +435,6 @@ def emu_channel():
 def etau_channel():
 
     isETau = 0
-#    print("ETau Channel")
 
     e = get_TLorentzVector(s_electron[0])
     tau = get_TLorentzVector(s_tauEclean[0])
@@ -423,8 +448,6 @@ def etau_channel():
         if isMatchedE == True and isMatchedJet == True: break
         isEleLeg = False
         isJetLeg = False
-        # print("isEleLeg: ", itrigobj.isEleLeg)
-        # print("isJetLeg: ", itrigobj.isJetLeg)
         if itrigobj.isEleLeg == 1 : isEleLeg = True
         if itrigobj.isJetLeg == 1 : isJetLeg = True
 
@@ -432,12 +455,10 @@ def etau_channel():
 
         if isEleLeg == True and isMatchedE == False:
             if trigObject.DeltaR(e) < 0.1 :
-                # print("Matched Eleleg")
                 isMatchedE = True
 
         if isJetLeg == True and isMatchedJet == False:
             if trigObject.DeltaR(jet) < 0.1 : 
-                # print("Matched JetLeg")
                 isMatchedJet = True
 
     if isMatchedE == True and isMatchedJet == True : 
@@ -452,7 +473,7 @@ def etau_channel():
                 plot_variable('ETau_TriggerMatch_OS_dRcut_highMET_lowMt_isEleJet', e, tau, jet , met)
 
                 a=None
-                a = ROOT.svFit(met_x, met_y, e.Pt(), e.Eta(), e.Phi(), e.M(), tau.Pt(), tau.Eta(), tau.Phi(), tau.M(), s_tauEclean[0].decaymode, 3, met_covXX, met_covXY, met_covYY)
+                a = ROOT.svFit(met_x, met_y, e.Pt(), e.Eta(), e.Phi(), e.M(), tau.Pt(), tau.Eta(), tau.Phi(), tau.M(), s_tauEclean[0].decaymode, s_tauEclean[0].decaymode, 3, met_covXX, met_covXY, met_covYY)
                 mSVFit = a.runSVFitMass()
 
                 h['ETau_OS_dRcut_highMET_lowMt_mSVFit'].Fill(mSVFit, weight)
@@ -742,20 +763,30 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                     # h['hTauMuCleanedPt'].Fill(itau.pt, weight)
                     s_tauMuclean+=[itau]
 
+    s_tauBoosted = []
+    if tausBoosted.size()>0:
+        for i in range(tausBoosted.size()):
+            itau = tausBoosted.at(i)
+            if abs(itau.eta) < 2.3:
+                if itau.mvaid >= 2 :
+                    s_tauBoosted+=[itau]
 
     # ---------- Event Selections --------- #
 
-    if len(s_isomuon) >= 2 and len(s_jet) >= 1 : 
+    if len(s_isomuon) >= 2 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
         if mumu_channel() == 1: continue
 
-    if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 : 
+    if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
         if emu_channel() == 1 : continue
 
-    if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1: 
+    if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
         if mutau_channel() == 1 : continue
 
+    if len(s_isoelectron) >= 2 and len(s_jet) >= 1 and len(s_bjet) <= 1 :
+        if ee_channel() == 1 : continue
+
     if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >=1 and len(s_bjet) <= 1:
-        etau_channel()
+        if etau_channel() == 1 : continue
 
 
 out.cd()
