@@ -221,21 +221,15 @@ def mumu_channel():
 
     if s_isomuon[0].charge*s_isomuon[1].charge < 0 :
 
-        isJetHTEvent = 0
-        isSingleMuonEvent = 0
-
         mu1 = get_TLorentzVector(s_isomuon[0])
         mu2 = get_TLorentzVector(s_isomuon[1])
         jet = get_TLorentzVector(s_jet[0])
 
-        if ( jet.Pt() > 510 and ( isHT == 1 or isSingleJet500 == 1 ) ) : isJetHTEvent = 1
         if ( mu1.Pt() > 52 and isMu == 1 ) or ( mu1.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
 
-        if isData == 0 and ( isJetHTEvent == 1 ) \
-           or ( isData == 1 and isJetHTSample == 1 and isJetHTEvent == 1 ) :
+        if isSingleMuonEvent == 1:
             if pass_deltaR(mu1, mu2, jet, 'MuMu') == 1 :
                 if met.Pt() > event_cut['metcut'] :
-
                     isMuMu = 1
 
     return isMuMu
