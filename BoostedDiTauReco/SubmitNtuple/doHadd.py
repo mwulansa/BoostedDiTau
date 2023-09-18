@@ -19,8 +19,11 @@ if len(sys.argv)>1:
 hist = "h_"+fname+"_"
 
 outputfiles=os.popen("eos root://cmseos.fnal.gov ls /store/user/mwulansa/UL2017/ | grep "+hist+Sample+"_").read().split()
+print(outputfiles)
 
 plotDir = "./output/"+version
+
+print(isCopy)
 
 if isCopy:
     for fil in outputfiles:
