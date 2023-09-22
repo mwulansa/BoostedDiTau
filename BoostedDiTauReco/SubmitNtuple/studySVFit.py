@@ -14,7 +14,7 @@ isData = 0
 
 if "-b" in opts:
     isData = 0
-
+    
 if "-dj" in opts:
     isData = 1
     isJetHTSample = 1
@@ -152,11 +152,12 @@ def book_histogram():
     h['EMu_OS_dRcut_highMET_mGenLevel'] = ROOT.TH1F ("EMu_OS_dRcut_highMET_mGenLevel", "ditau Mass - genLevel ; Mass (GeV) ; N", 150, 0, 150)
     h['EMu_OS_dRcut_highMET_ratioSVFit'] = ROOT.TH1F ("EMu_OS_dRcut_highMET_ratioSVFit", " SVFit ratio; m_{reco}-m_{gen}/m_{gen}; N",100,-2,2)
 
+
 def book_event_histogram(region):
 
     h[region+"_Count"] = ROOT.TH1F (region+"_Count", region+"_Count ; Events ; Events ", 1, 0, 1)
 
-    h[region+"_Mass"] = ROOT.TH1F (region+"_Mass", region+"_Mass ; M_{vis.} (GeV) ; Events ", 150, 0, 150)
+    h[region+"_Mass"] = ROOT.TH1F (region+"_Mass", region+"_Mass ; M_{vis.} (GeV) ; Events ", 1500, 0, 150)
     h[region+"_Lepton1Pt"] = ROOT.TH1F (region+"_Lepton1Pt", region+"_Lepton1Pt ; P_{T} (GeV) ; Events ", 500, 0, 500)
     h[region+"_Lepton2Pt"] = ROOT.TH1F (region+"_Lepton2Pt", region+"_Lepton2Pt ; P_{T} (GeV) ; Events ", 500, 0, 500)
     h[region+"_JetPt"] = ROOT.TH1F (region+"_JetPt", region+"_JetPt ; JetP_{T} (GeV) ; Events ", 2000, 0, 2000)
@@ -201,7 +202,6 @@ def Mt(lepton, met):
 def plot_variable(region, l1, l2, j, m, sf=1):
 
     h[region+"_Count"].Fill(0, weight*sf)
-
     h[region+"_Mass"].Fill((l1+l2).M(), weight*sf)
     h[region+"_Lepton1Pt"].Fill(l1.Pt(), weight*sf)
     h[region+"_Lepton2Pt"].Fill(l2.Pt(), weight*sf)
@@ -225,11 +225,13 @@ def mumu_channel():
         mu2 = get_TLorentzVector(s_isomuon[1])
         jet = get_TLorentzVector(s_jet[0])
 
+        isSingleMuonEvent = 0
         if ( mu1.Pt() > 52 and isMu == 1 ) or ( mu1.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
 
         if isSingleMuonEvent == 1:
             if pass_deltaR(mu1, mu2, jet, 'MuMu') == 1 :
-                if met.Pt() > event_cut['metcut'] :
+                if met.Pt() < event_cut['metcut'] :
+                    plot_variable("MuMu_Control", mu1, mu2, jet, met, weight)
                     isMuMu = 1
 
     return isMuMu
@@ -507,7 +509,8 @@ regions = [
 'MuTau_TriggerMatch_OS_dRcut_highMET_0MuPtcut_isMu',
 'MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu',
 'EMu_TriggerMatch_OS_dRcut_highMET_isMuisMuonEG',
-'ETau_TriggerMatch_OS_dRcut_highMET_lowMt_isEleJet'
+'ETau_TriggerMatch_OS_dRcut_highMET_lowMt_isEleJet',
+'MuMu_Control'    
 ]
 
 for r in regions:
@@ -770,17 +773,14 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     if len(s_isomuon) >= 2 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
         if mumu_channel() == 1: continue
 
-    if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
-        if emu_channel() == 1 : continue
-
-    if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
-        if mutau_channel() == 1 : continue
-
-    if len(s_isoelectron) >= 2 and len(s_jet) >= 1 and len(s_bjet) <= 1 :
-        if ee_channel() == 1 : continue
-
-    if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >=1 and len(s_bjet) <= 1:
-        if etau_channel() == 1 : continue
+##     if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
+##         if emu_channel() == 1 : continue
+## 
+##     if len(s_muon) >= 1 and len(s_tauMuclean) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
+##         if mutau_channel() == 1 : continue
+## 
+##     if len(s_electron) >= 1 and len(s_tauEclean) >= 1 and len(s_jet) >=1 and len(s_bjet) <= 1:
+##         if etau_channel() == 1 : continue
 
 
 out.cd()

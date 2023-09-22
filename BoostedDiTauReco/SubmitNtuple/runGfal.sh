@@ -1,6 +1,6 @@
 #!/bin/tcsh
 
-foreach sample (`gfal-ls root://cmsio7.rc.ufl.edu:1094//store/user/mwulansa/TCPNtuple/`)
+foreach sample (`gfal-ls root://cmsio7.rc.ufl.edu:1094//store/user/zhangj/SingleMuon/`)
     setenv SAMPLE $sample
     if ($SAMPLE =~ *WJetsToLNu_HT-200To400*) then
 	rm sampleList/${SAMPLE}.txt
