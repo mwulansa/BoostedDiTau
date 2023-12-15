@@ -1127,6 +1127,8 @@ def addTCPNtuples(process):
                                         genEventInfo = cms.InputTag("generator"),
                                         pileupSummaryInfo = cms.InputTag("slimmedAddPileupInfo"),
                                         puDataFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root"),
+                                        puDataFileNameUp = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-72400ub-99bins.root"),
+                                        puDataFileNameDown = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-66000ub-99bins.root"),
                                         puMCFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupMC2017.root")
     )
     process.tcpGenNtupleMaker = cms.Path(process.tcpGenNtuples)
@@ -1153,7 +1155,7 @@ def addTCPNtuples(process):
     process.tcpPrefiringMaker = cms.Path(process.tcpPrefiring)
 
     process.tcpMetfilter = cms.EDAnalyzer("TCPMETFilter",
-                                          metFilters = cms.InputTag("TriggerResults","","RECO"),
+                                          metFilters = cms.InputTag("TriggerResults","","PAT"),
                                           primaryVertexFilterSel = cms.string("Flag_goodVertices"),
                                           beamHaloFilterSel = cms.string("Flag_globalSuperTightHalo2016Filter"),
                                           hbheFilterSel = cms.string("Flag_HBHENoiseFilter"),

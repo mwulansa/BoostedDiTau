@@ -1127,7 +1127,7 @@ def addTCPNtuples(process):
     process.tcpTrigNtupleMaker = cms.Path(process.tcpTrigNtuples)
 
     process.tcpMetfilter = cms.EDAnalyzer("TCPMETFilter",
-                                          metFilters = cms.InputTag("TriggerResults","","RECO"),
+                                          metFilters = cms.InputTag("TriggerResults","","PAT"),
                                           primaryVertexFilterSel = cms.string("Flag_goodVertices"),
                                           beamHaloFilterSel = cms.string("Flag_globalSuperTightHalo2016Filter"),
                                           hbheFilterSel = cms.string("Flag_HBHENoiseFilter"),
