@@ -28,3 +28,6 @@ To read the n-tuple:
 cd BoostedDiTau/MiniAODSkimmer/test/
 python3 readTCPNtuples.py
 ```
+
+Misc:
+1) Need to change the configuration to have the correct year for pu-reweighting in GenAnalyzer. 
