@@ -28,3 +28,15 @@ To read the n-tuple:
 cd BoostedDiTau/MiniAODSkimmer/test/
 python3 readTCPNtuples.py
 ```
+
+To run the analysis code:
+```
+python3 plotBoostedTauTau.py <filename of rootfile> <datasettype>
+
+<datasettype> consist of:
+-s : signal
+-b : background MC
+-dm : SingleMuon data
+-dg : MuonEG data
+-de : SingleElectron data
+```
