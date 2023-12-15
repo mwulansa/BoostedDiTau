@@ -27,6 +27,28 @@ echo $NQueue
 echo ./filelists/$SAMPLE/${SAMPLE}_Process.txt $OutputPrefix
 condor_submit condor.jdl
 
+if ($SAMPLE == "SingleMuon") then
+    foreach Mass (`ls filelists/$SAMPLE`)
+	setenv MASS $Mass
+        setenv HT SingleMuon
+        setenv NQueue `ls filelists/$SAMPLE/$MASS | wc -l`
+        echo Number of Jobs: $NQueue
+        echo ./filelists/$SAMPLE/$MASS/${HT}_${MASS}_Process.txt $OutputPrefix
+        condor_submit condorHT.jdl
+    end
+endif
+
+if ($SAMPLE == "MuonEG") then
+    foreach Mass (`ls filelists/$SAMPLE`)
+	setenv MASS $Mass
+        setenv HT MuonEG
+        setenv NQueue `ls filelists/$SAMPLE/$MASS | wc -l`
+        echo Number of Jobs: $NQueue
+        echo ./filelists/$SAMPLE/$MASS/${HT}_${MASS}_Process.txt $OutputPrefix
+        condor_submit condorHT.jdl
+    end
+endif
+
 if ($SAMPLE == "DYJetsToLL_M-4to50") then
     foreach Mass (`ls filelists/$SAMPLE`)
 	setenv MASS $Mass
