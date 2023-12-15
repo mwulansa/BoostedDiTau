@@ -2,7 +2,7 @@
 from CRABClient.UserUtilities import config
 
 config = config()
-config.General.requestName = 'Ntuple_SingleMuon_Run2017B-UL2017_MiniAODv2-v1_v3'
+config.General.requestName = 'Ntuple_SingleMuon_Run2017B-UL2017_MiniAODv2-v1_v4'
 
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
@@ -24,7 +24,7 @@ config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/
 
 config.Data.outLFNDirBase = '/store/user/mwulansa/TCPNtuple/'
 config.Data.publication = False
-config.Data.outputDatasetTag = 'Ntuple_SingleMuon_Run2017B-UL2017_MiniAODv2-v1_v3'  
+config.Data.outputDatasetTag = 'Ntuple_SingleMuon_Run2017B-UL2017_MiniAODv2-v1_v4'  
 
 config.Site.storageSite = 'T3_US_FNALLPC'
 

@@ -9,4 +9,6 @@
   <class name="TauInfoDS"/>
   <class name="GenParticleInfo"/>
   <class name="GenParticleInfoDS"/>
+  <class name="TrigObjectInfo"/>
+  <class name="TrigObjectInfoDS"/>
 </lcgdict>

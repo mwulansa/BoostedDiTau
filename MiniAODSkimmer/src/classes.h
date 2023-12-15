@@ -3,3 +3,4 @@
 #include "BoostedDiTau/MiniAODSkimmer/interface/ElectronInfoDS.h"
 #include "BoostedDiTau/MiniAODSkimmer/interface/TauInfoDS.h"
 #include "BoostedDiTau/MiniAODSkimmer/interface/GenParticleInfoDS.h"
+#include "BoostedDiTau/MiniAODSkimmer/interface/TrigObjectInfoDS.h"

@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.StandardSequences.Eras import eras
 
-inputFiles = "file:simulated.root"
+inputFiles = "file:out_reco_pat.root"
 #inputFiles = "root://xrootd.unl.edu//store/user/nbower/Events/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_97.root"
 outputFile = "embedded.root"
 maxEvents = -1

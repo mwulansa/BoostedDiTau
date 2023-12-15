@@ -4,6 +4,7 @@ from DataFormats.FWLite import Events, Handle
 events=Events('embedded.root')
 #events=Events('outMuonSelection.root')
 #events=Events('root://xrootd.unl.edu//store/data/Run2016B/DoubleMuon/MINIAOD/17Jul2018_ver2-v1/00000/0AB088EE-EA8A-E811-8636-0CC47A4C8E96.root')
+#events = Events('./condorCfg/embed_YMuMu_pth400_9_backup.root')
 
 out=ROOT.TFile('h_embedded.root','recreate')
 
@@ -83,10 +84,10 @@ handleMetEmbed = Handle ('vector<pat::MET>')
 labelMetEmbed = ('slimmedMETsTEST','','Embed')
 
 handleGenInfo = Handle('GenEventInfoProduct')
-labelGenInfo = ( 'generator', '', 'SIMembedding' )
+labelGenInfo = ( 'generator', '', 'GENembedding' )
 
 handlePVInfo = Handle ('vector<reco::Vertex>')
-labelPVInfo = ('offlineSlimmedPrimaryVertices', '', 'DQM')
+labelPVInfo = ('offlineSlimmedPrimaryVertices', '', 'SIMembedding')
 
 handlePVInfoEmbed = Handle ('vector<reco::Vertex>')
 labelPVInfoEmbed = ('embeddedPFCandidates','offlineSlimmedPrimaryVerticesEmbedded','Embed')

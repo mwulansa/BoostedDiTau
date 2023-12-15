@@ -18,13 +18,14 @@ from FWCore.ParameterSet.MassReplace import massSearchReplaceParam
 
 import sys
 #inputfile = sys.argv[2]
+inputfile = 'file:root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_10_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_10_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root'
 #runSignal = True
 #runSignal=False
 ###########
 runType = 'signal'
 #runType = 'background'
 #runType = 'data'
-#maxEvents = 1
+#maxEvents = 100
 maxEvents=-1
 appendOutput = True
 #isMC = True
@@ -76,12 +77,6 @@ process.source = cms.Source(
 process.maxEvents = cms.untracked.PSet(
     input=cms.untracked.int32(maxEvents)
 )
-
-process.options = cms.untracked.PSet(
-    SkipEvent = cms.untracked.vstring('ProductNotFound')
-)
-
-
 print('\t Max events:', process.maxEvents.input.value())
 
 # if runSignal:
@@ -98,7 +93,9 @@ print('\t Max events:', process.maxEvents.input.value())
 
 if runType == 'signal':
     readFiles.extend([
-        'root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root',
+        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root',
+        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD_2.root',
+#        'root://cmseos.fnal.gov//store/user/mwulansa/Events/TCP_m10_ht_100to400_slc7_amd64_gcc10_MINIAOD/TCP_m10_ht_100to400_slc7_amd64_gcc10_MINIAOD_1.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_2.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_3.root',
 #        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_4.root'
@@ -181,7 +178,7 @@ if appendOutput:
     #process.output.outputCommands.append('keep *_selectedPatTausMuonCleaned_*_*')
     process.output.outputCommands.append('keep *_slimmedTausUnCleaned_*_*')
     process.output.outputCommands.append('keep *_slimmedTausElectronCleaned_*_*')
-    #process.output.outputCommands.append('keep *_slimmedTausLowPtElectronCleaned_*_*')
+    process.output.outputCommands.append('keep *_slimmedTausLowPtElectronCleaned_*_*')
     process.output.outputCommands.append('keep *_slimmedTausMuonCleaned_*_*')
     process.output.outputCommands.append('keep *_lumiSummary_*_*')
     
@@ -247,10 +244,6 @@ process.ak4PFJetsRecoTauChargedHadronsElectronCleaned.minJetPt = jetPt
 
 print ('Step : 6 - Lower Pt MuonCleaned Taus')
 
-process.options = cms.untracked.PSet(
-    SkipEvent = cms.untracked.vstring("ProductNotFound")
-)
-
 getattr(process,'selectedPatTausMuonCleaned').cut = cms.string("pt > {} && abs(eta) < 2.3 && tauID(\'decayModeFinding\')> 0.5".format(tauPt))
 process.ak4PFJetsLegacyHPSPiZerosMuonCleaned.minJetPt = jetPt
 process.combinatoricRecoTausMuonCleaned.minJetPt = jetPt
@@ -259,10 +252,10 @@ process.ak4PFJetsRecoTauChargedHadronsMuonCleaned.minJetPt = jetPt
 
 
 tauAtMiniToolsCustom.addFurtherSkimming(process)
-#tauAtMiniToolsCustom.addTCPNtuples(process)
+tauAtMiniToolsCustom.addTCPNtuples(process)
 
-process.out = cms.EndPath(process.output)
-process.schedule.append(process.out)
+#process.out = cms.EndPath(process.output)
+#process.schedule.append(process.out)
 
 ###########################################
 process.load('FWCore.MessageService.MessageLogger_cfi')
@@ -283,11 +276,6 @@ if process.maxEvents.input.value() > 10000 or process.maxEvents.input.value() < 
 #    process.options,
 #    wantSummary=cms.untracked.bool(True)
 #)
-
-process.options = cms.untracked.PSet(
-    SkipEvent = cms.untracked.vstring('ProductNotFound')
-)
-
 
 process.options = dict( # numberOfThreads = 4,
     numberOfThreads = 1,

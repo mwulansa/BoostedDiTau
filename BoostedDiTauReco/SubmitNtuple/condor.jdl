@@ -1,0 +1,12 @@
+universe = vanilla
+Executable = run_condor.csh
+request_memory = 4200
+Should_Transfer_Files = YES
+WhenToTransferOutput = ON_EXIT
+Transfer_Input_Files = run_condor.csh
+Output = ./condorOut/condor_$ENV(SAMPLE)_$(Process).stdout
+Error = ./condorOut/condor_$ENV(SAMPLE)_$(Process).stderr
+Log = ./condorOut/condor_$ENV(SAMPLE)_$(Process).Log
+Arguments = studySVFit.py ./filelists/$ENV(SAMPLE)/$ENV(SAMPLE)_$(Process).txt $ENV(OutputPrefix) $ENV(SAMPLE)_$(Process).root $ENV(MODE)
+getenv = True
+Queue $ENV(NQueue)

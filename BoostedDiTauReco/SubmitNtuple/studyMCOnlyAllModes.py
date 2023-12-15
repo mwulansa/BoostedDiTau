@@ -866,11 +866,11 @@ if isData == 0:
 jets = ROOT.JetInfoDS()
 muons = ROOT.MuonInfoDS()
 electrons = ROOT.ElectronInfoDS()
-lowPtElectrons = ROOT.ElectronInfoDS()
+#lowPtElectrons = ROOT.ElectronInfoDS()
 tausUnCleaned = ROOT.TauInfoDS()
 tausECleaned = ROOT.TauInfoDS()
 tausMCleaned = ROOT.TauInfoDS()
-tausLowPtECleaned = ROOT.TauInfoDS()
+#tausLowPtECleaned = ROOT.TauInfoDS()
 tausBoosted = ROOT.TauInfoDS()
 
 fchain.SetBranchAddress("Jets", ROOT.AddressOf(jets))
@@ -879,9 +879,9 @@ fchain.SetBranchAddress("Electrons", ROOT.AddressOf(electrons))
 fchain.SetBranchAddress("TausUnCleaned", ROOT.AddressOf(tausUnCleaned))
 fchain.SetBranchAddress("TausECleaned", ROOT.AddressOf(tausECleaned))
 fchain.SetBranchAddress("TausMCleaned", ROOT.AddressOf(tausMCleaned))
-fchain.SetBranchAddress("TausLowPtECleaned", ROOT.AddressOf(tausLowPtECleaned))
+#fchain.SetBranchAddress("TausLowPtECleaned", ROOT.AddressOf(tausLowPtECleaned))
 fchain.SetBranchAddress("TausBoosted", ROOT.AddressOf(tausBoosted))
-fchain.SetBranchAddress("LowPtElectrons", ROOT.AddressOf(lowPtElectrons))
+#fchain.SetBranchAddress("LowPtElectrons", ROOT.AddressOf(lowPtElectrons))
 
 if isData == 0:
     genParticle = ROOT.GenParticleInfoDS()
@@ -970,11 +970,11 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                    h['hMuCleanedPt'].Fill(tau.pt, genweight)
                    mclean+=[tau]
 
-   if tausLowPtECleaned.size()>0:
-       for i in range(tausLowPtECleaned.size()):
-           tau = tausLowPtECleaned.at(i)
-           if tau.mvaid >= 4:
-               lowEclean+=[tau]
+   # if tausLowPtECleaned.size()>0:
+   #     for i in range(tausLowPtECleaned.size()):
+   #         tau = tausLowPtECleaned.at(i)
+   #         if tau.mvaid >= 4:
+   #             lowEclean+=[tau]
 
    if tausBoosted.size()>0:
        for i in range(tausBoosted.size()):
@@ -1017,11 +1017,11 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                      h['hIsoElectronPt'].Fill(electron.pt, genweight)
                      s_isoe+=[electron]
 
-   if lowPtElectrons.size() > 0 :
-       for i in range(lowPtElectrons.size()):
-           lowPtElectron = lowPtElectrons.at(i)
-           if abs(lowPtElectron.eta) < 2.5 :
-               s_lowE += [lowPtElectron]
+   # if lowPtElectrons.size() > 0 :
+   #     for i in range(lowPtElectrons.size()):
+   #         lowPtElectron = lowPtElectrons.at(i)
+   #         if abs(lowPtElectron.eta) < 2.5 :
+   #             s_lowE += [lowPtElectron]
 
    s_j.sort(key=lambda x: x.pt, reverse=True)
    s_e.sort(key=lambda x: x.pt, reverse=True)
@@ -1057,14 +1057,15 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
        if EE_Channel(s_isoe) == 1: continue      
 
    if len(s_e) > 0 and len(eclean) > 0 and len(s_j) > 0 and len(s_b) == 0 and eclean[0].charge*s_e[0].charge < 0:
-       if ETau_Channel(eclean, s_e, "standard") == 0 : 
-           if len(boosted) > 1 and len(s_j) > 0 and len(s_b) == 0 and boosted[0].charge*boosted[1].charge < 0 :
-               TauTau_Channel(boosted, "standard")
+       if ETau_Channel(eclean, s_e, "standard") == 1 : continue
+ 
+   if len(boosted) > 1 and len(s_j) > 0 and len(s_b) == 0 and boosted[0].charge*boosted[1].charge < 0 :
+       TauTau_Channel(boosted, "standard")
 
-   if len(s_lowE) > 0 and len(lowEclean) > 0 and len(s_j) > 0 and len(s_b) == 0 and lowEclean[0].charge*s_lowE[0].charge < 0:
-       if ETau_Channel(lowEclean, s_lowE, "lowPt") == 0 :
-           if len(boosted) > 1 and len(s_j) > 0 and len(s_b) == 0 and boosted[0].charge*boosted[1].charge < 0 :
-               TauTau_Channel(boosted, "lowPt")
+   # if len(s_lowE) > 0 and len(lowEclean) > 0 and len(s_j) > 0 and len(s_b) == 0 and lowEclean[0].charge*s_lowE[0].charge < 0:
+   #     if ETau_Channel(lowEclean, s_lowE, "lowPt") == 0 :
+   #         if len(boosted) > 1 and len(s_j) > 0 and len(s_b) == 0 and boosted[0].charge*boosted[1].charge < 0 :
+   #             TauTau_Channel(boosted, "lowPt")
 
            
 
