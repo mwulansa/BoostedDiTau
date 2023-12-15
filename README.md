@@ -41,5 +41,5 @@ python3 plotBoostedTauTau.py <filename of rootfile> <datasettype>
 -de : SingleElectron data
 ```
 
-Need to change the configurations for L1 prefiring for each year in adaptToRunAtMiniAODCustom_Backgrounds.py. Configurations are found in:
+Node: need to change the configurations for L1 prefiring for each year in adaptToRunAtMiniAODCustom_Backgrounds.py. Configurations are found in:
 https://twiki.cern.ch/twiki/bin/view/CMS/L1PrefiringWeightRecipe#2016_UL_pre_VFP
