@@ -5,6 +5,8 @@ import correctionlib
 from array import array
 # import BJetSF
 
+year = '2017'
+
 start_time = time.time()
 
 opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
@@ -12,7 +14,7 @@ opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 # sfDir = os.path.join('/cvmfs','cms.cern.ch','rsync','cms-nanoAOD','jsonpog-integration','POG','BTV','2017_UL')
 # btvjson = correctionlib.CorrectionSet.from_file(os.path.join(sfDir, 'btagging.json.gz'))
 
-outputTitle = "h_plotBoostedTauTau"
+outputTitle = "h_plotBoostedTauTau_"+year
 
 isData = 0
 
@@ -342,7 +344,7 @@ def mumu_channel():
             if pass_deltaR(mu1, mu2, jet, 'MuMu') == 1 :
                 if met.Pt() < event_cut['metcut']:
                     if jet.Pt() >= 100.0 :
-                        plot_variable('MuMu_CR_2017_OS_Boost', mu1, mu2, jet, met)
+                        plot_variable('MuMu_CR_'+year+'_OS_Boost', mu1, mu2, jet, met)
 
             if baseline_selection(mu1, mu2, jet, met, 'MuMu') == 1 :
                 plot_variable('MuMu_Baseline', mu1, mu2, jet, met)
@@ -431,8 +433,8 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
                             if isData == 0 :
 
                                 if tauid == "Nominal":
-                                    plot_variable('MuTau_SR_2017_OS_Boost', mu, tau, jet, met)
-                                    plot_svfit('MuTau_SR_2017_OS_Boost', mSVFit)
+                                    plot_variable('MuTau_SR_'+year+'_OS_Boost', mu, tau, jet, met)
+                                    plot_svfit('MuTau_SR_'+year+'_OS_Boost', mSVFit)
 
                                 plot_variable('MuTau_'+tauid+'_OS_dRcut_highMET_lowMt', mu, tau, jet, met)
                                 plot_svfit('MuTau_'+tauid+'_OS_dRcut_highMET_lowMt', mSVFit)
@@ -602,8 +604,8 @@ def emu_channel():
                         if mSVFit >= event_cut['mass']:
                             plot_variable('EMu_OS_highMET_bjetveto', e, mu, jet, met, bweight)
                             plot_svfit('EMu_OS_highMET_bjetveto', mSVFit, bweight)
-                            plot_variable('EMu_SR_2017_OS_Boost', e, mu, jet, met, bweight)
-                            plot_svfit('EMu_SR_2017_OS_Boost', mSVFit, bweight)
+                            plot_variable('EMu_SR_'+year+'_OS_Boost', e, mu, jet, met, bweight)
+                            plot_svfit('EMu_SR_'+year+'_OS_Boost', mSVFit, bweight)
                     else:
                         mSVFit = get_svfit(e, mu, 0, 'EMu')
                         if mSVFit >= event_cut['mass']:
@@ -731,8 +733,8 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
                                     h['ETau_'+tauid+'_OS_dRcut_highMET_lowMt_DM10_mSVFitTauPt'].Fill(mSVFit, tau.Pt(), weight)
 
                                 if tauid == "Nominal":
-                                    plot_variable('ETau_SR_2017_OS_Boost', e, tau, jet, met)
-                                    plot_svfit('ETau_SR_2017_OS_Boost', mSVFit)
+                                    plot_variable('ETau_SR_'+year+'_OS_Boost', e, tau, jet, met)
+                                    plot_svfit('ETau_SR_'+year+'_OS_Boost', mSVFit)
                             
                 else: #lowMET                                                                                         
                     if Mt(e,met) <= 50.0 : #lowMt                                                                                             
