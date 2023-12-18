@@ -99,9 +99,11 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
 
   const edm::TriggerNames &names = iEvent.triggerNames(*triggerBits);
 
-  bool muonLeg, eLeg;
+  bool muonLeg, eLeg, muonLegnoDZ, eLegnoDZ;
   muonLeg = false;
   eLeg = false;
+  muonLegnoDZ = false;
+  eLegnoDZ = false;
 
   for (pat::TriggerObjectStandAlone obj : *triggerObjects) { // note: not "const &" since we want to call unpackPathNames
     obj.unpackPathNames(names);
@@ -116,7 +118,6 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
     trigObj.eta = obj.eta();
     trigObj.mass = obj.mass();
     trigObj.phi = obj.phi();  
-    
 
     trigObj.isEleJet = 0;
     trigObj.isEleLeg = 0;
@@ -124,11 +125,15 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
     trigObj.isMu = 0;
     trigObj.isIsoMu = 0;
     trigObj.isPhoton = 0;
+    trigObj.isPhoton175 = 0;
     trigObj.isSingleJet = 0;
     trigObj.isJetHT = 0;
     trigObj.isMuonEGmu = 0;
     trigObj.isMuonEGe = 0;
     trigObj.isMuonEG = 0;
+    trigObj.isMuonEGnoDZmu = 0;
+    trigObj.isMuonEGnoDZe = 0;
+    trigObj.isMuonEGnoDZ = 0;
 
 
     for (unsigned h = 0, n = pathNamesAll.size(); h < n; ++h) {
@@ -142,8 +147,11 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
            pathNamesAll[h].find("HLT_Mu50_v") == std::string::npos &&
 	   pathNamesAll[h].find("HLT_IsoMu27_v") == std::string::npos &&
 	   pathNamesAll[h].find("HLT_Photon200_v") == std::string::npos &&
+	   pathNamesAll[h].find("HLT_Photon175_v") == std::string::npos &&
 	   pathNamesAll[h].find("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v") == std::string::npos &&
-	   pathNamesAll[h].find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v") == std::string::npos
+	   pathNamesAll[h].find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v") == std::string::npos &&
+	   pathNamesAll[h].find("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v") == std::string::npos &&
+	   pathNamesAll[h].find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v") == std::string::npos
     	   ) continue;
 
       bool isL3   = obj.hasPathName( pathNamesAll[h], false, true );
@@ -155,7 +163,7 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
       if (pathNamesAll[h].find("HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v") != std::string::npos) {
 	for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
 	  if ( obj.filterIds()[h] == 81 || obj.filterIds()[h] == 92 || obj.filterIds()[h] == 82 ) trigObj.isEleLeg = 1;
-	  if ( obj.hasPathName( "HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v14", true, true ) ) {
+	  if ( obj.hasPathName( "HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v", true, true ) ) {
 	    trigObj.isJetLeg = 1;
 	    trigObj.isEleJet = 1;
 	  }
@@ -180,6 +188,21 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
 	if ( muonLeg == true && eLeg == true ) trigObj.isMuonEG = 1;
       }
 
+      if (pathNamesAll[h].find("HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v") != std::string::npos || pathNamesAll[h].find("HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v") != std::string::npos) {
+	for (unsigned h = 0; h < obj.filterIds().size(); ++h) {
+	  if ( obj.filterIds()[h] == 83 ) {
+	    trigObj.isMuonEGnoDZmu = 1;
+	    muonLegnoDZ = true;
+	  }
+	  if ( obj.filterIds()[h] == 81 || obj.filterIds()[h] == 82 || obj.filterIds()[h] == 92 ) {
+	    trigObj.isMuonEGnoDZe = 1;
+	    eLegnoDZ = true;
+	  }
+	}	  
+	acceptedPath = true;
+	if ( muonLegnoDZ == true && eLegnoDZ == true ) trigObj.isMuonEGnoDZ = 1;
+      }
+
       if (pathNamesAll[h].find("HLT_Mu50_v") != std::string::npos) {
 	trigObj.isMu = 1;
 	acceptedPath = true;
@@ -190,8 +213,13 @@ void TCPTrigObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSe
 	acceptedPath = true;
       }
 
-      if (pathNamesAll[h].find("HLT_Photon200_v12") != std::string::npos) {
+      if (pathNamesAll[h].find("HLT_Photon200_v") != std::string::npos) {
 	trigObj.isPhoton = 1;
+	acceptedPath = true;
+      }
+
+      if (pathNamesAll[h].find("HLT_Photon175_v") != std::string::npos) {
+	trigObj.isPhoton175 = 1;
 	acceptedPath = true;
       }
 
