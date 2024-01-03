@@ -20,11 +20,14 @@ if __name__ == "__main__":
         print(bkgSample)
     else:
         bkgSample = ['DYJetsToLL_M-50','DYJetsToLL_M-4to50','WJetsToLNu','YMuMu', 'QCD', 'SingleMuon']
+        #This list is only HT-binned samples
+        bkgSample = ['DYJetsToLL_M-50','DYJetsToLL_M-4to50','WJetsToLNu','QCD']
         print(bkgSample)
 
     for sample in bkgSample:
         print("./runDoHAdd.sh "+sample+" "+args.version+" "+args.filename)
         os.system("./runDoHAdd.sh "+sample+" "+args.version+" "+args.filename)
 
+    if args.sampleName is not None: exit()
     os.system("./runDoHAddFlat.sh "+args.version+" "+args.filename)
     #os.system("python3 doHadd.py "+dataset)

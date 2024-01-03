@@ -18,7 +18,9 @@ if len(sys.argv)>1:
 #hist = 'h_studyEMuDataMC_Isolated_'
 hist = "h_"+fname+"_"
 
-outputfiles=os.popen("eos root://cmseos.fnal.gov ls /store/user/mwulansa/UL2017/ | grep "+hist+Sample+"_").read().split()
+outputfiles=os.popen("eos root://cmseos.fnal.gov ls /store/user/zhangj/UL2017/ | grep "+hist+Sample+"_").read().split()
+if 'SingleMuon' in Sample:
+    outputfiles=os.popen("eos root://cmseos.fnal.gov ls /store/user/zhangj/UL2017/ | grep "+hist+Sample).read().split()
 print(outputfiles)
 
 plotDir = "./output/"+version
@@ -28,16 +30,23 @@ print(isCopy)
 if isCopy:
     for fil in outputfiles:
         print(fil)
-        os.system("xrdcp root://cmseos.fnal.gov//store/user/mwulansa/UL2017/"+fil+" "+plotDir+"/"+fil)
+        os.system("xrdcp -f root://cmseos.fnal.gov//store/user/zhangj/UL2017/"+fil+" "+plotDir+"/"+fil)
 
-searchString = hist+Sample+'_*'        
+searchString = hist+Sample+'_*'
+if 'SingleMuon' in Sample:
+    searchString = hist+Sample+'*'
 
 print('ls '+plotDir+'/'+searchString)
 os.system('ls '+plotDir+'/'+searchString)
 if os.path.exists(searchString.replace("*",version+".root")):
     os.remove(searchString.replace("*",version+".root"))
-print('hadd '+searchString.replace("*",version+".root")+' '+plotDir+'/'+searchString)
-os.system('hadd '+searchString.replace("*",version+".root")+' '+plotDir+'/'+searchString)
+
+if 'SingleMuon' in Sample:
+    print('hadd -f '+searchString.replace("*","_"+version+".root")+' '+plotDir+'/'+searchString)
+    os.system('hadd -f '+searchString.replace("*","_"+version+".root")+' '+plotDir+'/'+searchString)
+else:
+    print('hadd -f '+searchString.replace("*",version+".root")+' '+plotDir+'/'+searchString)
+    os.system('hadd -f '+searchString.replace("*",version+".root")+' '+plotDir+'/'+searchString)
 
 if Sample == "TTJets":
     os.system("cp "+hist+Sample+"_"+version+".root "+hist+Sample+"_TuneCP5_"+version+".root")

@@ -13,9 +13,12 @@ if __name__ == "__main__":
     os.system("./makeTarBall.csh")
 
     if args.sim:
-#        SAMPLE = ['DYJetsToLL_M-50','DYJetsToLL_M-4to50','WJetsToLNu','WW','WZ','ZZ','ST_tW_top','ST_tW_antitop','ST_s-channel','ST_t-channel_antitop','ST_t-channel_top','QCD']
+        SAMPLE = ['DYJetsToLL_M-50','DYJetsToLL_M-4to50','WJetsToLNu','QCD','YMuMu']
+        
+        SAMPLE += ['WZ', 'WW', 'ZZ', 'ST_tW_top','ST_tW_antitop','ST_s-channel','ST_t-channel_antitop', 'ST_t-channel_top', 'DYJetsToLL']
+        #SAMPLE += ['WZ', 'WW', 'ZZ', 'ST_tW_top','ST_tW_antitop','ST_s-channel','ST_t-channel_antitop', 'ST_t-channel_top', 'TTTo2L2Nu', 'DYJetsToLL']
 
-        SAMPLE = ['WJetsToLNu', 'WW', 'ZZ', 'ST_tW_top','ST_tW_antitop','ST_s-channel','ST_t-channel_antitop', 'ST_t-channel_top']
+        #SAMPLE = ['TTJets', 'DYJetsToLL']
 
         for sample in SAMPLE:
             os.system("./submitJobs.csh "+sample+" -b")
@@ -52,10 +55,14 @@ if __name__ == "__main__":
                 os.system("./submitJobs.csh "+dataset+" -de")
                 print("./submitJobs.csh "+dataset+" -de")
 
+            if dataset == "SingleMuon":
+                os.system("./submitJobs.csh "+dataset+" -de")
+                print("./submitJobs.csh "+dataset+" -de")
+
             if dataset == "JetHT":
                 os.system("./submitJobs.csh "+dataset+" -dj")
                 print("./submitJobs.csh "+dataset+" -dj")
 
         print("Submitted "+str(DATASET))
 
-    print("Submitted "+str(SAMPLE))
+    #print("Submitted "+str(SAMPLE))

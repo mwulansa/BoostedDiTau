@@ -1,7 +1,7 @@
 #!/bin/tcsh
 
 
-setenv whichSample SingleMuon
+setenv whichSample MuonEG
 
 setenv nfiles 100
 

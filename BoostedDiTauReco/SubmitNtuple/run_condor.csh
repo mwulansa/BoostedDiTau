@@ -5,13 +5,13 @@ echo "Running on: `uname -a`" #Condor job is running on this node
 echo "System software: `cat /etc/redhat-release`" #Operating System on that node                                                                              
 source /cvmfs/cms.cern.ch/cmsset_default.csh  ## if a bash script, use .sh instead of .csh   
 
-xrdcp root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/CMSSW_12X.tgz CMSSW_12X.tgz
+xrdcp root://cmseos.fnal.gov//store/user/zhangj/CMSSW_12X.tgz CMSSW_12X.tgz
 
 tar -xf CMSSW_12X.tgz
 rm CMSSW_12X.tgz
 
 setenv SCRAM_ARCH slc7_amd64_gcc900
-cd CMSSW_12_1_0_pre3/src
+cd CMSSW_12_1_1/src
 scramv1 b ProjectRename
 eval `scramv1 runtime -csh`
 
@@ -21,8 +21,13 @@ echo "Arguments passed to this script are: "
 echo "  script: $1"
 echo "  input files: $2"
 echo "  output dir: $3"
+echo "  output file: $4"
 echo "  mode: $5"
-python3 ${1} ${2} ${3} ${5}
+python3 ${1} ${2} ${3} ${5} 
+
+ls
+
+#xrdcp -f ${3}h_studySVFit_${4} /uscms/home/jingyu/nobackup/TCP/boostedDiTauReco/CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/datahists/h_studySVFit_${4}
 
 cd ${_CONDOR_SCRATCH_DIR}
-rm -rf CMSSW_12_1_0_pre3
+rm -rf CMSSW_12_1_1

@@ -28,3 +28,21 @@ To read the n-tuple:
 cd BoostedDiTau/MiniAODSkimmer/test/
 python3 readTCPNtuples.py
 ```
+
+To run the analysis code:
+```
+python3 plotBoostedTauTau.py <filename of rootfile> <datasettype>
+
+<datasettype> consist of:
+-s : signal
+-b : background MC
+-dm : SingleMuon data
+-dg : MuonEG data
+-de : SingleElectron data
+```
+
+Misc:
+1) Need to change the configuration to have the correct year for pu-reweighting in GenAnalyzer. 
+2) Need to change the configurations for L1 prefiring for each year in adaptToRunAtMiniAODCustom_Backgrounds.py. Configurations are found in:
+https://twiki.cern.ch/twiki/bin/view/CMS/L1PrefiringWeightRecipe#2016_UL_pre_VFP
+

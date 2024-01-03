@@ -3,7 +3,10 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("TAURECO")
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_10_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_10_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root'),
+    fileNames = cms.untracked.vstring(
+        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root',
+        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD_2.root'
+    ),
     secondaryFileNames = cms.untracked.vstring()
 )
 process.CondDB = cms.PSet(
@@ -12985,6 +12988,22 @@ process.pileupJetIdUpdated = cms.EDProducer("PileupJetIdProducer",
 )
 
 
+process.prefiringweight = cms.EDProducer("L1PrefiringWeightProducer",
+    DataEraECAL = cms.string('UL2017BtoF'),
+    DataEraMuon = cms.string('20172018'),
+    JetMaxMuonFraction = cms.double(0.5),
+    L1Maps = cms.string('L1PrefiringMaps.root'),
+    L1MuonParametrizations = cms.string('L1MuonPrefiringParametriations.root'),
+    PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+    PrefiringRateSystematicUnctyMuon = cms.double(0.2),
+    TheJets = cms.InputTag("updatedJets"),
+    TheMuons = cms.InputTag("slimmedMuons"),
+    ThePhotons = cms.InputTag("slimmedPhotons"),
+    UseJetEMPt = cms.bool(False),
+    mightGet = cms.optional.untracked.vstring
+)
+
+
 process.recoTauAK4Jets08RegionPAT = cms.EDProducer("RecoTauPatJetRegionProducer",
     deltaR = cms.double(0.8),
     maxJetAbsEta = cms.double(2.5),
@@ -15641,6 +15660,7 @@ process.updatedPatJets = cms.EDProducer("PATJetUpdater",
 process.HLT = cms.EDFilter("HLTHighLevel",
     HLTPaths = cms.vstring(
         'HLT_PFJet450_v*',
+        'HLT_PFJet500_v*',
         'HLT_PFHT1050_v*',
         'HLT_PFHT500_PFMET100_PFMHT100_IDTight_v*',
         'HLT_IsoMu27_v*',
@@ -15656,7 +15676,10 @@ process.HLT = cms.EDFilter("HLTHighLevel",
         'HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v',
         'HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v',
         'HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v',
-        'HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET90_v'
+        'HLT_MediumChargedIsoPFTau50_Trk30_eta2p1_1pr_MET90_v',
+        'HLT_Ele115_CaloIdVT_GsfTrkIdT_v*',
+        'HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165_v*',
+        'HLT_Photon200_v*'
     ),
     TriggerResultsTag = cms.InputTag("TriggerResults","","HLT"),
     andOr = cms.bool(True),
@@ -16096,18 +16119,71 @@ process.tauGenJetsSelectorAllHadronsMuonCleaned = cms.EDFilter("TauGenJetDecayMo
 )
 
 
-process.fast_mtt_ntuples = cms.EDAnalyzer("fastMTTNtuples",
-    BoostedTauCollection = cms.InputTag("slimmedTausBoosted"),
-    JetCollection = cms.InputTag("slimmedJets"),
-    MCleanedTauCollection = cms.InputTag("slimmedTausMuonCleaned"),
-    METCollection = cms.InputTag("slimmedMETs"),
-    MuonCollection = cms.InputTag("slimmedMuons"),
-    VertexCollection = cms.InputTag("offlineSlimmedPrimaryVertices")
+process.lumiSummary = cms.EDAnalyzer("LumiAnalyzer",
+    genEventInfo = cms.InputTag("generator")
 )
 
 
-process.lumiSummary = cms.EDAnalyzer("LumiAnalyzer",
-    genEventInfo = cms.InputTag("generator")
+process.tcpGenNtuples = cms.EDAnalyzer("GenAnalyzer",
+    GenJetCollection = cms.InputTag("slimmedGenJets"),
+    GenParticleCollection = cms.InputTag("prunedGenParticles"),
+    genEventInfo = cms.InputTag("generator"),
+    pileupSummaryInfo = cms.InputTag("slimmedAddPileupInfo"),
+    puDataFileName = cms.FileInPath('BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root'),
+    puDataFileNameDown = cms.FileInPath('BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-66000ub-99bins.root'),
+    puDataFileNameUp = cms.FileInPath('BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-72400ub-99bins.root'),
+    puMCFileName = cms.FileInPath('BoostedDiTau/MiniAODSkimmer/data/PileupMC2017.root')
+)
+
+
+process.tcpMetfilter = cms.EDAnalyzer("TCPMETFilter",
+    badChargedCandFilterSel = cms.string('Flag_BadChargedCandidateFilter'),
+    badPFMuonFilterSel = cms.string('Flag_BadPFMuonFilter'),
+    beamHaloFilterSel = cms.string('Flag_globalSuperTightHalo2016Filter'),
+    ecalBadCalFilterSel = cms.string('Flag_ecalBadCalibFilter'),
+    ecalTPFilterSel = cms.string('Flag_EcalDeadCellTriggerPrimitiveFilter'),
+    eeBadScFilterSel = cms.string('Flag_eeBadScFilter'),
+    hbheFilterSel = cms.string('Flag_HBHENoiseFilter'),
+    hbheIsoFilterSel = cms.string('Flag_HBHENoiseIsoFilter'),
+    metFilters = cms.InputTag("TriggerResults","","PAT"),
+    primaryVertexFilterSel = cms.string('Flag_goodVertices')
+)
+
+
+process.tcpNtuples = cms.EDAnalyzer("TCPNtuples",
+    BoostedTauCollection = cms.InputTag("slimmedTausBoosted"),
+    ECleanedTauCollection = cms.InputTag("slimmedTausElectronCleaned"),
+    ElectronCollection = cms.InputTag("slimmedElectrons"),
+    JetCollection = cms.InputTag("updatedJets"),
+    LowPtECleanedTauCollection = cms.InputTag("slimmedTausLowPtElectronCleaned"),
+    LowPtEIdScoreCut = cms.string('4'),
+    LowPtElectronCollection = cms.InputTag("slimmedLowPtElectrons"),
+    MCleanedTauCollection = cms.InputTag("slimmedTausMuonCleaned"),
+    METCollection = cms.InputTag("slimmedMETs"),
+    MuonCollection = cms.InputTag("slimmedMuons"),
+    UnCleanedTauCollection = cms.InputTag("slimmedTausUnCleaned"),
+    VertexCollection = cms.InputTag("offlineSlimmedPrimaryVertices"),
+    effAreasConfigFile = cms.FileInPath('BoostedDiTau/MiniAODSkimmer/data/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt'),
+    rhoTag = cms.InputTag("fixedGridRhoFastjetAll")
+)
+
+
+process.tcpPrefiring = cms.EDAnalyzer("TCPPrefiring",
+    PrefiringWeight = cms.InputTag("prefiringweight","nonPrefiringProb"),
+    PrefiringWeightDown = cms.InputTag("prefiringweight","nonPrefiringProbDown"),
+    PrefiringWeightUp = cms.InputTag("prefiringweight","nonPrefiringProbUp")
+)
+
+
+process.tcpTrigNtuples = cms.EDAnalyzer("TCPTrigNtuples",
+    TriggerResults = cms.InputTag("TriggerResults","","HLT")
+)
+
+
+process.testTrigObj = cms.EDAnalyzer("TCPTrigObjectAnalyzer",
+    bits = cms.InputTag("TriggerResults","","HLT"),
+    objects = cms.InputTag("slimmedPatTrigger"),
+    prescales = cms.InputTag("patTrigger")
 )
 
 
@@ -21975,6 +22051,9 @@ process.makeUpdatedPatJets = cms.Sequence(process.updatedPatJetCorrFactors+proce
 process.patJetCorrections = cms.Sequence(process.patJetCorrectionsTask)
 
 
+process.prefiringweightMaker = cms.Path(process.prefiringweight)
+
+
 process.TauReco = cms.Path(process.miniAODTausSequence)
 
 
@@ -21999,10 +22078,25 @@ process.pileupjetidpath = cms.Path(process.pileupJetIdUpdated+process.patJetCorr
 process.main_path = cms.Path()
 
 
-process.mttNtupleMaker = cms.Path(process.fast_mtt_ntuples)
+process.tcpNtupleMaker = cms.Path(process.tcpNtuples)
+
+
+process.tcpGenNtupleMaker = cms.Path(process.tcpGenNtuples)
+
+
+process.tcpTrigNtupleMaker = cms.Path(process.tcpTrigNtuples)
+
+
+process.testTrigObjMaker = cms.Path(process.testTrigObj)
+
+
+process.tcpPrefiringMaker = cms.Path(process.tcpPrefiring)
+
+
+process.tcpMetfilterMaker = cms.Path(process.tcpMetfilter)
 
 
 process.out = cms.EndPath(process.output)
 
 
-process.schedule = cms.Schedule(*[ process.TauReco, process.TauRecoElectronCleaned, process.TauRecoMuonCleaned, process.TauRecoBoosted, process.TauRecoLowPtElectronCleaned, process.slimpath, process.pileupjetidpath, process.main_path, process.mttNtupleMaker, process.out ])
+process.schedule = cms.Schedule(*[ process.prefiringweightMaker, process.TauReco, process.TauRecoElectronCleaned, process.TauRecoMuonCleaned, process.TauRecoBoosted, process.TauRecoLowPtElectronCleaned, process.slimpath, process.pileupjetidpath, process.main_path, process.tcpMetfilterMaker, process.tcpTrigNtupleMaker, process.tcpGenNtupleMaker, process.tcpNtupleMaker, process.tcpPrefiringMaker, process.testTrigObjMaker ])

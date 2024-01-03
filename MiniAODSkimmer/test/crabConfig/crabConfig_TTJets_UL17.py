@@ -1,8 +1,7 @@
-
 from CRABClient.UserUtilities import config
 
 config = config()
-config.General.requestName = 'Ntuple_TTJets_Summer20UL17_v13'
+config.General.requestName = 'Ntuple_TTJets_Summer20UL17_v4'
 
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
@@ -17,15 +16,16 @@ config.JobType.allowUndistributedCMSSW = True
 config.JobType.psetName = '../rerunTauRecoOnMiniAOD_WithClean_Custom_Backgrounds.py'
 
 config.Data.inputDataset = '/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM'
+#config.Data.inputDataset = '/TTJets_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM'
 config.Data.inputDBS = 'global'
-config.Data.splitting = 'Automatic'
-#config.Data.splitting = 'FileBased'                                                                                                                         
-#config.Data.unitsPerJob = 1
+#config.Data.splitting = 'Automatic'
+config.Data.splitting = 'FileBased'                                                                                                                         
+config.Data.unitsPerJob = 1
 
-config.Data.outLFNDirBase = '/store/user/mwulansa/TCPNtuple/'
+config.Data.outLFNDirBase = '/store/user/zhangj/TCPNtuple/'
 config.Data.publication = False
-config.Data.outputDatasetTag = 'Ntuple_TTJets_Summer20UL17_v13'  
+config.Data.outputDatasetTag = 'Ntuple_TTJets_Summer20UL17_v4'  
 
-config.Site.storageSite = 'T3_US_FNALLPC'
+config.Site.storageSite = 'T2_US_Florida'
 
 #config.Site.blacklist = ['T3_KR_KNU', 'T3_FR_IPNL', 'T2_TR_METU', 'T2_TW_NCHC', 'T2_BE_IIHE', 'T3_US_Baylor','T2_US_Purdue']

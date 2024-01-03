@@ -18,6 +18,7 @@ if sampleType == 'background' :
 
 if sampleType == 'data' :
     data = ['SingleMuon']
+    #data = ['MuonEG']
     SAMPLES = [ d+"_2017"+p for d in data for p in ['B','C','D','E','F']]
  
 DATASETS = {
@@ -79,18 +80,18 @@ config.JobType.allowUndistributedCMSSW = True
 config.JobType.psetName = '../rerunTauRecoOnMiniAOD_WithClean_Custom_Data.py'
 #config.JobType.numCores = 4                                                                                                                                                                                                                                                             
 #config.JobType.maxMemoryMB = 10000                                                                                                                                                                                                                                                      
-config.Data.inputDataset = '/"""+sample.split("_")[0]+"""/"""+sample.split("_")[1]+"""-UL2017_MiniAODv2-v1/MINIAOD'
+config.Data.inputDataset = '/"""+sample.split("_")[0]+"""/Run"""+sample.split("_")[1]+"""-UL2017_MiniAODv2-v1/MINIAOD'
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'Automatic'
 #config.Data.splitting = 'LumiBased'                                                                                                                                                                                                                                                     
 #config.Data.unitsPerJob = 50                                                                                                                                                                                                                                                            
 config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt'
 
-config.Data.outLFNDirBase = '/store/user/mwulansa/TCPNtuple/'
+#config.Data.outLFNDirBase = '/store/user/zhangj/TCPNtuple/'
 config.Data.publication = False
 config.Data.outputDatasetTag = 'Ntuple_"""+sample+"""-UL2017_MiniAODv2-v1_"""+version+"""'
 
-config.Site.storageSite = 'T3_US_FNALLPC'
+config.Site.storageSite = 'T2_US_Florida'
 
 config.Site.ignoreGlobalBlacklist = True
 """)
