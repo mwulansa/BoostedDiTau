@@ -74,9 +74,9 @@ xsecs={
      'TCP_Ntuple_m50_HT-400toInf':{'':xsec_M[4]*2.938e-07},
 #     'DYJetsToLL_lowMassDY' : {
 #         'M-10to50':15890.0},
-     'DYJetsToLL_flat':{
+     'DYJetsFlat':{
 #         'M-10to50':15890.0,                                                                                                                               
-         'M-50':5398.0},
+         'DYJetsToLL':5398.0},
      'DYStitch':{
          'M-10to50':15890.0,
          'M-50_HT-70to100':146.5,
@@ -91,14 +91,14 @@ xsecs={
 #         'M-10to50':15890.0,
 #         'M-10to50':15890.0*(1/20),
 #         'M-50':5398.0},
-         'M-50_HT-70to100':146.5,
-         'M-50_HT-100to200':160.7, 
-         'M-50_HT-200to400':48.63, 
+         'M-50_HT-70to100':208.977,
+         'M-50_HT-100to200':181.30, 
+         'M-50_HT-200to400':50.4177, 
          'M-50_HT-400to600':6.993, 
          'M-50_HT-600to800':1.761, 
          'M-50_HT-800to1200':0.8021, 
-         'M-50_HT-1200to2500':0.1937, 
-         'M-50_HT-2500toInf':0.003514},
+         'M-50_HT-1200to2500':0.186222, 
+         'M-50_HT-2500toInf':0.00438495},
      'DYJetsToLL_M-4to50':{
          'HT-70to100':321.2,
 #         'HT-70to100':145.5,
@@ -118,6 +118,8 @@ xsecs={
      #     'TuneCP5':377.96},
      'TT':{
          'TTTo2L2Nu_TuneCP5':88.2497},
+     'TTJets':{
+         'TuneCP5':781.2},
 #         'TTToSemiLeptonic_TuneCP5':365.30899,
 #         'TTToHadronic_TuneCP5':377.9517},
      'ST':{
@@ -138,13 +140,14 @@ xsecs={
       'WJetsToLNu_flat':{
           'TuneCP5':52940.0},
       'WJetsToLNu':{
-          'HT-70To100':1264.0,
-          'HT-100To200':1343.0,
-          'HT-200To400':359.6,
-          'HT-400To600':48.85,
-          'HT-600To800':12.05,
-          'HT-800To1200':5.501,
-          'HT-1200To2500':1.329},
+          'HT-70To100':1637.1,
+          'HT-100To200':1627.45,
+          'HT-200To400':435.237,
+          'HT-400To600':59.1811,
+          'HT-600To800':14.5805,
+          'HT-800To1200':6.65621,
+          'HT-1200To2500':1.60809,
+          'HT-2500toInf':0.0389136},
           # 'HT-2500ToInf':0.03216},
           # 'HT-70to100':1264.0,
           # 'HT-100to200':1256.0,
@@ -163,7 +166,11 @@ xsecs={
           'HT700to1000':6344.0,
           'HT1000to1500':1092.0,
           'HT1500to2000':99.76,
-          'HT2000toInf':20.35}
+          'HT2000toInf':20.35},
+    'YMuMu':{
+        'pth400':0.0504*0.01,
+        'pth100':47.980*0.01,
+        'pth20':23030.*0.01}
 }
 
 
@@ -213,24 +220,25 @@ def weightBackgroundHists(hists, files, version, study, var, Sample):
             files+=[fil]
             hist=fil.Get(histname) 
             nEvt=fil.Get("NEvents").GetBinContent(2)
+            print('DEBUG', fil.Get("NEvents").GetBinContent(1), fil.Get("NEvents").GetBinContent(2))
             xsec=xsecs[sample][mass] 
-#            xsec=xsecsQCD[sample][mass] 
             if list(xsecs[sample]).index(mass)==0:  
-#            if list(xsecsQCD[sample]).index(mass)==0:  
                 h = hist.Clone(sample+"_"+histname)
-#                print(h)
                 if scaling == 'xsection':
+                    print('-----', sample, xsec, nEvt, L)
                     h.Scale((xsec/nEvt)*L)
                 else: 
                     scale = 1/(h.Integral())
                     h.Scale(scale)
                 hists[sample] = h 
             else: 
-                if scaling == 'xsection': 
+                if scaling == 'xsection':
+                    print('-----', sample, xsec, nEvt, L)
                     hist.Scale((xsec/nEvt)*L)
                 else:
                     hist.Scale(scale)
                 hists[sample].Add(hist)
+        #fil.Close()
 
 
 hists = {}
@@ -301,13 +309,14 @@ if args.all :
 #    Sample = ['TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf', 'TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf']
 #    Sample = ['DYJetsToLL','DYJetsToLL_M-4to50', 'TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf', 'TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf','QCD','WJetsToLNu']
 #    Sample = ['TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf', 'TCP_Ntuple_m12_HT-100to400', 'TCP_Ntuple_m12_HT-400toInf']
-    Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','DYJetsToLL','DYJetsToLL_M-4to50','QCD','WJetsToLNu','Diboson','ST','TT']
+    #Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','DYJetsToLL','DYJetsToLL_M-4to50','QCD','WJetsToLNu','Diboson','ST','TT']
+    Sample = ['DYJetsFlat', 'DYJetsToLL','DYJetsToLL_M-4to50','WJetsToLNu','QCD','YMuMu','Diboson','ST', 'TT']
 if "--tt" in opts:
     Sample = ['TTTo2L2Nu', 'TTToSemiLeptonic', 'TTToHadronic']
 if "-b" in opts:
     Sample = ['TCP_Ntuple_m50_HT-100to400', 'TCP_Ntuple_m50_HT-400toInf','TCP_Ntuple_m30_HT-100to400', 'TCP_Ntuple_m30_HT-400toInf','QCD','WJetsToLNu','DYJetsToLL','TTJets','DYJetsToLL_M-4to50','Diboson']
 if "-ht" in opts:
-    Sample = ['QCD','WJetsToLNu','DYJetsToLL','DYJetsToLL_M-4to50']
+    Sample = ['QCD','WJetsToLNu','DYJetsToLL','DYJetsToLL_M-4to50','QCD']
 if "-d" in opts:
     Sample = ['DYJetsToLL','DYJetsToLL_M-4to50']
 if "-q" in opts:
@@ -346,26 +355,29 @@ if "-r" in opts:
 if args.histo is not None:
     histlist = args.histo
 
+print("histlist",histlist)
+
+if scaling == 'xsection':
+#         out = ROOT.TFile("h_"+reco+"_"+var+".root",'recreate')
+    out = ROOT.TFile("h_"+study+"_MC_"+iteration+".root",'recreate')
+    print(out)
+else: 
+    out = ROOT.TFile("h_"+study+"_"+var+"_"+version+"_unity.root",'recreate')
+
 for var in histlist:
+    print("var", var)
     weightBackgroundHists(hists, files, version, study, var, Sample)
 
-    if scaling == 'xsection':
-#         out = ROOT.TFile("h_"+reco+"_"+var+".root",'recreate')
-         out = ROOT.TFile("h_"+var+"_"+study+"_"+iteration+".root",'recreate')
-         print(out)
-    else: 
-         out = ROOT.TFile("h_"+study+"_"+var+"_"+version+"_unity.root",'recreate')
-
-    out.cd()
-
     for name in Sample:
-#        hists[name].Rebin(10)                                                                                                           
-
-
+        #        hists[name].Rebin(10)                                                                                                       
         if name=='DYJetsToLL':
             hists[name].SetFillColor(ROOT.kRed-6)
+            hists[name].SetLineColor(ROOT.kRed-6)
+            hists[name].SetMarkerColor(ROOT.kRed-6)
         elif name=='DYJetsToLL_M-4to50':
             hists[name].SetFillColor(ROOT.kRed-9)
+            hists[name].SetLineColor(ROOT.kRed-9)
+            hists[name].SetMarkerColor(ROOT.kRed-9)
 #        elif name=='DYJetsToLL_flat':
 #            hists[name].SetFillColor(ROOT.kRed-6)
         # elif name == 'TCP_m10':
@@ -379,27 +391,46 @@ for var in histlist:
         #     hists[name].SetFillColor(ROOT.kBlack)
         elif name=='TTJets':
             hists[name].SetFillColor(ROOT.kOrange-4)
-        elif name=='TTTo2L2Nu':
+        elif name=='TT':
             hists[name].SetFillColor(ROOT.kOrange-4)
+            hists[name].SetLineColor(ROOT.kOrange-4)
+            hists[name].SetMarkerColor(ROOT.kOrange-4)
         elif name=='TTToSemiLeptonic':
             hists[name].SetFillColor(ROOT.kOrange-5)
         elif name=='TTToHadronic':
             hists[name].SetFillColor(ROOT.kOrange-6)
-        elif name=='ST':
+        elif 'ST' in name:
             hists[name].SetFillColor(ROOT.kMagenta-9)
-        elif name == 'Diboson':
+            hists[name].SetLineColor(ROOT.kMagenta-9)
+            hists[name].SetMarkerColor(ROOT.kMagenta-9)
+        elif 'Diboson' in name:
             hists[name].SetFillColor(ROOT.kAzure+7)
+            hists[name].SetLineColor(ROOT.kAzure+7)
+            hists[name].SetMarkerColor(ROOT.kAzure+7)
         elif name == 'QCD':
             hists[name].SetFillColor(ROOT.kGray)
+            hists[name].SetLineColor(ROOT.kGray)
+            hists[name].SetMarkerColor(ROOT.kGray)
         elif name=='WJetsToLNu':
             hists[name].SetFillColor(ROOT.kGreen-6)
+            hists[name].SetLineColor(ROOT.kGreen-6)
+            hists[name].SetMarkerColor(ROOT.kGreen-6)
+        elif name=='YMuMu':
+            hists[name].SetFillColor(ROOT.kRed)
+            hists[name].SetLineColor(ROOT.kRed)
+            hists[name].SetMarkerColor(ROOT.kRed)
+        elif name=='DYJetsFlat':
+            hists['DYJetsToLL']=hists[name].Clone(hists[name].GetName().replace("DYJetsFlat","DYJetsToLL"))
+            hists['DYJetsToLL'].Add(hists['DYJetsToLL_M-4to50'])
 #        elif name=='WJetsToLNu_flat':
 #            hists[name].SetFillColor(ROOT.kGreen-6)
 
+        out.cd()
         hists[name].Write()
-        print(name)
+        print(hists[name])
 
-    out.Close()
+    hists['DYJetsToLL'].Write()
+out.Close()
 
 print(VARIABLE)
 print("Histlist")

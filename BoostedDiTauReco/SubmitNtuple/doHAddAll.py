@@ -19,7 +19,7 @@ if __name__ == "__main__":
         bkgSample+=[args.sampleName]
         print(bkgSample)
     else:
-        bkgSample = ['DYJetsToLL_M-50','DYJetsToLL_M-4to50','WJetsToLNu','QCD']
+        bkgSample = ['DYJetsToLL_M-50','DYJetsToLL_M-4to50','WJetsToLNu','YMuMu', 'QCD', 'SingleMuon']
         print(bkgSample)
 
     for sample in bkgSample:
@@ -27,4 +27,4 @@ if __name__ == "__main__":
         os.system("./runDoHAdd.sh "+sample+" "+args.version+" "+args.filename)
 
     os.system("./runDoHAddFlat.sh "+args.version+" "+args.filename)
-        #os.system("python3 doHadd.py "+dataset)
+    #os.system("python3 doHadd.py "+dataset)
