@@ -1,0 +1,6 @@
+*.py~
+*.py#
+*.txt
+*.txt~
+*.txt#
+*.root

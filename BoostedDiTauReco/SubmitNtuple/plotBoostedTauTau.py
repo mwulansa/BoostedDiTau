@@ -3,22 +3,28 @@ import numpy as np
 import time
 import correctionlib
 from array import array
-# import BJetSF
-
-year = '2017'
+import BJetSF
+import argparse
 
 start_time = time.time()
 
-opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
+# opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
 # sfDir = os.path.join('/cvmfs','cms.cern.ch','rsync','cms-nanoAOD','jsonpog-integration','POG','BTV','2017_UL')
 # btvjson = correctionlib.CorrectionSet.from_file(os.path.join(sfDir, 'btagging.json.gz'))
 
-outputTitle = "h_plotBoostedTauTau_"+year
+parser = argparse.ArgumentParser(description="Main plotting script for the boosted AToTauTau analysis")
+parser.add_argument("-i", "--inputfile", type=str, required=True, help="Text file with list of ntuple root files")
+parser.add_argument("-s", "--sample", type=str, required=True, help="Type of sample. Accepted: MC, SingleMuon, SingleElectron, MuonEG, TCP")
+parser.add_argument("--folder", type=str, help="Output folder. Default is /output/")
+parser.add_argument("--year", type=str, required=True, help="Year. Accepted: 2016preVFP, 2016postVFP, 2017, 2018")
+args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+
+outputTitle = "h_plotBoostedTauTau_"+args.year
 
 isData = 0
 
-if "-b" in opts:
+if args.sample == "MC":
     isData = 0
     isMuonEGData = False
     isSingleMuonData = False
@@ -26,7 +32,7 @@ if "-b" in opts:
     isJetHTSample = False
     isSignal = False
 
-if "-s" in opts:
+elif args.sample == "TCP":
     isData = 0
     isMuonEGData = False
     isSingleMuonData = False
@@ -34,7 +40,7 @@ if "-s" in opts:
     isJetHTSample = False
     isSignal = True
 
-if "-dm" in opts:
+elif args.sample == "SingleMuon":
     isData = 1
     isMuonEGData = False
     isSingleMuonData = True
@@ -42,7 +48,7 @@ if "-dm" in opts:
     isJetHTSample = False
     isSignal = False
 
-if "-dg" in opts:
+elif args.sample == "MuonEG":
     isData = 1
     isMuonEGData = True    
     isSingleMuonData = False
@@ -50,14 +56,16 @@ if "-dg" in opts:
     isJetHTSample = False
     isSignal = False
 
-if "-de" in opts:
+elif args.sample == "SingleElectron":
     isData = 1
     isMuonEGData = False
     isSingleMuonData = False
     isSingleElectronData = True
     isJetHTSample = False
     isSignal = False
-
+else:
+    print("Please choose one of the accepted samples.")
+    exit()
 
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/JetInfoDS.h"')
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/MuonInfoDS.h"')
@@ -66,11 +74,11 @@ ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/TauInfoDS.h"
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/TrigObjectInfoDS.h"')
 ROOT.gInterpreter.ProcessLine('#include "../../../TauAnalysis/ClassicSVfit/test/testClassicSVfit.h"')
 
-inputFileListName=sys.argv[1]
+inputFileListName=args.inputfile
 inputFileList=inputFileListName
 
-if len(sys.argv)>2 and not sys.argv[2].startswith("-"):
-    outputFileDir=sys.argv[2]
+if args.folder is not None:
+    outputFileDir=args.folder
 else:
     outputFileDir = "./output/"
 
@@ -104,7 +112,6 @@ event_cut = {
     'vismass' : 5.0,
     'mass' : 12.0
 }
-
 
 #define histograms here
 
