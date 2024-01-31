@@ -4,9 +4,9 @@ request_memory = 4200
 Should_Transfer_Files = YES
 WhenToTransferOutput = ON_EXIT
 Transfer_Input_Files = run_condor.csh
-Output = ./condorOut/condor_$ENV(SAMPLE)_$(Process).stdout
-Error = ./condorOut/condor_$ENV(SAMPLE)_$(Process).stderr
-Log = ./condorOut/condor_$ENV(SAMPLE)_$(Process).Log
-Arguments = studySVFit.py ./filelists/$ENV(SAMPLE)/$ENV(SAMPLE)_$(Process).txt $ENV(OutputPrefix) $ENV(SAMPLE)_$(Process).root $ENV(MODE)
+Output = ./condorOut/condor_$ENV(logFile)_$(Process).stdout
+Error = ./condorOut/condor_$ENV(logFile)_$(Process).stderr
+Log = ./condorOut/condor_$ENV(logFile)_$(Process).Log
+Arguments = plotBoostedTauTau.py $ENV(filelist)_$(Process).txt $ENV(OutputPrefix) $ENV(MODE) $ENV(YEAR)
 getenv = True
 Queue $ENV(NQueue)
