@@ -31,14 +31,17 @@ python3 readTCPNtuples.py
 
 To run the analysis code:
 ```
-python3 plotBoostedTauTau.py <filename of rootfile> <datasettype>
+python3 plotBoostedTauTau.py -i <inputfile> -s <sampletype> --year <year>
 
-<datasettype> consist of:
--s : signal
--b : background MC
--dm : SingleMuon data
--dg : MuonEG data
--de : SingleElectron data
+arguments:
+  -h, --help            show this help message and exit
+  -i INPUTFILE, --inputfile INPUTFILE
+                        Text file with list of ntuple root files
+  -s SAMPLE, --sample SAMPLE
+                        Type of sample. Accepted: TCP, MC, SingleMuon, SingleElectron, MuonEG 
+  --folder FOLDER       Output folder. Default is /output/
+  --year YEAR           Year. Accepted: 2016preVFP, 2016postVFP, 2017, 2018
+
 ```
 
 Misc:
