@@ -2,8 +2,9 @@
 
 echo "Starting job on " `date` #Date/time of start of job                                                                                                     
 echo "Running on: `uname -a`" #Condor job is running on this node                                                                                             
-echo "System software: `cat /etc/redhat-release`" #Operating System on that node                                                                              
-source /cvmfs/cms.cern.ch/cmsset_default.csh  ## if a bash script, use .sh instead of .csh   
+echo "System software: `cat /etc/redhat-release`" #Operating System on that node
+
+source /cvmfs/cms.cern.ch/cmsset_default.csh  ## if a bash script, use .sh instead of .csh
 
 xrdcp root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/CMSSW_12X.tgz CMSSW_12X.tgz
 
