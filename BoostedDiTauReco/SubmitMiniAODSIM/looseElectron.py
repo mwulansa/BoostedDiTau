@@ -20,7 +20,7 @@ def GsfEleConversionVetoCut(ele, bs, convs):
     if not bs==None or not convs==None:
         return not hasMatchedConversion(ele,convs,bs.position())
     else:
-        print "Couldn't find a necessary collection, returning true!"
+        print("Couldn't find a necessary collection, returning true!")
         return True
 
 def hasMatchedConversion(ele,convs,bsp):
@@ -33,7 +33,7 @@ def hasMatchedConversion(ele,convs,bsp):
 def matchesConversion(ele, conv):
     allowCkfMatch=True
     for track in conv.tracks():
-        print ele.gsfTrack().id().id(), track.id().id(), ele.closestCtfTrackRef().id().id()
+        print(ele.gsfTrack().id().id(), track.id().id(), ele.closestCtfTrackRef().id().id())
         if ele.gsfTrack().isNonnull() and ele.gsfTrack().id().id()==track.id().id() and ele.gsfTrack().key() == track.key():
             return True
         elif allowCkfMatch and ele.closestCtfTrackRef().isNonnull() and ele.closestCtfTrackRef().id().id()==track.id().id() and ele.closestCtfTrackRef().key() == track.key():

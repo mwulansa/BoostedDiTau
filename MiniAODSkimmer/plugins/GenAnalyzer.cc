@@ -68,14 +68,20 @@ private:
   edm::EDGetTokenT< std::vector<PileupSummaryInfo> > pileupSummaryToken_;
   
   edm::LumiReWeighting LumiWeights_;
+  edm::LumiReWeighting LumiWeightsUp_;
+  edm::LumiReWeighting LumiWeightsDown_;
   
   TTree *tree;
   int event_;
   float genWeight_;
   float puWeight_;
+  float puWeightUp_;
+  float puWeightDown_;
   genJetInfo genJetInfo_;
 
   std::string puDataFileName_;
+  std::string puDataFileNameUp_;
+  std::string puDataFileNameDown_;
   std::string puMCFileName_;
 };
 
@@ -85,12 +91,16 @@ GenAnalyzer::GenAnalyzer(const edm::ParameterSet& iConfig) :
   genEventInfoToken_(consumes< GenEventInfoProduct >(iConfig.getParameter<edm::InputTag>("genEventInfo"))),
   pileupSummaryToken_(consumes< std::vector<PileupSummaryInfo> >(iConfig.getParameter<edm::InputTag>("pileupSummaryInfo"))),
   puDataFileName_((iConfig.getParameter<edm::FileInPath>("puDataFileName")).fullPath()),
+  puDataFileNameUp_((iConfig.getParameter<edm::FileInPath>("puDataFileNameUp")).fullPath()),
+  puDataFileNameDown_((iConfig.getParameter<edm::FileInPath>("puDataFileNameDown")).fullPath()),
   puMCFileName_((iConfig.getParameter<edm::FileInPath>("puMCFileName")).fullPath()){
   
   usesResource(TFileService::kSharedResource);
   //std::cout << "debug0 " << puDataFileName_ << ' ' << puMCFileName_ << '\n';
 
   LumiWeights_ = edm::LumiReWeighting(puMCFileName_, puDataFileName_, "input_Event/N_TrueInteractions", "pileup");
+  LumiWeightsUp_ = edm::LumiReWeighting(puMCFileName_, puDataFileNameUp_, "input_Event/N_TrueInteractions", "pileup");
+  LumiWeightsDown_ = edm::LumiReWeighting(puMCFileName_, puDataFileNameDown_, "input_Event/N_TrueInteractions", "pileup");
   
 }
 
@@ -108,6 +118,8 @@ void GenAnalyzer::beginJob() {
   tree->Branch("event", &event_, "event/I");
   tree->Branch("genWeight", &genWeight_, "genWeight/F");
   tree->Branch("puWeight", &puWeight_, "puWeight/F");
+  tree->Branch("puWeightUp", &puWeightUp_, "puWeightUp/F");
+  tree->Branch("puWeightDown", &puWeightDown_, "puWeightDown/F");
   tree->Branch("genJetInfo", &genJetInfo_, "pt/F:eta/F:phi/F:mass/F");
   
   genParticleInfoData = new GenParticleInfoDS();
@@ -153,6 +165,8 @@ void GenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
     } 
   }
   puWeight_ = LumiWeights_.weight( Tnpv );
+  puWeightUp_ = LumiWeightsUp_.weight( Tnpv );
+  puWeightDown_ = LumiWeightsDown_.weight( Tnpv );
 
 
   if (GenJets.size() > 0) {
@@ -164,17 +178,17 @@ void GenAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
   
   for (unsigned int i = 0; i < GenParticles.size(); ++i) {
     auto genParticle = GenParticles[i];
-    if ((genParticle.isHardProcess() and abs(genParticle.pdgId()) == 15) or genParticle.isDirectHardProcessTauDecayProductFinalState()) {
-      GenParticleInfo g;
-      g.pt = genParticle.pt();
-      g.eta = genParticle.eta();
-      g.phi = genParticle.phi();
-      g.mass = genParticle.mass();
-      g.pdgid = genParticle.pdgId();
-      g.isfinalstate = true;
-      if (abs(genParticle.pdgId()) == 15 and genParticle.isHardProcess()) g.isfinalstate = false;
-      genParticleInfoData->push_back(g);
-    }
+    GenParticleInfo g;
+    g.ishardprocess = genParticle.isHardProcess();
+    g.isdirecthardprocesstaudecayproductfinalstate = genParticle.isDirectHardProcessTauDecayProductFinalState();
+    g.pt = genParticle.pt();
+    g.eta = genParticle.eta();
+    g.phi = genParticle.phi();
+    g.mass = genParticle.mass();
+    g.pdgid = genParticle.pdgId();
+    if (genParticle.isDirectHardProcessTauDecayProductFinalState()) g.isfinalstate = true;
+    if (abs(genParticle.pdgId()) == 15 and genParticle.isHardProcess()) g.isfinalstate = false;
+    genParticleInfoData->push_back(g);
   }
   
   tree->Fill();

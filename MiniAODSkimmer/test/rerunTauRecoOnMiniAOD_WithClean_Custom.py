@@ -17,7 +17,8 @@ from FWCore.ParameterSet.MassReplace import massSearchReplaceParam
 
 
 import sys
-inputfile = sys.argv[2]
+#inputfile = sys.argv[2]
+inputfile = 'file:root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_10_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_10_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root'
 #runSignal = True
 #runSignal=False
 ###########
@@ -92,7 +93,13 @@ print('\t Max events:', process.maxEvents.input.value())
 
 if runType == 'signal':
     readFiles.extend([
-        inputfile
+        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_400toInf_slc6_amd64_gcc630_MINIAOD_1.root',
+        'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/UL2017/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD/TCP_m_30_w_1_htj_100to400_slc6_amd64_gcc630_MINIAOD_2.root',
+#        'root://cmseos.fnal.gov//store/user/mwulansa/Events/TCP_m10_ht_100to400_slc7_amd64_gcc10_MINIAOD/TCP_m10_ht_100to400_slc7_amd64_gcc10_MINIAOD_1.root',
+#        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_2.root',
+#        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_3.root',
+#        'file:root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD/TCP_m_50_w_1_htj_0to100_slc6_amd64_gcc630_MINIAOD_4.root'
+#        inputfile
         #'file:patMiniAOD_standard.root'
         #'file:/eos/uscms/store/user/rhabibul/HtoAA/HtoAAMiniAODTest/4B62060B-AC2A-694A-8E56-B484FD41BCB2.root'
         #'file:/eos/uscms/store/user/rhabibul/HtoAA/HtoAAMiniAODTest/04905A2E-7E30-1942-A815-EC9B488A4391.root'

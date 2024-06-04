@@ -125,6 +125,8 @@ MuMuForEmbeddingSelector::produce(edm::Event& iEvent, const edm::EventSetup& iSe
    prod->push_back(chosenZCand->daughter(0)->masterClone().castTo<pat::MuonRef>());
    prod->push_back(chosenZCand->daughter(1)->masterClone().castTo<pat::MuonRef>());
    iEvent.put(std::move(prod));
+
+   //std::cout << "----------debug0\n";
 }
 
 

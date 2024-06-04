@@ -17,7 +17,7 @@ if len(sys.argv)>2:
 else:
     outputFileDir = "./plots/"
 outputFileName = outputFileDir+"h_Gen_"+inputFileListName.split("/")[-1].replace(".txt",".root")
-print outputFileName
+print(outputFileName)
 
 handleGenJet = Handle ('vector<reco::GenJet>')
 labelGenJet = ('slimmedGenJets')
@@ -49,14 +49,14 @@ hMuMuSelected_dRjtMu = ROOT.TH1F ("hMuMuSelected_dRjtMu", "#mu - #mu delta R;#de
 
 inputFileNames=open(inputFileList, 'r')
 for inputFileName in inputFileNames:
-    print inputFileName.replace("\n","")
+    print(inputFileName.replace("\n",""))
     inputFileName=inputFileName.replace("\n","")
     f=ROOT.TFile.Open(inputFileName)
 
     if not f.IsZombie():
         events=Events(inputFileName)
     else:
-        print "Can't Open File: "+inputFileName
+        print("Can't Open File: "+inputFileName)
         continue
 
     for event in events:
@@ -98,7 +98,7 @@ for inputFileName in inputFileNames:
                     mum+=[particle]
 
             if len(mup)>1 or len(mum)>1:
-                print "Gen Particle Selection is Wrong!"
+                print("Gen Particle Selection is Wrong!")
         
             if len(mup)==1 and len(mum)==1:
                 muons=[mup[0],mum[0]]

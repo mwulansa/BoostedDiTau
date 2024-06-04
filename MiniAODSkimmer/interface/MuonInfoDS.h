@@ -8,6 +8,7 @@ struct MuonInfo {
   int id; // 1 loose, 2 medium, 3 tight
   float iso; 
   float dxy, dz;
+  bool trigmatch;
 
   bool operator<(const MuonInfo& m) const { return pt < m.pt; }
   

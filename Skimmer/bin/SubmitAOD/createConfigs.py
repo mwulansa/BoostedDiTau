@@ -5,31 +5,29 @@ configDir="./configs/"
 
 #os.mkdir(configDir)
 
-storagePrefix1='root://cmseos.fnal.gov//eos/uscms/store/user/nbower/Events/ALP/'
-storagePrefix2='root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/ALP/RunIISummer19UL17RECO/'
-#storagePrefix2 = 'root://cmseos.fnal.gov//eos/uscms/store/user/zhangj/events/UpsilonTauTau/RunIISummer19UL17RECO/'
 
-#masses=[10, 30, 50]
-#masses=[10]
-masses = [30, 50]
-jobs=np.linspace(100,1,100)
+if len(sys.argv) == 2:
+    inputFileListName = sys.argv[1]
+    inputFileList = inputFileListName
+    inputSampleName = inputFileList
+if len(sys.argv) > 2 :
+    inputFileListName = sys.argv[1]
+    inputFileList = inputFileListName
+    sample = sys.argv[2]
+    mass = sys.argv[3]
+    inputSampleName = inputFileListName.replace("filelists/"+sample+"/"+mass+"/", "")
 
-for mass in masses:
-    for job in jobs:
-        configFile = "ALP_m"+str(mass)+"_w1_htjmin400_RunIISummer19UL17RECO_MINIAODSIM_"+str(int(job))+".py"
-        inputFile = "TCP_m"+str(mass)+"_w1_htjmin400_RunIISummer19UL17RECO_AODSIM_"+str(int(job))+".root"
-        #configFile = "UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_MINIAODSIM_"+str(int(job))+".py"
-        #inputFile = "UpsilonToTauTau_pthatmin400_RunIISummer19UL17RECO_AODSIM_"+str(int(job))+".root"
-        print configDir+configFile
-        cfg=open(configDir+configFile, "w")
-        cfg.writelines("""
+OutputDir = 'root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/Backgrounds/RunIIUL17/'
+
+cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "w")
+cfg.writelines("""
+
+
 import FWCore.ParameterSet.Config as cms
-
 
 from FWCore.ParameterSet.VarParsing import VarParsing
 options = VarParsing('analysis')
 
-inputFiles = '"""+storagePrefix2+inputFile+"""'
 
 options.maxEvents = -1
 options.register('skipEvents', 0, VarParsing.multiplicity.singleton, VarParsing.varType.int, "Events to skip")
@@ -42,11 +40,13 @@ options.register('numThreads', 8, VarParsing.multiplicity.singleton, VarParsing.
 
 if options.isStandard:
     options.doSlimming = 0
-    outputFile = '"""+storagePrefix2+configFile.replace("MINIAODSIM", "MINIAODSIM_Standard").replace(".py",".root")+"""'
+
+    outputFile = '"""+OutputDir+"""standard_"""+inputSampleName.replace(".txt",".root")+"""'
 elif options.doSlimming:
-    outputFile = '"""+storagePrefix2+configFile.replace("MINIAODSIM", "MINIAODSIM_Slimmed").replace(".py",".root")+"""'
+    outputFile = '"""+OutputDir+"""slimmed_"""+inputSampleName.replace(".txt",".root")+"""'
 else:
-    outputFile = '"""+storagePrefix2+configFile.replace("MINIAODSIM", "MINIAODSIM_Cleaned").replace(".py",".root")+"""'
+    outputFile = '"""+OutputDir+"""cleaned_"""+inputSampleName.replace(".txt",".root")+"""'
+
 
 options.parseArguments()
 
@@ -78,10 +78,25 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(inputFiles),
+    fileNames = cms.untracked.vstring(
+
+""")
+
+cfg.close()
+
+inputFileNames = open(inputFileList, 'r')
+for inputFileName in inputFileNames:
+    print inputFileName
+    cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "a")
+    cfg.writelines("""'"""+inputFileName.replace("\n","")+"""',\n""")
+
+cfg.close()
+cfg = open (configDir+inputSampleName.replace(".txt", ".py"), "a")
+cfg.writelines("""
+),
     secondaryFileNames = cms.untracked.vstring(),
     skipEvents = cms.untracked.uint32(options.skipEvents),
-)
+    )
 
 process.options = cms.untracked.PSet(
 )
@@ -166,13 +181,6 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_v6', '')
 
-#patAlgosToolsTask.add(process.selectedPATTausElectronCleaned)
-
-# Path and EndPath definitions
-#process.tauId = cms.Path(
-#    process.rerunMvaIsolationSequence *
-#    getattr(process,updatedTauName)
-#)
 
 # Path and EndPath definitions
 process.Flag_trackingFailureFilter = cms.Path(process.goodVertices+process.trackingFailureFilter)
@@ -205,6 +213,7 @@ process.Flag_CSCTightHalo2015Filter = cms.Path(process.CSCTightHalo2015Filter)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.MINIAODSIMoutput_step = cms.EndPath(process.MINIAODSIMoutput)
 
+
 # Schedule definition
 process.schedule = cms.Schedule(process.Flag_HBHENoiseFilter,process.Flag_HBHENoiseIsoFilter,process.Flag_CSCTightHaloFilter,process.Flag_CSCTightHaloTrkMuUnvetoFilter,process.Flag_CSCTightHalo2015Filter,process.Flag_globalTightHalo2016Filter,process.Flag_globalSuperTightHalo2016Filter,process.Flag_HcalStripHaloFilter,process.Flag_hcalLaserEventFilter,process.Flag_EcalDeadCellTriggerPrimitiveFilter,process.Flag_EcalDeadCellBoundaryEnergyFilter,process.Flag_ecalBadCalibFilter,process.Flag_goodVertices,process.Flag_eeBadScFilter,process.Flag_ecalLaserCorrFilter,process.Flag_trkPOGFilters,process.Flag_chargedHadronTrackResolutionFilter,process.Flag_muonBadTrackFilter,process.Flag_BadChargedCandidateFilter,process.Flag_BadPFMuonFilter,process.Flag_BadChargedCandidateSummer16Filter,process.Flag_BadPFMuonSummer16Filter,process.Flag_trkPOG_manystripclus53X,process.Flag_trkPOG_toomanystripclus53X,process.Flag_trkPOG_logErrorTooManyClusters,process.Flag_METFilters,process.endjob_step,process.MINIAODSIMoutput_step)
 process.schedule.associate(process.patTask)
@@ -224,7 +233,7 @@ process=convertToUnscheduled(process)
 # customisation of the process.
 
 # Automatic addition of the customisation function from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC 
+
 
 #call to customisation function miniAOD_customizeAllMC imported from PhysicsTools.PatAlgos.slimming.miniAOD_tools
 process = miniAOD_customizeAllMC(process)
@@ -271,4 +280,9 @@ patAlgosToolsTask.add(process.tauId)
 process.MINIAODSIMEventContent.outputCommands += [
     'keep *_slimmedTausNewID_*_*',
 ]
-        """)
+
+dump_file = open('dump_config.py','w')
+dump_file.write(process.dumpPython())
+
+""")
+
