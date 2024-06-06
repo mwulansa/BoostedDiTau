@@ -1,6 +1,7 @@
 *.py~
 *.py#
-*.txt
 *.txt~
 *.txt#
 *.root
+*.cc~
+*.h~

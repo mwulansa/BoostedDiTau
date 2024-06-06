@@ -38,22 +38,22 @@ private:
   virtual void endRun(edm::Run const&, edm::EventSetup const&) override {}
   virtual void analyze(edm::Event const&, edm::EventSetup const&) override;
 
-  edm::EDGetTokenT< double > prefweight_token;
-  edm::EDGetTokenT< double > prefweightup_token;
-  edm::EDGetTokenT< double > prefweightdown_token;
+  edm::EDGetTokenT< float > prefweight_token;
+  edm::EDGetTokenT< float > prefweightup_token;
+  edm::EDGetTokenT< float > prefweightdown_token;
 
   TTree *tree;
 
   int event_;
-  double prefiringweight_;
-  double prefiringweightup_;
-  double prefiringweightdown_;
+  float prefiringweight_;
+  float prefiringweightup_;
+  float prefiringweightdown_;
 };
 
 TCPPrefiring::TCPPrefiring(const edm::ParameterSet& iConfig):
-  prefweight_token(consumes< double >(iConfig.getParameter<edm::InputTag>("PrefiringWeight"))),
-  prefweightup_token(consumes< double >(iConfig.getParameter<edm::InputTag>("PrefiringWeightUp"))),
-  prefweightdown_token(consumes< double >(iConfig.getParameter<edm::InputTag>("PrefiringWeightDown"))){
+  prefweight_token(consumes< float >(iConfig.getParameter<edm::InputTag>("PrefiringWeight"))),
+  prefweightup_token(consumes< float >(iConfig.getParameter<edm::InputTag>("PrefiringWeightUp"))),
+  prefweightdown_token(consumes< float >(iConfig.getParameter<edm::InputTag>("PrefiringWeightDown"))){
   usesResource(TFileService::kSharedResource);
 }
 
@@ -70,9 +70,9 @@ void TCPPrefiring::beginJob(){
   tree = fs->make<TTree>("prefiringTree", "");
 
   tree->Branch("event", &event_, "event/I");
-  tree->Branch("prefiringWeight", &prefiringweight_, "prefiringWeight/D");
-  tree->Branch("prefiringWeightUp", &prefiringweightup_, "prefiringWeightUp/D");
-  tree->Branch("prefiringWeightDown", &prefiringweightdown_, "prefiringWeightDown/D");
+  tree->Branch("prefiringWeight", &prefiringweight_, "prefiringWeight/F");
+  tree->Branch("prefiringWeightUp", &prefiringweightup_, "prefiringWeightUp/F");
+  tree->Branch("prefiringWeightDown", &prefiringweightdown_, "prefiringWeightDown/F");
 
 }
 
@@ -80,17 +80,17 @@ void TCPPrefiring::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
 
   int Event = iEvent.id().event();
 
-  edm::Handle< double > theprefweight;
+  edm::Handle< float > theprefweight;
   iEvent.getByToken(prefweight_token, theprefweight ) ;
-  double _prefiringweight =(*theprefweight);
+  float _prefiringweight =(*theprefweight);
 
-  edm::Handle< double > theprefweightup;
+  edm::Handle< float > theprefweightup;
   iEvent.getByToken(prefweightup_token, theprefweightup ) ;
-  double _prefiringweightup =(*theprefweightup);
+  float _prefiringweightup =(*theprefweightup);
 
-  edm::Handle< double > theprefweightdown;
+  edm::Handle< float > theprefweightdown;
   iEvent.getByToken(prefweightdown_token, theprefweightdown ) ;
-  double _prefiringweightdown =(*theprefweightdown);
+  float _prefiringweightdown =(*theprefweightdown);
 
   event_ = Event;
   prefiringweight_ = _prefiringweight;
