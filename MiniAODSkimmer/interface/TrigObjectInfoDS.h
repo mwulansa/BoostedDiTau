@@ -5,7 +5,7 @@
 
 struct TrigObjectInfo {
   float pt, eta, phi, mass;
-  int isIsoEle,  isEleJet, isEleLeg, isJetLeg, isEle, isSingleJet, isJetHT, isPhoton, isMu, isIsoMu, isMuonEGmu, isMuonEGe, isMuonEG, isMuTrig;
+  int isIsoEle,  isEleJet, isEleLeg, isJetLeg, isEle, isSingleJet, isJetHT, isPhoton, isPhoton175, isMu, isIsoMu, isMuonEGmu, isMuonEGnoDZmu, isMuonEGe, isMuonEGnoDZe, isMuonEGnoDZ, isMuonEG, isMuTrig;
 };
 
 typedef class std::vector<TrigObjectInfo> TrigObjectInfoDS;

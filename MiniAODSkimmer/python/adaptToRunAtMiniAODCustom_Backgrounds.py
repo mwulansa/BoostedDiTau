@@ -228,8 +228,8 @@ def addTauReRecoCustom(process):
 
     process.prefiringweight = l1PrefiringWeightProducer.clone(
         TheJets = cms.InputTag("updatedJets"), #this should be the slimmedJets collection with up to date JECs !                          
-        DataEraECAL = cms.string("UL2017BtoF"),
-        DataEraMuon = cms.string("20172018"),
+        DataEraECAL = cms.string("UL2016preVFP"),
+        DataEraMuon = cms.string("2016preVFP"),
         UseJetEMPt = cms.bool(False),
         PrefiringRateSystematicUnctyECAL = cms.double(0.2),
         PrefiringRateSystematicUnctyMuon = cms.double(0.2)
@@ -1127,10 +1127,10 @@ def addTCPNtuples(process):
                                         GenJetCollection = cms.InputTag("slimmedGenJets"),
                                         genEventInfo = cms.InputTag("generator"),
                                         pileupSummaryInfo = cms.InputTag("slimmedAddPileupInfo"),
-                                        puDataFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root"),
-                                        puDataFileNameUp = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-72400ub-99bins.root"),
-                                        puDataFileNameDown = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-66000ub-99bins.root"),
-                                        puMCFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupMC2017.root")
+                                        puDataFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2016-preVFP-69200ub-99bins.root"),
+                                        puDataFileNameUp = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2016-preVFP-72400ub-99bins.root"),
+                                        puDataFileNameDown = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2016-preVFP-66000ub-99bins.root"),
+                                        puMCFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupMC2016.root")
     )
     process.tcpGenNtupleMaker = cms.Path(process.tcpGenNtuples)
 
