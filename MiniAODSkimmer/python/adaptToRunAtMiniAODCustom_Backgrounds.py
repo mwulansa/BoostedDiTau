@@ -226,7 +226,25 @@ def addTauReRecoCustom(process):
     #     massSearchReplaceAnyInputTag(process.miniAODTausSequenceLowPtElectronCleaned,cms.InputTag(label_old,"category"),cms.InputTag(label_new,"category"))
     
 
-    process.prefiringweight = l1PrefiringWeightProducer.clone(
+    # process.prefiringweight = l1PrefiringWeightProducer.clone( #2016 preVFP
+    # TheJets = cms.InputTag("updatedJets"), #this should be the slimmedJets collection with up to date JECs !
+    # DataEraECAL = cms.string("UL2016preVFP"),
+    # DataEraMuon = cms.string("2016preVFP"),
+    # UseJetEMPt = cms.bool(False),
+    # PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+    # PrefiringRateSystematicUnctyMuon = cms.double(0.2)
+    # )
+
+    # process.prefiringweight = l1PrefiringWeightProducer.clone( #2016 postVFP
+    # TheJets = cms.InputTag("updatedJets"), #this should be the slimmedJets collection with up to date JECs !
+    # DataEraECAL = cms.string("UL2016postVFP"),
+    # DataEraMuon = cms.string("2016postVFP"),
+    # UseJetEMPt = cms.bool(False),
+    # PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+    # PrefiringRateSystematicUnctyMuon = cms.double(0.2)
+    # )
+
+    process.prefiringweight = l1PrefiringWeightProducer.clone( #2017
         TheJets = cms.InputTag("updatedJets"), #this should be the slimmedJets collection with up to date JECs !                          
         DataEraECAL = cms.string("UL2016preVFP"),
         DataEraMuon = cms.string("2016preVFP"),
@@ -234,6 +252,15 @@ def addTauReRecoCustom(process):
         PrefiringRateSystematicUnctyECAL = cms.double(0.2),
         PrefiringRateSystematicUnctyMuon = cms.double(0.2)
     )
+
+    # process.prefiringweight = l1PrefiringWeightProducer.clone( #2018
+    #     TheJets = cms.InputTag("updatedJets"), #this should be the slimmedJets collection with up to date JECs !                          
+    #     DataEraECAL = cms.string("None"),
+    #     DataEraMuon = cms.string("20172018"),
+    #     UseJetEMPt = cms.bool(False),
+    #     PrefiringRateSystematicUnctyECAL = cms.double(0.2),
+    #     PrefiringRateSystematicUnctyMuon = cms.double(0.2)
+    # )
 
     process.prefiringweightMaker = cms.Path(process.prefiringweight)
 
@@ -1131,6 +1158,15 @@ def addTCPNtuples(process):
                                         puDataFileNameUp = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2016-preVFP-72400ub-99bins.root"),
                                         puDataFileNameDown = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2016-preVFP-66000ub-99bins.root"),
                                         puMCFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupMC2016.root")
+                                        #puDataFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root"),
+                                        #puDataFileNameUp = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2018-72400ub-99bins.root"),
+                                        #puDataFileNameDown = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2018-66000ub-99bins.root"),
+                                        #puMCFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupMC2018.root")
+
+                                        # puDataFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root"),
+                                        # puDataFileNameUp = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-72400ub-99bins.root"),
+                                        # puDataFileNameDown = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupHistogram-goldenJSON-13tev-2017-66000ub-99bins.root"),
+                                        # puMCFileName = cms.FileInPath("BoostedDiTau/MiniAODSkimmer/data/PileupMC2017.root")
     )
     process.tcpGenNtupleMaker = cms.Path(process.tcpGenNtuples)
 

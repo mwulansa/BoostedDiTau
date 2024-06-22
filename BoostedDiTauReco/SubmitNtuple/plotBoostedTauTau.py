@@ -3,22 +3,30 @@ import numpy as np
 import time
 import correctionlib
 from array import array
-# import BJetSF
-
-year = '2017'
+import BJetSF
+import argparse
 
 start_time = time.time()
 
-opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
+# opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
 
 # sfDir = os.path.join('/cvmfs','cms.cern.ch','rsync','cms-nanoAOD','jsonpog-integration','POG','BTV','2017_UL')
 # btvjson = correctionlib.CorrectionSet.from_file(os.path.join(sfDir, 'btagging.json.gz'))
+
+parser = argparse.ArgumentParser(description="Main plotting script for the boosted AToTauTau analysis")
+parser.add_argument("-i", "--inputfile", type=str, required=True, help="Text file with list of ntuple root files")
+parser.add_argument("-s", "--sample", type=str, required=True, help="Type of sample. Accepted: MC, SingleMuon, SingleElectron, MuonEG, TCP")
+parser.add_argument("--folder", type=str, help="Output folder. Default is /output/")
+parser.add_argument("--year", type=str, required=True, help="Year. Accepted: 2016preVFP, 2016postVFP, 2017, 2018")
+args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
+
+year = args.year
 
 outputTitle = "h_plotBoostedTauTau_"+year
 
 isData = 0
 
-if "-b" in opts:
+if args.sample == "MC":
     isData = 0
     isMuonEGData = False
     isSingleMuonData = False
@@ -26,7 +34,7 @@ if "-b" in opts:
     isJetHTSample = False
     isSignal = False
 
-if "-s" in opts:
+elif args.sample == "TCP":
     isData = 0
     isMuonEGData = False
     isSingleMuonData = False
@@ -34,7 +42,7 @@ if "-s" in opts:
     isJetHTSample = False
     isSignal = True
 
-if "-dm" in opts:
+elif args.sample == "SingleMuon":
     isData = 1
     isMuonEGData = False
     isSingleMuonData = True
@@ -42,7 +50,7 @@ if "-dm" in opts:
     isJetHTSample = False
     isSignal = False
 
-if "-dg" in opts:
+elif args.sample == "MuonEG":
     isData = 1
     isMuonEGData = True    
     isSingleMuonData = False
@@ -50,14 +58,16 @@ if "-dg" in opts:
     isJetHTSample = False
     isSignal = False
 
-if "-de" in opts:
+elif args.sample == "SingleElectron":
     isData = 1
     isMuonEGData = False
     isSingleMuonData = False
     isSingleElectronData = True
     isJetHTSample = False
     isSignal = False
-
+else:
+    print("Please choose one of the accepted samples.")
+    exit()
 
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/JetInfoDS.h"')
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/MuonInfoDS.h"')
@@ -66,11 +76,11 @@ ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/TauInfoDS.h"
 ROOT.gInterpreter.Declare('#include "../../MiniAODSkimmer/interface/TrigObjectInfoDS.h"')
 ROOT.gInterpreter.ProcessLine('#include "../../../TauAnalysis/ClassicSVfit/test/testClassicSVfit.h"')
 
-inputFileListName=sys.argv[1]
+inputFileListName=args.inputfile
 inputFileList=inputFileListName
 
-if len(sys.argv)>2 and not sys.argv[2].startswith("-"):
-    outputFileDir=sys.argv[2]
+if args.folder is not None:
+    outputFileDir=args.folder
 else:
     outputFileDir = "./output/"
 
@@ -104,7 +114,6 @@ event_cut = {
     'vismass' : 5.0,
     'mass' : 12.0
 }
-
 
 #define histograms here
 
@@ -152,6 +161,11 @@ def book_histogram():
     h['ETau_Nominal_OS_dRcut_highMET_lowMt_DM1_mSVFitTauPt'] = ROOT.TH2F ("ETau_Nominal_OS_dRcut_highMET_lowMt_DM1_mSVFitTauPt", "ETau mSVFIt,tauPt (DM1); mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
     h['ETau_Nominal_OS_dRcut_highMET_lowMt_DM10_mSVFitTauPt'] = ROOT.TH2F ("ETau_Nominal_OS_dRcut_highMET_lowMt_DM10_mSVFitTauPt", "ETau mSVFIt,tauPt (DM10); mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
 
+    h['ETau_ttEnriched_OS_dRcut_highMET_lowMt_mSVFitTauPt'] = ROOT.TH2F ("ETau_ttEnriched_OS_dRcut_highMET_lowMt_mSVFitTauPt", "ETau mSVFIt,tauPt ; mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
+    h['ETau_ttEnriched_OS_dRcut_highMET_lowMt_DM0_mSVFitTauPt'] = ROOT.TH2F ("ETau_ttEnriched_OS_dRcut_highMET_lowMt_DM0_mSVFitTauPt", "ETau mSVFIt,tauPt (DM0); mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
+    h['ETau_ttEnriched_OS_dRcut_highMET_lowMt_DM1_mSVFitTauPt'] = ROOT.TH2F ("ETau_ttEnriched_OS_dRcut_highMET_lowMt_DM1_mSVFitTauPt", "ETau mSVFIt,tauPt (DM1); mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
+    h['ETau_ttEnriched_OS_dRcut_highMET_lowMt_DM10_mSVFitTauPt'] = ROOT.TH2F ("ETau_ttEnriched_OS_dRcut_highMET_lowMt_DM10_mSVFitTauPt", "ETau mSVFIt,tauPt (DM10); mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
+
     h['ETau_Altered_OS_dRcut_highMET_lowMt_mSVFitTauPt'] = ROOT.TH2F ("ETau_Altered_OS_dRcut_highMET_lowMt_mSVFitTauPt", "ETau mSVFIt,tauPt ; mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
     h['ETau_Altered_OS_dRcut_highMET_lowMt_DM0_mSVFitTauPt'] = ROOT.TH2F ("ETau_Altered_OS_dRcut_highMET_lowMt_DM0_mSVFitTauPt", "ETau mSVFIt,tauPt (DM0) ; mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
     h['ETau_Altered_OS_dRcut_highMET_lowMt_DM1_mSVFitTauPt'] = ROOT.TH2F ("ETau_Altered_OS_dRcut_highMET_lowMt_DM1_mSVFitTauPt", "ETau mSVFIt,tauPt (DM1); mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
@@ -161,7 +175,17 @@ def book_histogram():
     h['ETau_VLoose_OS_dRcut_highMET_lowMt_mSVFitTauPt'] = ROOT.TH2F ("ETau_VLoose_OS_dRcut_highMET_lowMt_mSVFitTauPt", "ETau mSVFIt,tauPt ; mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
     h['ETau_noID_OS_dRcut_highMET_lowMt_mSVFitTauPt'] = ROOT.TH2F ("ETau_noID_OS_dRcut_highMET_lowMt_mSVFitTauPt", "ETau mSVFIt,tauPt ; mSVFit (GeV) ; tauPt (GeV)", 150, 0, 150, 500, 0, 500)
 
+    h['MuTau_Nbjet_T'] = ROOT.TH1F ("MuTau_Nbjet_T", "MuTau_Nbjet_T : N_{bjet} : Events", 10, 0, 10)
+    h['MuTau_Nbjet_M'] = ROOT.TH1F ("MuTau_Nbjet_M", "MuTau_Nbjet_M : N_{bjet} : Events", 10, 0, 10)
+    h['MuTau_Nbjet_L'] = ROOT.TH1F ("MuTau_Nbjet_L", "MuTau_Nbjet_L : N_{bjet} : Events", 10, 0, 10)
 
+    h['ETau_Nbjet_T'] = ROOT.TH1F ("ETau_Nbjet_T", "ETau_Nbjet_T : N_{bjet} : Events", 10, 0, 10)
+    h['ETau_Nbjet_M'] = ROOT.TH1F ("ETau_Nbjet_M", "ETau_Nbjet_M : N_{bjet} : Events", 10, 0, 10)
+    h['ETau_Nbjet_L'] = ROOT.TH1F ("ETau_Nbjet_L", "ETau_Nbjet_L : N_{bjet} : Events", 10, 0, 10)
+
+    h['EMu_Nbjet_T'] = ROOT.TH1F ("EMu_Nbjet_T", "EMu_Nbjet_T : N_{bjet} : Events", 10, 0, 10)
+    h['EMu_Nbjet_M'] = ROOT.TH1F ("EMu_Nbjet_M", "EMu_Nbjet_M : N_{bjet} : Events", 10, 0, 10)
+    h['EMu_Nbjet_L'] = ROOT.TH1F ("EMu_Nbjet_L", "EMu_Nbjet_L : N_{bjet} : Events", 10, 0, 10)
 
 def book_event_histogram(region):
 
@@ -174,8 +198,18 @@ def book_event_histogram(region):
     h[region+"_MetPt"] = ROOT.TH1F (region+"_MetPt", region+"_MetPt ; MET (GeV) ; Events ", 500, 0, 500)
     h[region+"_Mt"] = ROOT.TH1F (region+"_Mt", region+"_Mt ; M_{T} (GeV) ; Events ", 150, 0, 150)
     h[region+"_Nj"] = ROOT.TH1F (region+"_Nj", region+"_Nj ; N_{j} ; Events ", 10, 0, 10)
+    h[region+"_Nbj"] = ROOT.TH1F (region+"_Nbj", region+"_Nbj ; N_{bjet} ; Events ", 10, 0, 10)
     h[region+"_dRl"] = ROOT.TH1F (region+"_dRl", region+"_dRl ; dR(leptons) ; Events", 100, 0, 5)
     h[region+"_dRj"] = ROOT.TH1F (region+"_dRj", region+"_dRj ; dR(jet, ditau) ; Events", 100, 0, 5)
+    h[region+"_Lepton1EtaPhi"] = ROOT.TH2F (region+"_Lepton1EtaPhi", region+"_Lepton1EtaPhi ; Eta ; Phi", 100, -3.0, 3.0, 100, -pi, pi)
+    h[region+"_Lepton1Eta"] = ROOT.TH1F (region+"_Lepton1Eta", region+"_Lepton1Eta ; Eta ; Events", 100, -3.0, 3.0)
+    h[region+"_Lepton1Phi"] = ROOT.TH1F (region+"_Lepton1Phi", region+"_Lepton1Phi ; Phi ; Events", 100, -pi, pi)
+    h[region+"_Lepton2Eta"] = ROOT.TH1F (region+"_Lepton2Eta", region+"_Lepton2Eta ; Eta ; Events", 100, -3.0, 3.0)
+    h[region+"_Lepton2Phi"] = ROOT.TH1F (region+"_Lepton2Phi", region+"_Lepton2Phi ; Phi ; Events", 100, -pi, pi)
+    h[region+"_JetEtaPhi"] = ROOT.TH2F (region+"_JetEtaPhi", region+"_JetEtaPhi ; Eta ; Phi", 100, -3.0, 3.0, 100, -pi, pi)
+    h[region+"_JetEta"] = ROOT.TH1F (region+"_JetEta", region+"_JetEta ; LeadingJet Eta ; Events", 100, -3.0, 3.0)
+    h[region+"_JetPhi"] = ROOT.TH1F (region+"_JetPhi", region+"_JetPhi ; LeadingJet Phi ; Events", 100, -pi, pi)
+
 
 
 def define_eff_histogram(region):
@@ -239,31 +273,76 @@ def plot_variable(region, l1, l2, j, m, sf=1):
     h[region+"_MetPt"].Fill(m.Pt(), weight*sf)
     h[region+"_Mt"].Fill(Mt(l1, m), weight*sf)
     h[region+"_Nj"].Fill(len(s_jet), weight*sf)
+    h[region+"_Nbj"].Fill(len(s_bjet), weight*sf)
     h[region+"_dRl"].Fill(l1.DeltaR(l2), weight*sf)
     h[region+"_dRj"].Fill(j.DeltaR(l1+l2), weight*sf)
+    h[region+"_Lepton1Eta"].Fill(l1.Eta(), weight*sf)
+    h[region+"_Lepton1Phi"].Fill(l1.Phi(), weight*sf)
+    h[region+"_Lepton2Eta"].Fill(l2.Eta(), weight*sf)
+    h[region+"_Lepton2Phi"].Fill(l2.Phi(), weight*sf)
+    h[region+"_JetEta"].Fill(j.Eta(), weight*sf)
+    h[region+"_JetPhi"].Fill(j.Phi(), weight*sf)
+    h[region+"_Lepton1EtaPhi"].Fill(l1.Eta(), l1.Phi(), weight*sf)
+    h[region+"_JetEtaPhi"].Fill(j.Eta(), j.Phi(), weight*sf)
 
 
-def select_Nm1(l1, l2, ljet, ms, channel):
+def select_Nm1(l1, l2, ljet, ms, l2dm, channel):
 
     plot_variable(channel+'_OS', l1, l2, ljet, ms)
 
     if channel == 'EMu' or channel == 'MuMu' or channel == 'EE':
 
         if ms.Pt() >= 100 :
-            plot_variable(channel+'_OS_highMET', l1, l2, ljet , ms)
-        if pass_deltaR(l1, l2, ljet, channel) == 1 :
-            plot_variable(channel+'_OS_dRcut', l1, l2, ljet , ms)
+            if ljet.Pt() > event_cut['jetpt'] :
+                if pass_deltaR(l1, l2, ljet, channel) == 1 :
+                    mSVFit = get_svfit(l1, l2, 0, channel)
+                    if mSVFit >= event_cut['mass'] :
+                        plot_variable(channel+'_NmBjetcut', l1, l2, ljet , ms) #Nmbjetveto
+
+        if len(s_bjet) == 0:
+            if ms.Pt() >= 100 :
+                mSVFit = get_svfit(l1, l2, 0, channel)
+                if mSVFit >= event_cut['mass'] :
+                    if pass_deltaR(l1, l2, ljet, channel) == 1 :
+                        plot_variable(channel+'_NmJetcut', l1, l2, ljet , ms) #Nmjet
+                    if ljet.Pt() > event_cut['jetpt'] : 
+                        plot_variable(channel+'_NmdRcut', l1, l2, ljet , ms) #NmDRcut
+            if pass_deltaR(l1, l2, ljet, channel) == 1 :
+                mSVFit = get_svfit(l1, l2, 0, channel)
+                if mSVFit >= event_cut['mass'] :
+                    if ljet.Pt() > event_cut['jetpt'] : 
+                        plot_variable(channel+'_NmMETcut', l1, l2, ljet , ms) #NmMET
 
     else:
 
         if ms.Pt() >= 100 :
             if pass_deltaR(l1, l2, ljet, channel) == 1 :
-                plot_variable(channel+'_OS_dRcut_highMET', l1, l2, ljet , ms)
-        if Mt(l1,ms) <= 50.0 :
-            if pass_deltaR(l1, l2, ljet, channel) == 1 :
-                plot_variable(channel+'_OS_dRcut_lowMt', l1, l2, ljet , ms)
+                if ljet.Pt() > event_cut['jetpt'] :
+                    if Mt(l1,ms) <= 50.0 :
+                        mSVFit = get_svfit(l1, l2, l2dm, channel)
+                        if mSVFit >= event_cut['mass'] :
+                            plot_variable(channel+'_NmBjetcut', l1, l2, ljet , ms) #Nmbjetveto
+
+        if len(s_bjet) == 0:
             if ms.Pt() >= 100 :
-                plot_variable(channel+'_OS_highMET_lowMt', l1, l2, ljet , ms)
+                if pass_deltaR(l1, l2, ljet, channel) == 1 :
+                    mSVFit = get_svfit(l1, l2, l2dm, channel)
+                    if mSVFit >= event_cut['mass'] :
+                        if Mt(l1,ms) <= 50.0 :
+                            plot_variable(channel+'_NmJetcut', l1, l2, ljet , ms) #Nmjetcut
+                        if ljet.Pt() > event_cut['jetpt'] :
+                            plot_variable(channel+'_NmMtcut', l1, l2, ljet , ms) #NmMt
+            if Mt(l1,ms) <= 50.0 :
+                if pass_deltaR(l1, l2, ljet, channel) == 1 :
+                    mSVFit = get_svfit(l1, l2, l2dm, channel)
+                    if mSVFit >= event_cut['mass'] :
+                        if ljet.Pt() > event_cut['jetpt'] :
+                            plot_variable(channel+'_NmMETcut', l1, l2, ljet , ms) #NmMET
+                if ms.Pt() >= 100 :
+                    mSVFit = get_svfit(l1, l2, l2dm, channel)
+                    if mSVFit >= event_cut['mass'] :
+                        if ljet.Pt() > event_cut['jetpt'] :
+                            plot_variable(channel+'_NmdRcut', l1, l2, ljet , ms) #NmDRcut
 
 
 
@@ -366,8 +445,6 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
     tau = get_TLorentzVector(s_tauMuclean[0])
     jet = get_TLorentzVector(s_jet[0])
 
-    if jet.Pt() < event_cut['jetpt'] : return isMuTau
-
     isMatchedMu = False
     for ito in tOisMu:
         if isMatchedMu == True: break
@@ -382,6 +459,10 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
         # -------- Validation regions ----------
 
         if s_muon[0].charge*s_tauMuclean[0].charge > 0: #SS
+
+            if jet.Pt() < event_cut['jetpt'] : return isMuTau
+            if len(s_bjet) > 0 : return isMuTau
+
             if pass_deltaR(mu, tau, jet, 'MuTau') == 1 : #dRcut
                 if met.Pt() < event_cut['metcut'] : #lowMET
                     if Mt(mu,met) < event_cut['mtcut'] : # lowMt
@@ -394,6 +475,13 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
 
         if s_muon[0].charge*s_tauMuclean[0].charge < 0: #OS
             plot_variable('MuTau_'+tauid+'_OS', mu, tau, jet, met)
+
+            select_Nm1(mu, tau, jet, met, s_tauMuclean[0].decaymode,'MuTau')
+
+            if len(s_bjet) > 0 : return isMuTau
+
+            if jet.Pt() < event_cut['jetpt'] : return isMuTau
+
             if pass_deltaR(mu, tau, jet, 'MuTau') == 1 : #dRcut
                 plot_variable('MuTau_'+tauid+'_OS_dRcut', mu, tau, jet, met)
                 if met.Pt() < event_cut['metcut'] : #lowMET
@@ -433,6 +521,11 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
                             if isData == 0 :
 
                                 if tauid == "Nominal":
+
+                                    h['MuTau_Nbjet_T'].Fill(len(s_bjet), weight)
+                                    h['MuTau_Nbjet_M'].Fill(len(s_bjet_med), weight)
+                                    h['MuTau_Nbjet_L'].Fill(len(s_bjet_loose), weight)
+
                                     plot_variable('MuTau_SR_'+year+'_OS_Boost', mu, tau, jet, met)
                                     plot_svfit('MuTau_SR_'+year+'_OS_Boost', mSVFit)
 
@@ -458,10 +551,11 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
 
 
     if isSingleMuonEvent == True :
-        if s_muon[0].charge*s_tauMuclean[0].charge < 0: #OS                                                                                  
-            if baseline_selection(mu, tau, jet, met, 'MuTau') == 1 :
-                if Mt(mu,met) < event_cut['mtcut'] :
-                    isMuTau = 1
+        if s_muon[0].charge*s_tauMuclean[0].charge < 0: #OS
+            if len(s_bjet) == 0 :
+                if baseline_selection(mu, tau, jet, met, 'MuTau') == 1 :
+                    if Mt(mu,met) < event_cut['mtcut'] :
+                        isMuTau = 1
 
     return isMuTau
 
@@ -499,8 +593,6 @@ def emu_channel():
         mu = get_TLorentzVector(s_isomuon[0])
         jet = get_TLorentzVector(s_jet[0])
 
-        if jet.Pt() < event_cut['jetpt'] : return isEMu
-
         isMatchedMu = False
         for ito in tOisMu:
             if isMatchedMu == True: break
@@ -535,6 +627,10 @@ def emu_channel():
         if ( isSingleMuonData == True and SingleMuonHLT == True ) or \
            ( isMuonEGData == True and MuonEGHLT == True and SingleMuonHLT == False ) or \
            ( isData == 0 and ( SingleMuonHLT == True or MuonEGHLT == True ) ) :
+
+            select_Nm1(e, mu, jet, met, 0, 'EMu')
+
+            if jet.Pt() < event_cut['jetpt'] : return isEMu
 
             # ------------- For closure test ------------
 
@@ -599,16 +695,20 @@ def emu_channel():
 
                     bweight = BJetSF.get_weight("highMET", s_jet) if isData == 0 and isSignal == 0 else 1
 
-                    if len(s_bjet) == 0 :
-                        mSVFit = get_svfit(e, mu, 0, 'EMu')
-                        if mSVFit >= event_cut['mass']:
+                    mSVFit = get_svfit(e, mu, 0, 'EMu')
+                    if mSVFit >= event_cut['mass']:
+
+                        h['EMu_Nbjet_T'].Fill(len(s_bjet), weight)
+                        h['EMu_Nbjet_M'].Fill(len(s_bjet_med), weight)
+                        h['EMu_Nbjet_L'].Fill(len(s_bjet_loose), weight)
+
+                        if len(s_bjet) == 0 :
                             plot_variable('EMu_OS_highMET_bjetveto', e, mu, jet, met, bweight)
                             plot_svfit('EMu_OS_highMET_bjetveto', mSVFit, bweight)
                             plot_variable('EMu_SR_'+year+'_OS_Boost', e, mu, jet, met, bweight)
                             plot_svfit('EMu_SR_'+year+'_OS_Boost', mSVFit, bweight)
-                    else:
-                        mSVFit = get_svfit(e, mu, 0, 'EMu')
-                        if mSVFit >= event_cut['mass']:
+                            isEMu = 1
+                        else:
                             plot_variable('EMu_OS_highMET_bjet', e, mu, jet, met, bweight)
                             plot_svfit('EMu_OS_highMET_bjet', mSVFit, bweight)
 
@@ -667,8 +767,10 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
 
     if ( isData == 0 or isSingleElectronData == True ) and ( isEleJetEvent == True or isPhotonEvent == True ):
 
-
         if s_electron[0].charge*s_tauEclean[0].charge > 0: #SS Validation Regions
+            
+            if len(s_bjet) > 0 : return isETau
+            
             if pass_deltaR(e, tau, jet, 'ETau') == 1 : #dRcut
                 if met.Pt() >= 100.0 : # highMET
                     if Mt(e,met) <= 50.0 : #lowMt
@@ -681,6 +783,10 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
                     else: #highMt                                                                                                            
                         plot_variable('ETau_'+tauid+'_SS_dRcut_lowMET_highMt', e, tau, jet , met)
         else: #OS
+            select_Nm1(e, tau, jet, met, s_tauEclean[0].decaymode, 'ETau')
+
+            if len(s_bjet) > 0 : return isETau
+
             if pass_deltaR(e, tau, jet, 'ETau') == 1 : #dRcut
                 plot_variable('ETau_'+tauid+'_OS_dRcut', e, tau, jet, met)
                 if met.Pt() >= 100.0 : # highMET       
@@ -733,8 +839,14 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
                                     h['ETau_'+tauid+'_OS_dRcut_highMET_lowMt_DM10_mSVFitTauPt'].Fill(mSVFit, tau.Pt(), weight)
 
                                 if tauid == "Nominal":
+
+                                    h['ETau_Nbjet_T'].Fill(len(s_bjet), weight)
+                                    h['ETau_Nbjet_M'].Fill(len(s_bjet_med), weight)
+                                    h['ETau_Nbjet_L'].Fill(len(s_bjet_loose), weight)
+
                                     plot_variable('ETau_SR_'+year+'_OS_Boost', e, tau, jet, met)
                                     plot_svfit('ETau_SR_'+year+'_OS_Boost', mSVFit)
+                                    
                             
                 else: #lowMET                                                                                         
                     if Mt(e,met) <= 50.0 : #lowMt                                                                                             
@@ -750,10 +862,85 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
     return isETau
         
 
+def book_gen_hists(region):
+
+    h[region+"_Mass"] = ROOT.TH1F(region+"_Mass", region+"_Mass ; Mass (GeV) ; Events", 100, 0, 100)
+    h[region+"_Lepton1Pt"] = ROOT.TH1F(region+"_Lepton1Pt", region+"_Lepton1Pt ; Lepton1Pt (GeV) ; Events", 500, 0, 500)
+    h[region+"_Lepton2Pt"] = ROOT.TH1F(region+"_Lepton2Pt", region+"_Lepton1Pt ; Lepton2Pt (GeV) ; Events", 500, 0, 500)
+    h[region+"_dRl"] = ROOT.TH1F(region+"_dRl", region+"_dRl ; dR(l1,l2) ; Events", 100, 0, 5)
+    h[region+"_dRj"] = ROOT.TH1F(region+"_dRj", region+"_dRl ; dR(jet,leptons) ; Events", 100, 0, 5)
+    h[region+"_MET"] = ROOT.TH1F(region+"_MET", region+"_MET ; MET (GeV) ; Events", 1000, 0, 1000)
+    h[region+"_JetPt"] = ROOT.TH1F(region+"_JetPt", region+"_JetPt ; JetPt (GeV) ; Events", 2000, 0, 2000)
+
+
+def plot_for_gen(region, genl1, genl2, genjet):
+
+    h[region+"_Mass"].Fill((genl1+genl2).M(), genweight)
+    h[region+"_Lepton1Pt"].Fill(genl1.Pt(), genweight)
+    h[region+"_Lepton2Pt"].Fill(genl2.Pt(), genweight)
+    h[region+"_dRl"].Fill(genl1.DeltaR(genl2), genweight)
+    h[region+"_dRj"].Fill(genjet.DeltaR(genl1+genl2), genweight)
+    h[region+"_JetPt"].Fill(genjet.Pt(), genweight)
+
+    met = (genjet-genl1+genl2).Pt()
+    h[region+"_MET"].Fill(met, genweight)
+
+
+def gen_tautau(gen_tau, genJet):
+
+    genTau1 = get_TLorentzVector(gen_tau[0])
+    genTau2 = get_TLorentzVector(gen_tau[1])
+
+    plot_for_gen("Gen_TauTau", genTau1, genTau2, genJet)
+
+def gen_emu(gen_e, gen_mu, genJet):
+
+    genE = get_TLorentzVector(gen_e[0])
+    genMu = get_TLorentzVector(gen_mu[0])
+ 
+    plot_for_gen("Gen_EMu", genE, genMu, genJet)
+
+
+def gen_mutau(gen_mu, gen_tau, gen_tanu, genJet):
+
+    genMu = get_TLorentzVector(gen_mu[0])
+    genTau = ROOT.TLorentzVector()
+    genNu = ROOT.TLorentzVector()
+
+    if gen_mu[0].pdgid == 13: 
+        genTau.SetPtEtaPhiM(gen_tau[0].pt, gen_tau[0].eta, gen_tau[0].phi, gen_tau[0].mass) if gen_tau[0].pdgid==-15 else genTau.SetPtEtaPhiM(gen_tau[1].pt, gen_tau[1].eta, gen_tau[1].phi, gen_tau[1].mass)
+        genNu.SetPtEtaPhiM(gen_tanu[0].pt, gen_tanu[0].eta, gen_tanu[0].phi, gen_tanu[0].mass) if gen_tanu[0].pdgid==-16 else genNu.SetPtEtaPhiM(gen_tanu[1].pt, gen_tanu[1].eta, gen_tanu[1].phi, gen_tanu[1].mass)
+    else:
+        genTau.SetPtEtaPhiM(gen_tau[0].pt, gen_tau[0].eta, gen_tau[0].phi, gen_tau[0].mass) if gen_tau[0].pdgid==15 else genTau.SetPtEtaPhiM(gen_tau[1].pt, gen_tau[1].eta, gen_tau[1].phi, gen_tau[1].mass)
+        genNu.SetPtEtaPhiM(gen_tanu[0].pt, gen_tanu[0].eta, gen_tanu[0].phi, gen_tanu[0].mass) if gen_tanu[0].pdgid==16 else genNu.SetPtEtaPhiM(gen_tanu[1].pt, gen_tanu[1].eta, gen_tanu[1].phi, gen_tanu[1].mass)
+        
+    plot_for_gen("Gen_MuTau", genMu, genTau-genNu, genJet)
+
+
+def gen_etau(gen_e, gen_tau, gen_tanu, genJet):        
+
+    genE = get_TLorentzVector(gen_e[0])
+    genTau = ROOT.TLorentzVector()
+    genNu = ROOT.TLorentzVector()
+
+    if gen_e[0].pdgid == 11: 
+        genTau.SetPtEtaPhiM(gen_tau[0].pt, gen_tau[0].eta, gen_tau[0].phi, gen_tau[0].mass) if gen_tau[0].pdgid==-15 else genTau.SetPtEtaPhiM(gen_tau[1].pt, gen_tau[1].eta, gen_tau[1].phi, gen_tau[1].mass)
+        genNu.SetPtEtaPhiM(gen_tanu[0].pt, gen_tanu[0].eta, gen_tanu[0].phi, gen_tanu[0].mass) if gen_tanu[0].pdgid==-16 else genNu.SetPtEtaPhiM(gen_tanu[1].pt, gen_tanu[1].eta, gen_tanu[1].phi, gen_tanu[1].mass)
+    else:
+        genTau.SetPtEtaPhiM(gen_tau[0].pt, gen_tau[0].eta, gen_tau[0].phi, gen_tau[0].mass) if gen_tau[0].pdgid==15 else genTau.SetPtEtaPhiM(gen_tau[1].pt, gen_tau[1].eta, gen_tau[1].phi, gen_tau[1].mass)
+        genNu.SetPtEtaPhiM(gen_tanu[0].pt, gen_tanu[0].eta, gen_tanu[0].phi, gen_tanu[0].mass) if gen_tanu[0].pdgid==16 else genNu.SetPtEtaPhiM(gen_tanu[1].pt, gen_tanu[1].eta, gen_tanu[1].phi, gen_tanu[1].mass)
+        
+    plot_for_gen("Gen_ETau", genE, genTau-genNu, genJet)
+
+
 
 book_histogram()
 region_list = []
 svfit_plot = []
+book_gen_hists("Gen_EMu")
+book_gen_hists("Gen_MuTau")
+book_gen_hists("Gen_ETau")
+book_gen_hists("Gen_TauTau")
 
 for key in h.keys():
     h[key].Sumw2()
@@ -863,6 +1050,7 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     gen_e = []
     gen_tanu = []
     gen_enu = []
+    gen_munu = []
 
     if isData == 0 :
         if genParticle.size() > 0 :
@@ -873,7 +1061,17 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                     if abs(igen.pdgid) == 11 : gen_e+=[igen]
                     if abs(igen.pdgid) == 12 : gen_enu+=[igen]
                     if abs(igen.pdgid) == 16 : gen_tanu+=[igen]
+                    if abs(igen.pdgid) == 14 : gen_munu+=[igen]
                 if igen.ishardprocess and abs(igen.pdgid) == 15: gen_tau+=[igen]
+
+    GenJets = fchain.GetBranch("genJetInfo")
+    genjet_pt = GenJets.GetLeaf('pt').GetValue()
+    genjet_eta = GenJets.GetLeaf('eta').GetValue()
+    genjet_phi = GenJets.GetLeaf('phi').GetValue()
+    genjet_mass = GenJets.GetLeaf('mass').GetValue()
+    
+    genJet= ROOT.TLorentzVector()
+    genJet.SetPtEtaPhiM(genjet_pt, genjet_eta, genjet_phi, genjet_mass)
 
     #-------------- Trigger Objects ---------------#
 
@@ -932,6 +1130,8 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
     s_jet = []
     s_bjet = []
+    s_bjet_loose = []
+    s_bjet_med = []
 
     iht = 0
 
@@ -947,6 +1147,10 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                     if ijet.deepjet >= 0.7476:
                         h['hBJetPt'].Fill(ijet.pt, weight) 
                         s_bjet+=[ijet]
+                    if ijet.deepjet > 0.3040:
+                        s_bjet_med+=[ijet]
+                    if ijet.deepjet > 0.0532:
+                        s_bjet_loose+=[ijet]
 
     s_muon = []
     s_isomuon = []
@@ -956,7 +1160,7 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
         for i in range(muons.size()):
             imuon = muons.at(i)
             if abs(imuon.eta) < 2.4 :
-                if imuon.id >= 2: #loose Muons
+                if imuon.id >= 1: #loose Muons
                     h['hMuonPt'].Fill(imuon.pt, weight) 
                     s_muon+=[imuon]
                     if imuon.iso <= 0.25:
@@ -1030,6 +1234,18 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
     # ---------- Event Selections --------- #
 
+    # if len(gen_tau) == 2 :
+    #     gen_tautau(gen_tau, genJet)
+
+    # if len(gen_e) == 1 and len(gen_mu) == 0 and len(gen_tau) > 0:
+    #     gen_etau(gen_e, gen_tau, gen_tanu, genJet)
+
+    # if len(gen_e) == 1 and len(gen_mu) == 1:
+    #     gen_emu(gen_e, gen_mu, genJet)
+
+    # if len(gen_e) == 0 and len(gen_mu) == 1 and len(gen_tau) > 0:
+    #     gen_mutau(gen_mu, gen_tau, gen_tanu, genJet)
+
     if len(s_isomuon) >= 2 and len(s_jet) >= 1 and len(s_bjet) == 0: 
         if mumu_channel() == 1 : continue
 
@@ -1050,8 +1266,6 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
     if len(s_electron) >= 1 and len(s_tauEcleanNom) >= 1 and len(s_jet) >=1 and len(s_bjet) == 0 :
         etau_channel(s_tauEcleanNom, "Nominal")
-
-
 
 
 out.cd()

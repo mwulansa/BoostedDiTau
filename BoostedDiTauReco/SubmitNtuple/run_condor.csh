@@ -2,8 +2,9 @@
 
 echo "Starting job on " `date` #Date/time of start of job                                                                                                     
 echo "Running on: `uname -a`" #Condor job is running on this node                                                                                             
-echo "System software: `cat /etc/redhat-release`" #Operating System on that node                                                                              
-source /cvmfs/cms.cern.ch/cmsset_default.csh  ## if a bash script, use .sh instead of .csh   
+echo "System software: `cat /etc/redhat-release`" #Operating System on that node
+
+source /cvmfs/cms.cern.ch/cmsset_default.csh  ## if a bash script, use .sh instead of .csh
 
 xrdcp root://cmseos.fnal.gov//store/user/zhangj/CMSSW_12X.tgz CMSSW_12X.tgz
 
@@ -21,13 +22,10 @@ echo "Arguments passed to this script are: "
 echo "  script: $1"
 echo "  input files: $2"
 echo "  output dir: $3"
-echo "  output file: $4"
-echo "  mode: $5"
-python3 ${1} ${2} ${3} ${5} 
+echo "  mode: $4"
+echo "  year: $5"
 
-ls
-
-#xrdcp -f ${3}h_studySVFit_${4} /uscms/home/jingyu/nobackup/TCP/boostedDiTauReco/CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/datahists/h_studySVFit_${4}
+python3 ${1} -i ${2} --folder ${3} -s ${4} --year ${5}
 
 cd ${_CONDOR_SCRATCH_DIR}
 rm -rf CMSSW_12_1_1
