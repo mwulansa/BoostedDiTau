@@ -4,9 +4,10 @@ setenv SAMPLE $1
 setenv YEAR $2
 setenv MODE $3
 
-setenv CMSSW_BASE /uscms/home/mwulansa/nobackup/TCPNtuple/CMSSW_12_1_0_pre3
+setenv CMSSW_BASE /uscms/home/jingyu/nobackup/TCP/boostedDiTauReco/CMSSW_12_1_1
 
-setenv OutputPrefix root://cmseos.fnal.gov//store/user/mwulansa/UL2017/
+setenv OutputPrefix root://cmseos.fnal.gov//store/user/zhangj/UL2017/
+
 
 setenv offset 0
 

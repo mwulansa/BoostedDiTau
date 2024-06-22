@@ -2,7 +2,7 @@
 
 setenv MAKETARBALL 1
 
-setenv CMSSW_BASE /uscms/home/mwulansa/nobackup/TCPNtuple/CMSSW_12_1_0_pre3
+setenv CMSSW_BASE /uscms/home/jingyu/nobackup/TCP/boostedDiTauReco/CMSSW_12_1_1
 
 if ($MAKETARBALL == 1) then
 
@@ -10,7 +10,7 @@ if ($MAKETARBALL == 1) then
 
     cd $CMSSW_BASE/src
 
-    tar --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/output" --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.Log" --exclude="*stderr" --exclude="*stdout" --exclude="*.log" --exclude="*.tar.gz" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/MiniAODSkimmer/test/crabConfig" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/filelists_bkp" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/filelists_old" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/sampleList" -zcvf ../../CMSSW_12X.tgz ../../CMSSW_12_1_0_pre3/
+    tar --exclude="../../CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/output" --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.Log" --exclude="*stderr" --exclude="*stdout" --exclude="*.log" --exclude="*.tar.gz" --exclude="../../CMSSW_12_1_1/src/BoostedDiTau/MiniAODSkimmer/test/crabConfig" --exclude="../../CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/filelists_bkp" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/filelists_old" --exclude="../../CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/sampleList" -zcvf ../../CMSSW_12X.tgz ../../CMSSW_12_1_1/
 
     mkdir ../../tarToUpdate
 
@@ -28,13 +28,13 @@ if ($MAKETARBALL == 1) then
 
     tar -zxvf CMSSW_12X.tgz
 
-    cp EMu_OS_BTag_Efficiency.root  CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
-    cp egammaEffi_EGM2D_UL2018.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
-    cp egammaEffi_EGM2D_UL2017.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
+    cp EMu_OS_BTag_Efficiency.root  CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
+    cp egammaEffi_EGM2D_UL2018.root CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
+    cp egammaEffi_EGM2D_UL2017.root CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
 
-    tar -zcvf ../CMSSW_12X.tgz CMSSW_12_1_0_pre3/
+    tar -zcvf ../CMSSW_12X.tgz CMSSW_12_1_1/
 
-    eosrm /store/user/mwulansa/DIS/TCPAnalysis/CMSSW_12X.tgz
+    #eosrm /store/user/mwulansa/DIS/TCPAnalysis/CMSSW_12X.tgz
 
     xrdcp ../CMSSW_12X.tgz root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/CMSSW_12X.tgz
 

@@ -1,73 +1,149 @@
 import os, sys, random
-import numpy as np
+#import numpy as np
 
-version = "v4"
-#sampleType = 'signal'
-sampleType = 'data'
-
-if sampleType == 'signal':
-    SAMPLES = ["TCP_m50_HT-0to100", "TCP_m50_HT-100to400", "TCP_m50_HT-400toInf", "TCP_m30_HT-0to100", "TCP_m30_HT-100to400", "TCP_m30_HT-400toInf"]
-
-if sampleType == 'background' :
-#    SAMPLES = ["DYJetsToLL_M-50", "DYJetsToLL_M-10to50", "TTJets", "WW", "WZ", "ZZ", "WJetsToLNu"]
-#    SAMPLES = ["DYJetsToLL_M-50_HT-70to100","DYJetsToLL_M-50_HT-100to200","DYJetsToLL_M-50_HT-200to400","DYJetsToLL_M-50_HT-400to600","DYJetsToLL_M-50_HT-600to800","DYJetsToLL_M-50_HT-800to1200","DYJetsToLL_M-50_HT-1200to2500","DYJetsToLL_M-50_HT-2500toInf"]
-
-#    SAMPLES = ["WJetsToLNu_HT-70to100","WJetsToLNu_HT-100to200","WJetsToLNu_HT-200to400","WJetsToLNu_HT-400to600","WJetsToLNu_HT-600to800","WJetsToLNu_HT-800to1200","WJetsToLNu_HT-1200to2500","WJetsToLNu_HT-2500toInf"]
-
-    SAMPLES = ["QCD_HT-50to100","QCD_HT-100to200","QCD_HT-200to300","QCD_HT-300to500","QCD_HT-500to700","QCD_HT-700to1000","QCD_HT-1000to1500","QCD_HT-1500to2000"]
-
-if sampleType == 'data' :
-    data = ['SingleMuon']
-    SAMPLES = [ d+"_2017"+p for d in data for p in ['B','C','D','E','F']]
+version = "v5"
  
-DATASETS = {
-    "TCP_m50_HT-0to100" : {"/TCP_m50_HT-0to100.txt"},
-    "TCP_m50_HT-100to400" : {"/TCP_m50_HT-100to400.txt"},
-    "TCP_m50_HT-400toInf" : {"/TCP_m50_HT-400toInf.txt"},
-    "TCP_m30_HT-0to100" : {"/TCP_m30_HT-0to100.txt"},
-    "TCP_m30_HT-100to400" : {"/TCP_m30_HT-100to400.txt"},
-    "TCP_m30_HT-400toInf" : {"/TCP_m30_HT-400toInf.txt"},
-    "DYJetsToLL_M-50_HT-70to100" : {"/DYJetsToLL_M-50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "DYJetsToLL_M-50_HT-100to200" : {"/DYJetsToLL_M-50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "DYJetsToLL_M-50_HT-200to400" : {"/DYJetsToLL_M-50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "DYJetsToLL_M-50_HT-400to600" : {"/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "DYJetsToLL_M-50_HT-600to800" : {"/DYJetsToLL_M-50_HT-600to800_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "DYJetsToLL_M-50_HT-800to1200" : {"/DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "DYJetsToLL_M-50_HT-1200to2500" : {"/DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "DYJetsToLL_M-50_HT-2500toInf" : {"/DYJetsToLL_M-50_HT-2500toInf_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "TTJets" : {"/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM"},
-    "WW" : {"/WW_TuneCP5_13TeV-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "WZ" : {"/WZ_TuneCP5_13TeV-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "ZZ" : {"/ZZ_TuneCP5_13TeV-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "WJetsToLNu_HT-70to100" : {"/WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "WJetsToLNu_HT-100to200" : {"/WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "WJetsToLNu_HT-200to400" : {"/WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "WJetsToLNu_HT-400to600" : {"/WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "WJetsToLNu_HT-600to800" : {"/WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "WJetsToLNu_HT-800to1200" : {"/WJetsToLNu_HT-800To1200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM"},
-    "WJetsToLNu_HT-1200to2500" : {"/WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "WJetsToLNu_HT-2500toInf" : {"/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/MINIAODSIM"},
-    "QCD_HT-50to100" : {"/QCD_HT50to100_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "QCD_HT-100to200" : {"/QCD_HT100to200_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "QCD_HT-200to300" : {"/QCD_HT200to300_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "QCD_HT-300to500" : {"/QCD_HT300to500_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "QCD_HT-500to700" : {"/QCD_HT500to700_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "QCD_HT-700to1000" : {"/QCD_HT700to1000_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "QCD_HT-1000to1500" : {"/QCD_HT1000to1500_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"},
-    "QCD_HT-1500to2000" : {"/QCD_HT1500to2000_TuneCP5_PSWeights_13TeV-madgraph-pythia8/RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1/MINIAODSIM"}
+SAMPLES = {
+    'ALP_M-10_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-10_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-10_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-10_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-15_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-15_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-15_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-15_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-20_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-20_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-20_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-20_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-25_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-25_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-25_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-25_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-30_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-30_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-30_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-30_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-35_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-35_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-35_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-35_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-40_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-40_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-40_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-40_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-45_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-45_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-45_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-45_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-50_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-50_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-50_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-50_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-55_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-55_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-55_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-55_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-60_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-60_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-60_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-60_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-65_HT-100to400_preVFPUL16':'/AToTauTau_ALP_M-65_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'ALP_M-65_HT-400toInf_preVFPUL16':'/AToTauTau_ALP_M-65_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-70to100_preVFPUL16':'/DYJetsToLL_M-4to50_HT-70to100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-100to200_preVFPUL16':'/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v3/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-200to400_preVFPUL16':'/DYJetsToLL_M-4to50_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-400to600_preVFPUL16':'/DYJetsToLL_M-4to50_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v3/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-600toInf_preVFPUL16':'/DYJetsToLL_M-4to50_HT-600toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-70to100_preVFPUL16':'/DYJetsToLL_M-50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-100to200_preVFPUL16':'/DYJetsToLL_M-50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-200to400_preVFPUL16':'/DYJetsToLL_M-50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-400to600_preVFPUL16':'/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-600to800_preVFPUL16':'/DYJetsToLL_M-50_HT-600to800_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-800to1200_preVFPUL16':'/DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-1200to2500_preVFPUL16':'/DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-2500toInf_preVFPUL16':'/DYJetsToLL_M-50_HT-2500toInf_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'WJetsToLNu_HT-70to100_preVFPUL16':'/WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11_ext1-v3/MINIAODSIM',
+    'WJetsToLNu_HT-100to200_preVFPUL16':'/WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11_ext1-v3/MINIAODSIM',
+    'WJetsToLNu_HT-200to400_preVFPUL16':'/WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11_ext1-v3/MINIAODSIM',
+    'WJetsToLNu_HT-400to600_preVFPUL16':'/WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11_ext2-v3/MINIAODSIM',
+    'WJetsToLNu_HT-600to800_preVFPUL16':'/WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11_ext2-v3/MINIAODSIM',
+    'WJetsToLNu_HT-800to1200_preVFPUL16':'/WJetsToLNu_HT-800To1200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11_ext2-v3/MINIAODSIM',
+    'WJetsToLNu_HT-1200to2500_preVFPUL16':'/WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11_ext2-v3/MINIAODSIM',
+    'WJetsToLNu_HT-2500toInf_preVFPUL16':'/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11_ext2-v3/MINIAODSIM',
+    'TTTo2L2Nu_preVFPUL16':'/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'TTToHadronic_preVFPUL16':'/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'TTToSemiLeptonic_preVFPUL16':'/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'ST_s_preVFPUL16':'/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'ST_t_antitop_preVFPUL16':'/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v3/MINIAODSIM',
+    'ST_t_top_preVFPUL16':'/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v3/MINIAODSIM',
+    'ST_tW_antitop_preVFPUL16':'/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'ST_tW_top_preVFPUL16':'/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'WW_preVFPUL16':'/WW_TuneCP5_13TeV-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'WZ_preVFPUL16':'/WZ_TuneCP5_13TeV-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'ZZ_preVFPUL16':'/ZZ_TuneCP5_13TeV-pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/MINIAODSIM',
+    'UpsilonToMuMu_pth80To200_preVFPUL16':'/UpsilonToMuMu_pth80To200_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'UpsilonToMuMu_pth200To400_preVFPUL16':'/UpsilonToMuMu_pth200To400_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'UpsilonToMuMu_pth400ToInf_preVFPUL16':'/UpsilonToMuMu_pth400ToInf_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'UpsilonToTauTau_pth80To200_preVFPUL16':'/UpsilonToTauTau_pth80To200_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'UpsilonToTauTau_pth200To400_preVFPUL16':'/UpsilonToTauTau_pth200To400_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
+    'UpsilonToTauTau_pth400ToInf_preVFPUL16':'/UpsilonToTauTau_pth400ToInf_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/MINIAODSIM',
 }
 
-#print(list(DATASETS))
+SAMPLES2 = {
+    'ALP_M-10_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-10_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-10_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-10_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-15_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-15_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-15_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-15_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-20_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-20_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-20_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-20_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-25_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-25_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-25_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-25_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-30_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-30_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-30_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-30_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-35_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-35_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-35_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-35_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-40_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-40_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-40_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-40_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-45_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-45_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-45_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-45_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-50_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-50_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-50_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-50_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-55_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-55_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-55_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-55_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-60_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-60_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-60_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-60_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-65_HT-100to400_postVFPUL16':'/AToTauTau_ALP_M-65_HT-100to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'ALP_M-65_HT-400toInf_postVFPUL16':'/AToTauTau_ALP_M-65_HT-400toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-70to100_postVFPUL16':'/DYJetsToLL_M-4to50_HT-70to100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-100to200_postVFPUL16':'/DYJetsToLL_M-4to50_HT-100to200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-200to400_postVFPUL16':'/DYJetsToLL_M-4to50_HT-200to400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-400to600_postVFPUL16':'/DYJetsToLL_M-4to50_HT-400to600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-4to50_HT-600toInf_postVFPUL16':'/DYJetsToLL_M-4to50_HT-600toInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-70to100_postVFPUL16':'/DYJetsToLL_M-50_HT-70to100_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-100to200_postVFPUL16':'/DYJetsToLL_M-50_HT-100to200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-200to400_postVFPUL16':'/DYJetsToLL_M-50_HT-200to400_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-400to600_postVFPUL16':'/DYJetsToLL_M-50_HT-400to600_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-600to800_postVFPUL16':'/DYJetsToLL_M-50_HT-600to800_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-800to1200_postVFPUL16':'/DYJetsToLL_M-50_HT-800to1200_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-1200to2500_postVFPUL16':'/DYJetsToLL_M-50_HT-1200to2500_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'DYJetsToLL_M-50_HT-2500toInf_postVFPUL16':'/DYJetsToLL_M-50_HT-2500toInf_TuneCP5_PSweights_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'WJetsToLNu_HT-70to100_postVFPUL16':'/WJetsToLNu_HT-70To100_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17_ext1-v3/MINIAODSIM',
+    'WJetsToLNu_HT-100to200_postVFPUL16':'/WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17_ext1-v3/MINIAODSIM',
+    'WJetsToLNu_HT-200to400_postVFPUL16':'/WJetsToLNu_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17_ext1-v3/MINIAODSIM',
+    'WJetsToLNu_HT-400to600_postVFPUL16':'/WJetsToLNu_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17_ext2-v3/MINIAODSIM',
+    'WJetsToLNu_HT-600to800_postVFPUL16':'/WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17_ext2-v3/MINIAODSIM',
+    'WJetsToLNu_HT-800to1200_postVFPUL16':'/WJetsToLNu_HT-800To1200_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17_ext2-v3/MINIAODSIM',
+    'WJetsToLNu_HT-1200to2500_postVFPUL16':'/WJetsToLNu_HT-1200To2500_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17_ext2-v3/MINIAODSIM',
+    'WJetsToLNu_HT-2500toInf_postVFPUL16':'/WJetsToLNu_HT-2500ToInf_TuneCP5_13TeV-madgraphMLM-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17_ext2-v3/MINIAODSIM',
+    'TTTo2L2Nu_postVFPUL16':'/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'TTToHadronic_postVFPUL16':'/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'TTToSemiLeptonic_postVFPUL16':'/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'ST_s_postVFPUL16':'/ST_s-channel_4f_leptonDecays_TuneCP5_13TeV-amcatnlo-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'ST_t_antitop_postVFPUL16':'/ST_t-channel_antitop_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v3/MINIAODSIM',
+    'ST_t_top_postVFPUL16':'/ST_t-channel_top_4f_InclusiveDecays_TuneCP5_13TeV-powheg-madspin-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v3/MINIAODSIM',
+    'ST_tW_antitop_postVFPUL16':'/ST_tW_antitop_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'ST_tW_top_postVFPUL16':'/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'WW_postVFPUL16':'/WW_TuneCP5_13TeV-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'WZ_postVFPUL16':'/WZ_TuneCP5_13TeV-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'ZZ_postVFPUL16':'/ZZ_TuneCP5_13TeV-pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1/MINIAODSIM',
+    'UpsilonToMuMu_pth80To200_postVFPUL16':'/UpsilonToMuMu_pth80To200_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'UpsilonToMuMu_pth200To400_postVFPUL16':'/UpsilonToMuMu_pth200To400_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'UpsilonToMuMu_pth400ToInf_postVFPUL16':'/UpsilonToMuMu_pth400ToInf_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'UpsilonToTauTau_pth80To200_postVFPUL16':'/UpsilonToTauTau_pth80To200_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'UpsilonToTauTau_pth200To400_postVFPUL16':'/UpsilonToTauTau_pth200To400_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+    'UpsilonToTauTau_pth400ToInf_postVFPUL16':'/UpsilonToTauTau_pth400ToInf_TuneCP5_13TeV_pythia8/RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2/MINIAODSIM',
+}
 
-for sample in SAMPLES:
-    fname = "crabConfig_"+sample+"_UL17.py"
+
+for sample in SAMPLES2.keys():
+    fname = "crabConfig_"+sample+".py"
     print(fname)
     f = open(fname, "w")
-    if sampleType == 'data':
-        f.writelines("""
-from CRABClient.UserUtilities import config                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-config = config()                                                                                                                                                                                                                                                                       
-config.General.requestName = 'Ntuple_"""+sample+"""-UL2017_MiniAODv2-v1_"""+version+"""'
+
+    f.writelines("""
+from CRABClient.UserUtilities import config
+
+config = config()
+config.General.requestName = 'Ntuple_"""+sample+"""_miniAODv2_"""+version+"""'
 
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
@@ -76,81 +152,18 @@ config.General.transferLogs = False
 config.JobType.pluginName = 'Analysis'
 config.JobType.allowUndistributedCMSSW = True
 
-config.JobType.psetName = '../rerunTauRecoOnMiniAOD_WithClean_Custom_Data.py'
-#config.JobType.numCores = 4                                                                                                                                                                                                                                                             
-#config.JobType.maxMemoryMB = 10000                                                                                                                                                                                                                                                      
-config.Data.inputDataset = '/"""+sample.split("_")[0]+"""/"""+sample.split("_")[1]+"""-UL2017_MiniAODv2-v1/MINIAOD'
+config.JobType.psetName = '../rerunTauRecoOnMiniAOD_WithClean_Custom_Backgrounds.py'
+
+config.Data.inputDataset = '"""+SAMPLES2[sample]+"""'
 config.Data.inputDBS = 'global'
-config.Data.splitting = 'Automatic'
-#config.Data.splitting = 'LumiBased'                                                                                                                                                                                                                                                     
-#config.Data.unitsPerJob = 50                                                                                                                                                                                                                                                            
-config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt'
+config.Data.splitting = 'FileBased'                                                                                                                         
+config.Data.unitsPerJob = 1
 
-config.Data.outLFNDirBase = '/store/user/mwulansa/TCPNtuple/'
+config.Data.outLFNDirBase = '/store/user/zhangj/TCPNtuple/'
 config.Data.publication = False
-config.Data.outputDatasetTag = 'Ntuple_"""+sample+"""-UL2017_MiniAODv2-v1_"""+version+"""'
+config.Data.outputDatasetTag = 'Ntuple_"""+sample+"""_miniAODv2_"""+version+"""'
 
-config.Site.storageSite = 'T3_US_FNALLPC'
-
-config.Site.ignoreGlobalBlacklist = True
-""")
-
-    if sampleType != 'data':
-
-        for dataset in list(DATASETS[sample]):
-            print(dataset)
-            f = open(fname, "w")
-            f.writelines("""
-    from CRABClient.UserUtilities import config
-
-    config = config()
-    """)
-            if sampleType != 'data':
-                f.writelines("""
-    config.General.requestName = 'Ntuple_"""+sample+"""_Summer20UL17_"""+version+"""'
-
-    config.General.workArea = 'crab_projects'
-    config.General.transferOutputs = True
-    config.General.transferLogs = False
-
-    config.JobType.pluginName = 'Analysis'
-    config.JobType.allowUndistributedCMSSW = True
-    #config.JobType.numCores = 4                                                                                                               
-    #config.JobType.maxMemoryMB = 10000                                                        
-    #config.JobType.maxJobRuntimeMin = 2000
-    """)
-            if sampleType == 'signal':
-                f.writelines("""
-    config.JobType.psetName = '../rerunTauRecoOnMiniAOD_WithClean_Custom.py'
-
-    config.Data.userInputFiles = open('.."""+dataset+"""').readlines()
-    config.Data.outputPrimaryDataset = 'TCP_m50_UL17'
-    config.Data.splitting = 'FileBased'
-    config.Data.unitsPerJob = 100
-    config.Data.outLFNDirBase = '/store/user/mwulansa/TCPNtuple'
-    config.Data.publication = False
-
-    config.Data.outputDatasetTag = 'NTuple_"""+sample+"""_Summer20UL17_"""+version+"""'
-
-    config.Site.storageSite = 'T3_US_FNALLPC'
-    config.Site.blacklist = ['T3_KR_KNU', 'T3_FR_IPNL', 'T2_TR_METU', 'T2_TW_NCHC', 'T2_BE_IIHE', 'T3_US_Baylor','T2_US_Purdue']
-    """)
-            if sampleType == 'background':
-                f.writelines("""
-    config.JobType.psetName = '../rerunTauRecoOnMiniAOD_WithClean_Custom_Backgrounds.py'
-
-    config.Data.inputDataset = '"""+dataset+"""'
-    config.Data.inputDBS = 'global'
-    config.Data.splitting = 'Automatic'
-    #config.Data.splitting = 'FileBased'                                                                                                                         
-    #config.Data.unitsPerJob = 2
-
-    config.Data.outLFNDirBase = '/store/user/mwulansa/TCPNtuple/'
-    config.Data.publication = False
-    config.Data.outputDatasetTag = 'Ntuple_"""+sample+"""_Summer20UL17_"""+version+"""'  
-
-    config.Site.storageSite = 'T3_US_FNALLPC'
-    #config.Site.blacklist = ['T3_KR_KNU', 'T3_FR_IPNL', 'T2_TR_METU', 'T2_TW_NCHC', 'T2_BE_IIHE', 'T3_US_Baylor','T2_US_Purdue']
+config.Site.storageSite = 'T2_US_Florida'
     """)
 
 
