@@ -589,7 +589,6 @@ def ee_channel():
                 if met.Pt() > event_cut['metcut'] :
                     isEE = 1
 
-
     return isEE
 
 def emu_channel():
@@ -1073,14 +1072,14 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                     if abs(igen.pdgid) == 14 : gen_munu+=[igen]
                 if igen.ishardprocess and abs(igen.pdgid) == 15: gen_tau+=[igen]
 
-    GenJets = fchain.GetBranch("genJetInfo")
-    genjet_pt = GenJets.GetLeaf('pt').GetValue()
-    genjet_eta = GenJets.GetLeaf('eta').GetValue()
-    genjet_phi = GenJets.GetLeaf('phi').GetValue()
-    genjet_mass = GenJets.GetLeaf('mass').GetValue()
-    
-    genJet= ROOT.TLorentzVector()
-    genJet.SetPtEtaPhiM(genjet_pt, genjet_eta, genjet_phi, genjet_mass)
+        GenJets = fchain.GetBranch("genJetInfo")
+        genjet_pt = GenJets.GetLeaf('pt').GetValue()
+        genjet_eta = GenJets.GetLeaf('eta').GetValue()
+        genjet_phi = GenJets.GetLeaf('phi').GetValue()
+        genjet_mass = GenJets.GetLeaf('mass').GetValue()
+
+        genJet= ROOT.TLorentzVector()
+        genJet.SetPtEtaPhiM(genjet_pt, genjet_eta, genjet_phi, genjet_mass)
 
     #-------------- Trigger Objects ---------------#
 
