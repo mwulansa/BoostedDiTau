@@ -624,7 +624,7 @@ def emu_channel():
 
         isMatchedMuonEG = False
         if isMatchedMuonEGe == True and isMatchedMuonEGmu == True: 
-            isMatchedMuonEG == True
+            isMatchedMuonEG = True
 
         SingleMuonHLT = False
         MuonEGHLT = False
