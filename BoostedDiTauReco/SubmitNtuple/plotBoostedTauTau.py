@@ -24,6 +24,13 @@ year = args.year
 
 outputTitle = "h_plotBoostedTauTau_"+year
 
+EGsffile = ROOT.TFile("egammaEffi_EGM2D_UL"+year+".root")
+EGsfhist = EGsffile.Get("EGamma_SF2D")
+mu50SF = correctionlib.CorrectionSet.from_file("Efficiencies_NUM_Mu50_DEN_LooseID_abseta_pt_UL"+year+"_schemaV2.json")
+etauTrigSF = ROOT.TFile("Baseline1_MmuMiso_EleEta_ElePt_SF_"+year+".root")
+etauTrigHist = etauTrigSF.Get("SF")
+etauTrigUncert = etauTrigSF.Get("Uncert")
+
 isData = 0
 
 if args.sample == "MC":
@@ -187,6 +194,7 @@ def book_histogram():
     h['EMu_Nbjet_M'] = ROOT.TH1F ("EMu_Nbjet_M", "EMu_Nbjet_M : N_{bjet} : Events", 10, 0, 10)
     h['EMu_Nbjet_L'] = ROOT.TH1F ("EMu_Nbjet_L", "EMu_Nbjet_L : N_{bjet} : Events", 10, 0, 10)
 
+    
 def book_event_histogram(region):
 
     h[region+"_Count"] = ROOT.TH1F (region+"_Count", region+"_Count ; Events ; Events ", 1, 0, 1)
@@ -209,7 +217,6 @@ def book_event_histogram(region):
     h[region+"_JetEtaPhi"] = ROOT.TH2F (region+"_JetEtaPhi", region+"_JetEtaPhi ; Eta ; Phi", 100, -3.0, 3.0, 100, -pi, pi)
     h[region+"_JetEta"] = ROOT.TH1F (region+"_JetEta", region+"_JetEta ; LeadingJet Eta ; Events", 100, -3.0, 3.0)
     h[region+"_JetPhi"] = ROOT.TH1F (region+"_JetPhi", region+"_JetPhi ; LeadingJet Phi ; Events", 100, -pi, pi)
-
 
 
 def define_eff_histogram(region):
@@ -249,6 +256,7 @@ def pass_deltaR(l1, l2, j, channel):
         else:
             return -9999
 
+        
 def Mt(lepton, met):
 
     cos = np.cos(met.DeltaPhi(lepton))
@@ -257,6 +265,29 @@ def Mt(lepton, met):
     return Mt
 
 
+def get_EGsf(eta, pt):
+
+    binPt = EGsfhist.GetYaxis().FindBin(pt)
+    binEta = EGsfhist.GetXaxis().FindBin(eta)
+    egsf = EGsfhist.GetBinContent(binEta, binPt)
+    uncert = EGsfhist.GetBinError(binEta, binPt)
+    egsf_up = egsf+uncert
+    egdf_down = egsf-uncert
+
+    return egsf, egsf_up, egdf_down
+
+
+def get_etauTrigsf(eta, pt):
+
+    binPt = etauTrigHist.GetYaxis().FindBin(pt)
+    binEta = etauTrigHist.GetXaxis().FindBin(eta)
+    trigSF = etauTrigHist.GetBinContent(binEta, binPt)
+    uncert = etauTrigUncert.GetBinContent(binEta, binPt)
+    trigSF_up = trigSF+uncert
+    trigSF_down = trigSF-uncert
+
+    return trigSF, trigSF_up, trigSF_down
+    
 
 def plot_variable(region, l1, l2, j, m, sf=1):
 
@@ -349,9 +380,9 @@ def select_Nm1(l1, l2, ljet, ms, l2dm, channel):
                             plot_variable(channel+'_NmdRcut', l1, l2, ljet , ms) #NmDRcut
                             if l1.DeltaR(l2) >= event_cut["dRltau"]:
                                 if l1.DeltaR(l2) <= event_cut["dRl"]:
-                                    plot_variable(channel+'_NmdRlcut', l1, l2, ljet , ms) #NmDRlcut
+                                    plot_variable(channel+'_NmdRjcut', l1, l2, ljet , ms) #NmDRlcut
                                 if ljet.DeltaR(l1+l2) >= event_cut["dRlj"]:
-                                    plot_variable(channel+'_NmdRjcut', l1, l2, ljet , ms) #NmDRjcut
+                                    plot_variable(channel+'_NmdRlcut', l1, l2, ljet , ms) #NmDRjcut
 
 
 
@@ -454,6 +485,8 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
     tau = get_TLorentzVector(s_tauMuclean[0])
     jet = get_TLorentzVector(s_jet[0])
 
+    plot_variable('MuTau_'+tauid+'_Baseline', mu, tau, jet, met)
+
     isMatchedMu = False
     for ito in tOisMu:
         if isMatchedMu == True: break
@@ -464,6 +497,8 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
     if isMatchedMu == True and mu.Pt() >= 52 : isSingleMuonEvent = True
 
     if ( isData == 0 or isSingleMuonData == True ) and isSingleMuonEvent == True :
+
+        plot_variable('MuTau_'+tauid+'_Trigger', mu, tau, jet, met)
 
         # -------- Validation regions ----------
 
@@ -483,13 +518,17 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
         # --------------------------------------
 
         if s_muon[0].charge*s_tauMuclean[0].charge < 0: #OS
+            
             plot_variable('MuTau_'+tauid+'_OS', mu, tau, jet, met)
-
             select_Nm1(mu, tau, jet, met, s_tauMuclean[0].decaymode,'MuTau')
 
             if len(s_bjet) > 0 : return isMuTau
 
+            plot_variable('MuTau_'+tauid+'_OS_bjet0', mu, tau, jet, met)
+
             if jet.Pt() < event_cut['jetpt'] : return isMuTau
+
+            plot_variable('MuTau_'+tauid+'_OS_bjet0_jetcut', mu, tau, jet, met)
 
             if pass_deltaR(mu, tau, jet, 'MuTau') == 1 : #dRcut
                 plot_variable('MuTau_'+tauid+'_OS_dRcut', mu, tau, jet, met)
@@ -501,6 +540,9 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
                 if met.Pt() >= event_cut['metcut'] : #highMET
                     plot_variable('MuTau_'+tauid+'_OS_dRcut_highMET', mu, tau, jet, met)
                     if Mt(mu,met) < event_cut['mtcut'] : # lowMt SR!!!
+
+                        if tauid == "Nominal" and isData == 0:
+                            plot_variable('MuTau_'+tauid+'_OS_bjet0_jetcut_highMET_lowMt', mu, tau, jet, met)
 
                         mSVFit = get_svfit(mu, tau, s_tauMuclean[0].decaymode, 'MuTau')
                         
@@ -536,7 +578,14 @@ def mutau_channel(s_tauMuclean, tauid="Nominal"):
                                     h['MuTau_Nbjet_L'].Fill(len(s_bjet_loose), weight)
 
                                     plot_variable('MuTau_SR_'+year+'_OS_Boost', mu, tau, jet, met)
-                                    plot_svfit('MuTau_SR_'+year+'_OS_Boost', mSVFit)
+
+                                    musf = mu50SF["NUM_Mu50_DEN_LooseID"].evaluate(abs(mu.Eta()), mu.Pt(), "nominal")
+                                    musf_up = mu50SF["NUM_Mu50_DEN_LooseID"].evaluate(abs(mu.Eta()), mu.Pt(), "systup")
+                                    musf_down = mu50SF["NUM_Mu50_DEN_LooseID"].evaluate(abs(mu.Eta()), mu.Pt(), "systdown")
+                                    
+                                    plot_svfit('MuTau_SR_'+year+'_OS_Boost', mSVFit, musf)
+                                    plot_svfit('MuTau_SR_'+year+'_OS_Boost_muUp', mSVFit, musf_up)
+                                    plot_svfit('MuTau_SR_'+year+'_OS_Boost_muDown', mSVFit, musf_down)
 
                                 plot_variable('MuTau_'+tauid+'_OS_dRcut_highMET_lowMt', mu, tau, jet, met)
                                 plot_svfit('MuTau_'+tauid+'_OS_dRcut_highMET_lowMt', mSVFit)
@@ -595,11 +644,15 @@ def emu_channel():
 
     isEMu = 0
 
+    e = get_TLorentzVector(s_isoelectron[0])
+    mu = get_TLorentzVector(s_isomuon[0])
+    jet = get_TLorentzVector(s_jet[0])
+    
+    plot_variable('EMu_Baseline', e, mu, jet, met)
+
     if s_isoelectron[0].charge*s_isomuon[0].charge < 0 :
 
-        e = get_TLorentzVector(s_isoelectron[0])
-        mu = get_TLorentzVector(s_isomuon[0])
-        jet = get_TLorentzVector(s_jet[0])
+        plot_variable('EMu_Baseline_OS', e, mu, jet, met)
 
         isMatchedMu = False
         for ito in tOisMu:
@@ -636,9 +689,12 @@ def emu_channel():
            ( isMuonEGData == True and MuonEGHLT == True and SingleMuonHLT == False ) or \
            ( isData == 0 and ( SingleMuonHLT == True or MuonEGHLT == True ) ) :
 
+            plot_variable('EMu_Baseline_OS_Trigger', e, mu, jet, met)
             select_Nm1(e, mu, jet, met, 0, 'EMu')
 
             if jet.Pt() < event_cut['jetpt'] : return isEMu
+
+            plot_variable('EMu_Baseline_OS_Trigger_jetcut', e, mu, jet, met)
 
             # ------------- For closure test ------------
 
@@ -677,11 +733,11 @@ def emu_channel():
                             plot_svfit('EMu_OS_SB_highMET_bjet', mSVFit, bweight)
 
 
-            # --------------------------------
-
             # --------------------- Event selections -----------
             
             if pass_deltaR(e, mu, jet, 'EMu') == 1 :
+
+                plot_variable('EMu_Baseline_OS_Trigger_jetcut_dRcut', e, mu, jet, met)
 
                 if met.Pt() < event_cut['metcut'] : #lowMET
 
@@ -701,10 +757,14 @@ def emu_channel():
 
                 else: #highMET
 
+                    plot_variable('EMu_Baseline_OS_Trigger_jetcut_dRcut_highMET', e, mu, jet, met)
+
                     bweight = BJetSF.get_weight("highMET", s_jet) if isData == 0 and isSignal == 0 else 1
 
                     mSVFit = get_svfit(e, mu, 0, 'EMu')
                     if mSVFit >= event_cut['mass']:
+
+                        plot_variable('EMu_Baseline_OS_Trigger_jetcut_dRcut_highMET_svfitcut', e, mu, jet, met)
 
                         h['EMu_Nbjet_T'].Fill(len(s_bjet), weight)
                         h['EMu_Nbjet_M'].Fill(len(s_bjet_med), weight)
@@ -715,11 +775,11 @@ def emu_channel():
                             plot_svfit('EMu_OS_highMET_bjetveto', mSVFit, bweight)
                             plot_variable('EMu_SR_'+year+'_OS_Boost', e, mu, jet, met, bweight)
                             plot_svfit('EMu_SR_'+year+'_OS_Boost', mSVFit, bweight)
+                            plot_variable('EMu_Baseline_OS_Trigger_jetcut_dRcut_highMET_svfitcut_bjet0', e, mu, jet, met)
                             isEMu = 1
                         else:
                             plot_variable('EMu_OS_highMET_bjet', e, mu, jet, met, bweight)
                             plot_svfit('EMu_OS_highMET_bjet', mSVFit, bweight)
-
 
                 # --------------------------
 
@@ -735,7 +795,7 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
     tau = get_TLorentzVector(s_tauEclean[0])
     jet = get_TLorentzVector(s_jet[0])
 
-    if jet.Pt() < event_cut['jetpt'] : return
+    plot_variable('ETau_'+tauid+'_Baseline', e, tau, jet, met)
 
     isMatchedEleJet = False
     isMatchedE = False
@@ -764,20 +824,34 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
         if isJetLeg == True and isMatchedJet == False:
             if trigObject.DeltaR(jet) < 0.1 : 
                 isMatchedJet = True
+                print("MatchedJet found")
 
-    if isMatchedE == True and isMatchedJet == True : 
+    if isMatchedE == True and isMatchedJet == True :
+        print("MatchEleJet found")
         isMatchedEleJet = True
 
-    isEleJetEvent = False
-    if jet.Pt() >= 200.0 and e.Pt() >= 60.0 and isMatchedEleJet == True : isEleJetEvent = True
+    isEleJetEvent = False    
+    if jet.Pt() >= 200.0 and e.Pt() >= 60.0 and isEleJet == 1 :
+        isEleJetEvent = True
+
+    if jet.Pt() >= 200.0 and e.Pt() >= 60.0 and isMatchedEleJet == True :
+        isEleJetEvent = True
+
     isPhotonEvent = False
-    if e.Pt() >= 230.0 and isMatchedPhoton == True: isPhotonEvent = True
+    if e.Pt() >= 230.0 and isMatchedPhoton == True :
+        isPhotonEvent = True
 
     if ( isData == 0 or isSingleElectronData == True ) and ( isEleJetEvent == True or isPhotonEvent == True ):
+
+        # print(isEleJetEvent, isPhotonEvent)
+
+        plot_variable('ETau_'+tauid+'_Trigger', e, tau, jet, met)
 
         if s_electron[0].charge*s_tauEclean[0].charge > 0: #SS Validation Regions
             
             if len(s_bjet) > 0 : return isETau
+
+            if jet.Pt() < event_cut['jetpt'] : return isETau
             
             if pass_deltaR(e, tau, jet, 'ETau') == 1 : #dRcut
                 if met.Pt() >= 100.0 : # highMET
@@ -793,13 +867,24 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
         else: #OS
             select_Nm1(e, tau, jet, met, s_tauEclean[0].decaymode, 'ETau')
 
+            plot_variable('ETau_'+tauid+'_OS', e, tau, jet, met)
+
             if len(s_bjet) > 0 : return isETau
+
+            plot_variable('ETau_'+tauid+'_OS_bjet0', e, tau, jet, met)
+            
+            if jet.Pt() < event_cut['jetpt'] : return isETau
+
+            plot_variable('ETau_'+tauid+'_OS_bjet0_jetcut', e, tau, jet, met)
 
             if pass_deltaR(e, tau, jet, 'ETau') == 1 : #dRcut
                 plot_variable('ETau_'+tauid+'_OS_dRcut', e, tau, jet, met)
                 if met.Pt() >= 100.0 : # highMET       
                     plot_variable('ETau_'+tauid+'_OS_dRcut_highMET', e, tau, jet, met)                                                          
                     if Mt(e,met) <= 50.0 : #lowMt SR!!!!
+
+                        if tauid == "Nominal" and isData == 0:
+                            plot_variable('ETau_'+tauid+'_OS_bjet0_jetcut_highMET_lowMt', e, tau, jet, met)
 
                         mSVFit = get_svfit(e,tau,s_tauEclean[0].decaymode,'ETau')
 
@@ -852,13 +937,22 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
                                     h['ETau_Nbjet_M'].Fill(len(s_bjet_med), weight)
                                     h['ETau_Nbjet_L'].Fill(len(s_bjet_loose), weight)
 
+                                    esf, esf_up, esf_down = get_EGsf(e.Eta(), e.Pt())
+                                    trigsf, trigsf_up, trigsf_down = get_etauTrigsf(e.Eta(), e.Pt())
+
                                     plot_variable('ETau_SR_'+year+'_OS_Boost', e, tau, jet, met)
-                                    plot_svfit('ETau_SR_'+year+'_OS_Boost', mSVFit)
                                     
-                            
+                                    plot_svfit('ETau_SR_'+year+'_OS_Boost', mSVFit, esf*trigsf)
+                                    
+                                    plot_svfit('ETau_SR_'+year+'_OS_Boost_egup', mSVFit, esf_up)
+                                    plot_svfit('ETau_SR_'+year+'_OS_Boost_egdown', mSVFit, esf_down)
+
+                                    plot_svfit('ETau_SR_'+year+'_OS_Boost_trigup', mSVFit, trigsf_up)
+                                    plot_svfit('ETau_SR_'+year+'_OS_Boost_trigdown', mSVFit, trigsf_down)
+                                    
+                                    
                 else: #lowMET                                                                                         
                     if Mt(e,met) <= 50.0 : #lowMt                                                                                             
-                        
                         mSVFit = get_svfit(e,tau,s_tauEclean[0].decaymode,'ETau')
 
                         if mSVFit >= event_cut['mass']:
@@ -866,7 +960,6 @@ def etau_channel(s_tauEclean, tauid="Nominal"):
                             plot_variable('ETau_'+tauid+'_OS_dRcut_lowMET_lowMt', e, tau, jet, met)
                             plot_svfit('ETau_'+tauid+'_OS_dRcut_lowMET_lowMt', mSVFit)
  
-
     return isETau
         
 
@@ -1275,16 +1368,16 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     # if len(s_muon) >= 1 and len(s_jet) >= 1 and len(s_bjet) == 0 and len(s_tauUncleanNom) >= 1: 
     #     mutau_channel(s_tauUncleanNom, "Uncleaned")
     
-    if len(s_muon) >= 1 and len(s_jet) >= 1 and len(s_bjet) == 0 and len(s_tauMucleanNom) >= 1: 
+    if len(s_muon) >= 1 and len(s_jet) >= 1 and len(s_tauMucleanNom) >= 1: 
         if mutau_channel(s_tauMucleanNom, "Nominal") == 1 : continue
 
     if len(s_isoelectron) >= 2 and len(s_jet) >= 1 and len(s_bjet) == 0 :
         if ee_channel() == 1 : continue
 
-    if len(s_electron) >= 1 and len(s_tauEcleanAlt) >= 1 and len(s_jet) >=1 and len(s_bjet) == 0 :
+    if len(s_electron) >= 1 and len(s_tauEcleanAlt) >= 1 and len(s_jet) >=1 and len(s_bjet) == 0:
         etau_channel(s_tauEcleanAlt, "Altered")
 
-    if len(s_electron) >= 1 and len(s_tauEcleanNom) >= 1 and len(s_jet) >=1 and len(s_bjet) == 0 :
+    if len(s_electron) >= 1 and len(s_tauEcleanNom) >= 1 and len(s_jet) >=1 :
         etau_channel(s_tauEcleanNom, "Nominal")
         
     # if len(s_electron) >= 1 and len(s_tauUncleanNom) >= 1 and len(s_jet) >=1 and len(s_bjet) == 0 :
