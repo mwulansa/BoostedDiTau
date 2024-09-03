@@ -636,6 +636,7 @@ def ee_channel():
         if isJetHTEvent == 1 :             
             if pass_deltaR(e1, e2, jet, 'EE') == 1 :
                 if met.Pt() > event_cut['metcut'] :
+                    plot_variable("EE_SR", e1, e2, jet, met)
                     isEE = 1
 
     return isEE
