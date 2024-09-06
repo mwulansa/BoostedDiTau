@@ -21,6 +21,10 @@ if ($MAKETARBALL == 1) then
     cp EMu_OS_BTag_Efficiency.root ../../tarToUpdate
     cp egammaEffi_EGM2D_UL2018.root ../../tarToUpdate
     cp egammaEffi_EGM2D_UL2017.root ../../tarToUpdate
+    cp egammaEffi_EGM2D_UL2016postVFP.root ../../tarToUpdate
+    cp egammaEffi_EGM2D_UL2016preVFP.root ../../tarToUpdate
+    cp Baseline1_MmuMiso_EleEta_ElePt_SF_2017.root ../../tarToUpdate
+    cp Baseline1_MmuMiso_EleEta_ElePt_SF_2018.root ../../tarToUpdate
 
     cd ../../tarToUpdate
     
@@ -31,6 +35,11 @@ if ($MAKETARBALL == 1) then
     cp EMu_OS_BTag_Efficiency.root  CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
     cp egammaEffi_EGM2D_UL2018.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
     cp egammaEffi_EGM2D_UL2017.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
+    cp egammaEffi_EGM2D_UL2016postVFP.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
+    cp egammaEffi_EGM2D_UL2016preVFP.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
+    cp Baseline1_MmuMiso_EleEta_ElePt_SF_2017.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
+    cp Baseline1_MmuMiso_EleEta_ElePt_SF_2018.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
+    
 
     tar -zcvf ../CMSSW_12X.tgz CMSSW_12_1_0_pre3/
 
