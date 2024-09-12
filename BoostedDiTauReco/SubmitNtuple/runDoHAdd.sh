@@ -5,9 +5,14 @@ setenv VER $2
 setenv FNAME $3
 
 foreach Mass (`ls filelists/$SAMPLE`)
-    setenv MASS $Mass
+    setenv MASS `echo $Mass | sed 's/-UL2017//' | sed 's/_UL17//'`
     setenv PROCESS `echo $SAMPLE | sed 's/_HTBinned//'`
     echo ${PROCESS}_${Mass}
-    echo python3 doHadd.py ${PROCESS}_${Mass} ${VER} ${FNAME}
-    python3 doHadd.py ${PROCESS}_${Mass} ${VER} ${FNAME}
+    if ($PROCESS == "SingleMuon") then
+	echo python3 doHadd.py ${MASS} ${VER} ${FNAME}
+	python3 doHadd.py ${MASS} ${VER} ${FNAME}
+    else
+	echo python3 doHadd.py ${PROCESS}_${MASS} ${VER} ${FNAME}
+	python3 doHadd.py ${PROCESS}_${MASS} ${VER} ${FNAME}
+    endif
 end

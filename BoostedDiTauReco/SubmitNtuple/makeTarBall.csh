@@ -2,7 +2,7 @@
 
 setenv MAKETARBALL 1
 
-setenv CMSSW_BASE /uscms/home/mwulansa/nobackup/TCPNtuple/CMSSW_12_1_0_pre3
+setenv CMSSW_BASE /uscms/home/jingyu/nobackup/TCP/boostedDiTauReco/CMSSW_12_1_1
 
 if ($MAKETARBALL == 1) then
 
@@ -10,7 +10,7 @@ if ($MAKETARBALL == 1) then
 
     cd $CMSSW_BASE/src
 
-    tar --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/output" --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.Log" --exclude="*stderr" --exclude="*stdout" --exclude="*.log" --exclude="*.tar.gz" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/MiniAODSkimmer/test/crabConfig" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/filelists_bkp" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/filelists_old" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/sampleList" -zcvf ../../CMSSW_12X.tgz ../../CMSSW_12_1_0_pre3/
+    tar --exclude="../../CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/output" --exclude="*.root" --exclude="*.pdf" --exclude="*.gif" --exclude=.git --exclude="*.Log" --exclude="*stderr" --exclude="*stdout" --exclude="*.log" --exclude="*.tar.gz" --exclude="../../CMSSW_12_1_1/src/BoostedDiTau/MiniAODSkimmer/test/crabConfig" --exclude="../../CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/filelists_bkp" --exclude="../../CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/filelists_old" --exclude="../../CMSSW_12_1_1/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/sampleList" -zcvf ../../CMSSW_12X.tgz ../../CMSSW_12_1_1/
 
     mkdir ../../tarToUpdate
 
@@ -39,11 +39,11 @@ if ($MAKETARBALL == 1) then
     cp egammaEffi_EGM2D_UL2016preVFP.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
     cp Baseline1_MmuMiso_EleEta_ElePt_SF_2017.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
     cp Baseline1_MmuMiso_EleEta_ElePt_SF_2018.root CMSSW_12_1_0_pre3/src/BoostedDiTau/BoostedDiTauReco/SubmitNtuple/
-    
+   
 
-    tar -zcvf ../CMSSW_12X.tgz CMSSW_12_1_0_pre3/
+    tar -zcvf ../CMSSW_12X.tgz CMSSW_12_1_1/
 
-    eosrm /store/user/mwulansa/DIS/TCPAnalysis/CMSSW_12X.tgz
+    #eosrm /store/user/mwulansa/DIS/TCPAnalysis/CMSSW_12X.tgz
 
     xrdcp ../CMSSW_12X.tgz root://cmseos.fnal.gov//store/user/mwulansa/DIS/TCPAnalysis/CMSSW_12X.tgz
 

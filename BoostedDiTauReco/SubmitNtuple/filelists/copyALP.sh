@@ -1,5 +1,4 @@
 #!/bin/tcsh                                                                                                                                
-
 setenv VER vAN
 
 foreach Signal (`ls AToTauTau/UL2018`)
