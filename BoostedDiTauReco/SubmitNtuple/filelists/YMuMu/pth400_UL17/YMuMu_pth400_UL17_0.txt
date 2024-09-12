@@ -1,0 +1,5 @@
+root://cmsio7.rc.ufl.edu:1094//store/user/zhangj/TCPNtuple/YMuMu_pth400_UL17/Ntuple_YMuMu_pth400_UL17_v4/230919_094426/0000/TCPNtuple_2.root
+root://cmsio7.rc.ufl.edu:1094//store/user/zhangj/TCPNtuple/YMuMu_pth400_UL17/Ntuple_YMuMu_pth400_UL17_v4/230919_094426/0000/TCPNtuple_3.root
+root://cmsio7.rc.ufl.edu:1094//store/user/zhangj/TCPNtuple/YMuMu_pth400_UL17/Ntuple_YMuMu_pth400_UL17_v4/230919_094426/0000/TCPNtuple_1.root
+root://cmsio7.rc.ufl.edu:1094//store/user/zhangj/TCPNtuple/YMuMu_pth400_UL17/Ntuple_YMuMu_pth400_UL17_v4/230919_094426/0000/TCPNtuple_5.root
+root://cmsio7.rc.ufl.edu:1094//store/user/zhangj/TCPNtuple/YMuMu_pth400_UL17/Ntuple_YMuMu_pth400_UL17_v4/230919_094426/0000/TCPNtuple_4.root

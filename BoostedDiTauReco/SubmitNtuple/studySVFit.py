@@ -158,16 +158,18 @@ def book_event_histogram(region):
     h[region+"_Count"] = ROOT.TH1F (region+"_Count", region+"_Count ; Events ; Events ", 1, 0, 1)
 
     h[region+"_Mass"] = ROOT.TH1F (region+"_Mass", region+"_Mass ; M_{vis.} (GeV) ; Events ", 1500, 0, 150)
-    h[region+"_Lepton1Pt"] = ROOT.TH1F (region+"_Lepton1Pt", region+"_Lepton1Pt ; P_{T} (GeV) ; Events ", 500, 0, 500)
-    h[region+"_Lepton2Pt"] = ROOT.TH1F (region+"_Lepton2Pt", region+"_Lepton2Pt ; P_{T} (GeV) ; Events ", 500, 0, 500)
+    h[region+"_Lepton1Pt"] = ROOT.TH1F (region+"_Lepton1Pt", region+"_Lepton1Pt ; P_{T} (GeV) ; Events ", 1000, 0, 1000)
+    h[region+"_Lepton2Pt"] = ROOT.TH1F (region+"_Lepton2Pt", region+"_Lepton2Pt ; P_{T} (GeV) ; Events ", 1000, 0, 1000)
     h[region+"_JetPt"] = ROOT.TH1F (region+"_JetPt", region+"_JetPt ; JetP_{T} (GeV) ; Events ", 2000, 0, 2000)
     h[region+"_MetPt"] = ROOT.TH1F (region+"_MetPt", region+"_MetPt ; MET (GeV) ; Events ", 500, 0, 500)
     h[region+"_Mt"] = ROOT.TH1F (region+"_Mt", region+"_Mt ; M_{T} (GeV) ; Events ", 150, 0, 150)
     h[region+"_Nj"] = ROOT.TH1F (region+"_Nj", region+"_Nj ; N_{j} ; Events ", 10, 0, 10)
     h[region+"_dRl"] = ROOT.TH1F (region+"_dRl", region+"_dRl ; dR(leptons) ; Events", 100, 0, 5)
     h[region+"_dRj"] = ROOT.TH1F (region+"_dRj", region+"_dRj ; dR(jet, ditau) ; Events", 100, 0, 5)
+    h[region+"_deepJet"] = ROOT.TH1F (region+"_deepJet", region+"_deepJet ; Score ; Events",  100, 0, 1)
     h[region+"_dPhil"] = ROOT.TH2F (region+"_dPhil", region+"_dPhil ; dPhi(met,lepton1) ; dPhi(met,lepton2)",  100, -pi, pi, 100, -pi, pi)
     h[region+"_dPhi"] = ROOT.TH2F (region+"_dPhi", region+"_dPhi ; dPhi(met,ditau) ; dPhi(met,jet)",  100, -pi, pi, 100, -pi, pi)
+    h[region+"_deepJetPt"] = ROOT.TH2F (region+"_deepJetPt", region+"_deepJetPt ; JetPt ; deepJet",  2000, 0, 2000, 100, 0, 1)
 
 
 
@@ -199,10 +201,12 @@ def Mt(lepton, met):
 
     return Mt
 
-def plot_variable(region, l1, l2, j, m, sf=1):
+def plot_variable(region, l1, l2, j, m, weight=1, sf=1, deepjet=-1):
 
+    #print(weight, sf, deepjet)
     h[region+"_Count"].Fill(0, weight*sf)
     h[region+"_Mass"].Fill((l1+l2).M(), weight*sf)
+    #print("Mass", (l1+l2).M(), weight)
     h[region+"_Lepton1Pt"].Fill(l1.Pt(), weight*sf)
     h[region+"_Lepton2Pt"].Fill(l2.Pt(), weight*sf)
     h[region+"_JetPt"].Fill(j.Pt(), weight*sf)
@@ -211,29 +215,55 @@ def plot_variable(region, l1, l2, j, m, sf=1):
     h[region+"_Nj"].Fill(len(s_jet), weight*sf)
     h[region+"_dRl"].Fill(l1.DeltaR(l2), weight*sf)
     h[region+"_dRj"].Fill(j.DeltaR(l1+l2), weight*sf)
+    h[region+"_deepJet"].Fill(deepjet, weight*sf)
     h[region+"_dPhil"].Fill(m.DeltaPhi(l1), m.DeltaPhi(l2), weight*sf)
     h[region+"_dPhi"].Fill(m.DeltaPhi(l1+l2), m.DeltaPhi(j), weight*sf)
-
+    h[region+"_deepJetPt"].Fill(j.Pt(), deepjet, weight*sf)
 
 def mumu_channel():
 
     isMuMu = 0
+    sf = 1
 
     if s_isomuon[0].charge*s_isomuon[1].charge < 0 :
 
         mu1 = get_TLorentzVector(s_isomuon[0])
         mu2 = get_TLorentzVector(s_isomuon[1])
         jet = get_TLorentzVector(s_jet[0])
+        deepjet = s_jet[0].deepjet
 
         isSingleMuonEvent = 0
-        if ( mu1.Pt() > 52 and isMu == 1 ) or ( mu1.Pt() > 27 and isIsoMu == 1 ) : isSingleMuonEvent = 1
+        if ( mu1.Pt() > 52 and isMu == 1 and s_isomuon[0].id >= 2) : isSingleMuonEvent = 1
 
         if isSingleMuonEvent == 1:
             if pass_deltaR(mu1, mu2, jet, 'MuMu') == 1 :
-                if met.Pt() < event_cut['metcut'] :
-                    plot_variable("MuMu_Control", mu1, mu2, jet, met, weight)
+                if met.Pt() < event_cut['metcut'] and Mt(mu1, met) < event_cut['mtcut'] and (mu1+mu2).M() > event_cut['mass']:
+                    plot_variable("MuMu_Control_2017_OS_Boost", mu1, mu2, jet, met, weight, sf, deepjet)
+                    isMuMu = 1
+            if mu1.DeltaR(mu2) > event_cut["dRl"] and mu1.DeltaR(jet) > event_cut["dRlj"] and mu2.DeltaR(jet) > event_cut["dRlj"]:
+                if met.Pt() < event_cut['metcut'] and Mt(mu1, met) < event_cut['mtcut'] and (mu1+mu2).M() > event_cut['mass']:
+                    plot_variable("MuMu_Control_2017_OS_Resolve", mu1, mu2, jet, met, weight, sf, deepjet)
                     isMuMu = 1
 
+    else:
+        mu1 = get_TLorentzVector(s_isomuon[0])
+        mu2 = get_TLorentzVector(s_isomuon[1])
+        jet = get_TLorentzVector(s_jet[0])
+        deepjet = s_jet[0].deepjet
+
+        isSingleMuonEvent = 0
+        if ( mu1.Pt() > 52 and isMu == 1 and s_isomuon[0].id >= 2) : isSingleMuonEvent = 1
+
+        if isSingleMuonEvent == 1:
+            if pass_deltaR(mu1, mu2, jet, 'MuMu') == 1 :
+                if met.Pt() < event_cut['metcut'] and Mt(mu1, met) < event_cut['mtcut'] and (mu1+mu2).M() > event_cut['mass']:
+                    plot_variable("MuMu_Control_2017_SS_Boost", mu1, mu2, jet, met, weight, sf, deepjet)
+                    isMuMu = 1
+            if mu1.DeltaR(mu2) > event_cut["dRl"] and mu1.DeltaR(jet) > event_cut["dRlj"] and mu2.DeltaR(jet) > event_cut["dRlj"]:
+                if met.Pt() < event_cut['metcut'] and Mt(mu1, met) < event_cut['mtcut'] and (mu1+mu2).M() > event_cut['mass']:
+                    plot_variable("MuMu_Control_2017_SS_Resolve", mu1, mu2, jet, met, weight, sf, deepjet)
+                    isMuMu = 1
+                    
     return isMuMu
 
 
@@ -510,7 +540,10 @@ regions = [
 'MuTau_TriggerMatch_OS_dRcut_highMET_lowMt_0MuPtcut_isMu',
 'EMu_TriggerMatch_OS_dRcut_highMET_isMuisMuonEG',
 'ETau_TriggerMatch_OS_dRcut_highMET_lowMt_isEleJet',
-'MuMu_Control'    
+'MuMu_Control_2017_OS_Boost',
+'MuMu_Control_2017_OS_Resolve',
+'MuMu_Control_2017_SS_Boost',
+'MuMu_Control_2017_SS_Resolve',
 ]
 
 for r in regions:
@@ -573,6 +606,7 @@ if isData == 0:
 
 #----------- Event loop ----------#
 
+print("nevt", fchain.GetEntries())
 
 for iev in range(fchain.GetEntries()): # Be careful!!!                                                               
 
@@ -608,7 +642,8 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     weight = genweight*puweight*prweight
 
     h['hEvents'].Fill(0.5, 1)
-    h['hEvents'].Fill(1.5, weight)
+    h['hEvents'].Fill(1.5, genweight)
+    #print(genweight, h['hEvents'].GetBinContent(2))
 
     h['hWeights'].Fill(weight)
     h['hPuWeights'].Fill(puweight)
@@ -687,17 +722,21 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
     iht = 0
 
     if jets.size() > 0:
+        #print("Debug", iev, jets.at(0).pt)
+        h['hJetPt'].Fill(jets.at(0).pt, weight)
         for i in range(jets.size()):
             ijet = jets.at(i)
             if abs(ijet.eta) < 2.5 :
-                if ijet.id >= 2:
+                if ijet.id >= 2 and ijet.pt > event_cut['jetpt']:
                     # h['hJetPt'].Fill(ijet.pt, weight)
-                    # h['hDeepjet'].Fill(ijet.deepjet, weight)
+                    h['hDeepjet'].Fill(ijet.deepjet, weight)
                     s_jet+=[ijet]
                     iht = iht + ijet.pt
                     if ijet.deepjet >= 0.7476:
-                        # h['hBJetPt'].Fill(ijet.pt, weight) 
+                        h['hBJetPt'].Fill(ijet.pt, weight) 
                         s_bjet+=[ijet]
+    #print("DEBUG2:", s_bjet)
+                        
 
     s_muon = []
     s_isomuon = []
@@ -710,10 +749,10 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
                 if imuon.id >= 1: #loose Muons
                     # h['hMuonPt'].Fill(imuon.pt, weight) 
                     s_muon+=[imuon]
-                    if imuon.iso <= 0.25:
+                    if imuon.iso <= 0.2:
                         # h['hIsoMuonPt'].Fill(imuon.pt, weight)
                         s_isomuon+=[imuon]
-                    if imuon.iso > 0.25:
+                    if imuon.iso > 0.2:
                         # h['hNonIsoMuonPt'].Fill(imuon.pt, weight)
                         s_nonisomuon+=[imuon]
 
@@ -770,7 +809,7 @@ for iev in range(fchain.GetEntries()): # Be careful!!!
 
     # ---------- Event Selections --------- #
 
-    if len(s_isomuon) >= 2 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 
+    if len(s_isomuon) >= 2 and len(s_jet) >= 1 and len(s_bjet) < 1 : 
         if mumu_channel() == 1: continue
 
 ##     if len(s_isomuon) >= 1 and len(s_isoelectron) >= 1 and len(s_jet) >= 1 and len(s_bjet) <= 1 : 

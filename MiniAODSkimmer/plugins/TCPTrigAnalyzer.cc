@@ -47,7 +47,9 @@ private:
   bool isSingleJet450_;
   bool isSingleJet500_;
   bool isHT_;
-  bool isHTMHT_;
+  
+  bool isMET_;
+  
   bool isIsoMu_;
   bool isIsoMuTau_;
   bool isMu_;
@@ -60,11 +62,28 @@ private:
   bool isDoubleMu_;
   bool isDoubleIsoEG_;
   bool isDoubleEG_;
+  
   bool isMuonEG_;
+  bool isMu8Ele23_;
+  bool isMu23Ele12_;
+  
   bool isMuonEGnoDZ_;
+  bool isMu8Ele23noDZ_;
+  bool isMu23Ele12noDZ_;
+  
   bool isDoubleTauMedium_;
   bool isDoubleTauTight_;
   bool isSingleTauMET_;
+
+  bool isHBHECleaned_;
+  bool isPFMET200_;
+  bool isPFMETOne200_;
+  bool isPFMET120_;
+  bool isPFHT60_;
+  bool isPFHT500_;
+  bool isPFHT700_;
+  bool isPFHT800_;
+
 };
 
 TCPTrigNtuples::TCPTrigNtuples(const edm::ParameterSet& iConfig) :
@@ -92,7 +111,7 @@ void TCPTrigNtuples::beginJob() {
   tree->Branch("isSingleJet450", &isSingleJet450_, "isSingleJet450/O");
   tree->Branch("isSingleJet500", &isSingleJet500_, "isSingleJet500/O");
   tree->Branch("isHT", &isHT_, "isHT/O");
-  tree->Branch("isHTMHT", &isHTMHT_, "isHTMHT/O");
+  tree->Branch("isMET", &isMET_, "isMET/O");
   tree->Branch("isIsoMu", &isIsoMu_, "isIsoMu/O");
   tree->Branch("isIsoMuTau", &isIsoMuTau_, "isIsoMuTau/O");
   tree->Branch("isMu", &isMu_, "isMu/O");
@@ -105,11 +124,28 @@ void TCPTrigNtuples::beginJob() {
   tree->Branch("isDoubleMu", &isDoubleMu_, "isDoubleMu/O");
   tree->Branch("isDoubleIsoEG", &isDoubleIsoEG_, "isDoubleIsoEG/O");
   tree->Branch("isDoubleEG", &isDoubleMu_, "isDoubleEG/O");
+  
   tree->Branch("isMuonEG", &isMuonEG_, "isMuonEG/O");
-  tree->Branch("isMuonEGnoDZ", &isMuonEG_, "isMuonEGnoDZ/O");
+  tree->Branch("isMu8Ele23", &isMu8Ele23_, "isMu8Ele23/O");
+  tree->Branch("isMu23Ele12", &isMu23Ele12_, "isMu23Ele12/O");
+  
+  tree->Branch("isMuonEGnoDZ", &isMuonEGnoDZ_, "isMuonEGnoDZ/O");
+  tree->Branch("isMu8Ele23noDZ", &isMu8Ele23noDZ_, "isMu8Ele23noDZ/O");
+  tree->Branch("isMu23Ele12noDZ", &isMu23Ele12noDZ_, "isMu23Ele12noDZ/O");
+
   tree->Branch("isDoubleTauMedium", &isDoubleTauMedium_, "isDoubleTauMedium/O");
   tree->Branch("isDoubleTauTight", &isDoubleTauTight_, "isDoubleTauTight/O");
   tree->Branch("isSingleTauMET", &isSingleTauMET_, "isSingleTauMET/O");
+
+  tree->Branch("isHBHECleaned", &isHBHECleaned_, "isHBHECleaned/O");
+  tree->Branch("isPFMET200", &isPFMET200_, "isPFMET200/O");
+  tree->Branch("isPFMETOne200", &isPFMETOne200_, "isPFMETOne200/O");
+  tree->Branch("isPFMET120", &isPFMET120_, "isPFMET120/O");
+  tree->Branch("isPFHT60", &isPFHT60_, "isPFHT60/O");
+  tree->Branch("isPFHT500", &isPFHT500_, "isPFHT500/O");
+  tree->Branch("isPFHT700", &isPFHT700_, "isPFHT700/O");
+  tree->Branch("isPFHT800", &isPFHT800_, "isPFHT800/O");
+    
 }
 
 void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
@@ -131,7 +167,7 @@ void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   isSingleJet450_ = 0;
   isSingleJet500_ = 0;
   isHT_ = 0;
-  isHTMHT_ = 0;
+  isMET_ = 0;
   isIsoMu_ = 0;
   isIsoMuTau_ = 0;
   isMu_ = 0;
@@ -144,11 +180,28 @@ void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
   isDoubleMu_ = 0;
   isDoubleIsoEG_ = 0;
   isDoubleEG_ = 0;
+  
   isMuonEG_ = 0;
+  isMu8Ele23_ = 0;
+  isMu23Ele12_ = 0;
+    
   isMuonEGnoDZ_ = 0;
+  isMu8Ele23noDZ_ = 0;
+  isMu23Ele12noDZ_ = 0;
+  
   isDoubleTauMedium_ = 0;
   isDoubleTauTight_ = 0;
   isSingleTauMET_ = 0;
+
+  isHBHECleaned_ = 0;
+  isPFMET200_ = 0;
+  isPFMETOne200_ = 0;
+  isPFMET120_ = 0;
+  isPFHT60_ = 0;
+  isPFHT500_ = 0;
+  isPFHT700_ = 0;
+  isPFHT800_ = 0;
+
 
   //std::cout << "debug4" << "\n";
 
@@ -160,7 +213,6 @@ void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     std::regex SingleJet450("(HLT_PFJet450_v)(.*)");
     std::regex SingleJet500("(HLT_PFJet500_v)(.*)");
     std::regex HT("(HLT_PFHT1050_v)(.*)");
-    std::regex HTMHT("(HLT_PFHT500_PFMET100_PFMHT100_IDTight_v)(.*)");
     std::regex IsoMu("(HLT_IsoMu27_v)(.*)");
     std::regex IsoMuTau("(HLT_IsoMu20_eta2p1_LooseChargedIsoPFTau27_eta2p1_CrossL1_v)(.*)");
     std::regex Mu("(HLT_Mu50_v)(.*)");
@@ -170,10 +222,12 @@ void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     std::regex DoubleMu("(HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v)(.*)");
     std::regex DoubleIsoEG("(HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_v)(.*)");
     std::regex DoubleEG("(HLT_DoubleEle33_CaloIdL_MW_v)(.*)");
+    
     std::regex Muon8EG("(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v)(.*)");
     std::regex Muon23EG("(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_v)(.*)");
     std::regex Muon8EGnoDZ("(HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_v)(.*)");
     std::regex Muon23EGnoDZ("(HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_v)(.*)");
+    
     std::regex DoubleTauMedium("(HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v)(.*)");
     std::regex DoubleTauTight35("(HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v)(.*)");
     std::regex DoubleTauTight40("(HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v)(.*)");
@@ -183,50 +237,68 @@ void TCPTrigNtuples::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
     std::regex Photon200("(HLT_Photon200_v)(.*)");
     std::regex Photon175("(HLT_Photon175_v)(.*)");
 
-    if ( std::regex_match(Trigger, Ele) && (triggerResults.accept(i) == 1) ) isEle_ = 1;
+    //------------MET Triggers----------
 
+    std::regex HBHECleaned("(HLT_PFMET200_HBHECleaned_v)(.*)");
+    std::regex PFMET200("(HLT_PFMET200_HBHE_BeamHaloCleaned_v)(.*)");
+    std::regex PFMETOne200("(HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned_v)(.*)");
+    std::regex PFMET120("(HLT_PFMET120_PFMHT120_IDTight_v)(.*)");
+    std::regex PFHT60("(HLT_PFMET120_PFMHT120_IDTight_PFHT60_v)(.*)");
+    std::regex PFHT500("(HLT_PFHT500_PFMET100_PFMHT100_IDTight_v)(.*)");
+    std::regex PFHT700("(HLT_PFHT700_PFMET85_PFMHT85_IDTight_v)(.*)");
+    std::regex PFHT800("(HLT_PFHT800_PFMET75_PFMHT75_IDTight_v)(.*)");
+
+
+    if ( std::regex_match(Trigger, HBHECleaned) && triggerResults.accept(i) == 1 ) isHBHECleaned_ = 1;
+    if ( std::regex_match(Trigger, PFMET200) && triggerResults.accept(i) == 1 ) isPFMET200_ = 1;
+    if ( std::regex_match(Trigger, PFMETOne200) && triggerResults.accept(i) == 1 ) isPFMETOne200_ = 1;
+    if ( std::regex_match(Trigger, PFMET120) && triggerResults.accept(i) == 1 ) isPFMET120_ = 1;
+    if ( std::regex_match(Trigger, PFHT60) && triggerResults.accept(i) == 1 ) isPFHT60_ = 1;
+    if ( std::regex_match(Trigger, PFHT500) && triggerResults.accept(i) == 1 ) isPFHT500_ = 1;
+    if ( std::regex_match(Trigger, PFHT700) && triggerResults.accept(i) == 1 ) isPFHT700_ = 1;
+    if ( std::regex_match(Trigger, PFHT800) && triggerResults.accept(i) == 1 ) isPFHT800_ = 1;
+
+    if ( ( std::regex_match(Trigger, HBHECleaned) && (triggerResults.accept(i) == 1 ) ) ||
+	 ( std::regex_match(Trigger, PFMET200) && (triggerResults.accept(i) == 1 ) ) ||
+	 ( std::regex_match(Trigger, PFMETOne200) && (triggerResults.accept(i) == 1 ) ) ||
+	 ( std::regex_match(Trigger, PFMET120) && (triggerResults.accept(i) == 1 ) ) ||
+	 ( std::regex_match(Trigger, PFHT60) && (triggerResults.accept(i) == 1 ) ) || 
+	 ( std::regex_match(Trigger, PFHT500) && (triggerResults.accept(i) == 1 ) ) ||
+	 ( std::regex_match(Trigger, PFHT700) && (triggerResults.accept(i) == 1 ) ) ||
+	 ( std::regex_match(Trigger, PFHT800) && (triggerResults.accept(i) == 1 ) ) ) isMET_ = 1;
+
+    if ( std::regex_match(Trigger, Ele) && (triggerResults.accept(i) == 1) ) isEle_ = 1;    
     if ( std::regex_match(Trigger, EleJet) && (triggerResults.accept(i) == 1) ) isEleJet_ = 1;
-
     if ( std::regex_match(Trigger, Photon200) && (triggerResults.accept(i) == 1) ) isPhoton200_ = 1;
-
     if ( std::regex_match(Trigger, Photon175) && (triggerResults.accept(i) == 1) ) isPhoton175_ = 1;
-
     if ( std::regex_match(Trigger, SingleJet450) && (triggerResults.accept(i) == 1) ) isSingleJet450_ = 1;
-
     if ( std::regex_match(Trigger, SingleJet500) && (triggerResults.accept(i) == 1) ) isSingleJet500_ = 1;
-
     if ( std::regex_match(Trigger, HT) && (triggerResults.accept(i) == 1) ) isHT_ = 1;
-
-    if ( std::regex_match(Trigger, HTMHT) && (triggerResults.accept(i) == 1) ) isHTMHT_ = 1;
-
     if ( std::regex_match(Trigger, IsoMu) && (triggerResults.accept(i) == 1) ) isIsoMu_ = 1;
-
     if ( std::regex_match(Trigger, IsoMuTau) && (triggerResults.accept(i) == 1) ) isIsoMuTau_ = 1;
-
     if ( std::regex_match(Trigger, Mu) && (triggerResults.accept(i) == 1) ) isMu_ = 1;
-
-    if ( ( std::regex_match(Trigger, IsoEle35) && (triggerResults.accept(i) == 1)) || 
-	 ( std::regex_match(Trigger, IsoEle32) && (triggerResults.accept(i) == 1)) ) isIsoEle_ = 1;
-
+    if ( ( std::regex_match(Trigger, IsoEle35) && (triggerResults.accept(i) == 1) ) || 
+	 ( std::regex_match(Trigger, IsoEle32) && (triggerResults.accept(i) == 1) ) ) isIsoEle_ = 1;
     if ( std::regex_match(Trigger, EleTau) && (triggerResults.accept(i) == 1) ) isEleTau_ = 1;
-
     if ( std::regex_match(Trigger, DoubleMu) && (triggerResults.accept(i) == 1) ) isDoubleMu_ = 1;
-
     if ( std::regex_match(Trigger, DoubleIsoEG) && (triggerResults.accept(i) == 1) ) isDoubleIsoEG_ = 1;
-
     if ( std::regex_match(Trigger, DoubleEG) && (triggerResults.accept(i) == 1) ) isDoubleEG_ = 1;
-
+    
     if ( ( std::regex_match(Trigger, Muon8EG) && (triggerResults.accept(i) == 1)) ||
-	 ( std::regex_match(Trigger, Muon23EG) && (triggerResults.accept(i) == 1)) ) isMuonEG_ = 1; 
+	 ( std::regex_match(Trigger, Muon23EG) && (triggerResults.accept(i) == 1)) ) isMuonEG_ = 1;
 
-    if ( ( std::regex_match(Trigger, Muon8EGnoDZ) && (triggerResults.accept(i) == 1)) ||
-	 ( std::regex_match(Trigger, Muon23EGnoDZ) && (triggerResults.accept(i) == 1)) ) isMuonEGnoDZ_ = 1; 
+    if ( std::regex_match(Trigger, Muon8EG) && (triggerResults.accept(i) == 1) ) isMu8Ele23_ = 1;
+    if ( std::regex_match(Trigger, Muon23EG) && (triggerResults.accept(i) == 1) ) isMu23Ele12_ = 1;
+    
+    if ( ( std::regex_match(Trigger, Muon8EGnoDZ) && (triggerResults.accept(i) == 1 ) ) ||
+	 ( std::regex_match(Trigger, Muon23EGnoDZ) && (triggerResults.accept(i) == 1 ) ) ) isMuonEGnoDZ_ = 1;
 
+    if ( std::regex_match(Trigger, Muon8EGnoDZ) && (triggerResults.accept(i) == 1) ) isMu8Ele23noDZ_ = 1;
+    if ( std::regex_match(Trigger, Muon23EGnoDZ) && (triggerResults.accept(i) == 1) ) isMu23Ele12noDZ_ = 1;
+    
     if ( std::regex_match(Trigger, DoubleTauMedium) && (triggerResults.accept(i) == 1) ) isDoubleTauMedium_ = 1;
-
     if ( ( std::regex_match(Trigger, DoubleTauTight35) && (triggerResults.accept(i) == 1)) ||
 	 ( std::regex_match(Trigger, DoubleTauTight40) && (triggerResults.accept(i) == 1)) ) isDoubleTauTight_ = 1;
-
     if ( std::regex_match (Trigger, SingleTauMET) && (triggerResults.accept(i) == 1) ) isSingleTauMET_ = 1;
 
     }  
